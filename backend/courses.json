@@ -47,7 +47,10 @@
           "category": "Reference Website"
         }
       ],
-      "files": []
+      "files": [],
+      "folders": [
+        "Root"
+      ]
     },
     "ChE-305": {
       "id": "ChE-305",

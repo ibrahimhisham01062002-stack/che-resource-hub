@@ -725,7 +725,7 @@ function App() {
         {!activeCourse ? (
           <div className="space-y-8 flex-grow flex flex-col justify-between">
             {/* Elegant Greeting and Global search */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div>
                 <h2 className="font-display font-extrabold text-3xl md:text-4xl text-white tracking-tight">
                   Welcome to Your <span className="gradient-text text-glow">Study Hub</span>
@@ -735,16 +735,52 @@ function App() {
                 </p>
               </div>
               
-              {/* Dynamic search bar */}
-              <div className="relative w-full md:w-80">
-                <input 
-                  type="text"
-                  placeholder="Search active courses..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:border-indigo-500"
-                />
-                <Icon name="search" className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
+              {/* Search and filter tools */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 w-full md:w-auto">
+                {/* Level and Term Dropdown for Mobile / Tablet */}
+                <div className="flex flex-col text-left md:hidden w-full sm:w-56">
+                  <span className="text-slate-400 block text-[10px] font-bold tracking-wider uppercase mb-1.5">Level and Term</span>
+                  <select 
+                    value={selectedLevel && selectedTerm ? `${selectedLevel}, ${selectedTerm}` : ""}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (!val) {
+                        setSelectedLevel("");
+                        setSelectedTerm("");
+                      } else {
+                        const [lvl, trm] = val.split(", ");
+                        setSelectedLevel(lvl);
+                        setSelectedTerm(trm);
+                      }
+                    }}
+                    className="glass-input w-full px-4 py-2.5 rounded-xl text-xs font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
+                  >
+                    <option value="">All Levels & Terms</option>
+                    <option value="Level-1, Term-1">Level 1, Term 1</option>
+                    <option value="Level-1, Term-2">Level 1, Term 2</option>
+                    <option value="Level-2, Term-1">Level 2, Term 1</option>
+                    <option value="Level-2, Term-2">Level 2, Term 2</option>
+                    <option value="Level-3, Term-1">Level 3, Term 1</option>
+                    <option value="Level-3, Term-2">Level 3, Term 2</option>
+                    <option value="Level-4, Term-1">Level 4, Term 1</option>
+                    <option value="Level-4, Term-2">Level 4, Term 2</option>
+                  </select>
+                </div>
+
+                {/* Dynamic search bar */}
+                <div className="relative w-full md:w-80">
+                  <span className="text-slate-400 block text-[10px] font-bold tracking-wider uppercase mb-1.5 md:hidden">Search Active Courses</span>
+                  <div className="relative">
+                    <input 
+                      type="text"
+                      placeholder="Search active courses..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:border-indigo-500"
+                    />
+                    <Icon name="search" className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
+                  </div>
+                </div>
               </div>
             </div>
 
