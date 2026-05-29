@@ -149,7 +149,7 @@ function App() {
   const fetchCourses = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_BASE}/api/courses`);
+      const res = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
       if (!res.ok) throw new Error("Failed to load courses");
       const data = await res.json();
       setCourses(data);
@@ -333,7 +333,7 @@ function App() {
         await fetchCourses();
         
         // Re-locate updated course to preserve reference
-        const updatedRes = await fetch(`${API_BASE}/api/courses`);
+        const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
         const coursesList = await updatedRes.json();
         const found = coursesList.find(c => c.id === activeCourse.id);
         if (found) setActiveCourse(found);
