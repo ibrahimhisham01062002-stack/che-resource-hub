@@ -2,7 +2,7 @@ import os
 import json
 import shutil
 from typing import Optional, List
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -529,9 +529,38 @@ async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
     return doc["file_id"]
 
 # Handle file upload (proxies to Telegram storage)
+async def async_upload_to_telegram(course_id: str, file_index: int, local_path: str, filename: str):
+    # Only run if Telegram is configured
+    if not TELEGRAM_BOT_TOKEN or TELEGRAM_BOT_TOKEN.startswith("your_") or not TELEGRAM_CHANNEL_ID or TELEGRAM_CHANNEL_ID.startswith("your_"):
+        return
+        
+    try:
+        # Read the local file
+        with open(local_path, "rb") as f:
+            file_bytes = f.read()
+            
+        print(f"Background: Starting Telegram upload for '{filename}'...")
+        # Upload to Telegram
+        telegram_file_id = await upload_file_to_telegram(file_bytes, filename)
+        
+        # Update courses.json
+        config = load_courses_config()
+        if course_id in config["courses"]:
+            course = config["courses"][course_id]
+            files = course.get("files", [])
+            if 0 <= file_index < len(files):
+                # Ensure the file name still matches to prevent race conditions
+                if files[file_index]["name"] == filename:
+                    files[file_index]["telegram_file_id"] = telegram_file_id
+                    save_courses_config(config)
+                    print(f"Background: Telegram upload succeeded for '{filename}', saved file_id.")
+    except Exception as e:
+        print(f"Background: Telegram upload failed for '{filename}': {str(e)}")
+
 @app.post("/api/upload/{course_id}")
 async def upload_file(
     course_id: str, 
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...), 
     category: Optional[str] = Form(None),
     folder: Optional[str] = Form(None)
@@ -549,30 +578,17 @@ async def upload_file(
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to read upload file payload: {str(e)}")
         
-    telegram_file_id = None
-    message = "File successfully uploaded and stored on Telegram!"
-    
-    # Try uploading to Telegram first
+    # 1. ALWAYS save the file locally first. This is instantaneous (< 50ms)
+    target_dir = os.path.join(WORKSPACE_DIR, course["folder"])
+    os.makedirs(target_dir, exist_ok=True)
+    dest_path = os.path.join(target_dir, filename)
     try:
-        # Bypasses if placeholder credentials are set
-        if TELEGRAM_BOT_TOKEN and not TELEGRAM_BOT_TOKEN.startswith("your_") and TELEGRAM_CHANNEL_ID and not TELEGRAM_CHANNEL_ID.startswith("your_"):
-            telegram_file_id = await upload_file_to_telegram(file_bytes, filename)
-    except Exception as tg_err:
-        print(f"Telegram upload failed, falling back to local storage: {str(tg_err)}")
+        with open(dest_path, "wb") as buffer:
+            buffer.write(file_bytes)
+    except Exception as local_err:
+        raise HTTPException(status_code=500, detail=f"Local save failed: {str(local_err)}")
         
-    # Fallback to local storage if Telegram upload failed or was bypassed
-    if not telegram_file_id:
-        target_dir = os.path.join(WORKSPACE_DIR, course["folder"])
-        os.makedirs(target_dir, exist_ok=True)
-        dest_path = os.path.join(target_dir, filename)
-        try:
-            with open(dest_path, "wb") as buffer:
-                buffer.write(file_bytes)
-            message = "File uploaded successfully! (Saved to local server storage since Telegram Bot Token is unconfigured or invalid)"
-        except Exception as local_err:
-            raise HTTPException(status_code=500, detail=f"Local fallback save failed: {str(local_err)}")
-            
-    # Construct file item
+    # 2. Construct file catalog item
     if category == "book":
         file_type = "Reference Book"
     elif category == "question":
@@ -587,8 +603,6 @@ async def upload_file(
         "size": format_size(bytes_size),
         "type": file_type
     }
-    if telegram_file_id:
-        new_file_item["telegram_file_id"] = telegram_file_id
     if folder:
         new_file_item["folder"] = folder
         
@@ -596,11 +610,25 @@ async def upload_file(
     if "files" not in course:
         course["files"] = []
     course["files"].append(new_file_item)
+    file_index = len(course["files"]) - 1
     
     # Save updated config
     save_courses_config(config)
     
-    return {"status": "success", "filename": filename, "message": message}
+    # 3. Queue the Telegram upload as a secure background task!
+    background_tasks.add_task(
+        async_upload_to_telegram,
+        course_id,
+        file_index,
+        dest_path,
+        filename
+    )
+    
+    return {
+        "status": "success", 
+        "filename": filename, 
+        "message": "File uploaded successfully!"
+    }
 
 @app.delete("/api/courses/{course_id}/files/{file_index}")
 def delete_file(course_id: str, file_index: int):
