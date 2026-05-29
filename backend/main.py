@@ -2,7 +2,7 @@ import os
 import json
 import shutil
 from typing import Optional, List
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form, BackgroundTasks
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, BackgroundTasks, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -130,7 +130,8 @@ class CourseUpdate(BaseModel):
 # API ENDPOINTS
 
 @app.get("/api/courses")
-def get_courses():
+def get_courses(response: Response):
+    response.headers["Cache-Control"] = "public, max-age=300"
     config = load_courses_config()
     courses_data = []
     for key, course in config["courses"].items():
