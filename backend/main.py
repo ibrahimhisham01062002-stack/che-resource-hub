@@ -114,6 +114,9 @@ class LinkItem(BaseModel):
     url: str
     category: str
 
+class FolderCreate(BaseModel):
+    name: str
+
 # API ENDPOINTS
 
 @app.get("/api/courses")
@@ -132,7 +135,8 @@ def get_courses():
             "term": course.get("term", ""),
             "syllabus": course.get("syllabus", []),
             "fileCount": len(files),
-            "files": files
+            "files": files,
+            "folders": course.get("folders", ["Root"])
         })
     return courses_data
 
@@ -527,7 +531,12 @@ async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
 
 # Handle file upload (proxies to Telegram storage)
 @app.post("/api/upload/{course_id}")
-async def upload_file(course_id: str, file: UploadFile = File(...), category: Optional[str] = Form(None)):
+async def upload_file(
+    course_id: str, 
+    file: UploadFile = File(...), 
+    category: Optional[str] = Form(None),
+    folder: Optional[str] = Form(None)
+):
     config = load_courses_config()
     if course_id not in config["courses"]:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -570,7 +579,7 @@ async def upload_file(course_id: str, file: UploadFile = File(...), category: Op
     elif category == "question":
         file_type = "Term-Final Question"
     elif category == "solution":
-        file_type = "TF Solve"
+        file_type = "Term-Final Solve"
     else:
         file_type = get_file_type(filename)
         
@@ -581,6 +590,8 @@ async def upload_file(course_id: str, file: UploadFile = File(...), category: Op
     }
     if telegram_file_id:
         new_file_item["telegram_file_id"] = telegram_file_id
+    if folder:
+        new_file_item["folder"] = folder
         
     # Append to courses.json files list
     if "files" not in course:
@@ -648,6 +659,7 @@ def create_course(new_course: CourseCreate):
         "term": new_course.term,
         "syllabus": [],
         "files": [],
+        "folders": ["Root"],
         "default_notes": f"# {new_course.code}: {new_course.title}\n\nStart writing notes...",
         "default_logs": [],
         "default_links": []
@@ -666,8 +678,71 @@ def create_course(new_course: CourseCreate):
         "term": new_course.term,
         "syllabus": [],
         "fileCount": 0,
-        "files": []
+        "files": [],
+        "folders": ["Root"]
     }
+
+@app.post("/api/courses/{course_id}/folders")
+def create_folder(course_id: str, folder_data: FolderCreate):
+    config = load_courses_config()
+    if course_id not in config["courses"]:
+        raise HTTPException(status_code=404, detail="Course not found")
+        
+    course = config["courses"][course_id]
+    if "folders" not in course:
+        course["folders"] = ["Root"]
+        
+    folder_name = folder_data.name.strip()
+    if not folder_name:
+        raise HTTPException(status_code=400, detail="Folder name cannot be empty")
+        
+    if folder_name in course["folders"]:
+        raise HTTPException(status_code=400, detail=f"Folder '{folder_name}' already exists")
+        
+    course["folders"].append(folder_name)
+    save_courses_config(config)
+    
+    return {"status": "success", "folders": course["folders"]}
+
+@app.delete("/api/courses/{course_id}/folders/{folder_name}")
+def delete_folder(course_id: str, folder_name: str):
+    config = load_courses_config()
+    if course_id not in config["courses"]:
+        raise HTTPException(status_code=404, detail="Course not found")
+        
+    course = config["courses"][course_id]
+    if "folders" not in course:
+        course["folders"] = ["Root"]
+        
+    if folder_name not in course["folders"]:
+        raise HTTPException(status_code=404, detail=f"Folder '{folder_name}' not found")
+        
+    if folder_name == "Root":
+        raise HTTPException(status_code=400, detail="Cannot delete the Root folder")
+        
+    # Remove the folder from the catalog
+    course["folders"].remove(folder_name)
+    
+    # Clean up all slide files matching this folder
+    files = course.get("files", [])
+    new_files = []
+    for file_item in files:
+        if file_item.get("folder") == folder_name:
+            # Delete local physical file if it exists
+            filename = file_item["name"]
+            try:
+                local_path = os.path.join(WORKSPACE_DIR, course["folder"], filename)
+                if os.path.exists(local_path) and os.path.isfile(local_path):
+                    os.remove(local_path)
+            except Exception as e:
+                print(f"Failed to delete local file '{filename}' during folder purge: {str(e)}")
+        else:
+            new_files.append(file_item)
+            
+    course["files"] = new_files
+    save_courses_config(config)
+    
+    return {"status": "success", "folders": course["folders"]}
 
 
 # Serve the frontend

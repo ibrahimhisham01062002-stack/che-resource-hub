@@ -87,6 +87,16 @@ const Icon = ({ name, className = "w-5 h-5", ...props }) => {
       <svg fill="currentColor" viewBox="0 0 24 24" className={className} {...props}>
         <path d="M8 5v14l11-7z" />
       </svg>
+    ),
+    folder: (
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+      </svg>
+    ),
+    folderPlus: (
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+      </svg>
     )
   };
   return icons[name] || (
@@ -147,12 +157,15 @@ function App() {
   const [questionUploadStatus, setQuestionUploadStatus] = useState({ type: "", message: "" });
   const questionFileInputRef = useRef(null);
 
-  // TF Solve upload states
+  // Term-Final Solve upload states
   const [solutionUploadFile, setSolutionUploadFile] = useState(null);
   const [isSolutionUploading, setIsSolutionUploading] = useState(false);
   const [solutionUploadProgress, setSolutionUploadProgress] = useState(0);
   const [solutionUploadStatus, setSolutionUploadStatus] = useState({ type: "", message: "" });
   const solutionFileInputRef = useRef(null);
+
+  // Current active folder in slides section
+  const [currentFolder, setCurrentFolder] = useState("Root");
 
   // Dynamic course creator states
   const [newCourse, setNewCourse] = useState({ code: "", title: "", description: "" });
@@ -186,6 +199,7 @@ function App() {
     setPreviewFile(null);
     setFileSearchQuery("");
     setPrimarySection("books"); // Default to Books section
+    setCurrentFolder("Root"); // Reset folder to Root
     
     // Load reference links
     const loadLinks = async () => {
@@ -349,6 +363,73 @@ function App() {
     }
   };
 
+  // Handle creating a virtual folder in the active course
+  const handleCreateFolder = async () => {
+    const folderName = window.prompt("Enter new folder name:");
+    if (!folderName) return;
+    const trimmed = folderName.trim();
+    if (!trimmed) {
+      alert("Folder name cannot be empty");
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/folders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: trimmed })
+      });
+      if (res.ok) {
+        await fetchCourses();
+        const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+        const coursesList = await updatedRes.json();
+        const found = coursesList.find(c => c.id === activeCourse.id);
+        if (found) {
+          setActiveCourse(found);
+          setCurrentFolder(trimmed); // Auto-select the newly created folder!
+        }
+      } else {
+        const data = await res.json();
+        alert(data.detail || "Failed to create folder");
+      }
+    } catch (err) {
+      alert("Failed to create folder: network error");
+    }
+  };
+
+  // Handle deleting a virtual folder and all its contents
+  const handleDeleteFolder = async (e, folderName) => {
+    e.stopPropagation(); // Prevent selecting the folder chip when clicking delete
+    if (folderName === "Root") {
+      alert("Cannot delete the Root folder");
+      return;
+    }
+    if (!window.confirm(`Are you sure you want to delete the folder "${folderName}"? This will completely purge all slides cataloged inside it!`)) {
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/folders/${encodeURIComponent(folderName)}?t=${Date.now()}`, {
+        method: "DELETE"
+      });
+      if (res.ok) {
+        if (currentFolder === folderName) {
+          setCurrentFolder("Root");
+        }
+        await fetchCourses();
+        const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+        const coursesList = await updatedRes.json();
+        const found = coursesList.find(c => c.id === activeCourse.id);
+        if (found) setActiveCourse(found);
+      } else {
+        const data = await res.json();
+        alert(data.detail || "Failed to delete folder");
+      }
+    } catch (err) {
+      alert("Failed to delete folder: network error");
+    }
+  };
+
   // Handle file uploads
   const handleFileUpload = async (e, file, category, setters) => {
     e.preventDefault();
@@ -363,6 +444,9 @@ function App() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("category", category); // "book" or "slide"
+    if (category === "slide" && currentFolder) {
+      formData.append("folder", currentFolder);
+    }
 
     try {
       setUploadProgress(50);
@@ -439,11 +523,13 @@ function App() {
 
   // Filtering slides inside active section
   const filteredSlides = useMemo(() => {
-    return slidesList.filter(f => 
-      f.name.toLowerCase().includes(fileSearchQuery.toLowerCase()) ||
-      f.type.toLowerCase().includes(fileSearchQuery.toLowerCase())
-    );
-  }, [slidesList, fileSearchQuery]);
+    return slidesList.filter(f => {
+      const matchesSearch = f.name.toLowerCase().includes(fileSearchQuery.toLowerCase()) ||
+                            f.type.toLowerCase().includes(fileSearchQuery.toLowerCase());
+      const fileFolder = f.folder || "Root";
+      return matchesSearch && fileFolder === currentFolder;
+    });
+  }, [slidesList, fileSearchQuery, currentFolder]);
 
   // Filtering questions inside active section
   const filteredQuestions = useMemo(() => {
@@ -773,7 +859,7 @@ function App() {
                   className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="edit" className="w-3.5 h-3.5" />
-                  <span>TF Solve</span>
+                  <span>Term-Final Solve</span>
                 </button>
               </div>
             </div>
@@ -1145,7 +1231,7 @@ function App() {
                 </div>
               )}
 
-              {/* SUBSECTION 4: TF SOLVES */}
+              {/* SUBSECTION 4: TERM-FINAL SOLVES */}
               {primarySection === 'solutions' && (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
                   
@@ -1153,7 +1239,7 @@ function App() {
                   <div className="lg:col-span-1 space-y-6">
                     <div className="glass-panel p-6 rounded-2xl space-y-4">
                       <div className="flex items-center justify-between">
-                        <h3 className="font-display font-bold text-base text-white">TF Solves</h3>
+                        <h3 className="font-display font-bold text-base text-white">Term-Final Solves</h3>
                         <span className="text-[10px] text-accent-indigo font-bold bg-accent-indigo/10 px-2 py-0.5 rounded border border-accent-indigo/10">
                           {solutionsList.length} solutions
                         </span>
@@ -1345,6 +1431,52 @@ function App() {
                             className="glass-input w-full pl-9 pr-3 py-1.5 rounded-lg text-xs"
                           />
                           <Icon name="search" className="absolute left-3 top-2.5 w-3 h-3 text-slate-400" />
+                        </div>
+                      </div>
+
+                      {/* Virtual Folders Section */}
+                      <div className="space-y-3 pb-4 border-b border-white border-opacity-5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-display font-bold text-indigo-400 tracking-wider uppercase">Folders</span>
+                          <button
+                            type="button"
+                            onClick={handleCreateFolder}
+                            className="flex items-center space-x-1 text-[10px] text-indigo-300 hover:text-white font-display font-semibold transition-all bg-indigo-500/10 hover:bg-indigo-500/20 px-2.5 py-1 rounded-md border border-indigo-500/20"
+                          >
+                            <Icon name="folderPlus" className="w-3 h-3" />
+                            <span>Create Folder</span>
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {(activeCourse.folders || ["Root"]).map((folder) => {
+                            const isSelected = currentFolder === folder;
+                            return (
+                              <button
+                                key={folder}
+                                type="button"
+                                onClick={() => { setCurrentFolder(folder); setPreviewFile(null); }}
+                                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-display font-semibold transition-all border ${
+                                  isSelected 
+                                    ? 'bg-gradient-to-r from-accent-indigo to-accent-violet text-white border-accent-indigo border-opacity-40 shadow-md shadow-indigo-950/40' 
+                                    : 'bg-dark-900 border-white border-opacity-5 text-slate-400 hover:text-slate-200 hover:bg-indigo-950/10'
+                                }`}
+                              >
+                                <Icon name="folder" className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-indigo-400/70'}`} />
+                                <span>{folder}</span>
+                                {folder !== "Root" && (
+                                  <span 
+                                    onClick={(e) => handleDeleteFolder(e, folder)}
+                                    className={`ml-1.5 p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-rose-400'}`}
+                                    title={`Delete ${folder}`}
+                                  >
+                                    <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                  </span>
+                                )}
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
 
