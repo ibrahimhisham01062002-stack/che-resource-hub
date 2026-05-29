@@ -875,22 +875,6 @@ function App() {
                 </div>
               )}
             </div>
-
-            {/* Quick study references info banner */}
-            <div className="glass-panel p-6 rounded-2xl border border-indigo-500/20 flex flex-col md:flex-row items-center justify-between gap-4 mt-auto">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 text-accent-indigo">
-                  <Icon name="bookOpen" className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="font-display font-semibold text-white text-base">Chemical Engineering Formula Guides</h4>
-                  <p className="text-slate-400 text-xs mt-0.5">Explore each course space to access pre-populated formulas with live interactive timelines.</p>
-                </div>
-              </div>
-              <span className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white font-display font-semibold text-xs rounded-xl cursor-pointer shadow-md shadow-indigo-600/10 uppercase tracking-wider" onClick={() => setActiveCourse(courses[0])}>
-                Quick Study: CRE
-              </span>
-            </div>
           </div>
         ) : (
           
