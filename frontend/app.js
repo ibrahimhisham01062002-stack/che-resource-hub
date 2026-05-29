@@ -661,6 +661,10 @@ function App() {
                 className="glass-input px-4 py-2 rounded-xl text-xs font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
               >
                 <option value="">All Levels & Terms</option>
+                <option value="Level-1, Term-1">Level 1, Term 1</option>
+                <option value="Level-1, Term-2">Level 1, Term 2</option>
+                <option value="Level-2, Term-1">Level 2, Term 1</option>
+                <option value="Level-2, Term-2">Level 2, Term 2</option>
                 <option value="Level-3, Term-1">Level 3, Term 1</option>
                 <option value="Level-3, Term-2">Level 3, Term 2</option>
                 <option value="Level-4, Term-1">Level 4, Term 1</option>
