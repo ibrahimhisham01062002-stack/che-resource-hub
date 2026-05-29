@@ -236,7 +236,7 @@ function App() {
     loadLinks();
   }, [activeCourse]);
 
-  // Admin Session Expiry checker (1 hour duration)
+  // Admin Session Expiry checker (12 hours duration)
   useEffect(() => {
     const checkStatus = () => {
       const authTime = localStorage.getItem("che_auth_until");
@@ -266,7 +266,7 @@ function App() {
   const handleVerifyPassword = (e) => {
     e.preventDefault();
     if (authPasswordInput.trim() === "Chemical Engineering is Life") {
-      const expiry = Date.now() + 60 * 60 * 1000; // 1 hour session
+      const expiry = Date.now() + 12 * 60 * 60 * 1000; // 12 hours session
       localStorage.setItem("che_auth_until", expiry.toString());
       setIsAuthorizedState(true);
       setShowAuthModal(false);
