@@ -12,6 +12,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+http_client = httpx.AsyncClient(timeout=120.0)
+
 app = FastAPI(title="Chemical Engineering Study Resource Hub API")
 
 # Enable CORS for local development
@@ -303,43 +305,42 @@ if TELEGRAM_CHANNEL_ID:
     TELEGRAM_CHANNEL_ID = TELEGRAM_CHANNEL_ID.strip().replace('"', '').replace("'", "")
 
 async def get_file_id_from_message_id(message_id: int) -> str:
-    async with httpx.AsyncClient() as client:
-        # Forward message to the channel itself (creates a temporary duplicate post)
-        forward_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/forwardMessage"
-        payload = {
-            "chat_id": TELEGRAM_CHANNEL_ID,
-            "from_chat_id": TELEGRAM_CHANNEL_ID,
-            "message_id": message_id
-        }
-        resp = await client.post(forward_url, json=payload)
-        if resp.status_code != 200:
-            raise HTTPException(status_code=502, detail=f"Telegram forward failed: {resp.text}")
+    # Forward message to the channel itself (creates a temporary duplicate post)
+    forward_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/forwardMessage"
+    payload = {
+        "chat_id": TELEGRAM_CHANNEL_ID,
+        "from_chat_id": TELEGRAM_CHANNEL_ID,
+        "message_id": message_id
+    }
+    resp = await http_client.post(forward_url, json=payload)
+    if resp.status_code != 200:
+        raise HTTPException(status_code=502, detail=f"Telegram forward failed: {resp.text}")
+    
+    msg_data = resp.json()["result"]
+    new_msg_id = msg_data["message_id"]
+    
+    # Extract file_id from different message attachment types
+    file_id = None
+    if "document" in msg_data:
+        file_id = msg_data["document"]["file_id"]
+    elif "photo" in msg_data:
+        file_id = msg_data["photo"][-1]["file_id"]
+    elif "video" in msg_data:
+        file_id = msg_data["video"]["file_id"]
+    elif "audio" in msg_data:
+        file_id = msg_data["audio"]["file_id"]
         
-        msg_data = resp.json()["result"]
-        new_msg_id = msg_data["message_id"]
+    # Delete the temporary duplicate message immediately to keep the channel clean
+    delete_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteMessage"
+    await http_client.post(delete_url, json={
+        "chat_id": TELEGRAM_CHANNEL_ID,
+        "message_id": new_msg_id
+    })
+    
+    if not file_id:
+        raise HTTPException(status_code=400, detail="No downloadable file or document found in the Telegram message")
         
-        # Extract file_id from different message attachment types
-        file_id = None
-        if "document" in msg_data:
-            file_id = msg_data["document"]["file_id"]
-        elif "photo" in msg_data:
-            file_id = msg_data["photo"][-1]["file_id"]
-        elif "video" in msg_data:
-            file_id = msg_data["video"]["file_id"]
-        elif "audio" in msg_data:
-            file_id = msg_data["audio"]["file_id"]
-            
-        # Delete the temporary duplicate message immediately to keep the channel clean
-        delete_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteMessage"
-        await client.post(delete_url, json={
-            "chat_id": TELEGRAM_CHANNEL_ID,
-            "message_id": new_msg_id
-        })
-        
-        if not file_id:
-            raise HTTPException(status_code=400, detail="No downloadable file or document found in the Telegram message")
-            
-        return file_id
+    return file_id
 
 @app.get("/api/download/{course_id}/{file_index}")
 async def download_file(course_id: str, file_index: int):
@@ -385,43 +386,41 @@ async def download_file(course_id: str, file_index: int):
             
         # 1. Fetch file path from Telegram
         get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(get_file_url)
-            if resp.status_code != 200:
-                raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
-                
-            result = resp.json()
-            if not result.get("ok"):
-                raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
-                
-            file_path = result["result"]["file_path"]
+        resp = await http_client.get(get_file_url)
+        if resp.status_code != 200:
+            raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
             
-            # 2. Securely stream the binary file back to the browser
-            download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+        result = resp.json()
+        if not result.get("ok"):
+            raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
             
-            async def stream_generator():
-                async with httpx.AsyncClient() as stream_client:
-                    async with stream_client.stream("GET", download_url) as r:
-                        if r.status_code != 200:
-                            yield b"Error streaming from Telegram servers"
-                            return
-                        async for chunk in r.aiter_bytes():
-                            yield chunk
-                            
-            content_type = "application/octet-stream"
-            if file_name.lower().endswith(".pdf"):
-                content_type = "application/pdf"
-            elif file_name.lower().endswith(".zip"):
-                content_type = "application/zip"
-                
-            return StreamingResponse(
-                stream_generator(),
-                media_type=content_type,
-                headers={
-                    "Content-Disposition": f'inline; filename="{file_name}"',
-                    "Content-Type": content_type
-                }
-            )
+        file_path = result["result"]["file_path"]
+        
+        # 2. Securely stream the binary file back to the browser
+        download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+        
+        async def stream_generator():
+            async with http_client.stream("GET", download_url) as r:
+                if r.status_code != 200:
+                    yield b"Error streaming from Telegram servers"
+                    return
+                async for chunk in r.aiter_bytes():
+                    yield chunk
+                    
+        content_type = "application/octet-stream"
+        if file_name.lower().endswith(".pdf"):
+            content_type = "application/pdf"
+        elif file_name.lower().endswith(".zip"):
+            content_type = "application/zip"
+            
+        return StreamingResponse(
+            stream_generator(),
+            media_type=content_type,
+            headers={
+                "Content-Disposition": f'inline; filename="{file_name}"',
+                "Content-Type": content_type
+            }
+        )
     except Exception as e:
         # Fallback to a beautiful HTML guidance page for placeholders or Telegram errors
         return HTMLResponse(
@@ -507,27 +506,27 @@ async def download_file(course_id: str, file_index: int):
 async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
         raise HTTPException(status_code=500, detail="Telegram bot token or channel ID not configured in environment")
-    async with httpx.AsyncClient() as client:
-        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument"
-        files = {
-            "document": (filename, file_bytes)
-        }
-        data = {
-            "chat_id": TELEGRAM_CHANNEL_ID
-        }
-        resp = await client.post(url, data=data, files=files, timeout=120.0)
-        if resp.status_code != 200:
-            raise HTTPException(status_code=502, detail=f"Telegram upload failed: {resp.text}")
-        
-        res = resp.json()
-        if not res.get("ok"):
-            raise HTTPException(status_code=502, detail=f"Telegram API error: {res.get('description', '')}")
-        
-        doc = res["result"].get("document")
-        if not doc:
-            raise HTTPException(status_code=500, detail="Telegram did not return document file metadata")
-        
-        return doc["file_id"]
+    
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument"
+    files = {
+        "document": (filename, file_bytes)
+    }
+    data = {
+        "chat_id": TELEGRAM_CHANNEL_ID
+    }
+    resp = await http_client.post(url, data=data, files=files)
+    if resp.status_code != 200:
+        raise HTTPException(status_code=502, detail=f"Telegram upload failed: {resp.text}")
+    
+    res = resp.json()
+    if not res.get("ok"):
+        raise HTTPException(status_code=502, detail=f"Telegram API error: {res.get('description', '')}")
+    
+    doc = res["result"].get("document")
+    if not doc:
+        raise HTTPException(status_code=500, detail="Telegram did not return document file metadata")
+    
+    return doc["file_id"]
 
 # Handle file upload (proxies to Telegram storage)
 @app.post("/api/upload/{course_id}")
@@ -767,3 +766,7 @@ def serve_frontend_or_spa(path: str):
         status_code=404,
         content={"detail": "Chemical Engineering Hub Frontend not initialized yet. Please compile index.html"}
     )
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await http_client.aclose()

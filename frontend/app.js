@@ -447,7 +447,7 @@ function App() {
     
     setIsUploading(true);
     setUploadStatus({ type: "", message: "" });
-    setUploadProgress(20);
+    setUploadProgress(0);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -456,14 +456,20 @@ function App() {
       formData.append("folder", currentFolder);
     }
 
-    try {
-      setUploadProgress(50);
-      const res = await fetch(`${API_BASE}/api/upload/${activeCourse.id}`, {
-        method: "POST",
-        body: formData
-      });
-      setUploadProgress(85);
-      if (res.ok) {
+    const xhr = new XMLHttpRequest();
+    
+    // Monitor upload progress in real-time!
+    xhr.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        // Use 90% for file transfer, leaving last 10% for server processing & Telegram API sync
+        const percentage = Math.round((event.loaded / event.total) * 90);
+        setUploadProgress(percentage);
+      }
+    });
+
+    xhr.addEventListener("load", async () => {
+      setUploadProgress(95);
+      if (xhr.status >= 200 && xhr.status < 300) {
         setUploadStatus({ type: "success", message: "File uploaded successfully!" });
         setUploadFile(null);
         if (fileInputRef.current) fileInputRef.current.value = "";
@@ -477,18 +483,32 @@ function App() {
         const found = coursesList.find(c => c.id === activeCourse.id);
         if (found) setActiveCourse(found);
       } else {
-        const data = await res.json();
-        setUploadStatus({ type: "error", message: data.detail || "Upload failed" });
+        let errorMessage = "Upload failed";
+        try {
+          const data = JSON.parse(xhr.responseText);
+          errorMessage = data.detail || errorMessage;
+        } catch (e) {}
+        setUploadStatus({ type: "error", message: errorMessage });
       }
-    } catch (err) {
-      setUploadStatus({ type: "error", message: "Upload failed: network error" });
-    } finally {
+      
       setUploadProgress(100);
       setTimeout(() => {
         setIsUploading(false);
         setUploadProgress(0);
       }, 800);
-    }
+    });
+
+    xhr.addEventListener("error", () => {
+      setUploadStatus({ type: "error", message: "Upload failed: network error" });
+      setUploadProgress(100);
+      setTimeout(() => {
+        setIsUploading(false);
+        setUploadProgress(0);
+      }, 800);
+    });
+
+    xhr.open("POST", `${API_BASE}/api/upload/${activeCourse.id}`);
+    xhr.send(formData);
   };
 
   // Helper to extract YouTube video ID
