@@ -527,7 +527,7 @@ async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
 
 # Handle file upload (proxies to Telegram storage)
 @app.post("/api/upload/{course_id}")
-async def upload_file(course_id: str, file: UploadFile = File(...)):
+async def upload_file(course_id: str, file: UploadFile = File(...), category: Optional[str] = Form(None)):
     config = load_courses_config()
     if course_id not in config["courses"]:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -565,10 +565,11 @@ async def upload_file(course_id: str, file: UploadFile = File(...)):
             raise HTTPException(status_code=500, detail=f"Local fallback save failed: {str(local_err)}")
             
     # Construct file item
+    file_type = "Reference Book" if category == "book" else get_file_type(filename)
     new_file_item = {
         "name": filename,
         "size": format_size(bytes_size),
-        "type": get_file_type(filename)
+        "type": file_type
     }
     if telegram_file_id:
         new_file_item["telegram_file_id"] = telegram_file_id

@@ -125,11 +125,20 @@ function App() {
 
   // Files & Preview states
   const [previewFile, setPreviewFile] = useState(null); // {name, path, size, type}
-  const [uploadFile, setUploadFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadStatus, setUploadStatus] = useState({ type: "", message: "" });
-  const fileInputRef = useRef(null);
+  
+  // Book upload states
+  const [bookUploadFile, setBookUploadFile] = useState(null);
+  const [isBookUploading, setIsBookUploading] = useState(false);
+  const [bookUploadProgress, setBookUploadProgress] = useState(0);
+  const [bookUploadStatus, setBookUploadStatus] = useState({ type: "", message: "" });
+  const bookFileInputRef = useRef(null);
+
+  // Slide upload states
+  const [slideUploadFile, setSlideUploadFile] = useState(null);
+  const [isSlideUploading, setIsSlideUploading] = useState(false);
+  const [slideUploadProgress, setSlideUploadProgress] = useState(0);
+  const [slideUploadStatus, setSlideUploadStatus] = useState({ type: "", message: "" });
+  const slideFileInputRef = useRef(null);
 
   // Dynamic course creator states
   const [newCourse, setNewCourse] = useState({ code: "", title: "", description: "" });
@@ -294,15 +303,19 @@ function App() {
   };
 
   // Handle file uploads
-  const handleFileUpload = async (e) => {
+  const handleFileUpload = async (e, file, category, setters) => {
     e.preventDefault();
-    if (!uploadFile) return;
+    if (!file) return;
+    
+    const { setIsUploading, setUploadProgress, setUploadStatus, setUploadFile, fileInputRef } = setters;
+    
     setIsUploading(true);
     setUploadStatus({ type: "", message: "" });
     setUploadProgress(20);
 
     const formData = new FormData();
-    formData.append("file", uploadFile);
+    formData.append("file", file);
+    formData.append("category", category); // "book" or "slide"
 
     try {
       setUploadProgress(50);
@@ -704,6 +717,66 @@ function App() {
                           {booksList.length} volumes
                         </span>
                       </div>
+
+                      {/* PDF & Books drag-and-drop upload zone */}
+                      <form onSubmit={(e) => handleFileUpload(e, bookUploadFile, "book", {
+                        setIsUploading: setIsBookUploading,
+                        setUploadProgress: setBookUploadProgress,
+                        setUploadStatus: setBookUploadStatus,
+                        setUploadFile: setBookUploadFile,
+                        fileInputRef: bookFileInputRef
+                      })} className="relative group">
+                        <input 
+                          type="file" 
+                          accept=".pdf,.docx,.doc,.xlsx,.xls"
+                          onChange={(e) => setBookUploadFile(e.target.files[0])}
+                          className="hidden" 
+                          id="book-upload-input"
+                          ref={bookFileInputRef}
+                        />
+                        <label 
+                          htmlFor="book-upload-input" 
+                          className="glass-panel border-dashed border-2 border-indigo-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500/50 transition-colors group-hover:bg-indigo-950/10 block"
+                        >
+                          <Icon name="upload" className="w-6 h-6 text-accent-indigo mb-2 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-[10px] text-indigo-300 text-center px-2">
+                            {bookUploadFile ? `Selected: ${bookUploadFile.name}` : "Upload reference textbooks or manuals directly."}
+                          </p>
+                          <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
+                        </label>
+                        
+                        {bookUploadFile && (
+                          <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
+                            <button 
+                              type="button" 
+                              onClick={() => { setBookUploadFile(null); if (bookFileInputRef.current) bookFileInputRef.current.value = ""; }}
+                              className="px-2 py-1 border border-white border-opacity-10 text-slate-400 rounded-lg text-[10px] font-display hover:text-white"
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              type="submit" 
+                              disabled={isBookUploading}
+                              className="px-3 py-1 bg-accent-indigo hover:bg-indigo-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                            >
+                              <span>{isBookUploading ? "Uploading..." : "Save to Books"}</span>
+                              <Icon name="plus" className="w-3 h-3" />
+                            </button>
+                          </div>
+                        )}
+                      </form>
+
+                      {isBookUploading && (
+                        <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
+                          <div className="bg-gradient-to-r from-accent-indigo to-accent-violet h-full transition-all duration-300" style={{ width: `${bookUploadProgress}%` }}></div>
+                        </div>
+                      )}
+
+                      {bookUploadStatus.message && (
+                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${bookUploadStatus.type === 'success' ? 'bg-teal-500/10 text-teal-300 border border-teal-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                          {bookUploadStatus.message}
+                        </div>
+                      )}
                       
                       {/* Search books */}
                       <div className="relative">
@@ -827,14 +900,20 @@ function App() {
                       </div>
 
                       {/* PDF & Slides drag-and-drop upload zone */}
-                      <form onSubmit={handleFileUpload} className="relative group">
+                      <form onSubmit={(e) => handleFileUpload(e, slideUploadFile, "slide", {
+                        setIsUploading: setIsSlideUploading,
+                        setUploadProgress: setSlideUploadProgress,
+                        setUploadStatus: setSlideUploadStatus,
+                        setUploadFile: setSlideUploadFile,
+                        fileInputRef: slideFileInputRef
+                      })} className="relative group">
                         <input 
                           type="file" 
                           accept=".pdf,.hsc,.bk0,.docx,.doc,.xlsx,.xls"
-                          onChange={(e) => setUploadFile(e.target.files[0])}
+                          onChange={(e) => setSlideUploadFile(e.target.files[0])}
                           className="hidden" 
                           id="file-upload-input"
-                          ref={fileInputRef}
+                          ref={slideFileInputRef}
                         />
                         <label 
                           htmlFor="file-upload-input" 
@@ -842,41 +921,41 @@ function App() {
                         >
                           <Icon name="upload" className="w-8 h-8 text-accent-indigo mb-3 group-hover:scale-110 transition-transform" />
                           <p className="font-display font-semibold text-xs text-indigo-300 text-center max-w-lg px-4">
-                            {uploadFile ? `Selected: ${uploadFile.name}` : "Upload slides, manuals, MATLAB/HYSYS scripts, or any other resources that might be helpful to the course."}
+                            {slideUploadFile ? `Selected: ${slideUploadFile.name}` : "Upload slides, manuals, MATLAB/HYSYS scripts, or any other resources that might be helpful to the course."}
                           </p>
                           <p className="text-[10px] text-slate-500 mt-1">Drag and drop or click to browse</p>
                         </label>
                         
-                        {uploadFile && (
+                        {slideUploadFile && (
                           <div className="flex items-center space-x-3 mt-3 justify-end animate-fade-in">
                             <button 
                               type="button" 
-                              onClick={() => { setUploadFile(null); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                              onClick={() => { setSlideUploadFile(null); if (slideFileInputRef.current) slideFileInputRef.current.value = ""; }}
                               className="px-3 py-1.5 border border-white border-opacity-10 text-slate-400 rounded-lg text-xs font-display hover:text-white"
                             >
                               Cancel
                             </button>
                             <button 
                               type="submit" 
-                              disabled={isUploading}
+                              disabled={isSlideUploading}
                               className="px-4 py-1.5 bg-accent-indigo hover:bg-indigo-600 text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
                             >
-                              <span>{isUploading ? "Uploading..." : "Save to slides"}</span>
+                              <span>{isSlideUploading ? "Uploading..." : "Save to slides"}</span>
                               <Icon name="plus" className="w-3.5 h-3.5" />
                             </button>
                           </div>
                         )}
                       </form>
 
-                      {isUploading && (
+                      {isSlideUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-indigo to-accent-violet h-full transition-all duration-300" style={{ width: `${uploadProgress}%` }}></div>
+                          <div className="bg-gradient-to-r from-accent-indigo to-accent-violet h-full transition-all duration-300" style={{ width: `${slideUploadProgress}%` }}></div>
                         </div>
                       )}
 
-                      {uploadStatus.message && (
-                        <div className={`p-3 rounded-lg text-xs font-display font-medium ${uploadStatus.type === 'success' ? 'bg-teal-500/10 text-teal-300 border border-teal-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
-                          {uploadStatus.message}
+                      {slideUploadStatus.message && (
+                        <div className={`p-3 rounded-lg text-xs font-display font-medium ${slideUploadStatus.type === 'success' ? 'bg-teal-500/10 text-teal-300 border border-teal-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                          {slideUploadStatus.message}
                         </div>
                       )}
 
