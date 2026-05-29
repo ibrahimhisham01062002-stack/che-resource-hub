@@ -497,11 +497,14 @@ async def download_file(course_id: str, file_index: int):
     storage_type = file_item.get("storage_type")
     gdrive_file_id = file_item.get("gdrive_file_id")
     file_id = file_item.get("telegram_file_id")
+    file_ids = file_item.get("telegram_file_ids")
     message_id = file_item.get("telegram_message_id")
     
     # 1. Determine storage type if not explicitly set
     if not storage_type:
-        if gdrive_file_id:
+        if file_ids:
+            storage_type = "telegram_chunks"
+        elif gdrive_file_id:
             storage_type = "gdrive"
         elif file_id or message_id is not None:
             storage_type = "telegram"
@@ -516,7 +519,23 @@ async def download_file(course_id: str, file_index: int):
     elif file_name.lower().endswith((".png", ".jpg", ".jpeg")):
         content_type = "image/png" if file_name.lower().endswith(".png") else "image/jpeg"
         
-    # Case A: Google Drive Storage
+    # Case A: Telegram Chunks Storage (Multi-part upload)
+    if storage_type == "telegram_chunks" or file_ids:
+        try:
+            if not file_ids and file_id:
+                file_ids = [file_id]
+            return StreamingResponse(
+                stream_telegram_chunks(file_ids),
+                media_type=content_type,
+                headers={
+                    "Content-Disposition": f'inline; filename="{file_name}"',
+                    "Content-Type": content_type
+                }
+            )
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Telegram chunked streaming failed: {str(e)}")
+            
+    # Case B: Google Drive Storage
     if storage_type == "gdrive":
         try:
             return StreamingResponse(
@@ -530,8 +549,8 @@ async def download_file(course_id: str, file_index: int):
         except Exception as e:
             raise HTTPException(status_code=502, detail=f"Google Drive streaming failed: {str(e)}")
             
-    # Case B: Local Storage Fallback
-    if storage_type == "local" or (not file_id and message_id is None and not gdrive_file_id):
+    # Case C: Local Storage Fallback
+    if storage_type == "local" or (not file_id and message_id is None and not gdrive_file_id and not file_ids):
         course_base = os.path.join(WORKSPACE_DIR, course["folder"])
         absolute_filepath = os.path.abspath(os.path.join(course_base, file_name))
         
@@ -541,7 +560,7 @@ async def download_file(course_id: str, file_index: int):
         if os.path.exists(absolute_filepath) and not os.path.isdir(absolute_filepath):
             return FileResponse(absolute_filepath, media_type=content_type)
             
-    # Case C: Telegram Storage
+    # Case D: Single-file Telegram Storage
     try:
         if not file_id and message_id is not None:
             # Dynamically resolve file_id from message_id
@@ -550,7 +569,7 @@ async def download_file(course_id: str, file_index: int):
         if not file_id:
             raise HTTPException(status_code=400, detail="No Telegram file_id or message_id mapped")
             
-        # 1. Fetch file path from Telegram
+        # Fetch file path from Telegram
         get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
         resp = await http_client.get(get_file_url)
         if resp.status_code != 200:
@@ -562,7 +581,7 @@ async def download_file(course_id: str, file_index: int):
             
         file_path = result["result"]["file_path"]
         
-        # 2. Securely stream the binary file back to the browser
+        # Securely stream the binary file back to the browser
         download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
         
         async def stream_generator():
@@ -689,6 +708,44 @@ async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
     
     return doc["file_id"]
 
+CHUNK_SIZE_LIMIT = 45 * 1024 * 1024 # 45 MB
+
+async def upload_file_in_chunks_to_telegram(file_bytes: bytes, filename: str) -> List[str]:
+    file_ids = []
+    total_bytes = len(file_bytes)
+    num_parts = (total_bytes + CHUNK_SIZE_LIMIT - 1) // CHUNK_SIZE_LIMIT
+    
+    for i in range(num_parts):
+        start = i * CHUNK_SIZE_LIMIT
+        end = min(start + CHUNK_SIZE_LIMIT, total_bytes)
+        chunk_data = file_bytes[start:end]
+        part_filename = f"{filename}.part{i+1}" if num_parts > 1 else filename
+        file_id = await upload_file_to_telegram(chunk_data, part_filename)
+        file_ids.append(file_id)
+        
+    return file_ids
+
+async def stream_telegram_chunks(file_ids: List[str]):
+    for file_id in file_ids:
+        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+        resp = await http_client.get(get_file_url)
+        if resp.status_code != 200:
+            raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
+            
+        result = resp.json()
+        if not result.get("ok"):
+            raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
+            
+        file_path = result["result"]["file_path"]
+        download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+        
+        async with http_client.stream("GET", download_url) as r:
+            if r.status_code != 200:
+                return
+            async for chunk in r.aiter_bytes():
+                yield chunk
+
+
 # Handle file upload (proxies to Telegram storage)
 @app.post("/api/upload/{course_id}")
 async def upload_file(
@@ -712,23 +769,23 @@ async def upload_file(
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to read upload file payload: {str(e)}")
         
-    storage_type = "telegram"
-    telegram_file_id = None
+    storage_type = "telegram_chunks"
+    telegram_file_ids = []
     gdrive_file_id = None
     
-    # 1. Attempt Telegram upload first if within limit (50 MB) and configured
+    # 1. Attempt Telegram chunked upload first if configured
     telegram_success = False
     telegram_error_msg = ""
-    if (bytes_size < 50 * 1024 * 1024) and TELEGRAM_BOT_TOKEN and not TELEGRAM_BOT_TOKEN.startswith("your_") and TELEGRAM_CHANNEL_ID and not TELEGRAM_CHANNEL_ID.startswith("your_"):
+    if TELEGRAM_BOT_TOKEN and not TELEGRAM_BOT_TOKEN.startswith("your_") and TELEGRAM_CHANNEL_ID and not TELEGRAM_CHANNEL_ID.startswith("your_"):
         try:
-            telegram_file_id = await upload_file_to_telegram(file_bytes, filename)
-            storage_type = "telegram"
+            telegram_file_ids = await upload_file_in_chunks_to_telegram(file_bytes, filename)
+            storage_type = "telegram_chunks"
             telegram_success = True
         except Exception as e:
             telegram_error_msg = str(e)
-            print(f"Telegram upload failed for '{filename}', falling back to Google Drive: {telegram_error_msg}")
+            print(f"Telegram chunked upload failed for '{filename}', falling back to Google Drive: {telegram_error_msg}")
             
-    # 2. If Telegram not configured, size >= 50MB, or Telegram upload failed, fallback to Google Drive
+    # 2. If Telegram not configured or Telegram upload failed, fallback to Google Drive
     if not telegram_success:
         try:
             gdrive_file_id = await upload_file_to_gdrive(file_bytes, filename)
@@ -757,8 +814,8 @@ async def upload_file(
         "type": file_type,
         "storage_type": storage_type
     }
-    if storage_type == "telegram":
-        new_file_item["telegram_file_id"] = telegram_file_id
+    if storage_type == "telegram_chunks":
+        new_file_item["telegram_file_ids"] = telegram_file_ids
     elif storage_type == "gdrive":
         new_file_item["gdrive_file_id"] = gdrive_file_id
         
