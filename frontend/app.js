@@ -794,9 +794,11 @@ function App() {
         {/* Row 1: Brand Logo & Title */}
         <div className="flex items-center justify-between w-full md:w-auto">
           <div className="flex items-center space-x-2.5 md:space-x-3 cursor-pointer" onClick={() => setActiveCourse(null)}>
-            <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-tr from-accent-indigo to-accent-violet flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
-              <Icon name="layers" className="w-5 h-5 md:w-6 md:h-6 text-white" />
-            </div>
+            <img 
+              src="che_hub_logo.png" 
+              alt="ChE StudySpace Logo" 
+              className="w-9 h-9 md:w-10 md:h-10 rounded-xl shadow-lg shadow-indigo-500/20 object-cover flex-shrink-0 border border-white/10" 
+            />
             <div className="min-w-0">
               <h1 className="font-display font-bold text-base md:text-lg tracking-wide text-glow">ChE <span className="gradient-text">StudySpace</span></h1>
               <p className="text-[9px] md:text-[10px] text-slate-400 font-medium tracking-widest uppercase truncate">Department of Chemical Engineering</p>
