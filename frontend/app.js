@@ -809,7 +809,7 @@ function App() {
                         disabled={isCreatingCourse}
                         className="w-full py-2 bg-gradient-to-r from-accent-indigo to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-indigo-500/25 transition-transform hover:scale-[1.02] flex items-center justify-center space-x-1"
                       >
-                        <span>{isCreatingCourse ? "Linking to Telegram..." : "Link Course to Telegram"}</span>
+                        <span>{isCreatingCourse ? "Adding Course..." : "Add Course"}</span>
                         <Icon name="chevronRight" className="w-3.5 h-3.5" />
                       </button>
                     </form>
