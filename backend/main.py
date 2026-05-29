@@ -9,8 +9,105 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import httpx
 from dotenv import load_dotenv
+from fastapi.concurrency import run_in_threadpool
+import io
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 
 load_dotenv()
+
+# Google Drive service initializer
+def get_gdrive_service():
+    project_id = os.getenv("GDRIVE_PROJECT_ID")
+    private_key_id = os.getenv("GDRIVE_PRIVATE_KEY_ID")
+    private_key = os.getenv("GDRIVE_PRIVATE_KEY")
+    client_email = os.getenv("GDRIVE_CLIENT_EMAIL")
+    
+    if not (project_id and private_key_id and private_key and client_email):
+        return None
+        
+    # Standardize the private key by replacing escaped newlines
+    private_key = private_key.replace("\\n", "\n")
+    
+    info = {
+        "type": "service_account",
+        "project_id": project_id,
+        "private_key_id": private_key_id,
+        "private_key": private_key,
+        "client_email": client_email,
+        "token_uri": "https://oauth2.googleapis.com/token",
+    }
+    
+    creds = service_account.Credentials.from_service_account_info(
+        info, 
+        scopes=["https://www.googleapis.com/auth/drive"]
+    )
+    return build("drive", "v3", credentials=creds)
+
+def sync_upload_to_gdrive(file_bytes: bytes, filename: str) -> str:
+    service = get_gdrive_service()
+    if not service:
+        raise ValueError("Google Drive credentials are not configured in environment variables.")
+        
+    folder_id = os.getenv("GDRIVE_FOLDER_ID")
+    if not folder_id:
+        raise ValueError("Google Drive Folder ID (GDRIVE_FOLDER_ID) is not configured.")
+        
+    file_metadata = {
+        "name": filename,
+        "parents": [folder_id]
+    }
+    
+    media = MediaIoBaseUpload(
+        io.BytesIO(file_bytes),
+        mimetype="application/octet-stream",
+        resumable=True
+    )
+    
+    file = service.files().create(
+        body=file_metadata,
+        media_body=media,
+        fields="id"
+    ).execute()
+    
+    return file.get("id")
+
+async def upload_file_to_gdrive(file_bytes: bytes, filename: str) -> str:
+    return await run_in_threadpool(sync_upload_to_gdrive, file_bytes, filename)
+
+def sync_delete_from_gdrive(file_id: str):
+    service = get_gdrive_service()
+    if not service:
+        return
+    try:
+        service.files().delete(fileId=file_id).execute()
+    except Exception as e:
+        print(f"Failed to delete file {file_id} from Google Drive: {str(e)}")
+
+async def delete_from_gdrive(file_id: str):
+    await run_in_threadpool(sync_delete_from_gdrive, file_id)
+
+async def stream_gdrive_file(file_id: str):
+    service = await run_in_threadpool(get_gdrive_service)
+    if not service:
+        raise ValueError("Google Drive credentials are not configured.")
+    
+    request = service.files().get_media(fileId=file_id)
+    file_io = io.BytesIO()
+    downloader = MediaIoBaseDownload(file_io, request, chunksize=1024*1024)
+    done = False
+    last_position = 0
+    
+    while not done:
+        status, done = await run_in_threadpool(downloader.next_chunk)
+        current_position = file_io.tell()
+        file_io.seek(last_position)
+        chunk = file_io.read(current_position - last_position)
+        file_io.seek(current_position)
+        last_position = current_position
+        yield chunk
+
 
 http_client = httpx.AsyncClient(timeout=120.0)
 
@@ -43,6 +140,20 @@ def load_courses_config():
 def save_courses_config(config):
     with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
+
+def find_course_key(course_id: str, courses: dict) -> Optional[str]:
+    if not course_id:
+        return None
+    # 1. Exact match
+    if course_id in courses:
+        return course_id
+    # 2. Case-insensitive normalized match
+    norm_id = course_id.lower().replace(" ", "-").strip()
+    for key in courses.keys():
+        if key.lower().replace(" ", "-").strip() == norm_id:
+            return key
+    return None
+
 
 # Helper to format file sizes
 def format_size(bytes_size: int) -> str:
@@ -154,8 +265,10 @@ def get_courses(response: Response):
 @app.get("/api/courses/{course_id}/notes")
 def get_notes(course_id: str):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
     
     notes_path = os.path.join(DATA_DIR, f"{course_id}_notes.md")
     if not os.path.exists(notes_path):
@@ -171,8 +284,10 @@ def get_notes(course_id: str):
 @app.post("/api/courses/{course_id}/notes")
 def save_notes(course_id: str, note_data: NoteUpdate):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
     
     notes_path = os.path.join(DATA_DIR, f"{course_id}_notes.md")
     with open(notes_path, "w", encoding="utf-8") as f:
@@ -182,8 +297,10 @@ def save_notes(course_id: str, note_data: NoteUpdate):
 @app.get("/api/courses/{course_id}/logs")
 def get_logs(course_id: str):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
     
     logs_path = os.path.join(DATA_DIR, f"{course_id}_logs.json")
     if not os.path.exists(logs_path):
@@ -199,8 +316,10 @@ def get_logs(course_id: str):
 @app.post("/api/courses/{course_id}/logs")
 def add_log(course_id: str, item: LogItem):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
     
     logs_path = os.path.join(DATA_DIR, f"{course_id}_logs.json")
     logs = []
@@ -225,8 +344,10 @@ def add_log(course_id: str, item: LogItem):
 @app.get("/api/courses/{course_id}/links")
 def get_links(course_id: str):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
     
     links_path = os.path.join(DATA_DIR, f"{course_id}_links.json")
     if not os.path.exists(links_path):
@@ -242,8 +363,10 @@ def get_links(course_id: str):
 @app.post("/api/courses/{course_id}/links")
 def add_link(course_id: str, item: LinkItem):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
     
     links_path = os.path.join(DATA_DIR, f"{course_id}_links.json")
     links = []
@@ -264,8 +387,10 @@ def add_link(course_id: str, item: LinkItem):
 @app.delete("/api/courses/{course_id}/links/{link_id}")
 def delete_link(course_id: str, link_id: str):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
     
     links_path = os.path.join(DATA_DIR, f"{course_id}_links.json")
     if not os.path.exists(links_path):
@@ -285,8 +410,10 @@ def delete_link(course_id: str, link_id: str):
 @app.get("/api/files/{course_id}/{filepath:path}")
 def get_file(course_id: str, filepath: str):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
         
     course = config["courses"][course_id]
     course_base = os.path.join(WORKSPACE_DIR, course["folder"])
@@ -354,8 +481,10 @@ async def get_file_id_from_message_id(message_id: int) -> str:
 @app.get("/api/download/{course_id}/{file_index}")
 async def download_file(course_id: str, file_index: int):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
         
     course = config["courses"][course_id]
     files = course.get("files", [])
@@ -365,11 +494,44 @@ async def download_file(course_id: str, file_index: int):
     file_item = files[file_index]
     file_name = file_item["name"]
     
+    storage_type = file_item.get("storage_type")
+    gdrive_file_id = file_item.get("gdrive_file_id")
     file_id = file_item.get("telegram_file_id")
     message_id = file_item.get("telegram_message_id")
     
-    # If no Telegram references are present, serve directly from local storage fallback!
-    if not file_id and message_id is None:
+    # 1. Determine storage type if not explicitly set
+    if not storage_type:
+        if gdrive_file_id:
+            storage_type = "gdrive"
+        elif file_id or message_id is not None:
+            storage_type = "telegram"
+        else:
+            storage_type = "local"
+            
+    content_type = "application/octet-stream"
+    if file_name.lower().endswith(".pdf"):
+        content_type = "application/pdf"
+    elif file_name.lower().endswith(".zip"):
+        content_type = "application/zip"
+    elif file_name.lower().endswith((".png", ".jpg", ".jpeg")):
+        content_type = "image/png" if file_name.lower().endswith(".png") else "image/jpeg"
+        
+    # Case A: Google Drive Storage
+    if storage_type == "gdrive":
+        try:
+            return StreamingResponse(
+                stream_gdrive_file(gdrive_file_id),
+                media_type=content_type,
+                headers={
+                    "Content-Disposition": f'inline; filename="{file_name}"',
+                    "Content-Type": content_type
+                }
+            )
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Google Drive streaming failed: {str(e)}")
+            
+    # Case B: Local Storage Fallback
+    if storage_type == "local" or (not file_id and message_id is None and not gdrive_file_id):
         course_base = os.path.join(WORKSPACE_DIR, course["folder"])
         absolute_filepath = os.path.abspath(os.path.join(course_base, file_name))
         
@@ -377,14 +539,9 @@ async def download_file(course_id: str, file_index: int):
             raise HTTPException(status_code=403, detail="Access denied")
             
         if os.path.exists(absolute_filepath) and not os.path.isdir(absolute_filepath):
-            content_type = "application/octet-stream"
-            if file_name.lower().endswith(".pdf"):
-                content_type = "application/pdf"
-            elif file_name.lower().endswith(".zip"):
-                content_type = "application/zip"
-                
             return FileResponse(absolute_filepath, media_type=content_type)
             
+    # Case C: Telegram Storage
     try:
         if not file_id and message_id is not None:
             # Dynamically resolve file_id from message_id
@@ -416,12 +573,6 @@ async def download_file(course_id: str, file_index: int):
                 async for chunk in r.aiter_bytes():
                     yield chunk
                     
-        content_type = "application/octet-stream"
-        if file_name.lower().endswith(".pdf"):
-            content_type = "application/pdf"
-        elif file_name.lower().endswith(".zip"):
-            content_type = "application/zip"
-            
         return StreamingResponse(
             stream_generator(),
             media_type=content_type,
@@ -512,6 +663,7 @@ async def download_file(course_id: str, file_index: int):
             media_type="text/html"
         )
 
+
 async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
         raise HTTPException(status_code=500, detail="Telegram bot token or channel ID not configured in environment")
@@ -538,45 +690,18 @@ async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
     return doc["file_id"]
 
 # Handle file upload (proxies to Telegram storage)
-async def async_upload_to_telegram(course_id: str, file_index: int, local_path: str, filename: str):
-    # Only run if Telegram is configured
-    if not TELEGRAM_BOT_TOKEN or TELEGRAM_BOT_TOKEN.startswith("your_") or not TELEGRAM_CHANNEL_ID or TELEGRAM_CHANNEL_ID.startswith("your_"):
-        return
-        
-    try:
-        # Read the local file
-        with open(local_path, "rb") as f:
-            file_bytes = f.read()
-            
-        print(f"Background: Starting Telegram upload for '{filename}'...")
-        # Upload to Telegram
-        telegram_file_id = await upload_file_to_telegram(file_bytes, filename)
-        
-        # Update courses.json
-        config = load_courses_config()
-        if course_id in config["courses"]:
-            course = config["courses"][course_id]
-            files = course.get("files", [])
-            if 0 <= file_index < len(files):
-                # Ensure the file name still matches to prevent race conditions
-                if files[file_index]["name"] == filename:
-                    files[file_index]["telegram_file_id"] = telegram_file_id
-                    save_courses_config(config)
-                    print(f"Background: Telegram upload succeeded for '{filename}', saved file_id.")
-    except Exception as e:
-        print(f"Background: Telegram upload failed for '{filename}': {str(e)}")
-
 @app.post("/api/upload/{course_id}")
 async def upload_file(
     course_id: str, 
-    background_tasks: BackgroundTasks,
     file: UploadFile = File(...), 
     category: Optional[str] = Form(None),
     folder: Optional[str] = Form(None)
 ):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
         
     course = config["courses"][course_id]
     filename = os.path.basename(file.filename)
@@ -587,17 +712,34 @@ async def upload_file(
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to read upload file payload: {str(e)}")
         
-    # 1. ALWAYS save the file locally first. This is instantaneous (< 50ms)
-    target_dir = os.path.join(WORKSPACE_DIR, course["folder"])
-    os.makedirs(target_dir, exist_ok=True)
-    dest_path = os.path.join(target_dir, filename)
-    try:
-        with open(dest_path, "wb") as buffer:
-            buffer.write(file_bytes)
-    except Exception as local_err:
-        raise HTTPException(status_code=500, detail=f"Local save failed: {str(local_err)}")
-        
-    # 2. Construct file catalog item
+    storage_type = "telegram"
+    telegram_file_id = None
+    gdrive_file_id = None
+    
+    # 1. Attempt Telegram upload first if within limit (50 MB) and configured
+    telegram_success = False
+    telegram_error_msg = ""
+    if (bytes_size < 50 * 1024 * 1024) and TELEGRAM_BOT_TOKEN and not TELEGRAM_BOT_TOKEN.startswith("your_") and TELEGRAM_CHANNEL_ID and not TELEGRAM_CHANNEL_ID.startswith("your_"):
+        try:
+            telegram_file_id = await upload_file_to_telegram(file_bytes, filename)
+            storage_type = "telegram"
+            telegram_success = True
+        except Exception as e:
+            telegram_error_msg = str(e)
+            print(f"Telegram upload failed for '{filename}', falling back to Google Drive: {telegram_error_msg}")
+            
+    # 2. If Telegram not configured, size >= 50MB, or Telegram upload failed, fallback to Google Drive
+    if not telegram_success:
+        try:
+            gdrive_file_id = await upload_file_to_gdrive(file_bytes, filename)
+            storage_type = "gdrive"
+        except Exception as ge:
+            err_details = f"Google Drive fallback failed: {str(ge)}."
+            if telegram_error_msg:
+                err_details += f" Telegram attempt also failed: {telegram_error_msg}"
+            raise HTTPException(status_code=502, detail=err_details)
+            
+    # 3. Construct file catalog item
     if category == "book":
         file_type = "Reference Book"
     elif category == "question":
@@ -612,8 +754,14 @@ async def upload_file(
     new_file_item = {
         "name": filename,
         "size": format_size(bytes_size),
-        "type": file_type
+        "type": file_type,
+        "storage_type": storage_type
     }
+    if storage_type == "telegram":
+        new_file_item["telegram_file_id"] = telegram_file_id
+    elif storage_type == "gdrive":
+        new_file_item["gdrive_file_id"] = gdrive_file_id
+        
     if folder:
         new_file_item["folder"] = folder
         
@@ -621,31 +769,24 @@ async def upload_file(
     if "files" not in course:
         course["files"] = []
     course["files"].append(new_file_item)
-    file_index = len(course["files"]) - 1
     
     # Save updated config
     save_courses_config(config)
     
-    # 3. Queue the Telegram upload as a secure background task!
-    background_tasks.add_task(
-        async_upload_to_telegram,
-        course_id,
-        file_index,
-        dest_path,
-        filename
-    )
-    
     return {
         "status": "success", 
         "filename": filename, 
-        "message": "File uploaded successfully!"
+        "storage_type": storage_type,
+        "message": f"File uploaded successfully to {storage_type.upper()}!"
     }
 
 @app.delete("/api/courses/{course_id}/files/{file_index}")
-def delete_file(course_id: str, file_index: int):
+async def delete_file(course_id: str, file_index: int):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
         
     course = config["courses"][course_id]
     files = course.get("files", [])
@@ -657,6 +798,13 @@ def delete_file(course_id: str, file_index: int):
     file_item = files.pop(file_index)
     filename = file_item["name"]
     
+    gdrive_file_id = file_item.get("gdrive_file_id")
+    if gdrive_file_id:
+        try:
+            await delete_from_gdrive(gdrive_file_id)
+        except Exception as e:
+            print(f"Failed to delete {filename} from Google Drive: {str(e)}")
+            
     # Try deleting the local file fallback if it exists on disk
     try:
         local_path = os.path.join(WORKSPACE_DIR, course["folder"], filename)
@@ -723,8 +871,10 @@ def create_course(new_course: CourseCreate):
 @app.put("/api/courses/{course_id}")
 def update_course(course_id: str, course_data: CourseUpdate):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
         
     course = config["courses"][course_id]
     
@@ -751,8 +901,10 @@ def update_course(course_id: str, course_data: CourseUpdate):
 @app.post("/api/courses/{course_id}/folders")
 def create_folder(course_id: str, folder_data: FolderCreate):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
         
     course = config["courses"][course_id]
     if "folders" not in course:
@@ -773,8 +925,10 @@ def create_folder(course_id: str, folder_data: FolderCreate):
 @app.delete("/api/courses/{course_id}/folders/{folder_name}")
 def delete_folder(course_id: str, folder_name: str):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
         
     course = config["courses"][course_id]
     if "folders" not in course:
@@ -813,8 +967,10 @@ def delete_folder(course_id: str, folder_name: str):
 @app.put("/api/courses/{course_id}/folders/{old_folder_name}")
 def rename_folder(course_id: str, old_folder_name: str, folder_data: FolderRename):
     config = load_courses_config()
-    if course_id not in config["courses"]:
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
         
     course = config["courses"][course_id]
     if "folders" not in course:
