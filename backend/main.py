@@ -584,6 +584,35 @@ async def upload_file(course_id: str, file: UploadFile = File(...), category: Op
     
     return {"status": "success", "filename": filename, "message": message}
 
+@app.delete("/api/courses/{course_id}/files/{file_index}")
+def delete_file(course_id: str, file_index: int):
+    config = load_courses_config()
+    if course_id not in config["courses"]:
+        raise HTTPException(status_code=404, detail="Course not found")
+        
+    course = config["courses"][course_id]
+    files = course.get("files", [])
+    
+    if file_index < 0 or file_index >= len(files):
+        raise HTTPException(status_code=404, detail="File not found")
+        
+    # Remove from list
+    file_item = files.pop(file_index)
+    filename = file_item["name"]
+    
+    # Try deleting the local file fallback if it exists on disk
+    try:
+        local_path = os.path.join(WORKSPACE_DIR, course["folder"], filename)
+        if os.path.exists(local_path) and os.path.isfile(local_path):
+            os.remove(local_path)
+    except Exception as e:
+        print(f"Failed to delete local fallback file: {str(e)}")
+        
+    # Save config
+    save_courses_config(config)
+    
+    return {"status": "success", "message": f"File '{filename}' deleted successfully"}
+
 class CourseCreate(BaseModel):
     code: str
     title: str

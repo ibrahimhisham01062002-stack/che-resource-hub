@@ -302,6 +302,31 @@ function App() {
     }
   };
 
+  // Handle deleting a course file
+  const handleDeleteFile = async (fileIndex) => {
+    if (!window.confirm("Are you sure you want to completely delete this file from the course catalog?")) {
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/files/${fileIndex}?t=${Date.now()}`, {
+        method: "DELETE"
+      });
+      if (res.ok) {
+        setPreviewFile(null);
+        await fetchCourses();
+        const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+        const coursesList = await updatedRes.json();
+        const found = coursesList.find(c => c.id === activeCourse.id);
+        if (found) setActiveCourse(found);
+      } else {
+        const data = await res.json();
+        alert(data.detail || "Failed to delete file");
+      }
+    } catch (err) {
+      alert("Delete failed: network error");
+    }
+  };
+
   // Handle file uploads
   const handleFileUpload = async (e, file, category, setters) => {
     e.preventDefault();
@@ -813,15 +838,23 @@ function App() {
                                   </span>
                                 </div>
                               </div>
-                              <a 
-                                href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
-                                download
-                                onClick={(e) => e.stopPropagation()}
-                                className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-indigo-600 rounded-lg text-slate-400 hover:text-white flex-shrink-0"
-                                title="Download"
-                              >
-                                <Icon name="download" className="w-3.5 h-3.5" />
-                              </a>
+                              <div className="flex items-center space-x-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                                <button 
+                                  onClick={() => handleDeleteFile(file.index)}
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  title="Delete Textbook"
+                                >
+                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                </button>
+                                <a 
+                                  href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
+                                  download
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-indigo-600 rounded-lg text-slate-400 hover:text-white"
+                                  title="Download"
+                                >
+                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                </a>
+                              </div>
                             </div>
                           );
                         })}
@@ -988,6 +1021,13 @@ function App() {
                                   className="px-2.5 py-1.5 bg-dark-900 border border-white border-opacity-5 hover:border-accent-indigo hover:text-accent-indigo rounded-lg text-[10px] font-display font-semibold text-slate-300"
                                 >
                                   View
+                                </button>
+                                <button 
+                                  onClick={() => handleDeleteFile(file.index)}
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  title="Delete Asset"
+                                >
+                                  <Icon name="trash" className="w-3.5 h-3.5" />
                                 </button>
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
