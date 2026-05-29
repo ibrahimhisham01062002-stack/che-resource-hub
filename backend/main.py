@@ -347,6 +347,23 @@ async def download_file(course_id: str, file_index: int):
     file_id = file_item.get("telegram_file_id")
     message_id = file_item.get("telegram_message_id")
     
+    # If no Telegram references are present, serve directly from local storage fallback!
+    if not file_id and message_id is None:
+        course_base = os.path.join(WORKSPACE_DIR, course["folder"])
+        absolute_filepath = os.path.abspath(os.path.join(course_base, file_name))
+        
+        if not absolute_filepath.startswith(os.path.abspath(course_base)):
+            raise HTTPException(status_code=403, detail="Access denied")
+            
+        if os.path.exists(absolute_filepath) and not os.path.isdir(absolute_filepath):
+            content_type = "application/octet-stream"
+            if file_name.lower().endswith(".pdf"):
+                content_type = "application/pdf"
+            elif file_name.lower().endswith(".zip"):
+                content_type = "application/zip"
+                
+            return FileResponse(absolute_filepath, media_type=content_type)
+            
     try:
         if not file_id and message_id is not None:
             # Dynamically resolve file_id from message_id
@@ -517,20 +534,38 @@ async def upload_file(course_id: str, file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to read upload file payload: {str(e)}")
         
-    # Upload directly to Telegram
+    telegram_file_id = None
+    message = "File successfully uploaded and stored on Telegram!"
+    
+    # Try uploading to Telegram first
     try:
-        telegram_file_id = await upload_file_to_telegram(file_bytes, filename)
-    except Exception as e:
-        raise HTTPException(status_code=502, detail=f"Failed to upload to Telegram storage engine: {str(e)}")
+        # Bypasses if placeholder credentials are set
+        if TELEGRAM_BOT_TOKEN and not TELEGRAM_BOT_TOKEN.startswith("your_") and TELEGRAM_CHANNEL_ID and not TELEGRAM_CHANNEL_ID.startswith("your_"):
+            telegram_file_id = await upload_file_to_telegram(file_bytes, filename)
+    except Exception as tg_err:
+        print(f"Telegram upload failed, falling back to local storage: {str(tg_err)}")
         
+    # Fallback to local storage if Telegram upload failed or was bypassed
+    if not telegram_file_id:
+        target_dir = os.path.join(WORKSPACE_DIR, course["folder"])
+        os.makedirs(target_dir, exist_ok=True)
+        dest_path = os.path.join(target_dir, filename)
+        try:
+            with open(dest_path, "wb") as buffer:
+                buffer.write(file_bytes)
+            message = "File uploaded successfully! (Saved to local server storage since Telegram Bot Token is unconfigured or invalid)"
+        except Exception as local_err:
+            raise HTTPException(status_code=500, detail=f"Local fallback save failed: {str(local_err)}")
+            
     # Construct file item
     new_file_item = {
         "name": filename,
         "size": format_size(bytes_size),
-        "type": get_file_type(filename),
-        "telegram_file_id": telegram_file_id
+        "type": get_file_type(filename)
     }
-    
+    if telegram_file_id:
+        new_file_item["telegram_file_id"] = telegram_file_id
+        
     # Append to courses.json files list
     if "files" not in course:
         course["files"] = []
@@ -539,7 +574,7 @@ async def upload_file(course_id: str, file: UploadFile = File(...)):
     # Save updated config
     save_courses_config(config)
     
-    return {"status": "success", "filename": filename, "message": "File successfully uploaded and linked to Telegram!"}
+    return {"status": "success", "filename": filename, "message": message}
 
 class CourseCreate(BaseModel):
     code: str
