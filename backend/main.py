@@ -122,6 +122,11 @@ class FolderCreate(BaseModel):
 class FolderRename(BaseModel):
     new_name: str
 
+class CourseUpdate(BaseModel):
+    code: str
+    title: str
+    description: str
+
 # API ENDPOINTS
 
 @app.get("/api/courses")
@@ -710,6 +715,34 @@ def create_course(new_course: CourseCreate):
         "fileCount": 0,
         "files": [],
         "folders": ["Root"]
+    }
+
+@app.put("/api/courses/{course_id}")
+def update_course(course_id: str, course_data: CourseUpdate):
+    config = load_courses_config()
+    if course_id not in config["courses"]:
+        raise HTTPException(status_code=404, detail="Course not found")
+        
+    course = config["courses"][course_id]
+    
+    new_code = course_data.code.strip()
+    new_title = course_data.title.strip()
+    new_description = course_data.description.strip()
+    
+    if not new_code or not new_title:
+        raise HTTPException(status_code=400, detail="Course Code and Title cannot be empty")
+        
+    # Update properties
+    course["code"] = new_code
+    course["title"] = new_title
+    course["description"] = new_description
+    
+    # Save configuration to disk
+    save_courses_config(config)
+    
+    return {
+        "status": "success",
+        "course": course
     }
 
 @app.post("/api/courses/{course_id}/folders")

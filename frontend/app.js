@@ -175,6 +175,12 @@ function App() {
   const [isCreatingCourse, setIsCreatingCourse] = useState(false);
   const [courseError, setCourseError] = useState("");
 
+  // Dynamic course editor states
+  const [editingCourse, setEditingCourse] = useState(null);
+  const [editCourseFields, setEditCourseFields] = useState({ code: "", title: "", description: "" });
+  const [isSavingCourseEdit, setIsSavingCourseEdit] = useState(false);
+  const [editCourseError, setEditCourseError] = useState("");
+
   // Fetch all courses on mount
   const fetchCourses = async () => {
     try {
@@ -305,6 +311,46 @@ function App() {
       setCourseError("Network error. Failed to connect to server.");
     } finally {
       setIsCreatingCourse(false);
+    }
+  };
+
+  // Start course editing flow
+  const handleStartEditCourse = (course) => {
+    setEditingCourse(course);
+    setEditCourseFields({
+      code: course.code,
+      title: course.title,
+      description: course.description
+    });
+    setEditCourseError("");
+  };
+
+  // Save course updates
+  const handleSaveCourseEdit = async (e) => {
+    e.preventDefault();
+    if (!editCourseFields.code || !editCourseFields.title) {
+      setEditCourseError("Course Code and Title are required.");
+      return;
+    }
+    setIsSavingCourseEdit(true);
+    setEditCourseError("");
+    try {
+      const res = await fetch(`${API_BASE}/api/courses/${editingCourse.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editCourseFields)
+      });
+      if (res.ok) {
+        await fetchCourses();
+        setEditingCourse(null);
+      } else {
+        const errData = await res.json();
+        setEditCourseError(errData.detail || "Failed to save course changes");
+      }
+    } catch (err) {
+      setEditCourseError("Failed to save changes: connection error");
+    } finally {
+      setIsSavingCourseEdit(false);
     }
   };
 
@@ -633,6 +679,90 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Dynamic Course Editor Modal */}
+      {editingCourse && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
+          <div className="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-accent-indigo border-opacity-30">
+            <button 
+              onClick={() => setEditingCourse(null)}
+              className="absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-slate-300 hover:text-white transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2 text-accent-indigo">
+                <Icon name="edit" className="w-5 h-5 animate-pulse" />
+                <h3 className="font-display font-bold text-lg text-white">Edit Course Details</h3>
+              </div>
+              
+              <form onSubmit={handleSaveCourseEdit} className="space-y-4 pt-2">
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-display block mb-1">
+                    Course Code
+                  </label>
+                  <input 
+                    type="text" 
+                    required
+                    value={editCourseFields.code}
+                    onChange={(e) => setEditCourseFields({ ...editCourseFields, code: e.target.value })}
+                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-indigo-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-display block mb-1">
+                    Course Title
+                  </label>
+                  <input 
+                    type="text" 
+                    required
+                    value={editCourseFields.title}
+                    onChange={(e) => setEditCourseFields({ ...editCourseFields, title: e.target.value })}
+                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-indigo-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-display block mb-1">
+                    Description
+                  </label>
+                  <textarea 
+                    rows={3}
+                    value={editCourseFields.description}
+                    onChange={(e) => setEditCourseFields({ ...editCourseFields, description: e.target.value })}
+                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-indigo-500 resize-none"
+                  />
+                </div>
+                
+                {editCourseError && (
+                  <p className="text-xs text-rose-400 font-semibold">{editCourseError}</p>
+                )}
+                
+                <div className="flex items-center space-x-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setEditingCourse(null)}
+                    className="w-1/2 py-2.5 border border-white border-opacity-10 text-slate-400 font-display font-semibold text-xs rounded-xl hover:text-white transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSavingCourseEdit}
+                    className="w-1/2 py-2.5 bg-gradient-to-r from-accent-indigo to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-indigo-500/25 transition-transform hover:scale-[1.02]"
+                  >
+                    {isSavingCourseEdit ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Dynamic Overlay Video Player Modal */}
       {playingVideoUrl && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
@@ -839,10 +969,24 @@ function App() {
                     <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${grad} opacity-20 blur-2xl group-hover:opacity-40 transition-opacity`}></div>
                     
                     <div>
-                      {/* Course badge */}
-                      <span className="inline-block px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/10 mb-4 font-display">
-                        {course.code}
-                      </span>
+                      {/* Course badge & Edit icon */}
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="inline-block px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/10 font-display">
+                          {course.code}
+                        </span>
+                        
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleStartEditCourse(course);
+                          }}
+                          className="p-1.5 rounded-lg bg-dark-900 border border-white/5 hover:border-accent-indigo hover:text-accent-indigo text-slate-500 transition-colors relative z-10"
+                          title="Edit Course Details"
+                        >
+                          <Icon name="edit" className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                       {/* Course title */}
                       <h3 className="font-display font-bold text-xl text-white group-hover:text-accent-indigo transition-colors line-clamp-1">
                         {course.title}
