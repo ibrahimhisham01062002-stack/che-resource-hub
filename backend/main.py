@@ -4,7 +4,7 @@ import shutil
 from typing import Optional, List
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import httpx
@@ -347,54 +347,134 @@ async def download_file(course_id: str, file_index: int):
     file_id = file_item.get("telegram_file_id")
     message_id = file_item.get("telegram_message_id")
     
-    if not file_id and message_id is not None:
-        # Dynamically resolve file_id from message_id
-        file_id = await get_file_id_from_message_id(int(message_id))
-        
-    if not file_id:
-        raise HTTPException(status_code=400, detail="No Telegram file_id or message_id mapped for this resource")
-        
-    # 1. Fetch file path from Telegram
-    get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-    async with httpx.AsyncClient() as client:
-        resp = await client.get(get_file_url)
-        if resp.status_code != 200:
-            raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
+    try:
+        if not file_id and message_id is not None:
+            # Dynamically resolve file_id from message_id
+            file_id = await get_file_id_from_message_id(int(message_id))
             
-        result = resp.json()
-        if not result.get("ok"):
-            raise HTTPException(status_code=502, detail="Telegram Bot API returned an error: " + result.get("description", ""))
+        if not file_id:
+            raise HTTPException(status_code=400, detail="No Telegram file_id or message_id mapped")
             
-        file_path = result["result"]["file_path"]
-        
-        # 2. Securely stream the binary file back to the browser
-        download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
-        
-        async def stream_generator():
-            async with httpx.AsyncClient() as stream_client:
-                async with stream_client.stream("GET", download_url) as r:
-                    if r.status_code != 200:
-                        yield b"Error streaming from Telegram servers"
-                        return
-                    async for chunk in r.aiter_bytes():
-                        yield chunk
-                        
-        # Map content types (fallback to octet-stream for safety)
-        content_type = "application/octet-stream"
-        if file_name.lower().endswith(".pdf"):
-            content_type = "application/pdf"
-        elif file_name.lower().endswith(".zip"):
-            content_type = "application/zip"
+        # 1. Fetch file path from Telegram
+        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(get_file_url)
+            if resp.status_code != 200:
+                raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
+                
+            result = resp.json()
+            if not result.get("ok"):
+                raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
+                
+            file_path = result["result"]["file_path"]
             
-        return StreamingResponse(
-            stream_generator(),
-            media_type=content_type,
-            headers={
-                "Content-Disposition": f'inline; filename="{file_name}"',
-                "Content-Type": content_type
-            }
+            # 2. Securely stream the binary file back to the browser
+            download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+            
+            async def stream_generator():
+                async with httpx.AsyncClient() as stream_client:
+                    async with stream_client.stream("GET", download_url) as r:
+                        if r.status_code != 200:
+                            yield b"Error streaming from Telegram servers"
+                            return
+                        async for chunk in r.aiter_bytes():
+                            yield chunk
+                            
+            content_type = "application/octet-stream"
+            if file_name.lower().endswith(".pdf"):
+                content_type = "application/pdf"
+            elif file_name.lower().endswith(".zip"):
+                content_type = "application/zip"
+                
+            return StreamingResponse(
+                stream_generator(),
+                media_type=content_type,
+                headers={
+                    "Content-Disposition": f'inline; filename="{file_name}"',
+                    "Content-Type": content_type
+                }
+            )
+    except Exception as e:
+        # Fallback to a beautiful HTML guidance page for placeholders or Telegram errors
+        return HTMLResponse(
+            content=f"""
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>Telegram Connection Notice</title>
+                    <style>
+                        body {{
+                            background-color: #0b0f19;
+                            color: #cbd5e1;
+                            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            height: 90vh;
+                            margin: 0;
+                            padding: 20px;
+                            box-sizing: border-box;
+                        }}
+                        .card {{
+                            background: rgba(30, 41, 59, 0.4);
+                            backdrop-filter: blur(12px);
+                            -webkit-backdrop-filter: blur(12px);
+                            border: 1px solid rgba(99, 102, 241, 0.2);
+                            border-radius: 16px;
+                            padding: 32px;
+                            max-width: 480px;
+                            text-align: center;
+                            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+                        }}
+                        .icon {{
+                            font-size: 40px;
+                            color: #818cf8;
+                            margin-bottom: 16px;
+                            display: block;
+                        }}
+                        h3 {{
+                            color: #ffffff;
+                            margin-top: 0;
+                            font-size: 18px;
+                            font-weight: 700;
+                            letter-spacing: -0.025em;
+                        }}
+                        p {{
+                            font-size: 13px;
+                            line-height: 1.6;
+                            color: #94a3b8;
+                            margin-bottom: 20px;
+                        }}
+                        .badge {{
+                            background: rgba(99, 102, 241, 0.1);
+                            color: #818cf8;
+                            border: 1px solid rgba(99, 102, 241, 0.2);
+                            padding: 4px 10px;
+                            border-radius: 9999px;
+                            font-size: 10px;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                            display: inline-block;
+                            margin-bottom: 16px;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="card">
+                        <span class="badge">Placeholder Reference</span>
+                        <span class="icon">📁</span>
+                        <h3>Telegram Attachment Required</h3>
+                        <p>This pre-populated course asset (<strong>{file_name}</strong>) is a placeholder mapped to a sample Telegram ID.</p>
+                        <p>To study your own handouts, simply upload files directly inside this course segment using our secure Drag-and-Drop Uploader to store them in your channel!</p>
+                    </div>
+                </body>
+            </html>
+            """,
+            status_code=200,
+            media_type="text/html"
         )
-
 
 async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:

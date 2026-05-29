@@ -891,7 +891,7 @@ function App() {
                             >
                               <div className="flex items-center space-x-3 min-w-0">
                                 <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-accent-indigo flex-shrink-0">
-                                  <Icon name={file.type.toUpperCase().includes('PDF') ? 'fileText' : 'layers'} className="w-5 h-5" />
+                                  <Icon name={(file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf') ? 'fileText' : 'layers'} className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
                                   <span className="block text-xs font-semibold text-white line-clamp-1 leading-normal">
@@ -949,7 +949,7 @@ function App() {
                           </button>
                         </div>
 
-                        {previewFile.type.toUpperCase().includes('PDF') ? (
+                        {(previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? (
                           <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "450px" }}>
                             <iframe 
                               src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
