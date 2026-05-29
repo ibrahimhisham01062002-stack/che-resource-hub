@@ -659,34 +659,50 @@ function App() {
       )}
 
       {/* Primary Navigation & Hub Logo */}
-      <header className="glass-panel sticky top-0 z-40 border-b border-white border-opacity-10 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
-        <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer" onClick={() => setActiveCourse(null)}>
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-tr from-accent-indigo to-accent-violet flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
-            <Icon name="layers" className="w-5 h-5 md:w-6 md:h-6 text-white" />
+      <header className="glass-panel sticky top-0 z-40 border-b border-white border-opacity-10 px-4 md:px-6 py-3.5 md:py-4 flex flex-col md:flex-row md:items-center justify-between gap-3.5 md:gap-0">
+        
+        {/* Row 1: Brand Logo & Title */}
+        <div className="flex items-center justify-between w-full md:w-auto">
+          <div className="flex items-center space-x-2.5 md:space-x-3 cursor-pointer" onClick={() => setActiveCourse(null)}>
+            <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-tr from-accent-indigo to-accent-violet flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
+              <Icon name="layers" className="w-5 h-5 md:w-6 md:h-6 text-white" />
+            </div>
+            <div className="min-w-0">
+              <h1 className="font-display font-bold text-base md:text-lg tracking-wide text-glow">ChE <span className="gradient-text">StudySpace</span></h1>
+              <p className="text-[9px] md:text-[10px] text-slate-400 font-medium tracking-widest uppercase truncate">Department of Chemical Engineering</p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <h1 className="font-display font-bold text-base md:text-lg tracking-wide text-glow">ChE <span className="gradient-text">StudySpace</span></h1>
-            <p className="text-[9px] md:text-[10px] text-slate-400 font-medium tracking-widest uppercase truncate">Department of Chemical Engineering</p>
-          </div>
+          
+          {activeCourse && (
+            <button 
+              onClick={() => setActiveCourse(null)}
+              className="md:hidden bg-dark-900 hover:bg-dark-800 border border-white border-opacity-10 px-3 py-1.5 rounded-xl text-[10px] font-display font-semibold text-slate-300"
+            >
+              Back to Hub
+            </button>
+          )}
         </div>
         
-        {/* Hub stats on Dashboard */}
+        {/* Row 2: Stats & Selector */}
         {!activeCourse && (
-          <div className="flex items-center space-x-4 md:space-x-8 text-sm">
+          <div className="flex items-center justify-between md:justify-end w-full md:w-auto space-x-4 md:space-x-8 text-sm border-t border-white/5 pt-2.5 md:pt-0 md:border-t-0">
             <div className="hidden md:block text-right">
               <span className="text-slate-400 block text-[11px] font-medium tracking-wider uppercase">Active Courses</span>
               <span className="font-display font-semibold text-white">{courses.length} courses</span>
             </div>
             <div className="hidden md:block h-8 w-px bg-white bg-opacity-10"></div>
-            <div className="hidden md:block text-right">
-              <span className="text-slate-400 block text-[11px] font-medium tracking-wider uppercase">Resources Loaded</span>
-              <span className="font-display font-semibold text-accent-indigo">{totalFilesCount} files</span>
+            
+            {/* Resources Loaded stat */}
+            <div className="text-left md:text-right">
+              <span className="text-slate-400 block text-[9px] md:text-[11px] font-semibold tracking-wider uppercase">Resources Loaded</span>
+              <span className="font-display font-bold text-xs md:text-sm text-accent-indigo">{totalFilesCount} files</span>
             </div>
-            <div className="hidden md:block h-8 w-px bg-white bg-opacity-10"></div>
+            
+            <div className="h-6 md:h-8 w-px bg-white bg-opacity-10"></div>
             
             {/* Unified Level and Term Dropdown */}
-            <div className="flex flex-col text-left max-w-[130px] sm:max-w-none">
-              <span className="text-slate-400 block text-[9px] font-bold tracking-wider uppercase mb-1">Level and term</span>
+            <div className="flex flex-col text-left">
+              <span className="text-slate-400 block text-[9px] md:text-[10px] font-bold tracking-wider uppercase mb-1">Level and term</span>
               <select 
                 value={selectedLevel && selectedTerm ? `${selectedLevel}, ${selectedTerm}` : ""}
                 onChange={(e) => {
@@ -700,7 +716,7 @@ function App() {
                     setSelectedTerm(trm);
                   }
                 }}
-                className="glass-input px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
+                className="glass-input px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
               >
                 <option value="">All Levels & Terms</option>
                 <option value="Level-1, Term-1">Level 1, Term 1</option>
