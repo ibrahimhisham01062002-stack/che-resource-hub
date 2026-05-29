@@ -167,6 +167,9 @@ function App() {
   // Current active folder in slides section
   const [currentFolder, setCurrentFolder] = useState("Root");
 
+  // Reference to track previous course ID to prevent tab resetting on same-course refresh
+  const prevCourseIdRef = useRef(null);
+
   // Dynamic course creator states
   const [newCourse, setNewCourse] = useState({ code: "", title: "", description: "" });
   const [isCreatingCourse, setIsCreatingCourse] = useState(false);
@@ -195,11 +198,16 @@ function App() {
   useEffect(() => {
     if (!activeCourse) return;
     
-    // Reset states
-    setPreviewFile(null);
-    setFileSearchQuery("");
-    setPrimarySection("books"); // Default to Books section
-    setCurrentFolder("Root"); // Reset folder to Root
+    // Only reset states if the student has switched to a different course
+    const isNewCourse = prevCourseIdRef.current !== activeCourse.id;
+    prevCourseIdRef.current = activeCourse.id;
+    
+    if (isNewCourse) {
+      setPreviewFile(null);
+      setFileSearchQuery("");
+      setPrimarySection("books"); // Default to Books section
+      setCurrentFolder("Root"); // Reset folder to Root
+    }
     
     // Load reference links
     const loadLinks = async () => {
