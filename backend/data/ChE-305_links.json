@@ -1,0 +1,14 @@
+[
+  {
+    "id": "link-1",
+    "title": "Mass Transfer Lecture Series (NPTEL)",
+    "url": "https://www.youtube.com/watch?v=f7Bq0fK2GzE",
+    "category": "YouTube"
+  },
+  {
+    "id": "link-2",
+    "title": "Separation Process Principles (Seader & Henley) Notes",
+    "url": "https://www.separationprocesses.com",
+    "category": "Reference Website"
+  }
+]

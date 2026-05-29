@@ -1,0 +1,207 @@
+{
+  "courses": {
+    "ChE-401": {
+      "id": "ChE-401",
+      "code": "ChE 401",
+      "title": "Chemical Reaction Engineering",
+      "folder": "ChE-401",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Kinetics of homogeneous and heterogeneous reactions, reactor design (PFR, CSTR, Batch), and reaction mechanisms.",
+      "syllabus": ["Rate laws & stoichiometry", "Isothermal reactor design", "Collection & analysis of rate data", "Multiple reactions", "Non-isothermal reactor design", "Catalysis & heterogeneous reactions"],
+      "default_notes": "# ChE 401: Chemical Reaction Engineering - Core Formulas & Cheatsheet\n\n## 1. Rate Laws and Reaction Order\nFor a general reaction:\n\n$$aA + bB \\rightarrow cC + dD$$\n\nThe rate of disappearance of reactant $A$, $-r_A$, is expressed as:\n\n$$-r_A = k C_A^\\alpha C_B^\\beta$$\n\nWhere:\n- $k$ is the reaction rate constant: $k = A e^{-E_a / R T}$ (Arrhenius Equation)\n- $C_A, C_B$ are concentrations of species $A$ and $B$\n- $\\alpha, \\beta$ are the reaction orders with respect to $A$ and $B$\n\n## 2. Design Equations for Ideal Reactors\n\n| Reactor Type | Differential Form | Algebraic / Integral Form | Space Time ($\\tau$) |\n| :--- | :--- | :--- | :--- |\n| **Batch** | $N_A \\frac{dX}{dt} = -r_A V$ | $t = N_{A0} \\int_0^X \\frac{dX}{-r_A V}$ | N/A |\n| **CSTR** | N/A | $V = \\frac{F_{A0} X}{-r_A}$ | $\\tau = \\frac{V}{v_0} = \\frac{C_{A0} X}{-r_A}$ |\n| **PFR** | $F_{A0} \\frac{dX}{dV} = -r_A$ | $V = F_{A0} \\int_0^X \\frac{dX}{-r_A}$ | $\\tau = C_{A0} \\int_0^X \\frac{dX}{-r_A}$ |\n| **PBR (Packed Bed)**| $F_{A0} \\frac{dX}{dW} = -r_A'$ | $W = F_{A0} \\int_0^X \\frac{dX}{-r_A'}$ | N/A |\n\n## 3. Multiple Reactions\n- **Selectivity** ($S_{D/U}$): Ratio of flow rate of desired product $D$ to undesired product $U$:\n\n  $$S_{D/U} = \\frac{F_D}{F_U} = \\frac{r_D}{r_U}$$\n\n- **Yield** ($Y_D$): Ratio of moles of product $D$ formed to moles of key reactant consumed:\n\n  $$Y_D = \\frac{F_D}{F_{A0} - F_A}$$\n\n## 4. Temperature Effects (Non-isothermal)\nEnergy balance for a steady-state CSTR:\n\n$$\\sum F_i C_{Pi} (T - T_0) + [\\Delta H_{Rx}(T)] F_{A0} X = Q - W_s$$",
+      "default_logs": [
+        { "id": "log-1", "lecture": "Lecture 1", "date": "2026-05-11", "topics": "Overview of reaction kinetics, stoichiometry table, and Arrhenius dependencies.", "formulas": "-r_A = k * C_A^n" },
+        { "id": "log-2", "lecture": "Lecture 2", "date": "2026-05-18", "topics": "Derivation of CSTR and PFR design equations; sizing reactors using Levenspiel plots.", "formulas": "V = F_A0 * X / (-r_A)" }
+      ],
+      "default_links": [
+        { "id": "link-1", "title": "Introduction to Chemical Reaction Engineering", "url": "https://www.youtube.com/watch?v=5c2Bw4zH6tQ", "category": "YouTube" },
+        { "id": "link-2", "title": "Fogler CRE Interactive Website Lectures", "url": "https://umich.edu/~elements/5e/index.html", "category": "Reference Website" }
+      ],
+      "files": [
+        {
+          "name": "Elements of Chemical Reaction Engineering (Fogler).pdf",
+          "size": "24.50 MB",
+          "type": "PDF Textbook",
+          "telegram_file_id": "BQACAgQAAxkBAAECAwFnV12..."
+        },
+        {
+          "name": "Lecture 1 Slides - Reaction Kinetics Intro.pdf",
+          "size": "1.80 MB",
+          "type": "Lecture Slide",
+          "telegram_message_id": 42
+        }
+      ]
+    },
+    "ChE-305": {
+      "id": "ChE-305",
+      "code": "ChE 305",
+      "title": "Mass Transfer I",
+      "folder": "ChE-305",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Principles of molecular diffusion in fluids, convective mass transfer, interphase mass transfer, and design of absorption and distillation columns.",
+      "syllabus": ["Fick's laws of molecular diffusion", "Convective mass transfer coefficients", "Interphase mass transfer and two-film theory", "Gas absorption & stripping column design", "Packed bed columns & HETP calculations"],
+      "default_notes": "# ChE 305: Mass Transfer I - Diffusion & Column Design\n\n## 1. Fick's First Law of Diffusion\nFor molecular diffusion in binary mixture $A$ and $B$, the molar flux of $A$ relative to stationary coordinates is:\n\n$$J_A = -D_{AB} \\frac{dC_A}{dz}$$\n\nIf bulk flow is present, the total flux $N_A$ is:\n\n$$N_A = -D_{AB} \\frac{dC_A}{dz} + y_A (N_A + N_B)$$\n\nWhere:\n- $y_A$ is the mole fraction of $A$\n- $N_A + N_B$ represents the bulk convective flux\n\n## 2. Diffusion of A through Stagnant B ($N_B = 0$)\nIntegrating Fick's law across a film of thickness $z_2 - z_1 = \\delta$ yields:\n\n$$N_A = \\frac{D_{AB} P}{R T \\delta p_{BM}} (p_{A1} - p_{A2})$$\n\nWhere $p_{BM}$ is the log-mean partial pressure of stagnant gas $B$:\n\n$$p_{BM} = \\frac{p_{B2} - p_{B1}}{\\ln(p_{B2} / p_{B1})}$$\n\n## 3. Equimolar Counterdiffusion (EMD, $N_A = -N_B$)\n\n$$N_A = \\frac{D_{AB}}{R T \\delta} (p_{A1} - p_{A2})$$\n\n## 4. Gas Absorption Tower Design\nThe height of a packed column ($Z$) can be calculated using the Transfer Unit method:\n\n$$Z = HTU \\times NTU$$\n\n$$Z = H_{OG} \\times N_{OG} = \\left(\\frac{G}{K_y a S}\\right) \\int_{y_2}^{y_1} \\frac{dy}{y - y^*}$$",
+      "default_logs": [
+        { "id": "log-1", "lecture": "Lecture 1", "date": "2026-05-12", "topics": "Fick's first law, gaseous diffusion coefficients estimation using Fuller's equation.", "formulas": "N_A = -D_AB * dC/dz + y_A * (N_A + N_B)" },
+        { "id": "log-2", "lecture": "Lecture 2", "date": "2026-05-19", "topics": "Absorption column design, operating line vs equilibrium line, and minimum solvent rate calculation.", "formulas": "L/G = (y1 - y2)/(x1 - x2)" }
+      ],
+      "default_links": [
+        { "id": "link-1", "title": "Mass Transfer Lecture Series (NPTEL)", "url": "https://www.youtube.com/watch?v=f7Bq0fK2GzE", "category": "YouTube" },
+        { "id": "link-2", "title": "Separation Process Principles (Seader & Henley) Notes", "url": "https://www.separationprocesses.com", "category": "Reference Website" }
+      ],
+      "files": [
+        {
+          "name": "Mass Transfer Operations (Treybal).pdf",
+          "size": "32.10 MB",
+          "type": "PDF Textbook",
+          "telegram_file_id": "BQACAgQAAxkBAAECAwFnV13..."
+        },
+        {
+          "name": "Fick's First Law Diffusion Sheet.pdf",
+          "size": "1.20 MB",
+          "type": "Lecture Slide",
+          "telegram_message_id": 43
+        }
+      ]
+    },
+    "309": {
+      "id": "309",
+      "code": "ChE 309",
+      "title": "Particle Technology",
+      "folder": "309",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Characterization of solid particles, fluid flow through packed and fluidized beds, sedimentation, coagulation, filtration, and unit operations.",
+      "syllabus": ["Particle size & shape characterization", "Flow of fluids through packed beds (Ergun Equation)", "Fluidization mechanics", "Sedimentation and gravity thickening", "Cake filtration theory (continuous & batch)"],
+      "default_notes": "# ChE 309: Particle Technology & Unit Operations\n\n## 1. Particle Size Characterization\n- **Sphericity** ($\\phi_s$): Measure of how closely a particle resembles a sphere:\n\n  $$\\phi_s = \\frac{6 / D_p}{s_p / v_p} = \\frac{6 v_p}{D_p s_p}$$\n\n  For a perfect sphere, $\\phi_s = 1$.\n- **Mean Diameter**: Sauter Mean Diameter ($D_{32}$) represents volume-to-surface area average:\n\n  $$D_{32} = \\frac{1}{\\sum (x_i / D_{pi})}$$\n\n## 2. Flow Through Packed Beds (Ergun Equation)\nTo estimate the pressure drop ($\\Delta P$) across a packed column of height $L$ and voidage $\\epsilon$:\n\n$$\\frac{\\Delta P}{L} = \\frac{150 \\mu u_0 (1-\\epsilon)^2}{\\phi_s^2 D_p^2 \\epsilon^3} + \\frac{1.75 \\rho u_0^2 (1-\\epsilon)}{\\phi_s D_p \\epsilon^3}$$\n\nWhere:\n- First term: Viscous energy loss (Blake-Kozeny equation, laminar flow)\n- Second term: Inertial energy loss (Burke-Plummer equation, turbulent flow)\n- $u_0$ is the superficial fluid velocity\n\n## 3. Fluidization Mechanics\nAt minimum fluidization velocity ($u_{mf}$), the drag force of upward flowing fluid equals the buoyant weight of solids:\n\n$$\\Delta P = L (1-\\epsilon) (\\rho_p - \\rho) g$$\n\n## 4. Cake Filtration Theory\nThe filtration fundamental equation relates filtrate volume ($V$) to filtration time ($t$):\n\n$$\\frac{dt}{dV} = K_c V + \\frac{1}{q_0}$$\n\nIntegrating under constant pressure drop gives:\n\n$$t = \\frac{K_c}{2} V^2 + \\frac{V}{q_0}$$",
+      "default_logs": [
+        { "id": "log-1", "lecture": "Lecture 1", "date": "2026-05-13", "topics": "Particle sizing, Sauter mean diameter derivation, and dry sieve screening parameters.", "formulas": "D_32 = 1 / sum(x_i / d_i)" },
+        { "id": "log-2", "lecture": "Lecture 2", "date": "2026-05-20", "topics": "Derivation of the Ergun equation and determination of void fractions in beds.", "formulas": "dP/L = Blake-Kozeny + Burke-Plummer" }
+      ],
+      "default_links": [
+        { "id": "link-1", "title": "Fluidization and Particle technology introduction", "url": "https://www.youtube.com/watch?v=F3xO2oN5N3M", "category": "YouTube" }
+      ],
+      "files": [
+        {
+          "name": "Martin Rhodes - Introduction to particle technology (Wiley).pdf",
+          "size": "15.57 MB",
+          "type": "PDF Textbook",
+          "telegram_file_id": "BQACAgQAAxkBAAECAwFnV14..."
+        },
+        {
+          "name": "Ergun Equation Reference and Packed Beds.pdf",
+          "size": "2.40 MB",
+          "type": "Lecture Slide",
+          "telegram_message_id": 44
+        }
+      ]
+    },
+    "ChE-304": {
+      "id": "ChE-304",
+      "code": "ChE 304",
+      "title": "Chemical Engineering Lab II",
+      "folder": "ChE-304",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Practical application and experimental verification of mass transfer, heat transfer, and particle technology operations.",
+      "syllabus": ["Packed tower distillation lab", "Double pipe heat exchanger calibration", "Solid-liquid mixing and power consumption", "Rotary vacuum drum filtration kinetics", "Fluidization bed experimental validation"],
+      "default_notes": "# ChE 304: Chemical Engineering Laboratory II\n\n## 1. Experimental Lab Overview\nThis lab complements the lecture material in Mass Transfer, Heat Transfer, and Particle Technology. It offers hands-on experience in operation, control, calibration, and analysis of pilot plants and industrial scale machinery.\n\n## 2. Standard Experimental Worksheets\n- **Experiment 1**: Gas Absorption in a Packed Tower (estimating $K_G a$)\n- **Experiment 2**: Solid Particle Size Analysis & Fluid Flow through Packed Column\n- **Experiment 3**: Shell and Tube Heat Exchanger calibration\n- **Experiment 4**: Fluidization parameters ($u_{mf}$ calculation vs experimental value)\n- **Experiment 5**: Filtration kinetics using Plate and Frame Filter Press\n\n## 3. Data Processing and Reporting Guidelines\n- Report all measurements in standard SI units.\n- Perform comprehensive error propagation analysis for all computed variables.\n- Include comparative graphs (e.g. Experimental vs Theoretical pressure drops in fluidization).",
+      "default_logs": [
+        { "id": "log-1", "lecture": "Experiment 1", "date": "2026-05-14", "topics": "Introduction to column calibration, priming pumps, and measuring gas absorption rates.", "formulas": "K_Ga calculation" },
+        { "id": "log-2", "lecture": "Experiment 2", "date": "2026-05-21", "topics": "Fluidized bed runs, reading manometers, and noting the transition velocity from packed to fluidized.", "formulas": "Re_p vs C_d" }
+      ],
+      "default_links": [
+        { "id": "link-1", "title": "How a Plate and Frame Filter Press Works", "url": "https://www.youtube.com/watch?v=Qy9P45h6F-M", "category": "YouTube" }
+      ],
+      "files": [
+        {
+          "name": "ChE 304 Lab Manual - Standard Experiments.pdf",
+          "size": "5.60 MB",
+          "type": "Lab Manual",
+          "telegram_file_id": "BQACAgQAAxkBAAECAwFnV15..."
+        }
+      ]
+    },
+    "ChE-429": {
+      "id": "ChE-429",
+      "code": "ChE 429",
+      "title": "Sustainable Process Engineering",
+      "folder": "ChE-429",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Green engineering principles, carbon footprint reduction, Life Cycle Assessment (LCA), renewable biofuels, and municipal solid waste recycling.",
+      "syllabus": ["Principles of Green Chemistry", "Life Cycle Assessment (LCA) methodologies", "Carbon capture and storage (CCS) designs", "Renewable energy and biofuels (biodiesel, ethanol)", "Circular economy & plastic recycling"],
+      "default_notes": "# ChE 429: Sustainable Process Engineering - Essential Notes\n\n## 1. Green Engineering Principles\n- **Prevention**: Prevent waste rather than treat it after creation.\n- **Atom Economy**: Maximize incorporating all materials into the final product:\n\n  $$\\text{Atom Economy} = \\frac{\\text{MW of Desired Product}}{\\sum \\text{MW of all Reactants}} \\times 100\\%$$\n\n- **E-Factor**: Ratio of waste mass to product mass:\n\n  $$\\text{E-Factor} = \\frac{\\text{Total Waste (kg)}}{\\text{Target Product (kg)}}$$\n\n## 2. Life Cycle Assessment (LCA) Phases\nAccording to ISO 14040, LCA consists of four iterative phases:\n1. **Goal and Scope Definition**: Setting functional units and boundaries.\n2. **Inventory Analysis (LCI)**: Quantitative catalog of inputs (energy, resources) and outputs (emissions, waste).\n3. **Impact Assessment (LCIA)**: Evaluating environmental damage indicators (Global Warming Potential, Eutrophication, Acidification).\n4. **Interpretation**: Analyzing opportunities for footprint minimization.\n\n## 3. Biofuels & Carbon Balances\n- **Anhydrous Ethanol**: Distillation coupled with molecular sieve adsorption for breaking the water-ethanol azeotrope.\n- **LCA of Biodiesel**: Comparing transesterification footprints of virgin vegetable oil vs waste cooking oil.",
+      "default_logs": [
+        { "id": "log-1", "lecture": "Lecture 1", "date": "2026-05-15", "topics": "Principles of Green Chemistry and quantitative assessment metrics (E-factor, Atom economy).", "formulas": "Atom Economy = MW_Product / MW_Reactants" },
+        { "id": "log-2", "lecture": "Lecture 2", "date": "2026-05-22", "topics": "LCA framework (ISO 14040), functional unit sizing, and boundary selection.", "formulas": "LCA boundaries: Cradle-to-Grave" }
+      ],
+      "default_links": [
+        { "id": "link-1", "title": "Life Cycle Assessment (LCA) Explained", "url": "https://www.youtube.com/watch?v=t5JvD90vNyo", "category": "YouTube" }
+      ],
+      "files": [
+        {
+          "name": "Green Engineering and Process Design.pdf",
+          "size": "8.30 MB",
+          "type": "PDF Textbook",
+          "telegram_file_id": "BQACAgQAAxkBAAECAwFnV16..."
+        }
+      ]
+    },
+    "HYSYS": {
+      "id": "HYSYS",
+      "code": "ChE 312",
+      "title": "Process Simulation Lab (HYSYS)",
+      "folder": "HYSYS",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "State-of-the-art flowsheeting, component selection, thermodynamic package calibration (Peng-Robinson, NRTL), and simulation of multi-stage separators.",
+      "syllabus": ["HYSYS interface & fluid packages", "Valve, pump, and heat exchanger unit operations", "Sash and distillation column simulations", "Recycle loop convergence algorithms", "Sensitivity analysis & plant optimizations"],
+      "default_notes": "# ChE 312: Process Simulation Lab (HYSYS) - Cheatsheet\n\n## 1. Thermodynamic Fluid Package Selection\nSelecting the correct fluid package is the single most critical step in process flowsheeting:\n- **Peng-Robinson (PR)**: Excellent for oil, gas, and petrochemical applications. Handles hydrocarbon mixtures, light gases, and high-pressure setups.\n- **SRK (Soave-Redlich-Kwong)**: Similar to PR, widely used in gas processing plants.\n- **NRTL / UNIQUAC**: Crucial for highly non-ideal chemical mixtures (polar systems, low pressures, azeotropic systems like ethanol-water distillation).\n- **Steam Tables (ASME)**: Best for water/steam cycles and power plants.\n\n## 2. Recycle Loop Convergence\nRecycle loops require iterative solutions. To converge successfully:\n- Place a **Recycle block** immediately before the inlet node where recycling occurs.\n- Initialize loop variables with logical guess values.\n- Adjust convergence sensitivities (tolerance) and damping factors in the recycle parameters.\n- **Fenske**: Calculates the minimum number of equilibrium stages ($N_{min}$):\n\n  $$N_{min} = \\frac{\\ln[\\frac{x_{LK,D}}{x_{HK,D}} \\times \\frac{x_{HK,B}}{x_{LK,B}}]}{\\ln \\alpha_{avg}}$$\n\n- **Underwood**: Calculates the minimum reflux ratio ($R_{min}$).\n- **Gilliland**: Computes the actual stages ($N$) for a given operating reflux ratio ($R$).",
+      "default_logs": [
+        { "id": "log-1", "lecture": "Lab 1", "date": "2026-05-16", "topics": "Interface introduction, component lists, fluid package comparison (PR vs NRTL), and flash separator setup.", "formulas": "K_i = y_i / x_i" },
+        { "id": "log-2", "lecture": "Lab 2", "date": "2026-05-23", "topics": "Modeling a complete distillation tower, feed stage optimization, and reflux ratio impact study.", "formulas": "FUG Equations" }
+      ],
+      "default_links": [
+        { "id": "link-1", "title": "Aspen HYSYS Lecture: Distillation Column Sizing", "url": "https://www.youtube.com/watch?v=AcrUq_t7VdI", "category": "YouTube" }
+      ],
+      "files": [
+        {
+          "name": "Solution Manual - Plant Design and Economics.pdf",
+          "size": "23.60 MB",
+          "type": "PDF Textbook",
+          "telegram_file_id": "BQACAgQAAxkBAAECAwFnV17..."
+        }
+      ]
+    },
+    "Matlab": {
+      "id": "Matlab",
+      "code": "ChE 310",
+      "title": "Chemical Engineering Computation (MATLAB)",
+      "folder": "Matlab",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Numerical methods for chemical engineering, root finding, linear systems, ODE integration (ode45), and regression analysis.",
+      "syllabus": ["Root finding (Newton-Raphson, Bisection)", "Linear equations (Gaussian elimination, Jacobi)", "Curve fitting & nonlinear regression", "Ordinary Differential Equations (Runge-Kutta, stiff solvers)", "Partial Differential Equations in transport phenomena"],
+      "default_notes": "# ChE 310: Chemical Engineering Computation - MATLAB Reference\n\n## 1. Root Finding (Newton-Raphson Method)\nUsed to solve $f(x) = 0$ iteratively:\n\n$$x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}$$\n\n**MATLAB implementation:**\n```matlab\n% Root finding using fzero\nf = @(x) x^3 - 5*x + 1;\nx_root = fzero(f, 2);\n```\n\n## 2. Solving Systems of Linear Equations ($A x = b$)\nTo solve for concentration profile in multiple series reactors:\n```matlab\nA = [4, -1, 0; -1, 4, -1; 0, -1, 3];\nb = [10; 12; 8];\nx = A\\b;  % Efficient backslash operator\n```\n\n## 3. Ordinary Differential Equations (ODEs)\nFor transient reactor profiles: $\\frac{dC_A}{dt} = -k C_A^2$\n```matlab\n% Define the ODE derivative function\nodefun = @(t, Ca) -0.5 * Ca^2;\ntspan = [0 10];\nCa0 = 2.0; % Initial concentration\n\n% Solve using ode45 (explicit Runge-Kutta 4th/5th order)\n[t, Ca] = ode45(odefun, tspan, Ca0);\nplot(t, Ca, '-o');\nxlabel('Time (s)'); ylabel('C_A (mol/L)');\n```\n\n## 4. Stiff ODEs (Stiff Solvers)\nFor chemical systems with widely varying reaction rate constants (fast vs slow reactions), use **ode15s** instead of ode45 to prevent numerical instability.",
+      "default_logs": [
+        { "id": "log-1", "lecture": "Lab 1", "date": "2026-05-17", "topics": "Root finding algorithms, writing bisection scripts, and solving equation of state roots.", "formulas": "x = x - f(x)/df(x)" },
+        { "id": "log-2", "lecture": "Lab 2", "date": "2026-05-24", "topics": "Solving systems of ODEs for transient tank heights using ode45.", "formulas": "dy/dt = f(t,y)" }
+      ],
+      "default_links": [
+        { "id": "link-1", "title": "MATLAB ODE Solvers (ode45) Tutorial", "url": "https://www.youtube.com/watch?v=yYJ4S7Bv7d8", "category": "YouTube" },
+        { "id": "link-2", "title": "Numerical Methods for Engineers (Chopra) Companion", "url": "https://www.mathworks.com/matlabcentral/", "category": "Reference Website" }
+      ],
+      "files": [
+        {
+          "name": "Numerical Methods for Chemical Engineers (MATLAB).pdf",
+          "size": "11.20 MB",
+          "type": "PDF Textbook",
+          "telegram_file_id": "BQACAgQAAxkBAAECAwFnV18..."
+        }
+      ]
+    }
+  }
+}

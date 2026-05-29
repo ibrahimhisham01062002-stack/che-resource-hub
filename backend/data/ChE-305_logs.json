@@ -1,0 +1,16 @@
+[
+  {
+    "id": "log-1",
+    "lecture": "Lecture 1",
+    "date": "2026-05-12",
+    "topics": "Fick's first law, gaseous diffusion coefficients estimation using Fuller's equation.",
+    "formulas": "N_A = -D_AB * dC/dz + y_A * (N_A + N_B)"
+  },
+  {
+    "id": "log-2",
+    "lecture": "Lecture 2",
+    "date": "2026-05-19",
+    "topics": "Absorption column design, operating line vs equilibrium line, and minimum solvent rate calculation.",
+    "formulas": "L/G = (y1 - y2)/(x1 - x2)"
+  }
+]

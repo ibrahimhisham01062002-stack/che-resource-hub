@@ -1,0 +1,16 @@
+[
+  {
+    "id": "log-1",
+    "lecture": "Lecture 1",
+    "date": "2026-05-13",
+    "topics": "Particle sizing, Sauter mean diameter derivation, and dry sieve screening parameters.",
+    "formulas": "D_32 = 1 / sum(x_i / d_i)"
+  },
+  {
+    "id": "log-2",
+    "lecture": "Lecture 2",
+    "date": "2026-05-20",
+    "topics": "Derivation of the Ergun equation and determination of void fractions in beds.",
+    "formulas": "dP/L = Blake-Kozeny + Burke-Plummer"
+  }
+]

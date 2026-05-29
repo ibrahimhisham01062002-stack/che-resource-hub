@@ -1,0 +1,16 @@
+[
+  {
+    "id": "log-1",
+    "lecture": "Lecture 1",
+    "date": "2026-05-11",
+    "topics": "Overview of reaction kinetics, stoichiometry table, and Arrhenius dependencies.",
+    "formulas": "-r_A = k * C_A^n"
+  },
+  {
+    "id": "log-2",
+    "lecture": "Lecture 2",
+    "date": "2026-05-18",
+    "topics": "Derivation of CSTR and PFR design equations; sizing reactors using Levenspiel plots.",
+    "formulas": "V = F_A0 * X / (-r_A)"
+  }
+]

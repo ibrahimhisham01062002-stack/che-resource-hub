@@ -1,0 +1,16 @@
+[
+  {
+    "id": "log-1",
+    "lecture": "Lab 1",
+    "date": "2026-05-16",
+    "topics": "Interface introduction, component lists, fluid package comparison (PR vs NRTL), and flash separator setup.",
+    "formulas": "K_i = y_i / x_i"
+  },
+  {
+    "id": "log-2",
+    "lecture": "Lab 2",
+    "date": "2026-05-23",
+    "topics": "Modeling a complete distillation tower, feed stage optimization, and reflux ratio impact study.",
+    "formulas": "FUG Equations"
+  }
+]
