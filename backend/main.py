@@ -119,6 +119,9 @@ class LinkItem(BaseModel):
 class FolderCreate(BaseModel):
     name: str
 
+class FolderRename(BaseModel):
+    new_name: str
+
 # API ENDPOINTS
 
 @app.get("/api/courses")
@@ -767,6 +770,43 @@ def delete_folder(course_id: str, folder_name: str):
             new_files.append(file_item)
             
     course["files"] = new_files
+    save_courses_config(config)
+    
+    return {"status": "success", "folders": course["folders"]}
+
+@app.put("/api/courses/{course_id}/folders/{old_folder_name}")
+def rename_folder(course_id: str, old_folder_name: str, folder_data: FolderRename):
+    config = load_courses_config()
+    if course_id not in config["courses"]:
+        raise HTTPException(status_code=404, detail="Course not found")
+        
+    course = config["courses"][course_id]
+    if "folders" not in course:
+        course["folders"] = ["Root"]
+        
+    if old_folder_name not in course["folders"]:
+        raise HTTPException(status_code=404, detail=f"Folder '{old_folder_name}' not found")
+        
+    if old_folder_name == "Root":
+        raise HTTPException(status_code=400, detail="Cannot rename the Root folder")
+        
+    new_folder_name = folder_data.new_name.strip()
+    if not new_folder_name:
+        raise HTTPException(status_code=400, detail="New folder name cannot be empty")
+        
+    if new_folder_name in course["folders"]:
+        raise HTTPException(status_code=400, detail=f"Folder '{new_folder_name}' already exists")
+        
+    # 1. Update the folder name in the course folders catalog list
+    idx = course["folders"].index(old_folder_name)
+    course["folders"][idx] = new_folder_name
+    
+    # 2. Update the folder tag of all file assets matching the old name
+    files = course.get("files", [])
+    for file_item in files:
+        if file_item.get("folder") == old_folder_name:
+            file_item["folder"] = new_folder_name
+            
     save_courses_config(config)
     
     return {"status": "success", "folders": course["folders"]}
