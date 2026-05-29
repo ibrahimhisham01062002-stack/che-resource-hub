@@ -129,6 +129,11 @@ function App() {
   const [uploadStatus, setUploadStatus] = useState({ type: "", message: "" });
   const fileInputRef = useRef(null);
 
+  // Dynamic course creator states
+  const [newCourse, setNewCourse] = useState({ code: "", title: "", description: "" });
+  const [isCreatingCourse, setIsCreatingCourse] = useState(false);
+  const [courseError, setCourseError] = useState("");
+
   // Fetch all courses on mount
   const fetchCourses = async () => {
     try {
@@ -209,6 +214,44 @@ function App() {
   }, [activeCourse]);
 
 
+
+  // Handle dynamic course creation
+  const handleCreateCourse = async (e) => {
+    e.preventDefault();
+    if (!newCourse.code || !newCourse.title || !selectedLevel || !selectedTerm) {
+      setCourseError("Please specify Course Code, Title, and select a Level & Term.");
+      return;
+    }
+    setIsCreatingCourse(true);
+    setCourseError("");
+    try {
+      const res = await fetch(`${API_BASE}/api/courses`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: newCourse.code,
+          title: newCourse.title,
+          description: newCourse.description || `Study materials for ${newCourse.code}`,
+          level: selectedLevel,
+          term: selectedTerm
+        })
+      });
+      
+      if (res.ok) {
+        // Refresh the courses list
+        await fetchCourses();
+        // Reset form
+        setNewCourse({ code: "", title: "", description: "" });
+      } else {
+        const errData = await res.json();
+        setCourseError(errData.detail || "Failed to create course");
+      }
+    } catch (err) {
+      setCourseError("Network error. Failed to connect to server.");
+    } finally {
+      setIsCreatingCourse(false);
+    }
+  };
 
   // Handle adding a reference link
   const handleAddLink = async (e) => {
@@ -407,43 +450,32 @@ function App() {
             </div>
             <div className="h-8 w-px bg-white bg-opacity-10"></div>
             
-            {/* Interactive Level & Term Dropdowns */}
-            <div className="flex items-center space-x-4">
-              <div className="flex flex-col text-left">
-                <span className="text-slate-400 block text-[10px] font-bold tracking-wider uppercase mb-1">Level</span>
-                <select 
-                  value={selectedLevel}
-                  onChange={(e) => {
-                    setSelectedLevel(e.target.value);
-                    if (!e.target.value) {
-                      setSelectedTerm("");
-                    } else {
-                      setSelectedTerm("Term-1");
-                    }
-                  }}
-                  className="glass-input px-3 py-1.5 rounded-lg text-xs font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
-                >
-                  <option value="">All Levels</option>
-                  <option value="Level-3">Level-3</option>
-                  <option value="Level-4">Level-4</option>
-                </select>
-              </div>
-              
-              {selectedLevel && (
-                <div className="flex flex-col text-left animate-fade-in">
-                  <span className="text-slate-400 block text-[10px] font-bold tracking-wider uppercase mb-1">Term</span>
-                  <select 
-                    value={selectedTerm}
-                    onChange={(e) => setSelectedTerm(e.target.value)}
-                    className="glass-input px-3 py-1.5 rounded-lg text-xs font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
-                  >
-                    <option value="">All Terms</option>
-                    <option value="Term-1">Term-1</option>
-                    <option value="Term-2">Term-2</option>
-                  </select>
-                </div>
-              )}
+            {/* Unified Level and Term Dropdown */}
+            <div className="flex flex-col text-left">
+              <span className="text-slate-400 block text-[10px] font-bold tracking-wider uppercase mb-1">Level and term</span>
+              <select 
+                value={selectedLevel && selectedTerm ? `${selectedLevel}, ${selectedTerm}` : ""}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (!val) {
+                    setSelectedLevel("");
+                    setSelectedTerm("");
+                  } else {
+                    const [lvl, trm] = val.split(", ");
+                    setSelectedLevel(lvl);
+                    setSelectedTerm(trm);
+                  }
+                }}
+                className="glass-input px-4 py-2 rounded-xl text-xs font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
+              >
+                <option value="">All Levels & Terms</option>
+                <option value="Level-3, Term-1">Level 3, Term 1</option>
+                <option value="Level-3, Term-2">Level 3, Term 2</option>
+                <option value="Level-4, Term-1">Level 4, Term 1</option>
+                <option value="Level-4, Term-2">Level 4, Term 2</option>
+              </select>
             </div>
+
           </div>
         )}
       </header>
@@ -480,7 +512,59 @@ function App() {
 
             {/* Courses Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
+              {/* Inline Course Creator Card */}
+              {selectedLevel && selectedTerm && (
+                <div className="glass-panel border-dashed border-2 border-indigo-500/20 rounded-2xl p-6 flex flex-col justify-between min-h-[220px] bg-indigo-950/5 relative overflow-hidden group">
+                  <div className="z-10 w-full space-y-3">
+                    <div className="flex items-center space-x-2 text-indigo-300">
+                      <Icon name="plus" className="w-5 h-5 text-accent-indigo animate-pulse" />
+                      <span className="font-display font-semibold text-xs uppercase tracking-wider">Create Course Segment</span>
+                    </div>
+                    
+                    <form onSubmit={handleCreateCourse} className="space-y-2">
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="Course Code (e.g. ChE 403)"
+                        value={newCourse.code}
+                        onChange={(e) => setNewCourse({ ...newCourse, code: e.target.value })}
+                        className="glass-input w-full px-3 py-1.5 rounded-lg text-xs"
+                      />
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="Course Title (e.g. Process Control)"
+                        value={newCourse.title}
+                        onChange={(e) => setNewCourse({ ...newCourse, title: e.target.value })}
+                        className="glass-input w-full px-3 py-1.5 rounded-lg text-xs"
+                      />
+                      <textarea 
+                        placeholder="Description (optional)"
+                        rows={1}
+                        value={newCourse.description}
+                        onChange={(e) => setNewCourse({ ...newCourse, description: e.target.value })}
+                        className="glass-input w-full px-3 py-1.5 rounded-lg text-xs resize-none"
+                      />
+                      
+                      {courseError && (
+                        <p className="text-[10px] text-rose-400 font-medium">{courseError}</p>
+                      )}
+                      
+                      <button
+                        type="submit"
+                        disabled={isCreatingCourse}
+                        className="w-full py-2 bg-gradient-to-r from-accent-indigo to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-indigo-500/25 transition-transform hover:scale-[1.02] flex items-center justify-center space-x-1"
+                      >
+                        <span>{isCreatingCourse ? "Linking to Telegram..." : "Link Course to Telegram"}</span>
+                        <Icon name="chevronRight" className="w-3.5 h-3.5" />
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              )}
+
               {filteredCourses.map((course, idx) => {
+
                 // Generates dynamic aesthetic gradient backgrounds by course code
                 const gradients = [
                   "from-accent-indigo to-indigo-900/30",

@@ -38,6 +38,10 @@ def load_courses_config():
     with open(COURSES_CONF_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
+def save_courses_config(config):
+    with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
+        json.dump(config, f, indent=2, ensure_ascii=False)
+
 # Helper to format file sizes
 def format_size(bytes_size: int) -> str:
     if bytes_size >= 1024 * 1024:
@@ -418,36 +422,122 @@ async def download_file(course_id: str, file_index: int):
         )
 
 
-# Handle file upload to a course folder
+async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
+        raise HTTPException(status_code=500, detail="Telegram bot token or channel ID not configured in environment")
+    async with httpx.AsyncClient() as client:
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument"
+        files = {
+            "document": (filename, file_bytes)
+        }
+        data = {
+            "chat_id": TELEGRAM_CHANNEL_ID
+        }
+        resp = await client.post(url, data=data, files=files, timeout=120.0)
+        if resp.status_code != 200:
+            raise HTTPException(status_code=502, detail=f"Telegram upload failed: {resp.text}")
+        
+        res = resp.json()
+        if not res.get("ok"):
+            raise HTTPException(status_code=502, detail=f"Telegram API error: {res.get('description', '')}")
+        
+        doc = res["result"].get("document")
+        if not doc:
+            raise HTTPException(status_code=500, detail="Telegram did not return document file metadata")
+        
+        return doc["file_id"]
+
+# Handle file upload (proxies to Telegram storage)
 @app.post("/api/upload/{course_id}")
-async def upload_file(course_id: str, file: UploadFile = File(...), subfolder: Optional[str] = Form(None)):
+async def upload_file(course_id: str, file: UploadFile = File(...)):
     config = load_courses_config()
     if course_id not in config["courses"]:
         raise HTTPException(status_code=404, detail="Course not found")
         
     course = config["courses"][course_id]
-    target_dir = os.path.join(WORKSPACE_DIR, course["folder"])
-    
-    if subfolder:
-        # Prevent traversal in subfolder string
-        subfolder = os.path.basename(subfolder)
-        target_dir = os.path.join(target_dir, subfolder)
-        
-    os.makedirs(target_dir, exist_ok=True)
-    
-    # Standardize filename to prevent path hacks
     filename = os.path.basename(file.filename)
-    dest_path = os.path.join(target_dir, filename)
     
     try:
-        with open(dest_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        file_bytes = await file.read()
+        bytes_size = len(file_bytes)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"File save failed: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Failed to read upload file payload: {str(e)}")
         
-    return {"status": "success", "filename": filename, "message": "File uploaded successfully"}
+    # Upload directly to Telegram
+    try:
+        telegram_file_id = await upload_file_to_telegram(file_bytes, filename)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Failed to upload to Telegram storage engine: {str(e)}")
+        
+    # Construct file item
+    new_file_item = {
+        "name": filename,
+        "size": format_size(bytes_size),
+        "type": get_file_type(filename),
+        "telegram_file_id": telegram_file_id
+    }
+    
+    # Append to courses.json files list
+    if "files" not in course:
+        course["files"] = []
+    course["files"].append(new_file_item)
+    
+    # Save updated config
+    save_courses_config(config)
+    
+    return {"status": "success", "filename": filename, "message": "File successfully uploaded and linked to Telegram!"}
+
+class CourseCreate(BaseModel):
+    code: str
+    title: str
+    description: str
+    level: str
+    term: str
+
+@app.post("/api/courses")
+def create_course(new_course: CourseCreate):
+    config = load_courses_config()
+    # Normalize ID from course code (e.g. "ChE 403" -> "ChE-403")
+    course_id = new_course.code.replace(" ", "-")
+    
+    if course_id in config["courses"]:
+        raise HTTPException(status_code=400, detail=f"Course '{new_course.code}' already exists")
+        
+    # Add to config dict
+    config["courses"][course_id] = {
+        "id": course_id,
+        "code": new_course.code,
+        "title": new_course.title,
+        "description": new_course.description,
+        "folder": course_id,
+        "level": new_course.level,
+        "term": new_course.term,
+        "syllabus": [],
+        "files": [],
+        "default_notes": f"# {new_course.code}: {new_course.title}\n\nStart writing notes...",
+        "default_logs": [],
+        "default_links": []
+    }
+    
+    # Write updated config to disk
+    save_courses_config(config)
+    
+    return {
+        "id": course_id,
+        "code": new_course.code,
+        "title": new_course.title,
+        "description": new_course.description,
+        "folder": course_id,
+        "level": new_course.level,
+        "term": new_course.term,
+        "syllabus": [],
+        "fileCount": 0,
+        "files": []
+    }
+
 
 # Serve the frontend
+
 FRONTEND_DIR = os.path.join(WORKSPACE_DIR, "frontend")
 os.makedirs(FRONTEND_DIR, exist_ok=True)
 
