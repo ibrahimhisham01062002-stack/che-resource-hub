@@ -603,7 +603,7 @@ async def upload_file(
     elif category == "question":
         file_type = "Term-Final Question"
     elif category == "solution":
-        file_type = "Term-Final Solve"
+        file_type = "Solution Manual"
     else:
         file_type = get_file_type(filename)
         

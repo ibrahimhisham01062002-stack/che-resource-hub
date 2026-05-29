@@ -157,7 +157,7 @@ function App() {
   const [questionUploadStatus, setQuestionUploadStatus] = useState({ type: "", message: "" });
   const questionFileInputRef = useRef(null);
 
-  // Term-Final Solve upload states
+  // Solution Manual upload states
   const [solutionUploadFile, setSolutionUploadFile] = useState(null);
   const [isSolutionUploading, setIsSolutionUploading] = useState(false);
   const [solutionUploadProgress, setSolutionUploadProgress] = useState(0);
@@ -1216,7 +1216,7 @@ function App() {
                   className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="edit" className="w-3.5 h-3.5" />
-                  <span>Term-Final Solve</span>
+                  <span>Solution Manual</span>
                 </button>
               </div>
             </div>
@@ -1596,9 +1596,9 @@ function App() {
                   <div className="lg:col-span-1 space-y-6">
                     <div className="glass-panel p-6 rounded-2xl space-y-4">
                       <div className="flex items-center justify-between">
-                        <h3 className="font-display font-bold text-base text-white">Term-Final Solves</h3>
+                        <h3 className="font-display font-bold text-base text-white">Solution Manuals</h3>
                         <span className="text-[10px] text-accent-indigo font-bold bg-accent-indigo/10 px-2 py-0.5 rounded border border-accent-indigo/10">
-                          {solutionsList.length} solutions
+                          {solutionsList.length} manuals
                         </span>
                       </div>
 
@@ -1759,9 +1759,9 @@ function App() {
                         <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-accent-indigo border border-indigo-500/20 mb-2">
                           <Icon name="edit" className="w-8 h-8" />
                         </div>
-                        <h4 className="font-display font-bold text-lg text-white">Term-Final Solves Reader</h4>
+                        <h4 className="font-display font-bold text-lg text-white">Solution Manuals Reader</h4>
                         <p className="text-slate-400 text-xs max-w-md leading-relaxed">
-                          Select any term-final exam solution or guide from the left catalog to launch our integrated full-screen PDF workspace.
+                          Select any solution manual or guide from the left catalog to launch our integrated full-screen PDF workspace.
                         </p>
                       </div>
                     )}
