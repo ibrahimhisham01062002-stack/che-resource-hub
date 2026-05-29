@@ -123,8 +123,12 @@ function App() {
   const [primarySection, setPrimarySection] = useState("books");
 
   // Academic Level & Term selections
-  const [selectedLevel, setSelectedLevel] = useState("Level-3");
-  const [selectedTerm, setSelectedTerm] = useState("Term-2");
+  const [selectedLevel, setSelectedLevel] = useState(() => {
+    return localStorage.getItem("che_selected_level") || "Level-3";
+  });
+  const [selectedTerm, setSelectedTerm] = useState(() => {
+    return localStorage.getItem("che_selected_term") || "Term-2";
+  });
   
   const [searchQuery, setSearchQuery] = useState("");
   const [fileSearchQuery, setFileSearchQuery] = useState("");
@@ -218,6 +222,34 @@ function App() {
   useEffect(() => {
     fetchCourses();
   }, []);
+
+  // Persist Level & Term changes
+  useEffect(() => {
+    localStorage.setItem("che_selected_level", selectedLevel);
+    localStorage.setItem("che_selected_term", selectedTerm);
+  }, [selectedLevel, selectedTerm]);
+
+  // Restore active course from localStorage once courses list is loaded
+  useEffect(() => {
+    if (courses.length > 0 && !activeCourse) {
+      const savedCourseId = localStorage.getItem("che_active_course_id");
+      if (savedCourseId) {
+        const found = courses.find(c => c.id === savedCourseId);
+        if (found) {
+          setActiveCourse(found);
+        }
+      }
+    }
+  }, [courses]);
+
+  // Persist active course ID when activeCourse changes
+  useEffect(() => {
+    if (activeCourse) {
+      localStorage.setItem("che_active_course_id", activeCourse.id);
+    } else {
+      localStorage.removeItem("che_active_course_id");
+    }
+  }, [activeCourse]);
 
   // Fetch course-specific resources on active course change
   useEffect(() => {
@@ -934,7 +966,7 @@ function App() {
         
         {/* Row 1: Brand Logo & Title */}
         <div className="flex items-center justify-between w-full md:w-auto">
-          <div className="flex items-center space-x-2.5 md:space-x-3 cursor-pointer" onClick={() => setActiveCourse(null)}>
+          <div className="flex items-center space-x-2.5 md:space-x-3 cursor-pointer" onClick={() => { setActiveCourse(null); setSearchQuery(""); setFileSearchQuery(""); }}>
             <img 
               src="che_hub_logo.png" 
               alt="ChE StudySpace Logo" 
@@ -947,8 +979,8 @@ function App() {
           </div>
           
           {activeCourse && (
-            <button 
-              onClick={() => setActiveCourse(null)}
+            <button
+              onClick={() => { setActiveCourse(null); setSearchQuery(""); setFileSearchQuery(""); }}
               className="md:hidden bg-dark-900 hover:bg-dark-800 border border-white border-opacity-10 px-3 py-1.5 rounded-xl text-[10px] font-display font-semibold text-slate-300"
             >
               Back to Hub
@@ -1190,8 +1222,8 @@ function App() {
             {/* Top Workspace Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white border-opacity-5 pb-6">
               <div className="flex items-center space-x-4">
-                <button 
-                  onClick={() => setActiveCourse(null)}
+                <button
+                  onClick={() => { setActiveCourse(null); setSearchQuery(""); setFileSearchQuery(""); }}
                   className="bg-dark-900 hover:bg-dark-800 border border-white border-opacity-10 p-2.5 rounded-xl transition-all hover:scale-105"
                 >
                   <Icon name="arrowLeft" className="w-5 h-5 text-slate-300" />
