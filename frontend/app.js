@@ -97,6 +97,11 @@ const Icon = ({ name, className = "w-5 h-5", ...props }) => {
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
       </svg>
+    ),
+    check: (
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
     )
   };
   return icons[name] || (
@@ -163,6 +168,13 @@ function App() {
   const [solutionUploadProgress, setSolutionUploadProgress] = useState(0);
   const [solutionUploadStatus, setSolutionUploadStatus] = useState({ type: "", message: "" });
   const solutionFileInputRef = useRef(null);
+
+  // Term-Final Solved upload states
+  const [solvedUploadFile, setSolvedUploadFile] = useState(null);
+  const [isSolvedUploading, setIsSolvedUploading] = useState(false);
+  const [solvedUploadProgress, setSolvedUploadProgress] = useState(0);
+  const [solvedUploadStatus, setSolvedUploadStatus] = useState({ type: "", message: "" });
+  const solvedFileInputRef = useRef(null);
 
   // Current active folder in slides section
   const [currentFolder, setCurrentFolder] = useState("Root");
@@ -301,29 +313,32 @@ function App() {
            file.bytes > 5 * 1024 * 1024; // Files > 5MB are highly likely books
   };
 
-  // Split files into Books, Slides, Questions, and Solutions
-  const { booksList, slidesList, questionsList, solutionsList } = useMemo(() => {
-    if (!activeCourse || !activeCourse.files) return { booksList: [], slidesList: [], questionsList: [], solutionsList: [] };
+  // Split files into Books, Solutions, Slides, Questions, and Solved
+  const { booksList, solutionsList, slidesList, questionsList, solvedList } = useMemo(() => {
+    if (!activeCourse || !activeCourse.files) return { booksList: [], solutionsList: [], slidesList: [], questionsList: [], solvedList: [] };
     const books = [];
+    const solutions = [];
     const slides = [];
     const questions = [];
-    const solutions = [];
-    
+    const solved = [];
+
     activeCourse.files.forEach((file, index) => {
       const fileWithIndex = { ...file, index };
       const typeLower = (file.type || "").toLowerCase();
-      
-      if (typeLower.includes("book") || typeLower.includes("manual")) {
+
+      if (typeLower.includes("reference book") || (typeLower.includes("book") && !typeLower.includes("manual") && !typeLower.includes("solved") && !typeLower.includes("solution"))) {
         books.push(fileWithIndex);
-      } else if (typeLower.includes("question")) {
-        questions.push(fileWithIndex);
-      } else if (typeLower.includes("solve") || typeLower.includes("solution")) {
+      } else if (typeLower.includes("solution manual") || typeLower.includes("manual")) {
         solutions.push(fileWithIndex);
+      } else if (typeLower.includes("term-final question") || typeLower.includes("question")) {
+        questions.push(fileWithIndex);
+      } else if (typeLower.includes("term-final solved") || typeLower.includes("solved") || typeLower.includes("solve")) {
+        solved.push(fileWithIndex);
       } else {
         slides.push(fileWithIndex);
       }
     });
-    return { booksList: books, slidesList: slides, questionsList: questions, solutionsList: solutions };
+    return { booksList: books, solutionsList: solutions, slidesList: slides, questionsList: questions, solvedList: solved };
   }, [activeCourse]);
 
 
@@ -726,6 +741,14 @@ function App() {
       f.type.toLowerCase().includes(fileSearchQuery.toLowerCase())
     );
   }, [solutionsList, fileSearchQuery]);
+
+  // Filtering solved inside active section
+  const filteredSolved = useMemo(() => {
+    return solvedList.filter(f =>
+      f.name.toLowerCase().includes(fileSearchQuery.toLowerCase()) ||
+      f.type.toLowerCase().includes(fileSearchQuery.toLowerCase())
+    );
+  }, [solvedList, fileSearchQuery]);
 
   // Pre-compiled colorful stats dashboard counts
   const totalFilesCount = useMemo(() => {
@@ -1188,7 +1211,7 @@ function App() {
                 </div>
               </div>
 
-              {/* Four Primary Subsection Switchers */}
+              {/* Five Primary Subsection Switchers */}
               <div className="flex bg-dark-950 p-1 rounded-xl border border-white border-opacity-5 flex-wrap gap-1 self-start md:self-center">
                 <button
                   onClick={() => { setPrimarySection("books"); setPreviewFile(null); }}
@@ -1217,6 +1240,13 @@ function App() {
                 >
                   <Icon name="fileText" className="w-3.5 h-3.5" />
                   <span>Term-Final Question</span>
+                </button>
+                <button
+                  onClick={() => { setPrimarySection("solved"); setPreviewFile(null); }}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solved' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                >
+                  <Icon name="check" className="w-3.5 h-3.5" />
+                  <span>Term-Final Solved</span>
                 </button>
               </div>
             </div>
@@ -1762,6 +1792,181 @@ function App() {
                         <h4 className="font-display font-bold text-lg text-white">Solution Manuals Reader</h4>
                         <p className="text-slate-400 text-xs max-w-md leading-relaxed">
                           Select any solution manual or guide from the left catalog to launch our integrated full-screen PDF workspace.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              )}
+
+              {/* SUBSECTION 5: TERM-FINAL SOLVED */}
+              {primarySection === 'solved' && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
+
+                  {/* Left Column: Solved List & Search */}
+                  <div className="lg:col-span-1 space-y-6">
+                    <div className="glass-panel p-6 rounded-2xl space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-display font-bold text-base text-white">Term-Final Solved</h3>
+                        <span className="text-[10px] text-accent-indigo font-bold bg-accent-indigo/10 px-2 py-0.5 rounded border border-accent-indigo/10">
+                          {solvedList.length} solved papers
+                        </span>
+                      </div>
+
+                      {/* PDF drag-and-drop upload zone */}
+                      <form onSubmit={(e) => handleFileUpload(e, solvedUploadFile, "solved", {
+                        setIsUploading: setIsSolvedUploading,
+                        setUploadProgress: setSolvedUploadProgress,
+                        setUploadStatus: setSolvedUploadStatus,
+                        setUploadFile: setSolvedUploadFile,
+                        fileInputRef: solvedFileInputRef
+                      })} className="relative group">
+                        <input
+                          type="file"
+                          accept=".pdf,.docx,.doc"
+                          onChange={(e) => setSolvedUploadFile(e.target.files[0])}
+                          className="hidden"
+                          id="solved-upload-input"
+                          ref={solvedFileInputRef}
+                        />
+                        <div
+                          onClick={() => checkAuthAndExecute(() => solvedFileInputRef.current?.click())}
+                          className="border-2 border-dashed border-white border-opacity-10 rounded-xl p-4 text-center cursor-pointer transition-all hover:border-accent-indigo hover:bg-white/5 flex flex-col items-center justify-center space-y-2"
+                        >
+                          <div className="p-2 rounded-lg bg-indigo-500/10 text-accent-indigo">
+                            <Icon name="upload" className="w-5 h-5 animate-pulse" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold text-white">Drag & drop solved answer or click</p>
+                            <p className="text-[9px] text-slate-400 mt-1">Supports PDF, DOCX (Max 2GB via Telegram)</p>
+                          </div>
+                        </div>
+
+                        {solvedUploadFile && (
+                          <div className="mt-3 p-3 bg-dark-900 rounded-xl border border-white/5 flex items-center justify-between">
+                            <div className="flex items-center space-x-2.5 min-w-0">
+                              <span className="text-xs font-semibold text-slate-200 truncate max-w-[150px]">{solvedUploadFile.name}</span>
+                              <span className="text-[9px] text-slate-400 bg-white/5 px-1.5 py-0.5 rounded">{(solvedUploadFile.size / (1024 * 1024)).toFixed(2)} MB</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <button
+                                type="submit"
+                                disabled={isSolvedUploading}
+                                className="px-2.5 py-1 bg-accent-indigo hover:bg-indigo-600 disabled:opacity-50 text-[10px] font-bold text-white rounded-lg transition-all"
+                              >
+                                {isSolvedUploading ? "Saving..." : "Upload"}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setSolvedUploadFile(null)}
+                                className="p-1 bg-white bg-opacity-5 hover:bg-opacity-10 text-slate-400 hover:text-white rounded-lg transition-all"
+                              >
+                                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {isSolvedUploading && (
+                          <div className="space-y-1.5 mt-3">
+                            <div className="flex justify-between text-[10px] font-semibold text-slate-300">
+                              <span>Uploading to Private Telegram Storage...</span>
+                              <span>{solvedUploadProgress}%</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-dark-900 rounded-full overflow-hidden border border-white/5">
+                              <div className="h-full bg-gradient-to-r from-accent-indigo to-accent-violet rounded-full transition-all duration-300" style={{ width: `${solvedUploadProgress}%` }}></div>
+                            </div>
+                          </div>
+                        )}
+
+                        {solvedUploadStatus.message && (
+                          <div className={`mt-3 p-2.5 rounded-xl border text-[10px] font-semibold flex items-center justify-between ${solvedUploadStatus.type === 'success' ? 'bg-teal-500/10 border-teal-500/20 text-teal-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'}`}>
+                            <span>{solvedUploadStatus.message}</span>
+                            <button type="button" onClick={() => setSolvedUploadStatus({ type: '', message: '' })} className="text-slate-400 hover:text-white ml-2 text-xs">×</button>
+                          </div>
+                        )}
+                      </form>
+
+                      {/* File Catalog List */}
+                      <div className="space-y-2.5 max-h-[350px] overflow-y-auto pr-1">
+                        {filteredSolved.length === 0 ? (
+                          <div className="text-center py-8 text-slate-500 text-xs">
+                            No solved answers uploaded yet.
+                          </div>
+                        ) : (
+                          filteredSolved.map((file) => {
+                            const isCurrentlyPreviewing = previewFile && previewFile.index === file.index;
+                            return (
+                              <div
+                                key={file.index}
+                                onClick={() => setPreviewFile(file)}
+                                className={`group p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${isCurrentlyPreviewing ? 'bg-indigo-500/10 border-accent-indigo' : 'bg-dark-900/50 border-white/5 hover:border-white/10 hover:bg-dark-900'}`}
+                              >
+                                <div className="flex items-center space-x-3 min-w-0">
+                                  <div className="p-2 rounded-lg bg-indigo-500/10 text-accent-indigo group-hover:scale-110 transition-transform">
+                                    <Icon name="check" className="w-4 h-4" />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <p className="text-xs font-semibold text-slate-200 truncate group-hover:text-white transition-colors">{file.name}</p>
+                                    <p className="text-[9px] text-slate-400 mt-0.5">{file.size} • {file.type}</p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center space-x-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      checkAuthAndExecute(() => handleDeleteFile(file.index));
+                                    }}
+                                    className="p-1.5 bg-dark-900 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 rounded-lg border border-white/5 transition-all"
+                                    title="Delete file"
+                                  >
+                                    <Icon name="trash" className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: PDF Reader Pane */}
+                  <div className="lg:col-span-2 space-y-6">
+                    {previewFile && solvedList.some(f => f.index === previewFile.index) ? (
+                      <div className="glass-panel p-6 rounded-2xl space-y-4">
+                        <div className="flex items-center justify-between border-b border-white/5 pb-3">
+                          <div className="min-w-0">
+                            <h3 className="font-display font-bold text-base text-white truncate">{previewFile.name}</h3>
+                            <p className="text-[10px] text-slate-400 mt-0.5">Size: {previewFile.size} • Category: {previewFile.type}</p>
+                          </div>
+                          <button
+                            onClick={() => setPreviewFile(null)}
+                            className="text-slate-400 hover:text-white text-xs font-semibold"
+                          >
+                            Close Reader
+                          </button>
+                        </div>
+
+                        <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
+                          <iframe
+                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
+                            className="w-full h-full border-none"
+                            title="PDF Viewer Frame"
+                          ></iframe>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
+                        <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-accent-indigo border border-indigo-500/20 mb-2">
+                          <Icon name="check" className="w-8 h-8" />
+                        </div>
+                        <h4 className="font-display font-bold text-lg text-white">Term-Final Solved Reader</h4>
+                        <p className="text-slate-400 text-xs max-w-md leading-relaxed">
+                          Select any term-final solved answer or guide from the left catalog to launch our integrated full-screen PDF workspace.
                         </p>
                       </div>
                     )}

@@ -602,8 +602,10 @@ async def upload_file(
         file_type = "Reference Book"
     elif category == "question":
         file_type = "Term-Final Question"
-    elif category == "solution":
+    elif category == "solution" or category == "manual":
         file_type = "Solution Manual"
+    elif category == "solved":
+        file_type = "Term-Final Solved"
     else:
         file_type = get_file_type(filename)
         
