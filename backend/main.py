@@ -286,32 +286,6 @@ def get_file(course_id: str, filepath: str):
         
     return FileResponse(absolute_filepath)
 
-# Route downloads and preview source iframe URLs through /api/download/{course_id}/{file_index}
-@app.get("/api/download/{course_id}/{file_index}")
-def download_file_by_index(course_id: str, file_index: int):
-    config = load_courses_config()
-    if course_id not in config["courses"]:
-        raise HTTPException(status_code=404, detail="Course not found")
-        
-    course = config["courses"][course_id]
-    files = scan_course_files(course["folder"])
-    
-    if file_index < 0 or file_index >= len(files):
-        raise HTTPException(status_code=404, detail="File index out of range")
-        
-    file_info = files[file_index]
-    filepath = file_info["path"]
-    
-    course_base = os.path.join(WORKSPACE_DIR, course["folder"])
-    absolute_filepath = os.path.abspath(os.path.join(course_base, filepath))
-    
-    if not absolute_filepath.startswith(os.path.abspath(course_base)):
-        raise HTTPException(status_code=403, detail="Access denied")
-        
-    if not os.path.exists(absolute_filepath) or os.path.isdir(absolute_filepath):
-        raise HTTPException(status_code=404, detail="File not found")
-        
-    return FileResponse(absolute_filepath)
 
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
