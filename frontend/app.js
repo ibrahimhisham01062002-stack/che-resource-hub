@@ -181,6 +181,13 @@ function App() {
   const [isSavingCourseEdit, setIsSavingCourseEdit] = useState(false);
   const [editCourseError, setEditCourseError] = useState("");
 
+  // Administrative Passcode System States
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authPasswordInput, setAuthPasswordInput] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [pendingAuthCallback, setPendingAuthCallback] = useState(null);
+  const [isAuthorizedState, setIsAuthorizedState] = useState(false);
+
   // Fetch all courses on mount
   const fetchCourses = async () => {
     try {
@@ -228,6 +235,51 @@ function App() {
 
     loadLinks();
   }, [activeCourse]);
+
+  // Admin Session Expiry checker (1 hour duration)
+  useEffect(() => {
+    const checkStatus = () => {
+      const authTime = localStorage.getItem("che_auth_until");
+      setIsAuthorizedState(authTime && Date.now() < parseInt(authTime));
+    };
+    checkStatus();
+    const interval = setInterval(checkStatus, 15000); // Check expiry every 15 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  // Secure authorization wrapper for creating, editing, and deleting items
+  const checkAuthAndExecute = (callback) => {
+    const authTime = localStorage.getItem("che_auth_until");
+    const isAuthorized = authTime && Date.now() < parseInt(authTime);
+    
+    if (isAuthorized) {
+      callback();
+    } else {
+      setPendingAuthCallback(() => callback);
+      setAuthPasswordInput("");
+      setAuthError("");
+      setShowAuthModal(true);
+    }
+  };
+
+  // Passcode verification
+  const handleVerifyPassword = (e) => {
+    e.preventDefault();
+    if (authPasswordInput.trim() === "Chemical Engineering is Life") {
+      const expiry = Date.now() + 60 * 60 * 1000; // 1 hour session
+      localStorage.setItem("che_auth_until", expiry.toString());
+      setIsAuthorizedState(true);
+      setShowAuthModal(false);
+      setAuthError("");
+      
+      if (pendingAuthCallback) {
+        pendingAuthCallback();
+        setPendingAuthCallback(null);
+      }
+    } else {
+      setAuthError("Incorrect passcode. Access denied.");
+    }
+  };
 
   // Dynamic book classifier
   const isBookFile = (file) => {
@@ -277,41 +329,41 @@ function App() {
 
 
   // Handle dynamic course creation
-  const handleCreateCourse = async (e) => {
-    e.preventDefault();
+  const handleCreateCourse = (e) => {
+    if (e) e.preventDefault();
     if (!newCourse.code || !newCourse.title || !selectedLevel || !selectedTerm) {
       setCourseError("Please specify Course Code, Title, and select a Level & Term.");
       return;
     }
-    setIsCreatingCourse(true);
-    setCourseError("");
-    try {
-      const res = await fetch(`${API_BASE}/api/courses`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          code: newCourse.code,
-          title: newCourse.title,
-          description: newCourse.description || `Study materials for ${newCourse.code}`,
-          level: selectedLevel,
-          term: selectedTerm
-        })
-      });
-      
-      if (res.ok) {
-        // Refresh the courses list
-        await fetchCourses();
-        // Reset form
-        setNewCourse({ code: "", title: "", description: "" });
-      } else {
-        const errData = await res.json();
-        setCourseError(errData.detail || "Failed to create course");
+    checkAuthAndExecute(async () => {
+      setIsCreatingCourse(true);
+      setCourseError("");
+      try {
+        const res = await fetch(`${API_BASE}/api/courses`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code: newCourse.code,
+            title: newCourse.title,
+            description: newCourse.description || `Study materials for ${newCourse.code}`,
+            level: selectedLevel,
+            term: selectedTerm
+          })
+        });
+        
+        if (res.ok) {
+          await fetchCourses();
+          setNewCourse({ code: "", title: "", description: "" });
+        } else {
+          const errData = await res.json();
+          setCourseError(errData.detail || "Failed to create course");
+        }
+      } catch (err) {
+        setCourseError("Network error. Failed to connect to server.");
+      } finally {
+        setIsCreatingCourse(false);
       }
-    } catch (err) {
-      setCourseError("Network error. Failed to connect to server.");
-    } finally {
-      setIsCreatingCourse(false);
-    }
+    });
   };
 
   // Start course editing flow
@@ -326,277 +378,289 @@ function App() {
   };
 
   // Save course updates
-  const handleSaveCourseEdit = async (e) => {
-    e.preventDefault();
+  const handleSaveCourseEdit = (e) => {
+    if (e) e.preventDefault();
     if (!editCourseFields.code || !editCourseFields.title) {
       setEditCourseError("Course Code and Title are required.");
       return;
     }
-    setIsSavingCourseEdit(true);
-    setEditCourseError("");
-    try {
-      const res = await fetch(`${API_BASE}/api/courses/${editingCourse.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editCourseFields)
-      });
-      if (res.ok) {
-        await fetchCourses();
-        setEditingCourse(null);
-      } else {
-        const errData = await res.json();
-        setEditCourseError(errData.detail || "Failed to save course changes");
+    checkAuthAndExecute(async () => {
+      setIsSavingCourseEdit(true);
+      setEditCourseError("");
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${editingCourse.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(editCourseFields)
+        });
+        if (res.ok) {
+          await fetchCourses();
+          setEditingCourse(null);
+        } else {
+          const errData = await res.json();
+          setEditCourseError(errData.detail || "Failed to save course changes");
+        }
+      } catch (err) {
+        setEditCourseError("Failed to save changes: connection error");
+      } finally {
+        setIsSavingCourseEdit(false);
       }
-    } catch (err) {
-      setEditCourseError("Failed to save changes: connection error");
-    } finally {
-      setIsSavingCourseEdit(false);
-    }
+    });
   };
 
   // Handle adding a reference link
-  const handleAddLink = async (e) => {
-    e.preventDefault();
+  const handleAddLink = (e) => {
+    if (e) e.preventDefault();
     if (!newLink.title || !newLink.url) return;
-    setIsSavingLink(true);
-    try {
-      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/links`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newLink)
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setReferenceLinks(data);
-        setNewLink({ title: "", url: "", category: "YouTube" });
+    checkAuthAndExecute(async () => {
+      setIsSavingLink(true);
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/links`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newLink)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setReferenceLinks(data);
+          setNewLink({ title: "", url: "", category: "YouTube" });
+        }
+      } catch (err) {
+        console.error("Failed to add link", err);
+      } finally {
+        setIsSavingLink(false);
       }
-    } catch (err) {
-      console.error("Failed to add link", err);
-    } finally {
-      setIsSavingLink(false);
-    }
+    });
   };
 
   // Handle deleting a reference link
-  const handleDeleteLink = async (linkId) => {
-    try {
-      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/links/${linkId}`, {
-        method: "DELETE"
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setReferenceLinks(data);
+  const handleDeleteLink = (linkId) => {
+    checkAuthAndExecute(async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/links/${linkId}`, {
+          method: "DELETE"
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setReferenceLinks(data);
+        }
+      } catch (err) {
+        console.error("Failed to delete link", err);
       }
-    } catch (err) {
-      console.error("Failed to delete link", err);
-    }
+    });
   };
 
   // Handle deleting a course file
-  const handleDeleteFile = async (fileIndex) => {
-    if (!window.confirm("Are you sure you want to completely delete this file from the course catalog?")) {
-      return;
-    }
-    try {
-      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/files/${fileIndex}?t=${Date.now()}`, {
-        method: "DELETE"
-      });
-      if (res.ok) {
-        setPreviewFile(null);
-        await fetchCourses();
-        const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
-        const coursesList = await updatedRes.json();
-        const found = coursesList.find(c => c.id === activeCourse.id);
-        if (found) setActiveCourse(found);
-      } else {
-        const data = await res.json();
-        alert(data.detail || "Failed to delete file");
+  const handleDeleteFile = (fileIndex) => {
+    checkAuthAndExecute(async () => {
+      if (!window.confirm("Are you sure you want to completely delete this file from the course catalog?")) {
+        return;
       }
-    } catch (err) {
-      alert("Delete failed: network error");
-    }
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/files/${fileIndex}?t=${Date.now()}`, {
+          method: "DELETE"
+        });
+        if (res.ok) {
+          setPreviewFile(null);
+          await fetchCourses();
+          const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+          const coursesList = await updatedRes.json();
+          const found = coursesList.find(c => c.id === activeCourse.id);
+          if (found) setActiveCourse(found);
+        } else {
+          const data = await res.json();
+          alert(data.detail || "Failed to delete file");
+        }
+      } catch (err) {
+        alert("Delete failed: network error");
+      }
+    });
   };
 
   // Handle creating a virtual folder in the active course
-  const handleCreateFolder = async () => {
-    const folderName = window.prompt("Enter new folder name:");
-    if (!folderName) return;
-    const trimmed = folderName.trim();
-    if (!trimmed) {
-      alert("Folder name cannot be empty");
-      return;
-    }
-    try {
-      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/folders`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name: trimmed })
-      });
-      if (res.ok) {
-        await fetchCourses();
-        const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
-        const coursesList = await updatedRes.json();
-        const found = coursesList.find(c => c.id === activeCourse.id);
-        if (found) {
-          setActiveCourse(found);
-          setCurrentFolder(trimmed); // Auto-select the newly created folder!
-        }
-      } else {
-        const data = await res.json();
-        alert(data.detail || "Failed to create folder");
+  const handleCreateFolder = () => {
+    checkAuthAndExecute(async () => {
+      const folderName = window.prompt("Enter new folder name:");
+      if (!folderName) return;
+      const trimmed = folderName.trim();
+      if (!trimmed) {
+        alert("Folder name cannot be empty");
+        return;
       }
-    } catch (err) {
-      alert("Failed to create folder: network error");
-    }
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/folders`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name: trimmed })
+        });
+        if (res.ok) {
+          await fetchCourses();
+          const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+          const coursesList = await updatedRes.json();
+          const found = coursesList.find(c => c.id === activeCourse.id);
+          if (found) {
+            setActiveCourse(found);
+            setCurrentFolder(trimmed); // Auto-select the newly created folder!
+          }
+        } else {
+          const data = await res.json();
+          alert(data.detail || "Failed to create folder");
+        }
+      } catch (err) {
+        alert("Failed to create folder: network error");
+      }
+    });
   };
 
   // Handle deleting a virtual folder and all its contents
-  const handleDeleteFolder = async (e, folderName) => {
-    e.stopPropagation(); // Prevent selecting the folder chip when clicking delete
+  const handleDeleteFolder = (e, folderName) => {
+    if (e) e.stopPropagation(); // Prevent selecting the folder chip when clicking delete
     if (folderName === "Root") {
       alert("Cannot delete the Root folder");
       return;
     }
-    if (!window.confirm(`Are you sure you want to delete the folder "${folderName}"? This will completely purge all slides cataloged inside it!`)) {
-      return;
-    }
-    try {
-      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/folders/${encodeURIComponent(folderName)}?t=${Date.now()}`, {
-        method: "DELETE"
-      });
-      if (res.ok) {
-        if (currentFolder === folderName) {
-          setCurrentFolder("Root");
-        }
-        await fetchCourses();
-        const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
-        const coursesList = await updatedRes.json();
-        const found = coursesList.find(c => c.id === activeCourse.id);
-        if (found) setActiveCourse(found);
-      } else {
-        const data = await res.json();
-        alert(data.detail || "Failed to delete folder");
+    checkAuthAndExecute(async () => {
+      if (!window.confirm(`Are you sure you want to delete the folder "${folderName}"? This will completely purge all slides cataloged inside it!`)) {
+        return;
       }
-    } catch (err) {
-      alert("Failed to delete folder: network error");
-    }
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/folders/${encodeURIComponent(folderName)}?t=${Date.now()}`, {
+          method: "DELETE"
+        });
+        if (res.ok) {
+          if (currentFolder === folderName) {
+            setCurrentFolder("Root");
+          }
+          await fetchCourses();
+          const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+          const coursesList = await updatedRes.json();
+          const found = coursesList.find(c => c.id === activeCourse.id);
+          if (found) setActiveCourse(found);
+        } else {
+          const data = await res.json();
+          alert(data.detail || "Failed to delete folder");
+        }
+      } catch (err) {
+        alert("Failed to delete folder: network error");
+      }
+    });
   };
 
   // Handle renaming a virtual folder
-  const handleRenameFolder = async (e, oldName) => {
-    e.stopPropagation(); // Prevent selecting the folder chip when clicking rename
+  const handleRenameFolder = (e, oldName) => {
+    if (e) e.stopPropagation(); // Prevent selecting the folder chip when clicking rename
     if (oldName === "Root") {
       alert("Cannot rename the Root folder");
       return;
     }
-    const newName = window.prompt(`Enter new name for folder "${oldName}":`, oldName);
-    if (!newName) return;
-    const trimmed = newName.trim();
-    if (!trimmed) {
-      alert("Folder name cannot be empty");
-      return;
-    }
-    if (trimmed === oldName) return;
-    
-    try {
-      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/folders/${encodeURIComponent(oldName)}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ new_name: trimmed })
-      });
-      if (res.ok) {
-        if (currentFolder === oldName) {
-          setCurrentFolder(trimmed); // Preserves active folder view under the new name!
-        }
-        await fetchCourses();
-        const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
-        const coursesList = await updatedRes.json();
-        const found = coursesList.find(c => c.id === activeCourse.id);
-        if (found) setActiveCourse(found);
-      } else {
-        const data = await res.json();
-        alert(data.detail || "Failed to rename folder");
+    checkAuthAndExecute(async () => {
+      const newName = window.prompt(`Enter new name for folder "${oldName}":`, oldName);
+      if (!newName) return;
+      const trimmed = newName.trim();
+      if (!trimmed) {
+        alert("Folder name cannot be empty");
+        return;
       }
-    } catch (err) {
-      alert("Failed to rename folder: network error");
-    }
+      if (trimmed === oldName) return;
+      
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/folders/${encodeURIComponent(oldName)}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ new_name: trimmed })
+        });
+        if (res.ok) {
+          if (currentFolder === oldName) {
+            setCurrentFolder(trimmed); // Preserves active folder view under the new name!
+          }
+          await fetchCourses();
+          const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+          const coursesList = await updatedRes.json();
+          const found = coursesList.find(c => c.id === activeCourse.id);
+          if (found) setActiveCourse(found);
+        } else {
+          const data = await res.json();
+          alert(data.detail || "Failed to rename folder");
+        }
+      } catch (err) {
+        alert("Failed to rename folder: network error");
+      }
+    });
   };
 
   // Handle file uploads
-  const handleFileUpload = async (e, file, category, setters) => {
-    e.preventDefault();
+  const handleFileUpload = (e, file, category, setters) => {
+    if (e) e.preventDefault();
     if (!file) return;
     
-    const { setIsUploading, setUploadProgress, setUploadStatus, setUploadFile, fileInputRef } = setters;
-    
-    setIsUploading(true);
-    setUploadStatus({ type: "", message: "" });
-    setUploadProgress(0);
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("category", category); // "book" or "slide"
-    if (category === "slide" && currentFolder) {
-      formData.append("folder", currentFolder);
-    }
-
-    const xhr = new XMLHttpRequest();
-    
-    // Monitor upload progress in real-time!
-    xhr.upload.addEventListener("progress", (event) => {
-      if (event.lengthComputable) {
-        // Use 90% for file transfer, leaving last 10% for server processing & Telegram API sync
-        const percentage = Math.round((event.loaded / event.total) * 90);
-        setUploadProgress(percentage);
-      }
-    });
-
-    xhr.addEventListener("load", async () => {
-      setUploadProgress(95);
-      if (xhr.status >= 200 && xhr.status < 300) {
-        setUploadStatus({ type: "success", message: "File uploaded successfully!" });
-        setUploadFile(null);
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        
-        // Refresh courses to scan new files
-        await fetchCourses();
-        
-        // Re-locate updated course to preserve reference
-        const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
-        const coursesList = await updatedRes.json();
-        const found = coursesList.find(c => c.id === activeCourse.id);
-        if (found) setActiveCourse(found);
-      } else {
-        let errorMessage = "Upload failed";
-        try {
-          const data = JSON.parse(xhr.responseText);
-          errorMessage = data.detail || errorMessage;
-        } catch (e) {}
-        setUploadStatus({ type: "error", message: errorMessage });
-      }
+    checkAuthAndExecute(() => {
+      const { setIsUploading, setUploadProgress, setUploadStatus, setUploadFile, fileInputRef } = setters;
       
-      setUploadProgress(100);
-      setTimeout(() => {
-        setIsUploading(false);
-        setUploadProgress(0);
-      }, 800);
-    });
+      setIsUploading(true);
+      setUploadStatus({ type: "", message: "" });
+      setUploadProgress(0);
 
-    xhr.addEventListener("error", () => {
-      setUploadStatus({ type: "error", message: "Upload failed: network error" });
-      setUploadProgress(100);
-      setTimeout(() => {
-        setIsUploading(false);
-        setUploadProgress(0);
-      }, 800);
-    });
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("category", category); // "book" or "slide"
+      if (category === "slide" && currentFolder) {
+        formData.append("folder", currentFolder);
+      }
 
-    xhr.open("POST", `${API_BASE}/api/upload/${activeCourse.id}`);
-    xhr.send(formData);
+      const xhr = new XMLHttpRequest();
+      
+      // Monitor upload progress in real-time!
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable) {
+          const percentage = Math.round((event.loaded / event.total) * 90);
+          setUploadProgress(percentage);
+        }
+      });
+
+      xhr.addEventListener("load", async () => {
+        setUploadProgress(95);
+        if (xhr.status >= 200 && xhr.status < 300) {
+          setUploadStatus({ type: "success", message: "File uploaded successfully!" });
+          setUploadFile(null);
+          if (fileInputRef.current) fileInputRef.current.value = "";
+          
+          await fetchCourses();
+          const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+          const coursesList = await updatedRes.json();
+          const found = coursesList.find(c => c.id === activeCourse.id);
+          if (found) setActiveCourse(found);
+        } else {
+          let errorMessage = "Upload failed";
+          try {
+            const data = JSON.parse(xhr.responseText);
+            errorMessage = data.detail || errorMessage;
+          } catch (e) {}
+          setUploadStatus({ type: "error", message: errorMessage });
+        }
+        
+        setUploadProgress(100);
+        setTimeout(() => {
+          setIsUploading(false);
+          setUploadProgress(0);
+        }, 800);
+      });
+
+      xhr.addEventListener("error", () => {
+        setUploadStatus({ type: "error", message: "Upload failed: network error" });
+        setUploadProgress(100);
+        setTimeout(() => {
+          setIsUploading(false);
+          setUploadProgress(0);
+        }, 800);
+      });
+
+      xhr.open("POST", `${API_BASE}/api/upload/${activeCourse.id}`);
+      xhr.send(formData);
+    });
   };
 
   // Helper to extract YouTube video ID
@@ -763,6 +827,60 @@ function App() {
         </div>
       )}
 
+      {/* Premium Admin Authentication Modal */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
+          <div className="glass-panel w-full max-w-sm rounded-2xl p-6 shadow-2xl relative border border-accent-rose border-opacity-30">
+            <button 
+              onClick={() => { setShowAuthModal(false); setPendingAuthCallback(null); }}
+              className="absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-slate-300 hover:text-white transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            <div className="space-y-4 text-center">
+              <div className="w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center border border-rose-500/20 text-accent-rose mx-auto mb-2 animate-bounce">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              
+              <h3 className="font-display font-bold text-lg text-white">Administrative Lock</h3>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                This action requires administrative authorization. Enter the academic access passcode to unlock edits.
+              </p>
+              
+              <form onSubmit={handleVerifyPassword} className="space-y-4 pt-2">
+                <div>
+                  <input 
+                    type="password" 
+                    required
+                    placeholder="Enter session passcode..."
+                    value={authPasswordInput}
+                    onChange={(e) => setAuthPasswordInput(e.target.value)}
+                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-rose-500 text-center"
+                    autoFocus
+                  />
+                </div>
+                
+                {authError && (
+                  <p className="text-xs text-rose-400 font-semibold">{authError}</p>
+                )}
+                
+                <button
+                  type="submit"
+                  className="w-full py-2.5 bg-gradient-to-r from-accent-rose to-red-600 text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-rose-500/25 transition-transform hover:scale-[1.02]"
+                >
+                  Verify and Unlock (1 Hour)
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Dynamic Overlay Video Player Modal */}
       {playingVideoUrl && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
@@ -830,6 +948,25 @@ function App() {
               <span className="font-display font-bold text-xs md:text-sm text-accent-indigo">{totalFilesCount} files</span>
             </div>
             
+            <div className="h-6 md:h-8 w-px bg-white bg-opacity-10"></div>
+
+            {/* Padlock Session Status */}
+            <div className="flex items-center space-x-1.5 cursor-pointer select-none" onClick={() => {
+              if (isAuthorizedState) {
+                if (window.confirm("Do you want to end your administrator session?")) {
+                  localStorage.removeItem("che_auth_until");
+                  setIsAuthorizedState(false);
+                }
+              } else {
+                checkAuthAndExecute(() => {});
+              }
+            }}>
+              <span className={`w-2 h-2 rounded-full ${isAuthorizedState ? 'bg-teal-400 animate-pulse' : 'bg-slate-500'}`}></span>
+              <span className={`font-display text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${isAuthorizedState ? 'text-teal-400' : 'text-slate-500'}`}>
+                {isAuthorizedState ? '🔓 Admin Active' : '🔒 Guest'}
+              </span>
+            </div>
+
             <div className="h-6 md:h-8 w-px bg-white bg-opacity-10"></div>
             
             {/* Unified Level and Term Dropdown */}
