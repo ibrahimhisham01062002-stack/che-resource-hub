@@ -289,7 +289,14 @@ def get_file(course_id: str, filepath: str):
 
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+if TELEGRAM_BOT_TOKEN:
+    TELEGRAM_BOT_TOKEN = TELEGRAM_BOT_TOKEN.strip().replace('"', '').replace("'", "")
+    if TELEGRAM_BOT_TOKEN.lower().startswith("bot"):
+        TELEGRAM_BOT_TOKEN = TELEGRAM_BOT_TOKEN[3:]
+
 TELEGRAM_CHANNEL_ID = os.getenv("TELEGRAM_CHANNEL_ID")
+if TELEGRAM_CHANNEL_ID:
+    TELEGRAM_CHANNEL_ID = TELEGRAM_CHANNEL_ID.strip().replace('"', '').replace("'", "")
 
 async def get_file_id_from_message_id(message_id: int) -> str:
     async with httpx.AsyncClient() as client:
