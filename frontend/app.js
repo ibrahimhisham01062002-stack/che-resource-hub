@@ -659,34 +659,34 @@ function App() {
       )}
 
       {/* Primary Navigation & Hub Logo */}
-      <header className="glass-panel sticky top-0 z-40 border-b border-white border-opacity-10 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveCourse(null)}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-accent-indigo to-accent-violet flex items-center justify-center shadow-lg shadow-indigo-500/20">
-            <Icon name="layers" className="w-6 h-6 text-white" />
+      <header className="glass-panel sticky top-0 z-40 border-b border-white border-opacity-10 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+        <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer" onClick={() => setActiveCourse(null)}>
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-tr from-accent-indigo to-accent-violet flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
+            <Icon name="layers" className="w-5 h-5 md:w-6 md:h-6 text-white" />
           </div>
-          <div>
-            <h1 className="font-display font-bold text-lg tracking-wide text-glow">ChE <span className="gradient-text">StudySpace</span></h1>
-            <p className="text-[10px] text-slate-400 font-medium tracking-widest uppercase">Department of Chemical Engineering</p>
+          <div className="min-w-0">
+            <h1 className="font-display font-bold text-base md:text-lg tracking-wide text-glow">ChE <span className="gradient-text">StudySpace</span></h1>
+            <p className="text-[9px] md:text-[10px] text-slate-400 font-medium tracking-widest uppercase truncate">Department of Chemical Engineering</p>
           </div>
         </div>
         
         {/* Hub stats on Dashboard */}
         {!activeCourse && (
-          <div className="hidden md:flex items-center space-x-8 text-sm">
-            <div className="text-right">
+          <div className="flex items-center space-x-4 md:space-x-8 text-sm">
+            <div className="hidden md:block text-right">
               <span className="text-slate-400 block text-[11px] font-medium tracking-wider uppercase">Active Courses</span>
               <span className="font-display font-semibold text-white">{courses.length} courses</span>
             </div>
-            <div className="h-8 w-px bg-white bg-opacity-10"></div>
-            <div className="text-right">
+            <div className="hidden md:block h-8 w-px bg-white bg-opacity-10"></div>
+            <div className="hidden md:block text-right">
               <span className="text-slate-400 block text-[11px] font-medium tracking-wider uppercase">Resources Loaded</span>
               <span className="font-display font-semibold text-accent-indigo">{totalFilesCount} files</span>
             </div>
-            <div className="h-8 w-px bg-white bg-opacity-10"></div>
+            <div className="hidden md:block h-8 w-px bg-white bg-opacity-10"></div>
             
             {/* Unified Level and Term Dropdown */}
-            <div className="flex flex-col text-left">
-              <span className="text-slate-400 block text-[10px] font-bold tracking-wider uppercase mb-1">Level and term</span>
+            <div className="flex flex-col text-left max-w-[130px] sm:max-w-none">
+              <span className="text-slate-400 block text-[9px] font-bold tracking-wider uppercase mb-1">Level and term</span>
               <select 
                 value={selectedLevel && selectedTerm ? `${selectedLevel}, ${selectedTerm}` : ""}
                 onChange={(e) => {
@@ -700,7 +700,7 @@ function App() {
                     setSelectedTerm(trm);
                   }
                 }}
-                className="glass-input px-4 py-2 rounded-xl text-xs font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
+                className="glass-input px-3 py-1.5 rounded-xl text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
               >
                 <option value="">All Levels & Terms</option>
                 <option value="Level-1, Term-1">Level 1, Term 1</option>
@@ -725,7 +725,7 @@ function App() {
         {!activeCourse ? (
           <div className="space-y-8 flex-grow flex flex-col justify-between">
             {/* Elegant Greeting and Global search */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
                 <h2 className="font-display font-extrabold text-3xl md:text-4xl text-white tracking-tight">
                   Welcome to Your <span className="gradient-text text-glow">Study Hub</span>
@@ -735,52 +735,16 @@ function App() {
                 </p>
               </div>
               
-              {/* Search and filter tools */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-4 w-full md:w-auto">
-                {/* Level and Term Dropdown for Mobile / Tablet */}
-                <div className="flex flex-col text-left md:hidden w-full sm:w-56">
-                  <span className="text-slate-400 block text-[10px] font-bold tracking-wider uppercase mb-1.5">Level and Term</span>
-                  <select 
-                    value={selectedLevel && selectedTerm ? `${selectedLevel}, ${selectedTerm}` : ""}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      if (!val) {
-                        setSelectedLevel("");
-                        setSelectedTerm("");
-                      } else {
-                        const [lvl, trm] = val.split(", ");
-                        setSelectedLevel(lvl);
-                        setSelectedTerm(trm);
-                      }
-                    }}
-                    className="glass-input w-full px-4 py-2.5 rounded-xl text-xs font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
-                  >
-                    <option value="">All Levels & Terms</option>
-                    <option value="Level-1, Term-1">Level 1, Term 1</option>
-                    <option value="Level-1, Term-2">Level 1, Term 2</option>
-                    <option value="Level-2, Term-1">Level 2, Term 1</option>
-                    <option value="Level-2, Term-2">Level 2, Term 2</option>
-                    <option value="Level-3, Term-1">Level 3, Term 1</option>
-                    <option value="Level-3, Term-2">Level 3, Term 2</option>
-                    <option value="Level-4, Term-1">Level 4, Term 1</option>
-                    <option value="Level-4, Term-2">Level 4, Term 2</option>
-                  </select>
-                </div>
-
-                {/* Dynamic search bar */}
-                <div className="relative w-full md:w-80">
-                  <span className="text-slate-400 block text-[10px] font-bold tracking-wider uppercase mb-1.5 md:hidden">Search Active Courses</span>
-                  <div className="relative">
-                    <input 
-                      type="text"
-                      placeholder="Search active courses..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:border-indigo-500"
-                    />
-                    <Icon name="search" className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
-                  </div>
-                </div>
+              {/* Dynamic search bar */}
+              <div className="relative w-full md:w-80">
+                <input 
+                  type="text"
+                  placeholder="Search active courses..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:border-indigo-500"
+                />
+                <Icon name="search" className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
               </div>
             </div>
 
