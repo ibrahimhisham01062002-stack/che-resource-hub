@@ -1198,6 +1198,13 @@ function App() {
                   <span>Books</span>
                 </button>
                 <button
+                  onClick={() => { setPrimarySection("solutions"); setPreviewFile(null); }}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                >
+                  <Icon name="edit" className="w-3.5 h-3.5" />
+                  <span>Solution Manual</span>
+                </button>
+                <button
                   onClick={() => { setPrimarySection("slides"); setPreviewFile(null); }}
                   className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
@@ -1210,13 +1217,6 @@ function App() {
                 >
                   <Icon name="fileText" className="w-3.5 h-3.5" />
                   <span>Term-Final Question</span>
-                </button>
-                <button
-                  onClick={() => { setPrimarySection("solutions"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
-                >
-                  <Icon name="edit" className="w-3.5 h-3.5" />
-                  <span>Solution Manual</span>
                 </button>
               </div>
             </div>
