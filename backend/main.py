@@ -565,7 +565,15 @@ async def upload_file(course_id: str, file: UploadFile = File(...), category: Op
             raise HTTPException(status_code=500, detail=f"Local fallback save failed: {str(local_err)}")
             
     # Construct file item
-    file_type = "Reference Book" if category == "book" else get_file_type(filename)
+    if category == "book":
+        file_type = "Reference Book"
+    elif category == "question":
+        file_type = "Term-Final Question"
+    elif category == "solution":
+        file_type = "TF Solve"
+    else:
+        file_type = get_file_type(filename)
+        
     new_file_item = {
         "name": filename,
         "size": format_size(bytes_size),

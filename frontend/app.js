@@ -140,6 +140,20 @@ function App() {
   const [slideUploadStatus, setSlideUploadStatus] = useState({ type: "", message: "" });
   const slideFileInputRef = useRef(null);
 
+  // Term-Final Question upload states
+  const [questionUploadFile, setQuestionUploadFile] = useState(null);
+  const [isQuestionUploading, setIsQuestionUploading] = useState(false);
+  const [questionUploadProgress, setQuestionUploadProgress] = useState(0);
+  const [questionUploadStatus, setQuestionUploadStatus] = useState({ type: "", message: "" });
+  const questionFileInputRef = useRef(null);
+
+  // TF Solve upload states
+  const [solutionUploadFile, setSolutionUploadFile] = useState(null);
+  const [isSolutionUploading, setIsSolutionUploading] = useState(false);
+  const [solutionUploadProgress, setSolutionUploadProgress] = useState(0);
+  const [solutionUploadStatus, setSolutionUploadStatus] = useState({ type: "", message: "" });
+  const solutionFileInputRef = useRef(null);
+
   // Dynamic course creator states
   const [newCourse, setNewCourse] = useState({ code: "", title: "", description: "" });
   const [isCreatingCourse, setIsCreatingCourse] = useState(false);
@@ -207,21 +221,29 @@ function App() {
            file.bytes > 5 * 1024 * 1024; // Files > 5MB are highly likely books
   };
 
-  // Split files into Books and Slides
-  const { booksList, slidesList } = useMemo(() => {
-    if (!activeCourse || !activeCourse.files) return { booksList: [], slidesList: [] };
+  // Split files into Books, Slides, Questions, and Solutions
+  const { booksList, slidesList, questionsList, solutionsList } = useMemo(() => {
+    if (!activeCourse || !activeCourse.files) return { booksList: [], slidesList: [], questionsList: [], solutionsList: [] };
     const books = [];
     const slides = [];
+    const questions = [];
+    const solutions = [];
+    
     activeCourse.files.forEach((file, index) => {
       const fileWithIndex = { ...file, index };
       const typeLower = (file.type || "").toLowerCase();
+      
       if (typeLower.includes("book") || typeLower.includes("manual")) {
         books.push(fileWithIndex);
+      } else if (typeLower.includes("question")) {
+        questions.push(fileWithIndex);
+      } else if (typeLower.includes("solve") || typeLower.includes("solution")) {
+        solutions.push(fileWithIndex);
       } else {
         slides.push(fileWithIndex);
       }
     });
-    return { booksList: books, slidesList: slides };
+    return { booksList: books, slidesList: slides, questionsList: questions, solutionsList: solutions };
   }, [activeCourse]);
 
 
@@ -422,6 +444,22 @@ function App() {
       f.type.toLowerCase().includes(fileSearchQuery.toLowerCase())
     );
   }, [slidesList, fileSearchQuery]);
+
+  // Filtering questions inside active section
+  const filteredQuestions = useMemo(() => {
+    return questionsList.filter(f => 
+      f.name.toLowerCase().includes(fileSearchQuery.toLowerCase()) ||
+      f.type.toLowerCase().includes(fileSearchQuery.toLowerCase())
+    );
+  }, [questionsList, fileSearchQuery]);
+
+  // Filtering solutions inside active section
+  const filteredSolutions = useMemo(() => {
+    return solutionsList.filter(f => 
+      f.name.toLowerCase().includes(fileSearchQuery.toLowerCase()) ||
+      f.type.toLowerCase().includes(fileSearchQuery.toLowerCase())
+    );
+  }, [solutionsList, fileSearchQuery]);
 
   // Pre-compiled colorful stats dashboard counts
   const totalFilesCount = useMemo(() => {
@@ -707,21 +745,35 @@ function App() {
                 </div>
               </div>
 
-              {/* Two Primary Subsection Switchers as required */}
-              <div className="flex bg-dark-950 p-1 rounded-xl border border-white border-opacity-5 self-start md:self-center">
+              {/* Four Primary Subsection Switchers */}
+              <div className="flex bg-dark-950 p-1 rounded-xl border border-white border-opacity-5 flex-wrap gap-1 self-start md:self-center">
                 <button
                   onClick={() => { setPrimarySection("books"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-5 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'books' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'books' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="book" className="w-3.5 h-3.5" />
                   <span>Books</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("slides"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-5 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="layers" className="w-3.5 h-3.5" />
                   <span>slides</span>
+                </button>
+                <button
+                  onClick={() => { setPrimarySection("questions"); setPreviewFile(null); }}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'questions' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                >
+                  <Icon name="fileText" className="w-3.5 h-3.5" />
+                  <span>Term-Final Question</span>
+                </button>
+                <button
+                  onClick={() => { setPrimarySection("solutions"); setPreviewFile(null); }}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                >
+                  <Icon name="edit" className="w-3.5 h-3.5" />
+                  <span>TF Solve</span>
                 </button>
               </div>
             </div>
@@ -903,6 +955,370 @@ function App() {
                         <h4 className="font-display font-bold text-lg text-white">Distraction-Free Textbook Reader</h4>
                         <p className="text-slate-400 text-xs max-w-md leading-relaxed">
                           Select any textbook or reference manual from the left catalog to launch our integrated full-screen PDF workspace.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              )}
+
+              {/* SUBSECTION 3: TERM-FINAL QUESTIONS */}
+              {primarySection === 'questions' && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
+                  
+                  {/* Left Column: Questions List & Search */}
+                  <div className="lg:col-span-1 space-y-6">
+                    <div className="glass-panel p-6 rounded-2xl space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-display font-bold text-base text-white">Term-Final Questions</h3>
+                        <span className="text-[10px] text-accent-indigo font-bold bg-accent-indigo/10 px-2 py-0.5 rounded border border-accent-indigo/10">
+                          {questionsList.length} papers
+                        </span>
+                      </div>
+
+                      {/* PDF drag-and-drop upload zone */}
+                      <form onSubmit={(e) => handleFileUpload(e, questionUploadFile, "question", {
+                        setIsUploading: setIsQuestionUploading,
+                        setUploadProgress: setQuestionUploadProgress,
+                        setUploadStatus: setQuestionUploadStatus,
+                        setUploadFile: setQuestionUploadFile,
+                        fileInputRef: questionFileInputRef
+                      })} className="relative group">
+                        <input 
+                          type="file" 
+                          accept=".pdf,.docx,.doc"
+                          onChange={(e) => setQuestionUploadFile(e.target.files[0])}
+                          className="hidden" 
+                          id="question-upload-input"
+                          ref={questionFileInputRef}
+                        />
+                        <label 
+                          htmlFor="question-upload-input" 
+                          className="glass-panel border-dashed border-2 border-indigo-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500/50 transition-colors group-hover:bg-indigo-950/10 block"
+                        >
+                          <Icon name="upload" className="w-6 h-6 text-accent-indigo mb-2 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-[10px] text-indigo-300 text-center px-2">
+                            {questionUploadFile ? `Selected: ${questionUploadFile.name}` : "Upload term-final exam question papers directly."}
+                          </p>
+                          <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
+                        </label>
+                        
+                        {questionUploadFile && (
+                          <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
+                            <button 
+                              type="button" 
+                              onClick={() => { setQuestionUploadFile(null); if (questionFileInputRef.current) questionFileInputRef.current.value = ""; }}
+                              className="px-2 py-1 border border-white border-opacity-10 text-slate-400 rounded-lg text-[10px] font-display hover:text-white"
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              type="submit" 
+                              disabled={isQuestionUploading}
+                              className="px-3 py-1 bg-accent-indigo hover:bg-indigo-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                            >
+                              <span>{isQuestionUploading ? "Uploading..." : "Save to Questions"}</span>
+                              <Icon name="plus" className="w-3 h-3" />
+                            </button>
+                          </div>
+                        )}
+                      </form>
+
+                      {isQuestionUploading && (
+                        <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
+                          <div className="bg-gradient-to-r from-accent-indigo to-accent-violet h-full transition-all duration-300" style={{ width: `${questionUploadProgress}%` }}></div>
+                        </div>
+                      )}
+
+                      {questionUploadStatus.message && (
+                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${questionUploadStatus.type === 'success' ? 'bg-teal-500/10 text-teal-300 border border-teal-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                          {questionUploadStatus.message}
+                        </div>
+                      )}
+                      
+                      {/* Search questions */}
+                      <div className="relative">
+                        <input 
+                          type="text"
+                          placeholder="Search questions..."
+                          value={fileSearchQuery}
+                          onChange={(e) => setFileSearchQuery(e.target.value)}
+                          className="glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+                        />
+                        <Icon name="search" className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400" />
+                      </div>
+
+                      {/* Questions list */}
+                      <div className="space-y-2 max-h-[450px] overflow-y-auto pr-1">
+                        {filteredQuestions.map((file) => {
+                          const isPreviewing = previewFile && previewFile.index === file.index;
+                          return (
+                            <div 
+                              key={file.index}
+                              onClick={() => setPreviewFile(file)}
+                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-indigo-950/5 cursor-pointer ${isPreviewing ? 'border-accent-indigo border-opacity-40 bg-indigo-950/10' : ''}`}
+                            >
+                              <div className="flex items-center space-x-3 min-w-0">
+                                <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-accent-indigo flex-shrink-0">
+                                  <Icon name="fileText" className="w-5 h-5" />
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="block text-xs font-semibold text-white line-clamp-2 leading-relaxed">
+                                    {file.name}
+                                  </span>
+                                  <span className="text-[9px] text-slate-500 font-display">
+                                    {file.size} &bull; PDF Question Paper
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                                <button 
+                                  onClick={() => handleDeleteFile(file.index)}
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  title="Delete Question"
+                                >
+                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                </button>
+                                <a 
+                                  href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
+                                  download
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-indigo-600 rounded-lg text-slate-400 hover:text-white"
+                                  title="Download"
+                                >
+                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                </a>
+                              </div>
+                            </div>
+                          );
+                        })}
+
+                        {filteredQuestions.length === 0 && (
+                          <div className="py-8 text-center text-slate-500 text-xs font-display">
+                            No exam questions cataloged inside this folder.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Dynamic Split Screen PDF Viewer */}
+                  <div className="lg:col-span-2">
+                    {previewFile ? (
+                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-indigo">
+                        <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
+                          <div className="flex items-center space-x-2">
+                            <Icon name="fileText" className="w-5 h-5 text-accent-indigo" />
+                            <h4 className="font-display font-bold text-sm text-white line-clamp-1">
+                              Reading: {previewFile.name}
+                            </h4>
+                          </div>
+                          <button 
+                            onClick={() => setPreviewFile(null)}
+                            className="text-slate-400 hover:text-white text-xs font-semibold"
+                          >
+                            Close Reader
+                          </button>
+                        </div>
+
+                        <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
+                          <iframe 
+                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
+                            className="w-full h-full border-none"
+                            title="PDF Viewer Frame"
+                          ></iframe>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
+                        <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-accent-indigo border border-indigo-500/20 mb-2">
+                          <Icon name="fileText" className="w-8 h-8" />
+                        </div>
+                        <h4 className="font-display font-bold text-lg text-white">Term-Final Questions Reader</h4>
+                        <p className="text-slate-400 text-xs max-w-md leading-relaxed">
+                          Select any term-final question paper from the left catalog to launch our integrated full-screen PDF workspace.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              )}
+
+              {/* SUBSECTION 4: TF SOLVES */}
+              {primarySection === 'solutions' && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
+                  
+                  {/* Left Column: Solutions List & Search */}
+                  <div className="lg:col-span-1 space-y-6">
+                    <div className="glass-panel p-6 rounded-2xl space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-display font-bold text-base text-white">TF Solves</h3>
+                        <span className="text-[10px] text-accent-indigo font-bold bg-accent-indigo/10 px-2 py-0.5 rounded border border-accent-indigo/10">
+                          {solutionsList.length} solutions
+                        </span>
+                      </div>
+
+                      {/* PDF drag-and-drop upload zone */}
+                      <form onSubmit={(e) => handleFileUpload(e, solutionUploadFile, "solution", {
+                        setIsUploading: setIsSolutionUploading,
+                        setUploadProgress: setSolutionUploadProgress,
+                        setUploadStatus: setSolutionUploadStatus,
+                        setUploadFile: setSolutionUploadFile,
+                        fileInputRef: solutionFileInputRef
+                      })} className="relative group">
+                        <input 
+                          type="file" 
+                          accept=".pdf,.docx,.doc"
+                          onChange={(e) => setSolutionUploadFile(e.target.files[0])}
+                          className="hidden" 
+                          id="solution-upload-input"
+                          ref={solutionFileInputRef}
+                        />
+                        <label 
+                          htmlFor="solution-upload-input" 
+                          className="glass-panel border-dashed border-2 border-indigo-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500/50 transition-colors group-hover:bg-indigo-950/10 block"
+                        >
+                          <Icon name="upload" className="w-6 h-6 text-accent-indigo mb-2 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-[10px] text-indigo-300 text-center px-2">
+                            {solutionUploadFile ? `Selected: ${solutionUploadFile.name}` : "Upload exam solutions or step-by-step guides directly."}
+                          </p>
+                          <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
+                        </label>
+                        
+                        {solutionUploadFile && (
+                          <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
+                            <button 
+                              type="button" 
+                              onClick={() => { setSolutionUploadFile(null); if (solutionFileInputRef.current) solutionFileInputRef.current.value = ""; }}
+                              className="px-2 py-1 border border-white border-opacity-10 text-slate-400 rounded-lg text-[10px] font-display hover:text-white"
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              type="submit" 
+                              disabled={isSolutionUploading}
+                              className="px-3 py-1 bg-accent-indigo hover:bg-indigo-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                            >
+                              <span>{isSolutionUploading ? "Uploading..." : "Save to Solves"}</span>
+                              <Icon name="plus" className="w-3 h-3" />
+                            </button>
+                          </div>
+                        )}
+                      </form>
+
+                      {isSolutionUploading && (
+                        <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
+                          <div className="bg-gradient-to-r from-accent-indigo to-accent-violet h-full transition-all duration-300" style={{ width: `${solutionUploadProgress}%` }}></div>
+                        </div>
+                      )}
+
+                      {solutionUploadStatus.message && (
+                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${solutionUploadStatus.type === 'success' ? 'bg-teal-500/10 text-teal-300 border border-teal-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                          {solutionUploadStatus.message}
+                        </div>
+                      )}
+                      
+                      {/* Search solutions */}
+                      <div className="relative">
+                        <input 
+                          type="text"
+                          placeholder="Search solves..."
+                          value={fileSearchQuery}
+                          onChange={(e) => setFileSearchQuery(e.target.value)}
+                          className="glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+                        />
+                        <Icon name="search" className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400" />
+                      </div>
+
+                      {/* Solutions list */}
+                      <div className="space-y-2 max-h-[450px] overflow-y-auto pr-1">
+                        {filteredSolutions.map((file) => {
+                          const isPreviewing = previewFile && previewFile.index === file.index;
+                          return (
+                            <div 
+                              key={file.index}
+                              onClick={() => setPreviewFile(file)}
+                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-indigo-950/5 cursor-pointer ${isPreviewing ? 'border-accent-indigo border-opacity-40 bg-indigo-950/10' : ''}`}
+                            >
+                              <div className="flex items-center space-x-3 min-w-0">
+                                <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-accent-indigo flex-shrink-0">
+                                  <Icon name="edit" className="w-5 h-5" />
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="block text-xs font-semibold text-white line-clamp-2 leading-relaxed">
+                                    {file.name}
+                                  </span>
+                                  <span className="text-[9px] text-slate-500 font-display">
+                                    {file.size} &bull; PDF Exam Solve
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                                <button 
+                                  onClick={() => handleDeleteFile(file.index)}
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  title="Delete Solve"
+                                >
+                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                </button>
+                                <a 
+                                  href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
+                                  download
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-indigo-600 rounded-lg text-slate-400 hover:text-white"
+                                  title="Download"
+                                >
+                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                </a>
+                              </div>
+                            </div>
+                          );
+                        })}
+
+                        {filteredSolutions.length === 0 && (
+                          <div className="py-8 text-center text-slate-500 text-xs font-display">
+                            No exam solutions cataloged inside this folder.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Dynamic Split Screen PDF Viewer */}
+                  <div className="lg:col-span-2">
+                    {previewFile ? (
+                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-indigo">
+                        <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
+                          <div className="flex items-center space-x-2">
+                            <Icon name="fileText" className="w-5 h-5 text-accent-indigo" />
+                            <h4 className="font-display font-bold text-sm text-white line-clamp-1">
+                              Reading: {previewFile.name}
+                            </h4>
+                          </div>
+                          <button 
+                            onClick={() => setPreviewFile(null)}
+                            className="text-slate-400 hover:text-white text-xs font-semibold"
+                          >
+                            Close Reader
+                          </button>
+                        </div>
+
+                        <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
+                          <iframe 
+                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
+                            className="w-full h-full border-none"
+                            title="PDF Viewer Frame"
+                          ></iframe>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
+                        <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-accent-indigo border border-indigo-500/20 mb-2">
+                          <Icon name="edit" className="w-8 h-8" />
+                        </div>
+                        <h4 className="font-display font-bold text-lg text-white">Term-Final Solves Reader</h4>
+                        <p className="text-slate-400 text-xs max-w-md leading-relaxed">
+                          Select any term-final exam solution or guide from the left catalog to launch our integrated full-screen PDF workspace.
                         </p>
                       </div>
                     )}
