@@ -1578,10 +1578,10 @@ function App() {
                               <div className="flex items-center space-x-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
                                   title="Delete Textbook"
                                 >
-                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                  <Icon name="trash" className="w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900" />
                                 </button>
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
@@ -1772,10 +1772,10 @@ function App() {
                               <div className="flex items-center space-x-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
                                   title="Delete Question"
                                 >
-                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                  <Icon name="trash" className="w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900" />
                                 </button>
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
@@ -1966,10 +1966,10 @@ function App() {
                               <div className="flex items-center space-x-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
                                   title="Delete Solve"
                                 >
-                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                  <Icon name="trash" className="w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900" />
                                 </button>
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
@@ -2171,7 +2171,7 @@ function App() {
                                     className="p-1.5 bg-dark-900 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 rounded-lg border border-white/5 transition-all"
                                     title="Delete file"
                                   >
-                                    <Icon name="trash" className="w-3.5 h-3.5" />
+                                    <Icon name="trash" className="w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900" />
                                   </button>
                                 </div>
                               </div>
@@ -2405,10 +2405,10 @@ function App() {
                                 </button>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
                                   title="Delete Asset"
                                 >
-                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                  <Icon name="trash" className="w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900" />
                                 </button>
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
@@ -2582,10 +2582,10 @@ function App() {
                                 </div>
                                 <button 
                                   onClick={() => handleDeleteLink(link.id)}
-                                  className="opacity-0 group-hover:opacity-100 absolute top-3 right-3 p-1 rounded-md bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 transition-opacity"
+                                  className="opacity-0 group-hover:opacity-100 absolute top-3 right-3 p-1 rounded-md bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 transition-opacity"
                                   title="Delete Reference"
                                 >
-                                  <Icon name="trash" className="w-3 h-3" />
+                                  <Icon name="trash" className="w-3 h-3 !text-rose-700 hover:!text-rose-900" />
                                 </button>
                               </div>
 
@@ -2800,10 +2800,10 @@ function App() {
                                 </button>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
                                   title="Delete Video"
                                 >
-                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                  <Icon name="trash" className="w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900" />
                                 </button>
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
