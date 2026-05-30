@@ -1237,6 +1237,12 @@ function App() {
                   setSelectedLevel(lvl);
                   setSelectedTerm(trm);
                 }
+                // Transition cleanly back to the dashboard filtered by the newly selected Level/Term
+                setActiveCourse(null);
+                setPreviewFile(null);
+                setPreviewUrl("");
+                setSearchQuery("");
+                setFileSearchQuery("");
               }}
               className="glass-input px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-sky-500 border border-white/10"
             >
