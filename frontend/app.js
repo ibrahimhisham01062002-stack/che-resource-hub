@@ -1038,14 +1038,14 @@ function App() {
                   <button
                     type="button"
                     onClick={() => setEditingCourse(null)}
-                    className="w-1/2 py-2.5 border border-white border-opacity-10 text-slate-400 font-display font-semibold text-xs rounded-xl hover:text-white transition-colors"
+                    className="w-1/2 py-2.5 che-cancel-btn font-display font-semibold text-xs rounded-xl"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSavingCourseEdit}
-                    className="w-1/2 py-2.5 bg-gradient-to-r from-accent-sky to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02]"
+                    className="w-1/2 py-2.5 che-submit-btn text-white font-display font-semibold text-xs rounded-xl shadow-lg transition-transform hover:scale-[1.02]"
                   >
                     {isSavingCourseEdit ? "Saving..." : "Save Changes"}
                   </button>
@@ -1512,14 +1512,14 @@ function App() {
                             <button 
                               type="button" 
                               onClick={() => { setBookUploadFile(null); if (bookFileInputRef.current) bookFileInputRef.current.value = ""; }}
-                              className="px-2 py-1 border border-white border-opacity-10 text-slate-400 rounded-lg text-[10px] font-display hover:text-white"
+                              className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
                             </button>
                             <button 
                               type="submit" 
                               disabled={isBookUploading}
-                              className="px-3 py-1 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                              className="px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isBookUploading ? "Uploading..." : "Save to Books"}</span>
                               <Icon name="plus" className="w-3 h-3" />
@@ -1530,7 +1530,7 @@ function App() {
 
                       {isBookUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${bookUploadProgress}%` }}></div>
+                          <div className="bg-[#5C061C] h-full transition-all duration-300" style={{ width: `${bookUploadProgress}%` }}></div>
                         </div>
                       )}
 
@@ -1706,14 +1706,14 @@ function App() {
                             <button 
                               type="button" 
                               onClick={() => { setQuestionUploadFile(null); if (questionFileInputRef.current) questionFileInputRef.current.value = ""; }}
-                              className="px-2 py-1 border border-white border-opacity-10 text-slate-400 rounded-lg text-[10px] font-display hover:text-white"
+                              className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
                             </button>
                             <button 
                               type="submit" 
                               disabled={isQuestionUploading}
-                              className="px-3 py-1 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                              className="px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isQuestionUploading ? "Uploading..." : "Save to Questions"}</span>
                               <Icon name="plus" className="w-3 h-3" />
@@ -1724,7 +1724,7 @@ function App() {
 
                       {isQuestionUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${questionUploadProgress}%` }}></div>
+                          <div className="bg-[#5C061C] h-full transition-all duration-300" style={{ width: `${questionUploadProgress}%` }}></div>
                         </div>
                       )}
 
@@ -1900,14 +1900,14 @@ function App() {
                             <button 
                               type="button" 
                               onClick={() => { setSolutionUploadFile(null); if (solutionFileInputRef.current) solutionFileInputRef.current.value = ""; }}
-                              className="px-2 py-1 border border-white border-opacity-10 text-slate-400 rounded-lg text-[10px] font-display hover:text-white"
+                              className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
                             </button>
                             <button 
                               type="submit" 
                               disabled={isSolutionUploading}
-                              className="px-3 py-1 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                              className="px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isSolutionUploading ? "Uploading..." : "Save to Solves"}</span>
                               <Icon name="plus" className="w-3 h-3" />
@@ -1918,7 +1918,7 @@ function App() {
 
                       {isSolutionUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${solutionUploadProgress}%` }}></div>
+                          <div className="bg-[#5C061C] h-full transition-all duration-300" style={{ width: `${solutionUploadProgress}%` }}></div>
                         </div>
                       )}
 
@@ -2101,18 +2101,16 @@ function App() {
                               <button
                                 type="submit"
                                 disabled={isSolvedUploading}
-                                className="px-2.5 py-1 bg-accent-sky hover:bg-sky-600 disabled:opacity-50 text-[10px] font-bold text-white rounded-lg transition-all"
+                                className="px-2.5 py-1 che-submit-btn disabled:opacity-50 text-[10px] font-bold text-white rounded-lg transition-all"
                               >
                                 {isSolvedUploading ? "Saving..." : "Upload"}
                               </button>
                               <button
                                 type="button"
                                 onClick={() => setSolvedUploadFile(null)}
-                                className="p-1 bg-white bg-opacity-5 hover:bg-opacity-10 text-slate-400 hover:text-white rounded-lg transition-all"
+                                className="px-2.5 py-1 che-cancel-btn text-[10px] rounded-lg transition-all font-bold"
                               >
-                                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
+                                Cancel
                               </button>
                             </div>
                           </div>
@@ -2125,7 +2123,7 @@ function App() {
                               <span>{solvedUploadProgress}%</span>
                             </div>
                             <div className="w-full h-1.5 bg-dark-900 rounded-full overflow-hidden border border-white/5">
-                              <div className="h-full bg-gradient-to-r from-accent-sky to-accent-violet rounded-full transition-all duration-300" style={{ width: `${solvedUploadProgress}%` }}></div>
+                              <div className="h-full bg-[#5C061C] rounded-full transition-all duration-300" style={{ width: `${solvedUploadProgress}%` }}></div>
                             </div>
                           </div>
                         )}
@@ -2345,14 +2343,14 @@ function App() {
                             <button 
                               type="button" 
                               onClick={() => { setSlideUploadFile(null); if (slideFileInputRef.current) slideFileInputRef.current.value = ""; }}
-                              className="px-3 py-1.5 border border-white border-opacity-10 text-slate-400 rounded-lg text-xs font-display hover:text-white"
+                              className="px-3 py-1.5 che-cancel-btn rounded-lg text-xs font-display"
                             >
                               Cancel
                             </button>
                             <button 
                               type="submit" 
                               disabled={isSlideUploading}
-                              className="px-4 py-1.5 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
+                              className="px-4 py-1.5 che-submit-btn text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isSlideUploading ? "Uploading..." : "Save to slides"}</span>
                               <Icon name="plus" className="w-3.5 h-3.5" />
@@ -2363,7 +2361,7 @@ function App() {
 
                       {isSlideUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${slideUploadProgress}%` }}></div>
+                          <div className="bg-[#5C061C] h-full transition-all duration-300" style={{ width: `${slideUploadProgress}%` }}></div>
                         </div>
                       )}
 
@@ -2740,14 +2738,14 @@ function App() {
                             <button 
                               type="button" 
                               onClick={() => { setVideoUploadFile(null); if (videoFileInputRef.current) videoFileInputRef.current.value = ""; }}
-                              className="px-3 py-1.5 border border-white border-opacity-10 text-slate-400 rounded-lg text-xs font-display hover:text-white"
+                              className="px-3 py-1.5 che-cancel-btn rounded-lg text-xs font-display"
                             >
                               Cancel
                             </button>
                             <button 
                               type="submit" 
                               disabled={isVideoUploading}
-                              className="px-4 py-1.5 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
+                              className="px-4 py-1.5 che-submit-btn text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isVideoUploading ? "Uploading..." : "Save to videos"}</span>
                               <Icon name="plus" className="w-3.5 h-3.5" />
@@ -2758,7 +2756,7 @@ function App() {
 
                       {isVideoUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${videoUploadProgress}%` }}></div>
+                          <div className="bg-[#5C061C] h-full transition-all duration-300" style={{ width: `${videoUploadProgress}%` }}></div>
                         </div>
                       )}
 

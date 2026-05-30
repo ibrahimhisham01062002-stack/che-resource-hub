@@ -577,6 +577,78 @@
             outline: none !important;
             box-shadow: 0 0 0 2px rgba(42, 8, 69, 0.15) !important;
         }
+
+        /* High-contrast and visible Cancel buttons inside cards/panels */
+        .glass-card button.che-cancel-btn,
+        .glass-panel button.che-cancel-btn,
+        button.che-cancel-btn {
+            background-color: #EAE8F2 !important; /* Soft desaturated lavender-silver background */
+            color: #1E2538 !important; /* Deep slate-black for maximum contrast */
+            border: 1.5px solid #1E2538 !important; /* Solid high-contrast black border */
+            font-weight: 800 !important;
+            transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+        }
+        .glass-card button.che-cancel-btn *,
+        .glass-panel button.che-cancel-btn *,
+        button.che-cancel-btn * {
+            color: #1E2538 !important;
+        }
+        .glass-card button.che-cancel-btn:hover,
+        .glass-panel button.che-cancel-btn:hover,
+        button.che-cancel-btn:hover {
+            background-color: #D6D2E5 !important; /* Deeper soft lavender on hover */
+            color: #5C061C !important; /* Deep maroon text on hover */
+            border-color: #5C061C !important;
+        }
+        .glass-card button.che-cancel-btn:hover *,
+        .glass-panel button.che-cancel-btn:hover *,
+        button.che-cancel-btn:hover * {
+            color: #5C061C !important;
+        }
+
+        /* High-contrast and visible Submit/Save buttons inside cards/panels */
+        .glass-card button.che-submit-btn,
+        .glass-panel button.che-submit-btn,
+        button.che-submit-btn {
+            background-color: #5C061C !important; /* Deep maroon fill */
+            color: #FFFFFF !important; /* Crisp pure white text */
+            border: 1.5px solid #EDEEF5 !important; /* Off-white border outline */
+            font-weight: 800 !important;
+            transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        }
+        .glass-card button.che-submit-btn *,
+        .glass-panel button.che-submit-btn *,
+        button.che-submit-btn * {
+            color: #FFFFFF !important;
+        }
+        .glass-card button.che-submit-btn:hover,
+        .glass-panel button.che-submit-btn:hover,
+        button.che-submit-btn:hover {
+            background-color: #7A0D22 !important; /* Slightly lighter deep maroon hover */
+            border-color: #FFFFFF !important;
+        }
+        .glass-card button.che-submit-btn:hover *,
+        .glass-panel button.che-submit-btn:hover *,
+        button.che-submit-btn:hover * {
+            color: #FFFFFF !important;
+        }
+        /* Active disabled (uploading/saving) state: turns into a deep dark maroon with muted text */
+        .glass-card button.che-submit-btn:disabled,
+        .glass-panel button.che-submit-btn:disabled,
+        button.che-submit-btn:disabled {
+            background-color: #450412 !important; /* Very deep dark maroon background */
+            color: #CBD5E1 !important; /* Muted slate/off-white text */
+            opacity: 0.8 !important;
+            cursor: not-allowed !important;
+            border-color: #8F75B2 !important;
+        }
+        .glass-card button.che-submit-btn:disabled *,
+        .glass-panel button.che-submit-btn:disabled *,
+        button.che-submit-btn:disabled * {
+            color: #CBD5E1 !important;
+        }
     </style>
     
     <!-- React 18 & ReactDOM 18 CDN -->
