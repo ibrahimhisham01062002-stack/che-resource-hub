@@ -208,7 +208,13 @@
         }
         
         /* Dropdowns & Selects Visibility inside Header and Cards */
-        header select, .glass-card select, .glass-panel select {
+        header select {
+            color: #1E2538 !important;
+            background-color: #EDEEF5 !important;
+            border: 1px solid #1E2538 !important; /* High-contrast black outline */
+            font-weight: 800 !important;
+        }
+        .glass-card select, .glass-panel select {
             color: #1E2538 !important;
             background-color: #EDEEF5 !important;
             border: 1px solid #CBD2E1 !important;
@@ -217,7 +223,7 @@
         header select option, .glass-card select option, .glass-panel select option {
             background-color: #EDEEF5 !important;
             color: #1E2538 !important;
-            font-weight: 700 !important;
+            font-weight: 800 !important;
         }
 
         /* Inputs and Placeholders Visibility inside Cards */
@@ -342,7 +348,7 @@
         .glass-card button.che-edit-course-btn * {
             background-color: #FFFFFF !important;
             color: #1E2538 !important; /* Black/dark slate-blue color icon */
-            border: 1px solid #CBD2E1 !important;
+            border: 1px solid #1E2538 !important; /* High-contrast black outline border */
             transition: all 0.2s ease-in-out !important;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
         }
@@ -352,6 +358,15 @@
             background-color: #F2F4F9 !important; /* Soft premium hover */
             color: #6F5294 !important; /* Deep brand violet color on hover */
             border-color: #8F75B2 !important;
+        }
+        
+        /* High contrast and bold typography for course card badges */
+        .glass-card span.che-course-badge {
+            background-color: #F0EBF5 !important;
+            color: #1E2538 !important; /* High-contrast dark charcoal/black text */
+            font-weight: 800 !important; /* Extra bold as requested! */
+            border: 1px solid #1E2538 !important; /* High-contrast black outline border */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
         }
         
         /* Dropdown Options */

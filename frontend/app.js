@@ -1209,7 +1209,7 @@ function App() {
                     <div>
                       {/* Course badge & Edit icon */}
                       <div className="flex items-center justify-between mb-4">
-                        <span className="inline-block px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/10 font-display">
+                        <span className="che-course-badge inline-block px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/10 font-display">
                           {course.code}
                         </span>
                         
