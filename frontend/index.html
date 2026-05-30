@@ -191,6 +191,30 @@
             color: #be123c !important; /* Deep red-rose */
         }
         
+        /* High-contrast visibility override for all download button icons */
+        .glass-card button[title*="Download"] *,
+        .glass-panel button[title*="Download"] *,
+        .glass-card button.hover\:bg-sky-600 *,
+        .glass-panel button.hover\:bg-sky-600 * {
+            color: #0284c7 !important; /* High-contrast Sky Blue */
+        }
+        .glass-card button[title*="Download"]:hover *,
+        .glass-panel button[title*="Download"]:hover * {
+            color: #FFFFFF !important; /* High-contrast white on hover */
+        }
+
+        /* Allow file catalog column and inner min-w-0 details container to expand and use full width */
+        .glass-panel .flex.items-center.space-x-3.min-w-0,
+        .glass-card .flex.items-center.space-x-3.min-w-0 {
+            flex-grow: 1 !important;
+            width: 100% !important;
+        }
+        .glass-panel .min-w-0,
+        .glass-card .min-w-0 {
+            flex-grow: 1 !important;
+            width: 100% !important;
+        }
+        
         /* Translucent lavender/violet tags and badges inside cards */
         .glass-card .bg-sky-500\/20, .glass-panel .bg-sky-500\/20,
         .glass-card .bg-sky-500\/10, .glass-panel .bg-sky-500\/10,
@@ -487,12 +511,15 @@
             font-weight: 800 !important; /* Extra bold */
             background-color: rgba(158, 27, 50, 0.12) !important; /* Beautiful filled solid light maroon color */
             border: 1.5px dashed #9E1B32 !important; /* Maroon dashed border boundary outline */
-            padding: 2.5px 7px !important; /* Tighten padding */
+            padding: 4px 10px !important; /* Elegant roomier padding */
             border-radius: 6px !important;
-            display: inline-block !important;
+            display: block !important; /* Make block-level to occupy the full container area */
+            width: 100% !important; /* Stretch to fill 100% of available card area */
+            box-sizing: border-box !important;
             margin-bottom: 2px !important;
             box-shadow: 0 1px 2.5px rgba(0, 0, 0, 0.05) !important;
             text-shadow: none !important;
+            word-break: break-word !important; /* Prevent long files names from overflowing horizontally */
         }
 
         /* Majestic 3.5px rounded gradient border (Maroon, Deep Violet) for course workspace panels (Image 1) */
