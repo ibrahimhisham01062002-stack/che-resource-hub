@@ -2415,7 +2415,7 @@ function App() {
                               <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => setPreviewFile(file)}
-                                  className="px-2.5 py-1.5 bg-[#E2DCF0] border border-[#2A0845] hover:border-rose-700 hover:text-rose-700 rounded-lg text-[10px] font-display font-extrabold text-[#2A0845]"
+                                  className="che-view-btn"
                                 >
                                   View
                                 </button>
@@ -2808,7 +2808,7 @@ function App() {
                               <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => setPreviewFile(file)}
-                                  className="px-2.5 py-1.5 bg-[#E2DCF0] border border-[#2A0845] hover:border-rose-700 hover:text-rose-700 rounded-lg text-[10px] font-display font-extrabold text-[#2A0845]"
+                                  className="che-view-btn"
                                 >
                                   View
                                 </button>
