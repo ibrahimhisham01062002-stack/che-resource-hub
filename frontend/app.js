@@ -834,8 +834,8 @@ function App() {
   if (loading) {
     return (
       <div className="flex-grow flex items-center justify-center flex-col space-y-4">
-        <div className="w-12 h-12 border-4 border-accent-indigo border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-glow text-accent-indigo font-display font-medium tracking-wide">Loading Academic Space...</p>
+        <div className="w-12 h-12 border-4 border-accent-sky border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-glow text-accent-sky font-display font-medium tracking-wide">Loading Academic Space...</p>
       </div>
     );
   }
@@ -845,7 +845,7 @@ function App() {
       {/* Dynamic Course Editor Modal */}
       {editingCourse && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
-          <div className="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-accent-indigo border-opacity-30">
+          <div className="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-accent-sky border-opacity-30">
             <button 
               onClick={() => setEditingCourse(null)}
               className="absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-slate-300 hover:text-white transition-colors"
@@ -856,7 +856,7 @@ function App() {
             </button>
             
             <div className="space-y-4">
-              <div className="flex items-center space-x-2 text-accent-indigo">
+              <div className="flex items-center space-x-2 text-accent-sky">
                 <Icon name="edit" className="w-5 h-5 animate-pulse" />
                 <h3 className="font-display font-bold text-lg text-white">Edit Course Details</h3>
               </div>
@@ -871,7 +871,7 @@ function App() {
                     required
                     value={editCourseFields.code}
                     onChange={(e) => setEditCourseFields({ ...editCourseFields, code: e.target.value })}
-                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-indigo-500"
+                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-sky-500"
                   />
                 </div>
                 
@@ -884,7 +884,7 @@ function App() {
                     required
                     value={editCourseFields.title}
                     onChange={(e) => setEditCourseFields({ ...editCourseFields, title: e.target.value })}
-                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-indigo-500"
+                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-sky-500"
                   />
                 </div>
                 
@@ -896,7 +896,7 @@ function App() {
                     rows={3}
                     value={editCourseFields.description}
                     onChange={(e) => setEditCourseFields({ ...editCourseFields, description: e.target.value })}
-                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-indigo-500 resize-none"
+                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-sky-500 resize-none"
                   />
                 </div>
                 
@@ -915,7 +915,7 @@ function App() {
                   <button
                     type="submit"
                     disabled={isSavingCourseEdit}
-                    className="w-1/2 py-2.5 bg-gradient-to-r from-accent-indigo to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-indigo-500/25 transition-transform hover:scale-[1.02]"
+                    className="w-1/2 py-2.5 bg-gradient-to-r from-accent-sky to-accent-teal text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02]"
                   >
                     {isSavingCourseEdit ? "Saving..." : "Save Changes"}
                   </button>
@@ -1014,7 +1014,7 @@ function App() {
             <img 
               src="che_hub_logo.png" 
               alt="ChE StudySpace Logo" 
-              className="w-9 h-9 md:w-10 md:h-10 rounded-xl shadow-lg shadow-indigo-500/20 object-cover flex-shrink-0 border border-white/10" 
+              className="w-9 h-9 md:w-10 md:h-10 rounded-xl shadow-lg shadow-sky-500/20 object-cover flex-shrink-0 border border-white/10" 
             />
             <div className="min-w-0">
               <h1 className="font-display font-bold text-base md:text-lg tracking-wide text-glow">ChE <span className="gradient-text">StudySpace</span></h1>
@@ -1044,7 +1044,7 @@ function App() {
             {/* Resources Loaded stat */}
             <div className="text-left md:text-right">
               <span className="text-slate-400 block text-[9px] md:text-[11px] font-semibold tracking-wider uppercase">Resources Loaded</span>
-              <span className="font-display font-bold text-xs md:text-sm text-accent-indigo">{totalFilesCount} files</span>
+              <span className="font-display font-bold text-xs md:text-sm text-accent-sky">{totalFilesCount} files</span>
             </div>
             
             <div className="h-6 md:h-8 w-px bg-white bg-opacity-10"></div>
@@ -1084,7 +1084,7 @@ function App() {
                     setSelectedTerm(trm);
                   }
                 }}
-                className="glass-input px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-indigo-500 border border-white/10"
+                className="glass-input px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-sky-500 border border-white/10"
               >
                 <option value="">All Levels & Terms</option>
                 <option value="Level-1, Term-1">Level 1, Term 1</option>
@@ -1126,7 +1126,7 @@ function App() {
                   placeholder="Search active courses..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:border-indigo-500"
+                  className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:border-sky-500"
                 />
                 <Icon name="search" className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
               </div>
@@ -1136,10 +1136,10 @@ function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
               {/* Inline Course Creator Card */}
               {selectedLevel && selectedTerm && (
-                <div className="glass-panel border-dashed border-2 border-indigo-500/20 rounded-2xl p-6 flex flex-col justify-between min-h-[220px] bg-indigo-950/5 relative overflow-hidden group">
+                <div className="glass-panel border-dashed border-2 border-sky-500/20 rounded-2xl p-6 flex flex-col justify-between min-h-[220px] bg-sky-950/5 relative overflow-hidden group">
                   <div className="z-10 w-full space-y-3">
-                    <div className="flex items-center space-x-2 text-indigo-300">
-                      <Icon name="plus" className="w-5 h-5 text-accent-indigo animate-pulse" />
+                    <div className="flex items-center space-x-2 text-sky-300">
+                      <Icon name="plus" className="w-5 h-5 text-accent-sky animate-pulse" />
                       <span className="font-display font-semibold text-xs uppercase tracking-wider">Create Course Segment</span>
                     </div>
                     
@@ -1175,7 +1175,7 @@ function App() {
                       <button
                         type="submit"
                         disabled={isCreatingCourse}
-                        className="w-full py-2 bg-gradient-to-r from-accent-indigo to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-indigo-500/25 transition-transform hover:scale-[1.02] flex items-center justify-center space-x-1"
+                        className="w-full py-2 bg-gradient-to-r from-accent-sky to-accent-teal text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02] flex items-center justify-center space-x-1"
                       >
                         <span>{isCreatingCourse ? "Adding Course..." : "Add Course"}</span>
                         <Icon name="chevronRight" className="w-3.5 h-3.5" />
@@ -1189,8 +1189,8 @@ function App() {
 
                 // Generates dynamic aesthetic gradient backgrounds by course code
                 const gradients = [
-                  "from-accent-indigo to-indigo-900/30",
-                  "from-accent-violet to-violet-900/30",
+                  "from-accent-sky to-sky-900/30",
+                  "from-accent-teal to-teal-900/30",
                   "from-accent-teal to-teal-900/30",
                   "from-accent-blue to-blue-900/30",
                   "from-accent-rose to-rose-900/30",
@@ -1209,7 +1209,7 @@ function App() {
                     <div>
                       {/* Course badge & Edit icon */}
                       <div className="flex items-center justify-between mb-4">
-                        <span className="inline-block px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/10 font-display">
+                        <span className="inline-block px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/10 font-display">
                           {course.code}
                         </span>
                         
@@ -1219,14 +1219,14 @@ function App() {
                             e.stopPropagation();
                             handleStartEditCourse(course);
                           }}
-                          className="p-1.5 rounded-lg bg-dark-900 border border-white/5 hover:border-accent-indigo hover:text-accent-indigo text-slate-500 transition-colors relative z-10"
+                          className="p-1.5 rounded-lg bg-dark-900 border border-white/5 hover:border-accent-sky hover:text-accent-sky text-slate-500 transition-colors relative z-10"
                           title="Edit Course Details"
                         >
                           <Icon name="edit" className="w-3.5 h-3.5" />
                         </button>
                       </div>
                       {/* Course title */}
-                      <h3 className="font-display font-bold text-xl text-white group-hover:text-accent-indigo transition-colors line-clamp-1">
+                      <h3 className="font-display font-bold text-xl text-white group-hover:text-accent-sky transition-colors line-clamp-1">
                         {course.title}
                       </h3>
                       {/* Course description */}
@@ -1238,10 +1238,10 @@ function App() {
                     {/* Bottom Stats details */}
                     <div className="flex items-center justify-between border-t border-white border-opacity-5 pt-4 mt-6">
                       <div className="flex items-center space-x-2 text-xs text-slate-400">
-                        <Icon name="fileText" className="w-3.5 h-3.5 text-accent-indigo" />
+                        <Icon name="fileText" className="w-3.5 h-3.5 text-accent-sky" />
                         <span>{course.fileCount} resources</span>
                       </div>
-                      <div className="flex items-center text-xs text-accent-indigo font-medium group-hover:translate-x-1 transition-transform">
+                      <div className="flex items-center text-xs text-accent-sky font-medium group-hover:translate-x-1 transition-transform">
                         <span>Enter Space</span>
                         <Icon name="chevronRight" className="w-3.5 h-3.5 ml-1" />
                       </div>
@@ -1274,7 +1274,7 @@ function App() {
                 </button>
                 <div>
                   <div className="flex items-center space-x-3">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-accent-indigo/20 text-accent-indigo border border-accent-indigo/10 uppercase tracking-widest font-display">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-accent-sky/20 text-accent-sky border border-accent-sky/10 uppercase tracking-widest font-display">
                       {activeCourse.code}
                     </span>
                     <h2 className="font-display font-extrabold text-2xl md:text-3xl text-glow text-white">
@@ -1291,35 +1291,35 @@ function App() {
               <div className="flex bg-dark-950 p-1 rounded-xl border border-white border-opacity-5 flex-wrap gap-1 self-start md:self-center">
                 <button
                   onClick={() => { setPrimarySection("books"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'books' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'books' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="book" className="w-3.5 h-3.5" />
                   <span>Books</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("solutions"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="edit" className="w-3.5 h-3.5" />
                   <span>Solution Manual</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("slides"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="layers" className="w-3.5 h-3.5" />
                   <span>slides</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("questions"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'questions' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'questions' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="fileText" className="w-3.5 h-3.5" />
                   <span>Term-Final Question</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("solved"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solved' ? 'bg-gradient-to-tr from-accent-indigo to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solved' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="check" className="w-3.5 h-3.5" />
                   <span>Term-Final Solved</span>
@@ -1339,7 +1339,7 @@ function App() {
                     <div className="glass-panel p-6 rounded-2xl space-y-4">
                       <div className="flex items-center justify-between">
                         <h3 className="font-display font-bold text-base text-white">Reference Books</h3>
-                        <span className="text-[10px] text-accent-indigo font-bold bg-accent-indigo/10 px-2 py-0.5 rounded border border-accent-indigo/10">
+                        <span className="text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10">
                           {booksList.length} volumes
                         </span>
                       </div>
@@ -1362,10 +1362,10 @@ function App() {
                         />
                         <label 
                           htmlFor="book-upload-input" 
-                          className="glass-panel border-dashed border-2 border-indigo-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500/50 transition-colors group-hover:bg-indigo-950/10 block"
+                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
                         >
-                          <Icon name="upload" className="w-6 h-6 text-accent-indigo mb-2 group-hover:scale-110 transition-transform" />
-                          <p className="font-display font-semibold text-[10px] text-indigo-300 text-center px-2">
+                          <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
                             {bookUploadFile ? `Selected: ${bookUploadFile.name}` : "Upload reference textbooks or manuals directly."}
                           </p>
                           <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
@@ -1383,7 +1383,7 @@ function App() {
                             <button 
                               type="submit" 
                               disabled={isBookUploading}
-                              className="px-3 py-1 bg-accent-indigo hover:bg-indigo-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                              className="px-3 py-1 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isBookUploading ? "Uploading..." : "Save to Books"}</span>
                               <Icon name="plus" className="w-3 h-3" />
@@ -1394,7 +1394,7 @@ function App() {
 
                       {isBookUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-indigo to-accent-violet h-full transition-all duration-300" style={{ width: `${bookUploadProgress}%` }}></div>
+                          <div className="bg-gradient-to-r from-accent-sky to-accent-teal h-full transition-all duration-300" style={{ width: `${bookUploadProgress}%` }}></div>
                         </div>
                       )}
 
@@ -1424,10 +1424,10 @@ function App() {
                             <div 
                               key={file.index}
                               onClick={() => setPreviewFile(file)}
-                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-indigo-950/5 cursor-pointer ${isPreviewing ? 'border-accent-indigo border-opacity-40 bg-indigo-950/10' : ''}`}
+                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
-                                <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-accent-indigo flex-shrink-0">
+                                <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name="bookOpen" className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
@@ -1450,7 +1450,7 @@ function App() {
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
                                   download
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-indigo-600 rounded-lg text-slate-400 hover:text-white"
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
                                   title="Download"
                                 >
                                   <Icon name="download" className="w-3.5 h-3.5" />
@@ -1472,10 +1472,10 @@ function App() {
                   {/* Right Column: Dynamic Split Screen PDF Viewer */}
                   <div className="lg:col-span-2">
                     {previewFile ? (
-                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-indigo">
+                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky">
                         <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
                           <div className="flex items-center space-x-2">
-                            <Icon name="fileText" className="w-5 h-5 text-accent-indigo" />
+                            <Icon name="fileText" className="w-5 h-5 text-accent-sky" />
                             <h4 className="font-display font-bold text-sm text-white line-clamp-1">
                               Reading: {previewFile.name}
                             </h4>
@@ -1491,7 +1491,7 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
                             <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                              <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
                               <p className="text-xs font-semibold">Streaming textbook secure from Telegram cloud...</p>
                             </div>
                           ) : previewUrl ? (
@@ -1503,14 +1503,14 @@ function App() {
                           ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
                               <p>Failed to load PDF preview.</p>
-                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
                             </div>
                           )}
                         </div>
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
-                        <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-accent-indigo border border-indigo-500/20 mb-2">
+                        <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2">
                           <Icon name="bookOpen" className="w-8 h-8" />
                         </div>
                         <h4 className="font-display font-bold text-lg text-white">Distraction-Free Textbook Reader</h4>
@@ -1533,7 +1533,7 @@ function App() {
                     <div className="glass-panel p-6 rounded-2xl space-y-4">
                       <div className="flex items-center justify-between">
                         <h3 className="font-display font-bold text-base text-white">Term-Final Questions</h3>
-                        <span className="text-[10px] text-accent-indigo font-bold bg-accent-indigo/10 px-2 py-0.5 rounded border border-accent-indigo/10">
+                        <span className="text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10">
                           {questionsList.length} papers
                         </span>
                       </div>
@@ -1556,10 +1556,10 @@ function App() {
                         />
                         <label 
                           htmlFor="question-upload-input" 
-                          className="glass-panel border-dashed border-2 border-indigo-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500/50 transition-colors group-hover:bg-indigo-950/10 block"
+                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
                         >
-                          <Icon name="upload" className="w-6 h-6 text-accent-indigo mb-2 group-hover:scale-110 transition-transform" />
-                          <p className="font-display font-semibold text-[10px] text-indigo-300 text-center px-2">
+                          <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
                             {questionUploadFile ? `Selected: ${questionUploadFile.name}` : "Upload term-final exam question papers directly."}
                           </p>
                           <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
@@ -1577,7 +1577,7 @@ function App() {
                             <button 
                               type="submit" 
                               disabled={isQuestionUploading}
-                              className="px-3 py-1 bg-accent-indigo hover:bg-indigo-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                              className="px-3 py-1 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isQuestionUploading ? "Uploading..." : "Save to Questions"}</span>
                               <Icon name="plus" className="w-3 h-3" />
@@ -1588,7 +1588,7 @@ function App() {
 
                       {isQuestionUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-indigo to-accent-violet h-full transition-all duration-300" style={{ width: `${questionUploadProgress}%` }}></div>
+                          <div className="bg-gradient-to-r from-accent-sky to-accent-teal h-full transition-all duration-300" style={{ width: `${questionUploadProgress}%` }}></div>
                         </div>
                       )}
 
@@ -1618,10 +1618,10 @@ function App() {
                             <div 
                               key={file.index}
                               onClick={() => setPreviewFile(file)}
-                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-indigo-950/5 cursor-pointer ${isPreviewing ? 'border-accent-indigo border-opacity-40 bg-indigo-950/10' : ''}`}
+                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
-                                <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-accent-indigo flex-shrink-0">
+                                <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name="fileText" className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
@@ -1644,7 +1644,7 @@ function App() {
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
                                   download
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-indigo-600 rounded-lg text-slate-400 hover:text-white"
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
                                   title="Download"
                                 >
                                   <Icon name="download" className="w-3.5 h-3.5" />
@@ -1666,10 +1666,10 @@ function App() {
                   {/* Right Column: Dynamic Split Screen PDF Viewer */}
                   <div className="lg:col-span-2">
                     {previewFile ? (
-                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-indigo">
+                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky">
                         <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
                           <div className="flex items-center space-x-2">
-                            <Icon name="fileText" className="w-5 h-5 text-accent-indigo" />
+                            <Icon name="fileText" className="w-5 h-5 text-accent-sky" />
                             <h4 className="font-display font-bold text-sm text-white line-clamp-1">
                               Reading: {previewFile.name}
                             </h4>
@@ -1685,7 +1685,7 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
                             <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                              <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
                               <p className="text-xs font-semibold">Streaming lecture slides secure from Telegram...</p>
                             </div>
                           ) : previewUrl ? (
@@ -1697,14 +1697,14 @@ function App() {
                           ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
                               <p>Failed to load PDF preview.</p>
-                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
                             </div>
                           )}
                         </div>
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
-                        <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-accent-indigo border border-indigo-500/20 mb-2">
+                        <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2">
                           <Icon name="fileText" className="w-8 h-8" />
                         </div>
                         <h4 className="font-display font-bold text-lg text-white">Term-Final Questions Reader</h4>
@@ -1727,7 +1727,7 @@ function App() {
                     <div className="glass-panel p-6 rounded-2xl space-y-4">
                       <div className="flex items-center justify-between">
                         <h3 className="font-display font-bold text-base text-white">Solution Manuals</h3>
-                        <span className="text-[10px] text-accent-indigo font-bold bg-accent-indigo/10 px-2 py-0.5 rounded border border-accent-indigo/10">
+                        <span className="text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10">
                           {solutionsList.length} manuals
                         </span>
                       </div>
@@ -1750,10 +1750,10 @@ function App() {
                         />
                         <label 
                           htmlFor="solution-upload-input" 
-                          className="glass-panel border-dashed border-2 border-indigo-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500/50 transition-colors group-hover:bg-indigo-950/10 block"
+                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
                         >
-                          <Icon name="upload" className="w-6 h-6 text-accent-indigo mb-2 group-hover:scale-110 transition-transform" />
-                          <p className="font-display font-semibold text-[10px] text-indigo-300 text-center px-2">
+                          <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
                             {solutionUploadFile ? `Selected: ${solutionUploadFile.name}` : "Upload exam solutions or step-by-step guides directly."}
                           </p>
                           <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
@@ -1771,7 +1771,7 @@ function App() {
                             <button 
                               type="submit" 
                               disabled={isSolutionUploading}
-                              className="px-3 py-1 bg-accent-indigo hover:bg-indigo-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                              className="px-3 py-1 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isSolutionUploading ? "Uploading..." : "Save to Solves"}</span>
                               <Icon name="plus" className="w-3 h-3" />
@@ -1782,7 +1782,7 @@ function App() {
 
                       {isSolutionUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-indigo to-accent-violet h-full transition-all duration-300" style={{ width: `${solutionUploadProgress}%` }}></div>
+                          <div className="bg-gradient-to-r from-accent-sky to-accent-teal h-full transition-all duration-300" style={{ width: `${solutionUploadProgress}%` }}></div>
                         </div>
                       )}
 
@@ -1812,10 +1812,10 @@ function App() {
                             <div 
                               key={file.index}
                               onClick={() => setPreviewFile(file)}
-                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-indigo-950/5 cursor-pointer ${isPreviewing ? 'border-accent-indigo border-opacity-40 bg-indigo-950/10' : ''}`}
+                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
-                                <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-accent-indigo flex-shrink-0">
+                                <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name="edit" className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
@@ -1838,7 +1838,7 @@ function App() {
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
                                   download
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-indigo-600 rounded-lg text-slate-400 hover:text-white"
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
                                   title="Download"
                                 >
                                   <Icon name="download" className="w-3.5 h-3.5" />
@@ -1860,10 +1860,10 @@ function App() {
                   {/* Right Column: Dynamic Split Screen PDF Viewer */}
                   <div className="lg:col-span-2">
                     {previewFile ? (
-                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-indigo">
+                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky">
                         <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
                           <div className="flex items-center space-x-2">
-                            <Icon name="fileText" className="w-5 h-5 text-accent-indigo" />
+                            <Icon name="fileText" className="w-5 h-5 text-accent-sky" />
                             <h4 className="font-display font-bold text-sm text-white line-clamp-1">
                               Reading: {previewFile.name}
                             </h4>
@@ -1879,7 +1879,7 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
                             <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                              <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
                               <p className="text-xs font-semibold">Streaming exam question paper secure from Telegram...</p>
                             </div>
                           ) : previewUrl ? (
@@ -1891,14 +1891,14 @@ function App() {
                           ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
                               <p>Failed to load PDF preview.</p>
-                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
                             </div>
                           )}
                         </div>
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
-                        <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-accent-indigo border border-indigo-500/20 mb-2">
+                        <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2">
                           <Icon name="edit" className="w-8 h-8" />
                         </div>
                         <h4 className="font-display font-bold text-lg text-white">Solution Manuals Reader</h4>
@@ -1921,7 +1921,7 @@ function App() {
                     <div className="glass-panel p-6 rounded-2xl space-y-4">
                       <div className="flex items-center justify-between">
                         <h3 className="font-display font-bold text-base text-white">Term-Final Solved</h3>
-                        <span className="text-[10px] text-accent-indigo font-bold bg-accent-indigo/10 px-2 py-0.5 rounded border border-accent-indigo/10">
+                        <span className="text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10">
                           {solvedList.length} solved papers
                         </span>
                       </div>
@@ -1944,9 +1944,9 @@ function App() {
                         />
                         <div
                           onClick={() => checkAuthAndExecute(() => solvedFileInputRef.current?.click())}
-                          className="border-2 border-dashed border-white border-opacity-10 rounded-xl p-4 text-center cursor-pointer transition-all hover:border-accent-indigo hover:bg-white/5 flex flex-col items-center justify-center space-y-2"
+                          className="border-2 border-dashed border-white border-opacity-10 rounded-xl p-4 text-center cursor-pointer transition-all hover:border-accent-sky hover:bg-white/5 flex flex-col items-center justify-center space-y-2"
                         >
-                          <div className="p-2 rounded-lg bg-indigo-500/10 text-accent-indigo">
+                          <div className="p-2 rounded-lg bg-sky-500/10 text-accent-sky">
                             <Icon name="upload" className="w-5 h-5 animate-pulse" />
                           </div>
                           <div>
@@ -1965,7 +1965,7 @@ function App() {
                               <button
                                 type="submit"
                                 disabled={isSolvedUploading}
-                                className="px-2.5 py-1 bg-accent-indigo hover:bg-indigo-600 disabled:opacity-50 text-[10px] font-bold text-white rounded-lg transition-all"
+                                className="px-2.5 py-1 bg-accent-sky hover:bg-sky-600 disabled:opacity-50 text-[10px] font-bold text-white rounded-lg transition-all"
                               >
                                 {isSolvedUploading ? "Saving..." : "Upload"}
                               </button>
@@ -1989,7 +1989,7 @@ function App() {
                               <span>{solvedUploadProgress}%</span>
                             </div>
                             <div className="w-full h-1.5 bg-dark-900 rounded-full overflow-hidden border border-white/5">
-                              <div className="h-full bg-gradient-to-r from-accent-indigo to-accent-violet rounded-full transition-all duration-300" style={{ width: `${solvedUploadProgress}%` }}></div>
+                              <div className="h-full bg-gradient-to-r from-accent-sky to-accent-teal rounded-full transition-all duration-300" style={{ width: `${solvedUploadProgress}%` }}></div>
                             </div>
                           </div>
                         )}
@@ -2015,10 +2015,10 @@ function App() {
                               <div
                                 key={file.index}
                                 onClick={() => setPreviewFile(file)}
-                                className={`group p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${isCurrentlyPreviewing ? 'bg-indigo-500/10 border-accent-indigo' : 'bg-dark-900/50 border-white/5 hover:border-white/10 hover:bg-dark-900'}`}
+                                className={`group p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${isCurrentlyPreviewing ? 'bg-sky-500/10 border-accent-sky' : 'bg-dark-900/50 border-white/5 hover:border-white/10 hover:bg-dark-900'}`}
                               >
                                 <div className="flex items-center space-x-3 min-w-0">
-                                  <div className="p-2 rounded-lg bg-indigo-500/10 text-accent-indigo group-hover:scale-110 transition-transform">
+                                  <div className="p-2 rounded-lg bg-sky-500/10 text-accent-sky group-hover:scale-110 transition-transform">
                                     <Icon name="check" className="w-4 h-4" />
                                   </div>
                                   <div className="min-w-0">
@@ -2066,7 +2066,7 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
                             <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                              <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
                               <p className="text-xs font-semibold">Streaming solved guide secure from Telegram...</p>
                             </div>
                           ) : previewUrl ? (
@@ -2078,14 +2078,14 @@ function App() {
                           ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
                               <p>Failed to load PDF preview.</p>
-                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
                             </div>
                           )}
                         </div>
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
-                        <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-accent-indigo border border-indigo-500/20 mb-2">
+                        <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2">
                           <Icon name="check" className="w-8 h-8" />
                         </div>
                         <h4 className="font-display font-bold text-lg text-white">Term-Final Solved Reader</h4>
@@ -2123,11 +2123,11 @@ function App() {
                       {/* Virtual Folders Section */}
                       <div className="space-y-3 pb-4 border-b border-white border-opacity-5">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-display font-bold text-indigo-400 tracking-wider uppercase">Folders</span>
+                          <span className="text-[10px] font-display font-bold text-sky-400 tracking-wider uppercase">Folders</span>
                           <button
                             type="button"
                             onClick={handleCreateFolder}
-                            className="flex items-center space-x-1 text-[10px] text-indigo-300 hover:text-white font-display font-semibold transition-all bg-indigo-500/10 hover:bg-indigo-500/20 px-2.5 py-1 rounded-md border border-indigo-500/20"
+                            className="flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2.5 py-1 rounded-md border border-sky-500/20"
                           >
                             <Icon name="folderPlus" className="w-3 h-3" />
                             <span>Create Folder</span>
@@ -2143,17 +2143,17 @@ function App() {
                                 onClick={() => { setCurrentFolder(folder); setPreviewFile(null); }}
                                 className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-display font-semibold transition-all border ${
                                   isSelected 
-                                    ? 'bg-gradient-to-r from-accent-indigo to-accent-violet text-white border-accent-indigo border-opacity-40 shadow-md shadow-indigo-950/40' 
-                                    : 'bg-dark-900 border-white border-opacity-5 text-slate-400 hover:text-slate-200 hover:bg-indigo-950/10'
+                                    ? 'bg-gradient-to-r from-accent-sky to-accent-teal text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' 
+                                    : 'bg-dark-900 border-white border-opacity-5 text-slate-400 hover:text-slate-200 hover:bg-sky-950/10'
                                 }`}
                               >
-                                <Icon name="folder" className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-indigo-400/70'}`} />
+                                <Icon name="folder" className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`} />
                                 <span>{folder}</span>
                                 {folder !== "Root" && (
                                   <div className="flex items-center space-x-1 ml-1.5">
                                     <span 
                                       onClick={(e) => handleRenameFolder(e, folder)}
-                                      className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-indigo-300'}`}
+                                      className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-sky-300'}`}
                                       title={`Rename ${folder}`}
                                     >
                                       <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -2195,10 +2195,10 @@ function App() {
                         />
                         <label 
                           htmlFor="file-upload-input" 
-                          className="glass-panel border-dashed border-2 border-indigo-500/20 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500/50 transition-colors group-hover:bg-indigo-950/10 block"
+                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
                         >
-                          <Icon name="upload" className="w-8 h-8 text-accent-indigo mb-3 group-hover:scale-110 transition-transform" />
-                          <p className="font-display font-semibold text-xs text-indigo-300 text-center max-w-lg px-4">
+                          <Icon name="upload" className="w-8 h-8 text-accent-sky mb-3 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-xs text-sky-300 text-center max-w-lg px-4">
                             {slideUploadFile ? `Selected: ${slideUploadFile.name}` : "Upload slides, manuals, MATLAB/HYSYS scripts, or any other resources that might be helpful to the course."}
                           </p>
                           <p className="text-[10px] text-slate-500 mt-1">Drag and drop or click to browse</p>
@@ -2216,7 +2216,7 @@ function App() {
                             <button 
                               type="submit" 
                               disabled={isSlideUploading}
-                              className="px-4 py-1.5 bg-accent-indigo hover:bg-indigo-600 text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
+                              className="px-4 py-1.5 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isSlideUploading ? "Uploading..." : "Save to slides"}</span>
                               <Icon name="plus" className="w-3.5 h-3.5" />
@@ -2227,7 +2227,7 @@ function App() {
 
                       {isSlideUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-indigo to-accent-violet h-full transition-all duration-300" style={{ width: `${slideUploadProgress}%` }}></div>
+                          <div className="bg-gradient-to-r from-accent-sky to-accent-teal h-full transition-all duration-300" style={{ width: `${slideUploadProgress}%` }}></div>
                         </div>
                       )}
 
@@ -2244,10 +2244,10 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              className={`glass-panel border-opacity-5 p-3 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-indigo-950/5 ${isPreviewing ? 'border-accent-indigo border-opacity-40 bg-indigo-950/10' : ''}`}
+                              className={`glass-panel border-opacity-5 p-3 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
-                                <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-accent-indigo flex-shrink-0">
+                                <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name={(file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf') ? 'fileText' : 'layers'} className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
@@ -2263,7 +2263,7 @@ function App() {
                               <div className="flex items-center space-x-2">
                                 <button 
                                   onClick={() => setPreviewFile(file)}
-                                  className="px-2.5 py-1.5 bg-dark-900 border border-white border-opacity-5 hover:border-accent-indigo hover:text-accent-indigo rounded-lg text-[10px] font-display font-semibold text-slate-300"
+                                  className="px-2.5 py-1.5 bg-dark-900 border border-white border-opacity-5 hover:border-accent-sky hover:text-accent-sky rounded-lg text-[10px] font-display font-semibold text-slate-300"
                                 >
                                   View
                                 </button>
@@ -2277,7 +2277,7 @@ function App() {
                                 <a 
                                   href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
                                   download
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-indigo-600 rounded-lg text-slate-400 hover:text-white"
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
                                   title="Download"
                                 >
                                   <Icon name="download" className="w-3.5 h-3.5" />
@@ -2297,10 +2297,10 @@ function App() {
 
                     {/* Interactive File Preview Pane */}
                     {previewFile && (
-                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-indigo">
+                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky">
                         <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
                           <div className="flex items-center space-x-2">
-                            <Icon name="fileText" className="w-5 h-5 text-accent-indigo" />
+                            <Icon name="fileText" className="w-5 h-5 text-accent-sky" />
                             <h4 className="font-display font-bold text-sm text-white line-clamp-1">
                               Preview: {previewFile.name}
                             </h4>
@@ -2317,7 +2317,7 @@ function App() {
                           <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "450px" }}>
                             {previewLoading ? (
                               <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                                <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                                <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
                                 <p className="text-xs font-semibold">Streaming resource secure from Telegram...</p>
                               </div>
                             ) : previewUrl ? (
@@ -2329,7 +2329,7 @@ function App() {
                             ) : (
                               <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
                                 <p>Failed to load PDF preview.</p>
-                                <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                                <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
                               </div>
                             )}
                           </div>
@@ -2345,7 +2345,7 @@ function App() {
                             <a 
                               href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
                               download
-                              className="inline-block px-4 py-2 bg-accent-indigo hover:bg-indigo-600 transition-colors text-white font-display font-semibold text-xs rounded-lg mt-2"
+                              className="inline-block px-4 py-2 bg-accent-sky hover:bg-sky-600 transition-colors text-white font-display font-semibold text-xs rounded-lg mt-2"
                             >
                               Download Asset
                             </a>
@@ -2410,7 +2410,7 @@ function App() {
                           <button 
                             type="submit"
                             disabled={isSavingLink}
-                            className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-display font-semibold transition-colors flex items-center justify-center space-x-1"
+                            className="w-full py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-display font-semibold transition-colors flex items-center justify-center space-x-1"
                           >
                             <span>Add Reference</span>
                             <Icon name="plus" className="w-3.5 h-3.5" />
@@ -2449,7 +2449,7 @@ function App() {
                                   onClick={() => setPlayingVideoUrl(embedUrl)}
                                   className="cursor-pointer relative group/video rounded-lg overflow-hidden border border-white border-opacity-10 bg-dark-950 aspect-video w-full flex items-center justify-center"
                                 >
-                                  <div className="absolute inset-0 bg-gradient-to-tr from-rose-900/40 to-indigo-900/30 group-hover/video:opacity-80 transition-opacity flex flex-col justify-end p-2.5">
+                                  <div className="absolute inset-0 bg-gradient-to-tr from-rose-900/40 to-sky-900/30 group-hover/video:opacity-80 transition-opacity flex flex-col justify-end p-2.5">
                                     <span className="text-[9px] text-rose-300 font-semibold tracking-wide flex items-center space-x-1">
                                       <svg className="w-3 h-3 fill-rose-500 animate-pulse" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
                                       <span>Watch on Hub player</span>

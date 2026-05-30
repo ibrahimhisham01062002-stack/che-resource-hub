@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChE Study Hub | Chemical Engineering Resource Space</title>
+    <link rel="icon" type="image/png" href="che_hub_logo.png">
     
     <!-- Google Fonts: Inter for reading body, Outfit for headers -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,11 +27,10 @@
                             950: '#020617',
                         },
                         accent: {
-                            indigo: '#6366f1',
-                            violet: '#8b5cf6',
+                            sky: '#38bdf8',
+                            teal: '#2dd4bf',
                             rose: '#f43f5e',
-                            teal: '#14b8a6',
-                            blue: '#3b82f6',
+                            blue: '#60a5fa',
                         }
                     },
                     fontFamily: {
@@ -49,7 +49,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at top right, #1e1b4b, #020617 60%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: #f8fafc;
             overflow-x: hidden;
         }
@@ -63,11 +63,11 @@
             background: rgba(15, 23, 42, 0.5);
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.3);
+            background: rgba(56, 189, 248, 0.3);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(99, 102, 241, 0.6);
+            background: rgba(56, 189, 248, 0.6);
         }
         
         /* Glassmorphism Classes */
@@ -86,9 +86,9 @@
         }
         .glass-card:hover {
             background: rgba(30, 41, 59, 0.45);
-            border-color: rgba(99, 102, 241, 0.3);
+            border-color: rgba(56, 189, 248, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(56, 189, 248, 0.1);
         }
         .glass-input {
             background: rgba(15, 23, 42, 0.6);
@@ -96,36 +96,36 @@
             color: #f8fafc;
         }
         .glass-input:focus {
-            border-color: rgba(99, 102, 241, 0.5);
+            border-color: rgba(56, 189, 248, 0.5);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
         }
         
         /* Premium Gradients */
         .text-glow {
-            text-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+            text-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
         }
         .gradient-text {
-            background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #2dd4bf 0%, #38bdf8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
         /* Markdown Styling overrides */
-        .prose h1 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 700; color: #a5b4fc; margin-top: 1.5rem; margin-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.3rem;}
-        .prose h2 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 600; color: #c7d2fe; margin-top: 1.2rem; margin-bottom: 0.6rem; }
-        .prose h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: #e0e7ff; margin-top: 1rem; margin-bottom: 0.4rem; }
+        .prose h1 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 700; color: #7dd3fc; margin-top: 1.5rem; margin-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.3rem;}
+        .prose h2 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 600; color: #bae6fd; margin-top: 1.2rem; margin-bottom: 0.6rem; }
+        .prose h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: #e0f2fe; margin-top: 1rem; margin-bottom: 0.4rem; }
         .prose p { margin-bottom: 0.8rem; line-height: 1.6; color: #cbd5e1; }
         .prose ul, .prose ol { margin-left: 1.5rem; margin-bottom: 0.8rem; list-style-type: disc; }
         .prose li { margin-bottom: 0.3rem; color: #cbd5e1; }
         .prose table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem; background: rgba(15, 23, 42, 0.3); border-radius: 6px; overflow: hidden; }
-        .prose th { background: rgba(99, 102, 241, 0.2); padding: 0.6rem; font-family: 'Outfit', sans-serif; text-align: left; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); }
+        .prose th { background: rgba(56, 189, 248, 0.15); padding: 0.6rem; font-family: 'Outfit', sans-serif; text-align: left; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); }
         .prose td { padding: 0.6rem; border: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; }
         .prose tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
-        .prose code { background: rgba(99, 102, 241, 0.15); color: #c7d2fe; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+        .prose code { background: rgba(56, 189, 248, 0.15); color: #bae6fd; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
         .prose pre { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
         .prose pre code { background: transparent; color: #e2e8f0; padding: 0; }
-        .prose blockquote { border-left: 4px solid #6366f1; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #94a3b8; }
+        .prose blockquote { border-left: 4px solid #38bdf8; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #94a3b8; }
     </style>
     
     <!-- React 18 & ReactDOM 18 CDN -->
