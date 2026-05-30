@@ -209,9 +209,9 @@
         
         /* Dropdowns & Selects Visibility inside Header and Cards */
         header select {
-            color: #1E2538 !important;
-            background-color: #EDEEF5 !important;
-            border: 1.5px solid #1E2538 !important; /* Solid black outline border */
+            color: #FFFFFF !important;
+            background-color: #1C1F26 !important; /* Dark ash background */
+            border: 1.5px solid rgba(255, 255, 255, 0.15) !important; /* Translucent light outline */
             font-weight: 800 !important;
         }
         .glass-card select, .glass-panel select {
@@ -306,17 +306,24 @@
             -webkit-text-fill-color: transparent;
         }
         
-        /* Header dividers */
+        /* Header dividers (translucent white lines inside the dark ash bar) */
         header div.bg-white, header div.bg-white.bg-opacity-10 {
-            background-color: #CBD2E1 !important;
+            background-color: rgba(255, 255, 255, 0.15) !important;
             opacity: 1 !important;
         }
         
-        /* Brand text "ChE" in Header */
+        /* Brand text "ChE" in Header (crisp white against dark ash) */
         .che-brand-text {
-            color: #1E2538 !important; /* Deep professional slate-black */
+            color: #FFFFFF !important; 
             font-weight: 800 !important;
             text-shadow: none !important;
+        }
+
+        /* Dark Ash background override specifically for the top section Navigation Header panel */
+        header.glass-panel {
+            background: #242834 !important; /* Elegant premium dark ash charcoal */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3) !important;
         }
 
         /* High-contrast and bold typography for all Navigation Header elements */
@@ -333,21 +340,21 @@
         }
         
         header.glass-panel span.text-slate-400 {
-            color: #4A5568 !important; /* Elegant dark slate gray for labels */
+            color: #94A3B8 !important; /* Cool light slate gray for labels */
             letter-spacing: 0.05em !important;
         }
         header.glass-panel p.text-slate-400 {
-            color: #2D3748 !important; /* Outstanding dark slate/black for subtitle */
+            color: #94A3B8 !important; /* Cool light slate gray for subtitle */
             letter-spacing: 0.12em !important;
         }
         header.glass-panel .text-white {
-            color: #1E2538 !important;
+            color: #FFFFFF !important; /* Crisp white for stats values */
         }
         header.glass-panel .text-violet-400 {
-            color: #6F5294 !important; /* High contrast brand violet */
+            color: #A78BFA !important; /* High contrast soft violet/lavender */
         }
         header.glass-panel .text-slate-500 {
-            color: #4A5568 !important;
+            color: #94A3B8 !important;
         }
         
         /* High contrast for the course card edit details button (soft eye-soothing lavender-silver background, NOT pure white) */
