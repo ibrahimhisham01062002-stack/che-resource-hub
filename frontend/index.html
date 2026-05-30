@@ -208,23 +208,16 @@
         }
         
         /* Dropdowns & Selects Visibility inside Header and Cards */
-        header select {
-            background-color: rgba(5, 11, 30, 0.7) !important;
-            color: #FFFFFF !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        }
-        header select option {
-            background-color: #161924 !important;
-            color: #FFFFFF !important;
-        }
-        .glass-card select, .glass-panel select {
+        header select, .glass-card select, .glass-panel select {
             color: #1E2538 !important;
             background-color: #EDEEF5 !important;
             border: 1px solid #CBD2E1 !important;
+            font-weight: 800 !important;
         }
-        .glass-card select option, .glass-panel select option {
+        header select option, .glass-card select option, .glass-panel select option {
             background-color: #EDEEF5 !important;
             color: #1E2538 !important;
+            font-weight: 700 !important;
         }
 
         /* Inputs and Placeholders Visibility inside Cards */
@@ -311,6 +304,37 @@
         header div.bg-white, header div.bg-white.bg-opacity-10 {
             background-color: #CBD2E1 !important;
             opacity: 1 !important;
+        }
+        
+        /* Brand text "ChE" in Header */
+        .che-brand-text {
+            color: #6F5294 !important; /* Premium brand deep violet */
+            font-weight: 800 !important;
+            text-shadow: none !important;
+        }
+
+        /* High-contrast and bold typography for all Navigation Header elements */
+        header.glass-panel span.text-slate-400 {
+            color: #4A5568 !important; /* Elegant dark slate gray for labels */
+            font-weight: 800 !important; /* Bold headings as requested! */
+            letter-spacing: 0.05em !important;
+        }
+        header.glass-panel p.text-slate-400 {
+            color: #4A5568 !important; /* Elegant dark slate gray for subtitle */
+            font-weight: 600 !important;
+            letter-spacing: 0.1em !important;
+        }
+        header.glass-panel .text-white {
+            color: #1E2538 !important;
+            font-weight: 800 !important;
+        }
+        header.glass-panel .text-violet-400 {
+            color: #6F5294 !important; /* High contrast brand violet */
+            font-weight: 800 !important;
+        }
+        header.glass-panel .text-slate-500 {
+            color: #4A5568 !important;
+            font-weight: 800 !important;
         }
         
         /* Dropdown Options */

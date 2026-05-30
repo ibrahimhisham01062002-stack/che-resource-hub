@@ -1017,7 +1017,7 @@ function App() {
               className="w-9 h-9 md:w-10 md:h-10 rounded-xl shadow-lg shadow-sky-500/20 object-cover flex-shrink-0 border border-white/10" 
             />
             <div className="min-w-0">
-              <h1 className="font-display font-bold text-base md:text-lg tracking-wide text-glow">ChE <span className="gradient-text">StudySpace</span></h1>
+              <h1 className="font-display font-extrabold text-base md:text-lg tracking-wide text-glow"><span className="che-brand-text">ChE</span> <span className="gradient-text">StudySpace</span></h1>
               <p className="text-[9px] md:text-[10px] text-slate-400 font-medium tracking-widest uppercase truncate">Department of Chemical Engineering</p>
             </div>
           </div>
