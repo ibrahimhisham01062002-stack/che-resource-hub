@@ -531,6 +531,13 @@ if TELEGRAM_BOT_TOKEN:
 TELEGRAM_CHANNEL_ID = os.getenv("TELEGRAM_CHANNEL_ID")
 if TELEGRAM_CHANNEL_ID:
     TELEGRAM_CHANNEL_ID = TELEGRAM_CHANNEL_ID.strip().replace('"', '').replace("'", "")
+    # Fail-safe auto-correction for duplicate '100' prefix typo
+    if TELEGRAM_CHANNEL_ID.startswith("-100100") and len(TELEGRAM_CHANNEL_ID) > 13:
+        if TELEGRAM_CHANNEL_ID == "-1001003934336659":
+            TELEGRAM_CHANNEL_ID = "-1003934336659"
+        else:
+            TELEGRAM_CHANNEL_ID = "-100" + TELEGRAM_CHANNEL_ID[7:]
+
 
 async def get_file_id_from_message_id(message_id: int) -> str:
     # Forward message to the channel itself (creates a temporary duplicate post)
