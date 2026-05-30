@@ -1585,7 +1585,7 @@ function App() {
                             <div 
                               key={file.index}
                               onClick={() => setPreviewFile(file)}
-                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
+                              className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
@@ -1600,7 +1600,7 @@ function App() {
                                   </span>
                                 </div>
                               </div>
-                              <div className="flex items-center space-x-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                              <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
                                   className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
@@ -1642,7 +1642,7 @@ function App() {
                           </div>
                           <button 
                             onClick={() => setPreviewFile(null)}
-                            className="text-slate-400 hover:text-white text-xs font-semibold"
+                            className="che-close-reader-btn"
                           >
                             Close Reader
                           </button>
@@ -1776,7 +1776,7 @@ function App() {
                             <div 
                               key={file.index}
                               onClick={() => setPreviewFile(file)}
-                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
+                              className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
@@ -1791,7 +1791,7 @@ function App() {
                                   </span>
                                 </div>
                               </div>
-                              <div className="flex items-center space-x-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                              <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
                                   className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
@@ -1833,7 +1833,7 @@ function App() {
                           </div>
                           <button 
                             onClick={() => setPreviewFile(null)}
-                            className="text-slate-400 hover:text-white text-xs font-semibold"
+                            className="che-close-reader-btn"
                           >
                             Close Reader
                           </button>
@@ -1967,7 +1967,7 @@ function App() {
                             <div 
                               key={file.index}
                               onClick={() => setPreviewFile(file)}
-                              className={`glass-panel border-opacity-5 p-3.5 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
+                              className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
@@ -1982,7 +1982,7 @@ function App() {
                                   </span>
                                 </div>
                               </div>
-                              <div className="flex items-center space-x-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                              <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
                                   className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
@@ -2024,7 +2024,7 @@ function App() {
                           </div>
                           <button 
                             onClick={() => setPreviewFile(null)}
-                            className="text-slate-400 hover:text-white text-xs font-semibold"
+                            className="che-close-reader-btn"
                           >
                             Close Reader
                           </button>
@@ -2165,7 +2165,7 @@ function App() {
                               <div
                                 key={file.index}
                                 onClick={() => setPreviewFile(file)}
-                                className={`group p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${isCurrentlyPreviewing ? 'bg-sky-500/10 border-accent-sky' : 'bg-dark-900/50 border-white/5 hover:border-white/10 hover:bg-dark-900'}`}
+                                className={`group p-3 pr-24 relative rounded-xl border transition-all cursor-pointer flex items-center justify-between ${isCurrentlyPreviewing ? 'bg-sky-500/10 border-accent-sky' : 'bg-dark-900/50 border-white/5 hover:border-white/10 hover:bg-dark-900'}`}
                               >
                                 <div className="flex items-center space-x-3 min-w-0">
                                   <div className="p-2 rounded-lg bg-sky-500/10 text-accent-sky group-hover:scale-110 transition-transform">
@@ -2176,16 +2176,20 @@ function App() {
                                     <p className="text-[9px] text-slate-400 mt-0.5">{file.size} • {file.type}</p>
                                   </div>
                                 </div>
-                                <div className="flex items-center space-x-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                <div className="absolute bottom-3 right-3 flex items-center space-x-2 opacity-60 group-hover:opacity-100 transition-opacity" onClick={(e) => e.stopPropagation()}>
                                   <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      checkAuthAndExecute(() => handleDeleteFile(file.index));
-                                    }}
+                                    onClick={() => handleDeleteFile(file.index)}
                                     className="p-1.5 bg-dark-900 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 rounded-lg border border-white/5 transition-all"
                                     title="Delete file"
                                   >
                                     <Icon name="trash" className="w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDownloadFile(file.index, file.name)}
+                                    className="p-1.5 bg-dark-900 hover:bg-sky-600 text-slate-400 hover:text-white rounded-lg border border-white/5 transition-all"
+                                    title="Download file"
+                                  >
+                                    <Icon name="download" className="w-3.5 h-3.5" />
                                   </button>
                                 </div>
                               </div>
@@ -2207,7 +2211,7 @@ function App() {
                           </div>
                           <button
                             onClick={() => setPreviewFile(null)}
-                            className="text-slate-400 hover:text-white text-xs font-semibold"
+                            className="che-close-reader-btn"
                           >
                             Close Reader
                           </button>
@@ -2392,7 +2396,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              className={`glass-panel border-opacity-5 p-3 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
+                              className={`glass-panel border-opacity-5 p-3 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
@@ -2408,10 +2412,10 @@ function App() {
                                 </div>
                               </div>
 
-                              <div className="flex items-center space-x-2">
+                              <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => setPreviewFile(file)}
-                                  className="px-2.5 py-1.5 bg-dark-900 border border-white border-opacity-5 hover:border-accent-sky hover:text-accent-sky rounded-lg text-[10px] font-display font-semibold text-slate-300"
+                                  className="px-2.5 py-1.5 bg-[#E2DCF0] border border-[#2A0845] hover:border-rose-700 hover:text-rose-700 rounded-lg text-[10px] font-display font-extrabold text-[#2A0845]"
                                 >
                                   View
                                 </button>
@@ -2785,7 +2789,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              className={`glass-panel border-opacity-5 p-3 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
+                              className={`glass-panel border-opacity-5 p-3 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
@@ -2801,10 +2805,10 @@ function App() {
                                 </div>
                               </div>
 
-                              <div className="flex items-center space-x-2">
+                              <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                                 <button 
                                   onClick={() => setPreviewFile(file)}
-                                  className="px-2.5 py-1.5 bg-dark-900 border border-white border-opacity-5 hover:border-accent-sky hover:text-accent-sky rounded-lg text-[10px] font-display font-semibold text-slate-300"
+                                  className="px-2.5 py-1.5 bg-[#E2DCF0] border border-[#2A0845] hover:border-rose-700 hover:text-rose-700 rounded-lg text-[10px] font-display font-extrabold text-[#2A0845]"
                                 >
                                   View
                                 </button>
@@ -2848,7 +2852,7 @@ function App() {
                         </div>
                         <button 
                           onClick={() => setPreviewFile(null)}
-                          className="text-slate-400 hover:text-white text-xs font-semibold"
+                          className="che-close-reader-btn"
                         >
                           Close Preview
                         </button>

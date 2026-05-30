@@ -506,8 +506,8 @@
         .glass-panel p.che-book-title,
         .glass-card p.che-book-title,
         span.che-book-title {
-            color: #000000 !important; /* Crisp deep black text inside filename box */
-            font-size: 0.74rem !important; /* Reduced font size for elegant compact proportions */
+            color: #2A0845 !important; /* Crisp deep violet text inside filename box */
+            font-size: 0.72rem !important; /* Reduced font size for elegant compact proportions */
             font-weight: 700 !important; /* Bold */
             background-color: rgba(158, 27, 50, 0.08) !important; /* Solid light maroon color */
             border: 1px dashed #9E1B32 !important; /* Thinner maroon dashed border outline */
@@ -518,12 +518,32 @@
             -webkit-box-orient: vertical !important;
             overflow: hidden !important;
             text-overflow: ellipsis !important;
-            width: 100% !important; /* Stretch to fill 100% of available card area */
+            max-width: 260px !important; /* Reduced width of the boxes inside cards */
+            width: fit-content !important; /* Shrink to fit name content cleanly */
             box-sizing: border-box !important;
             margin-bottom: 2px !important;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
             text-shadow: none !important;
-            word-break: break-all !important; /* Safe wrapping for long system names */
+            word-break: keep-all !important; /* Keep words intact, don't cut between characters */
+            overflow-wrap: break-word !important; /* Wrap long words elegantly at boundaries */
+        }
+
+        /* High-contrast and visible Close Reader / Close Preview buttons styled as deep violet on lavender */
+        .che-close-reader-btn {
+            color: #2A0845 !important; /* Deep violet text color */
+            font-weight: 800 !important;
+            font-size: 0.75rem !important;
+            background-color: #E2DCF0 !important; /* Lavender background fill */
+            border: 1.5px solid #2A0845 !important; /* Deep violet outline border */
+            padding: 4px 10px !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+        .che-close-reader-btn:hover {
+            background-color: #D3C9E9 !important; /* Richer lavender hover */
+            color: #5C061C !important; /* Deep maroon text on hover */
+            border-color: #5C061C !important;
         }
 
         /* Majestic 3.5px rounded gradient border (Maroon, Deep Violet) for course workspace panels (Image 1) */
