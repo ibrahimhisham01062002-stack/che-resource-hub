@@ -211,7 +211,7 @@
         header select {
             color: #1E2538 !important;
             background-color: #EDEEF5 !important;
-            border: 1px solid #1E2538 !important; /* High-contrast black outline */
+            border: 1.5px solid #1E2538 !important; /* Solid black outline border */
             font-weight: 800 !important;
         }
         .glass-card select, .glass-panel select {
@@ -320,27 +320,34 @@
         }
 
         /* High-contrast and bold typography for all Navigation Header elements */
+        header.glass-panel,
+        header.glass-panel *,
+        header.glass-panel h1,
+        header.glass-panel span,
+        header.glass-panel p,
+        header.glass-panel select,
+        header.glass-panel option,
+        .che-brand-text,
+        .gradient-text {
+            font-weight: 800 !important; /* Force bold weight across all header text as requested! */
+        }
+        
         header.glass-panel span.text-slate-400 {
             color: #4A5568 !important; /* Elegant dark slate gray for labels */
-            font-weight: 800 !important; /* Bold headings as requested! */
             letter-spacing: 0.05em !important;
         }
         header.glass-panel p.text-slate-400 {
             color: #2D3748 !important; /* Outstanding dark slate/black for subtitle */
-            font-weight: 800 !important; /* Extremely bold as requested! */
             letter-spacing: 0.12em !important;
         }
         header.glass-panel .text-white {
             color: #1E2538 !important;
-            font-weight: 800 !important;
         }
         header.glass-panel .text-violet-400 {
             color: #6F5294 !important; /* High contrast brand violet */
-            font-weight: 800 !important;
         }
         header.glass-panel .text-slate-500 {
             color: #4A5568 !important;
-            font-weight: 800 !important;
         }
         
         /* High contrast for the course card edit details button */
