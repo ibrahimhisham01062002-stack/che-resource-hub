@@ -20,51 +20,51 @@
                 extend: {
                     colors: {
                         dark: {
-                            50: '#F8FAFC',
-                            100: '#F1F5F9',
-                            800: '#1A233A',
-                            900: '#0B132B',
-                            950: '#050B1E',
+                            50: '#EDEEF5',
+                            100: '#EDEEF5',
+                            800: '#CBD2E1',
+                            900: '#EDEEF5',
+                            950: '#161924',
                         },
                         slate: {
-                            50: '#FFFFFF',
-                            100: '#FFFFFF',
-                            200: '#F8FAFC',
-                            300: '#E2E8F0',
-                            400: '#CBD5E1',
-                            500: '#94A3B8',
-                            600: '#94A3B8',
-                            700: '#CBD5E1',
-                            800: '#FFFFFF',
-                            900: '#F8FAFC',
+                            50: '#1E2538',
+                            100: '#1E2538',
+                            200: '#1E2538',
+                            300: '#1E2538',
+                            400: '#687289',
+                            500: '#687289',
+                            600: '#687289',
+                            700: '#3A4454',
+                            800: '#1E2538',
+                            900: '#0F131C',
                         },
                         sky: {
-                            50: 'rgba(167, 139, 250, 0.15)',
-                            100: 'rgba(167, 139, 250, 0.15)',
-                            200: 'rgba(167, 139, 250, 0.15)',
-                            300: '#C4B5FD',
-                            400: '#C4B5FD',
-                            500: '#A78BFA',
-                            600: '#A78BFA',
-                            700: '#A78BFA',
-                            950: 'rgba(167, 139, 250, 0.15)',
+                            50: '#F0EBF5',
+                            100: '#F0EBF5',
+                            200: '#F0EBF5',
+                            300: '#6F5294',
+                            400: '#6F5294',
+                            500: '#6F5294',
+                            600: '#6F5294',
+                            700: '#6F5294',
+                            950: '#F0EBF5',
                         },
                         violet: {
-                            50: 'rgba(167, 139, 250, 0.15)',
-                            100: 'rgba(167, 139, 250, 0.15)',
-                            200: 'rgba(167, 139, 250, 0.15)',
-                            300: '#C4B5FD',
-                            400: '#C4B5FD',
-                            500: '#A78BFA',
-                            600: '#A78BFA',
-                            700: '#A78BFA',
-                            950: 'rgba(167, 139, 250, 0.15)',
+                            50: '#F0EBF5',
+                            100: '#F0EBF5',
+                            200: '#F0EBF5',
+                            300: '#6F5294',
+                            400: '#6F5294',
+                            500: '#6F5294',
+                            600: '#6F5294',
+                            700: '#6F5294',
+                            950: '#F0EBF5',
                         },
                         accent: {
-                            sky: '#38BDF8',      // Sky Blue accents
-                            violet: '#A78BFA',   // Violet accents
-                            rose: '#F43F5E',
-                            blue: '#60A5FA',
+                            sky: '#5A8DDE',      // Muted Azure primary
+                            violet: '#8F75B2',   // Muted Soft Violet
+                            rose: '#D9534F',
+                            blue: '#4A90E2',
                         }
                     },
                     fontFamily: {
@@ -87,7 +87,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #0D1B3E 0%, #050B1E 70%, #020510 100%) !important;
+            background-color: #161924 !important;
             color: #FFFFFF !important;
             overflow-x: hidden;
         }
@@ -98,55 +98,63 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #050B1E;
+            background: #161924;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(167, 139, 250, 0.3);
+            background: rgba(90, 141, 222, 0.3);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(167, 139, 250, 0.6);
+            background: rgba(90, 141, 222, 0.6);
         }
         
         /* Modern Clean Card/Panel Classes */
         .glass-panel {
-            background: rgba(11, 19, 43, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            background: #EDEEF5;
+            border: 1px solid #CBD2E1;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             border-radius: 12px;
         }
         .glass-card {
-            background: rgba(11, 19, 43, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: #EDEEF5;
+            border: 1px solid #CBD2E1;
             border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-card:hover {
-            background: rgba(11, 19, 43, 0.6);
-            border-color: rgba(167, 139, 250, 0.4);
+            background: #F2F4F9;
+            border-color: #A9B2C3;
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(167, 139, 250, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
         }
         .glass-input {
-            background: rgba(5, 11, 30, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #FFFFFF;
+            background: #EDEEF5;
+            border: 1px solid #CBD2E1;
+            color: #1E2538;
             border-radius: 12px;
             transition: all 0.2s ease-in-out;
         }
         .glass-input:focus {
-            background: rgba(5, 11, 30, 0.85);
-            border-color: #A78BFA;
+            background: #F2F4F9;
+            border-color: #8F75B2;
             outline: none;
-            box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+            box-shadow: 0 0 0 2px rgba(143, 117, 178, 0.15);
         }
         
         /* Typography & Overrides */
         h1.text-white, h2.text-white, h3.text-white, h4.text-white, h5.text-white, h6.text-white,
         .text-white {
+            color: #1E2538 !important;
+            text-shadow: none !important;
+        }
+        
+        /* Ensure major hero welcome headers render in white against the dark canvas background */
+        h2.font-display.font-extrabold.text-white,
+        .font-display.text-glow,
+        header h1.text-white,
+        header p {
             color: #FFFFFF !important;
-            text-shadow: 0 0 10px rgba(167, 139, 250, 0.2) !important;
         }
         
         /* Ensure white text is retained on buttons and badges with backgrounds */
@@ -161,9 +169,9 @@
             color: #FFFFFF !important;
         }
         
-        /* Handle specific link hover effects to turn into Violet instead of white */
+        /* Handle specific link hover effects to turn into Azure/Violet instead of white */
         .hover\:text-white:hover {
-            color: #A78BFA !important;
+            color: #5A8DDE !important;
         }
         .bg-accent-sky.hover\:bg-sky-600:hover, 
         .bg-sky-600:hover,
@@ -172,60 +180,60 @@
             color: #FFFFFF !important;
         }
         .group:hover p.group-hover\:text-white {
-            color: #A78BFA !important;
+            color: #5A8DDE !important;
         }
 
         /* Soft Teal Badges styling */
         .bg-sky-500\/20, .bg-sky-500\/10, .bg-accent-sky\/20, .bg-accent-sky\/10, .bg-violet-500\/10, .bg-violet-500\/20 {
-            background-color: rgba(167, 139, 250, 0.15) !important;
-            color: #C4B5FD !important;
-            border-color: rgba(167, 139, 250, 0.3) !important;
+            background-color: #F0EBF5 !important;
+            color: #6F5294 !important;
+            border-color: rgba(111, 82, 148, 0.15) !important;
         }
         .text-sky-300, .text-accent-sky, .text-accent-violet, .text-violet-300 {
-            color: #C4B5FD !important;
+            color: #6F5294 !important;
         }
-        /* Except when buttons or specific layouts want Violet */
+        /* Except when buttons or specific layouts want Azure */
         .text-accent-sky.text-white, button .text-accent-sky, .bg-gradient-to-r .text-accent-sky {
             color: #FFFFFF !important;
         }
         
         /* Premium Gradients */
         .text-glow {
-            text-shadow: 0 0 10px rgba(167, 139, 250, 0.25);
+            text-shadow: 0 0 10px rgba(90, 141, 222, 0.15);
         }
         .gradient-text {
-            background: linear-gradient(135deg, #A78BFA 0%, #38BDF8 100%);
+            background: linear-gradient(135deg, #8F75B2 0%, #5A8DDE 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
         /* Header dividers */
         header div.bg-white, header div.bg-white.bg-opacity-10 {
-            background-color: rgba(255, 255, 255, 0.12) !important;
+            background-color: #CBD2E1 !important;
             opacity: 1 !important;
         }
         
         /* Dropdown Options */
         select option {
-            background-color: #0B132B !important;
-            color: #FFFFFF !important;
+            background-color: #EDEEF5 !important;
+            color: #1E2538 !important;
         }
         
         /* Markdown Styling overrides for Dim Theme */
-        .prose h1 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 700; color: #FFFFFF; margin-top: 1.5rem; margin-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.3rem;}
-        .prose h2 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 600; color: #F8FAFC; margin-top: 1.2rem; margin-bottom: 0.6rem; }
-        .prose h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: #CBD5E1; margin-top: 1rem; margin-bottom: 0.4rem; }
-        .prose p { margin-bottom: 0.8rem; line-height: 1.6; color: #CBD5E1; }
+        .prose h1 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 700; color: #1E2538; margin-top: 1.5rem; margin-bottom: 0.8rem; border-bottom: 1px solid #CBD2E1; padding-bottom: 0.3rem;}
+        .prose h2 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 600; color: #3A4454; margin-top: 1.2rem; margin-bottom: 0.6rem; }
+        .prose h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: #687289; margin-top: 1rem; margin-bottom: 0.4rem; }
+        .prose p { margin-bottom: 0.8rem; line-height: 1.6; color: #687289; }
         .prose ul, .prose ol { margin-left: 1.5rem; margin-bottom: 0.8rem; list-style-type: disc; }
-        .prose li { margin-bottom: 0.3rem; color: #CBD5E1; }
-        .prose table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem; background: rgba(11, 19, 43, 0.45); border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        .prose th { background: rgba(167, 139, 250, 0.15); padding: 0.6rem; font-family: 'Outfit', sans-serif; text-align: left; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); color: #FFFFFF; }
-        .prose td { padding: 0.6rem; border: 1px solid rgba(255,255,255,0.05); color: #CBD5E1; }
-        .prose tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
-        .prose code { background: rgba(167, 139, 250, 0.15); color: #C4B5FD; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
-        .prose pre { background: rgba(5, 11, 30, 0.8); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
-        .prose pre code { background: transparent; color: #FFFFFF; padding: 0; }
-        .prose blockquote { border-left: 4px solid #A78BFA; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #CBD5E1; }
+        .prose li { margin-bottom: 0.3rem; color: #687289; }
+        .prose table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem; background: #EDEEF5; border-radius: 6px; overflow: hidden; border: 1px solid #CBD2E1; }
+        .prose th { background: rgba(90, 141, 222, 0.1); padding: 0.6rem; font-family: 'Outfit', sans-serif; text-align: left; font-weight: 600; border: 1px solid #CBD2E1; color: #1E2538; }
+        .prose td { padding: 0.6rem; border: 1px solid #CBD2E1; color: #687289; }
+        .prose tr:nth-child(even) { background: rgba(255, 255, 255, 0.3); }
+        .prose code { background: rgba(90, 141, 222, 0.1); color: #6F5294; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+        .prose pre { background: #EDEEF5; border: 1px solid #CBD2E1; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
+        .prose pre code { background: transparent; color: #1E2538; padding: 0; }
+        .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #687289; }
     </style>
     
     <!-- React 18 & ReactDOM 18 CDN -->
