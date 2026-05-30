@@ -507,19 +507,23 @@
         .glass-card p.che-book-title,
         span.che-book-title {
             color: #000000 !important; /* Crisp deep black text inside filename box */
-            font-size: 0.85rem !important; /* Decreased font size for elegant neat proportions */
-            font-weight: 800 !important; /* Extra bold */
-            background-color: rgba(158, 27, 50, 0.12) !important; /* Beautiful filled solid light maroon color */
-            border: 1.5px dashed #9E1B32 !important; /* Maroon dashed border boundary outline */
-            padding: 4px 10px !important; /* Elegant roomier padding */
-            border-radius: 6px !important;
-            display: block !important; /* Make block-level to occupy the full container area */
+            font-size: 0.74rem !important; /* Reduced font size for elegant compact proportions */
+            font-weight: 700 !important; /* Bold */
+            background-color: rgba(158, 27, 50, 0.08) !important; /* Solid light maroon color */
+            border: 1px dashed #9E1B32 !important; /* Thinner maroon dashed border outline */
+            padding: 2px 6px !important; /* Tightened compact padding */
+            border-radius: 5px !important;
+            display: -webkit-box !important; /* Webkit box layout to enforce line clamping */
+            -webkit-line-clamp: 2 !important; /* Enforce maximum 2 lines of text */
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
             width: 100% !important; /* Stretch to fill 100% of available card area */
             box-sizing: border-box !important;
             margin-bottom: 2px !important;
-            box-shadow: 0 1px 2.5px rgba(0, 0, 0, 0.05) !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
             text-shadow: none !important;
-            word-break: break-word !important; /* Prevent long files names from overflowing horizontally */
+            word-break: break-all !important; /* Safe wrapping for long system names */
         }
 
         /* Majestic 3.5px rounded gradient border (Maroon, Deep Violet) for course workspace panels (Image 1) */
