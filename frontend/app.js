@@ -2575,9 +2575,11 @@ function App() {
                               controls 
                               preload="metadata"
                               playsInline
-                              className="w-full h-full rounded-xl shadow-lg border border-white border-opacity-5" 
+                            className="w-full h-full rounded-xl shadow-lg border border-white border-opacity-5" 
                             />
-                                               <div className="p-16 text-center bg-dark-900 rounded-2xl space-y-4 border border-white border-opacity-5 flex flex-col items-center justify-center" style={{ height: "500px" }}>
+                          </div>
+                        ) : (
+                          <div className="p-16 text-center bg-dark-900 rounded-2xl space-y-4 border border-white border-opacity-5 flex flex-col items-center justify-center" style={{ height: "500px" }}>
                             <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2">
                               <Icon name="layers" className="w-8 h-8" />
                             </div>
