@@ -313,8 +313,17 @@
         }
         
         /* Brand text "ChE" in Header (crisp white against dark ash) */
-        .che-brand-text {
+        header.glass-panel span.che-brand-text {
             color: #FFFFFF !important; 
+            font-weight: 800 !important;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.5) !important; /* Premium subtle eye-catching glow */
+        }
+        
+        /* Vibrant gradient brand text StudySpace (high contrast neon gradient) */
+        header.glass-panel span.gradient-text {
+            background: linear-gradient(135deg, #C084FC 0%, #6366F1 50%, #38BDF8 100%) !important; /* High contrast vibrant neon gradient */
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
             font-weight: 800 !important;
             text-shadow: none !important;
         }
@@ -340,11 +349,12 @@
         }
         
         header.glass-panel span.text-slate-400 {
-            color: #94A3B8 !important; /* Cool light slate gray for labels */
+            color: #E2E8F0 !important; /* High contrast bright silver for labels */
             letter-spacing: 0.05em !important;
         }
         header.glass-panel p.text-slate-400 {
-            color: #94A3B8 !important; /* Cool light slate gray for subtitle */
+            color: #CBD5E1 !important; /* Cool silver-gray for outstanding legibility */
+            font-weight: 800 !important; /* Extra bold */
             letter-spacing: 0.12em !important;
         }
         header.glass-panel .text-white {
@@ -452,6 +462,18 @@
         .prose pre { background: #EDEEF5; border: 1px solid #CBD2E1; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
         .prose pre code { background: transparent; color: #1E2538; padding: 0; }
         .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #687289; }
+
+        /* Premium dark violet title style with increased font size and weight (Image 2) */
+        .glass-panel span.che-book-title,
+        .glass-card span.che-book-title,
+        .glass-panel p.che-book-title,
+        .glass-card p.che-book-title,
+        span.che-book-title {
+            color: #6F5294 !important; /* Premium brand dark violet */
+            font-size: 0.95rem !important; /* Increased font size */
+            font-weight: 800 !important; /* Extra bold */
+            text-shadow: none !important;
+        }
     </style>
     
     <!-- React 18 & ReactDOM 18 CDN -->

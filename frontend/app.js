@@ -1421,7 +1421,7 @@ function App() {
                                   <Icon name="bookOpen" className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
-                                  <span className="block text-xs font-semibold text-white line-clamp-2 leading-relaxed">
+                                  <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name}
                                   </span>
                                   <span className="text-[9px] text-slate-500 font-display">
@@ -1615,7 +1615,7 @@ function App() {
                                   <Icon name="fileText" className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
-                                  <span className="block text-xs font-semibold text-white line-clamp-2 leading-relaxed">
+                                  <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name}
                                   </span>
                                   <span className="text-[9px] text-slate-500 font-display">
@@ -1809,7 +1809,7 @@ function App() {
                                   <Icon name="edit" className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
-                                  <span className="block text-xs font-semibold text-white line-clamp-2 leading-relaxed">
+                                  <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name}
                                   </span>
                                   <span className="text-[9px] text-slate-500 font-display">
@@ -2012,7 +2012,7 @@ function App() {
                                     <Icon name="check" className="w-4 h-4" />
                                   </div>
                                   <div className="min-w-0">
-                                    <p className="text-xs font-semibold text-slate-200 truncate group-hover:text-white transition-colors">{file.name}</p>
+                                    <p className="che-book-title truncate group-hover:text-white transition-colors">{file.name}</p>
                                     <p className="text-[9px] text-slate-400 mt-0.5">{file.size} • {file.type}</p>
                                   </div>
                                 </div>
@@ -2241,7 +2241,7 @@ function App() {
                                   <Icon name={(file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf') ? 'fileText' : 'layers'} className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
-                                  <span className="block text-xs font-semibold text-white line-clamp-1 leading-normal">
+                                  <span className="che-book-title block line-clamp-1 leading-normal">
                                     {file.name}
                                   </span>
                                   <span className="text-[10px] text-slate-500 font-display">
