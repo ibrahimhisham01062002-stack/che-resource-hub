@@ -308,7 +308,7 @@
         
         /* Brand text "ChE" in Header */
         .che-brand-text {
-            color: #6F5294 !important; /* Premium brand deep violet */
+            color: #1E2538 !important; /* Deep professional slate-black */
             font-weight: 800 !important;
             text-shadow: none !important;
         }
@@ -320,9 +320,9 @@
             letter-spacing: 0.05em !important;
         }
         header.glass-panel p.text-slate-400 {
-            color: #4A5568 !important; /* Elegant dark slate gray for subtitle */
-            font-weight: 600 !important;
-            letter-spacing: 0.1em !important;
+            color: #2D3748 !important; /* Outstanding dark slate/black for subtitle */
+            font-weight: 800 !important; /* Extremely bold as requested! */
+            letter-spacing: 0.12em !important;
         }
         header.glass-panel .text-white {
             color: #1E2538 !important;
@@ -335,6 +335,23 @@
         header.glass-panel .text-slate-500 {
             color: #4A5568 !important;
             font-weight: 800 !important;
+        }
+        
+        /* High contrast for the course card edit details button */
+        .glass-card button.che-edit-course-btn,
+        .glass-card button.che-edit-course-btn * {
+            background-color: #FFFFFF !important;
+            color: #1E2538 !important; /* Black/dark slate-blue color icon */
+            border: 1px solid #CBD2E1 !important;
+            transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        }
+        
+        .glass-card button.che-edit-course-btn:hover,
+        .glass-card button.che-edit-course-btn:hover * {
+            background-color: #F2F4F9 !important; /* Soft premium hover */
+            color: #6F5294 !important; /* Deep brand violet color on hover */
+            border-color: #8F75B2 !important;
         }
         
         /* Dropdown Options */

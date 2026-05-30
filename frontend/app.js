@@ -1219,7 +1219,7 @@ function App() {
                             e.stopPropagation();
                             handleStartEditCourse(course);
                           }}
-                          className="p-1.5 rounded-lg bg-dark-900 border border-white/5 hover:border-accent-sky hover:text-accent-sky text-slate-500 transition-colors relative z-10"
+                          className="che-edit-course-btn p-1.5 rounded-lg bg-white border border-slate-200 transition-all relative z-10"
                           title="Edit Course Details"
                         >
                           <Icon name="edit" className="w-3.5 h-3.5" />
