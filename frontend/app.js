@@ -1468,7 +1468,7 @@ function App() {
                   className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="layers" className="w-3.5 h-3.5" />
-                  <span>slides</span>
+                  <span>Slides</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("videos"); setPreviewFile(null); }}
@@ -1934,7 +1934,7 @@ function App() {
                               disabled={isSolutionUploading}
                               className="px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
-                              <span>{isSolutionUploading ? "Uploading..." : "Save to Solves"}</span>
+                              <span>{isSolutionUploading ? "Uploading..." : "Save to Solutions"}</span>
                               <Icon name="plus" className="w-3 h-3" />
                             </button>
                           </div>
@@ -1957,7 +1957,7 @@ function App() {
                       <div className="relative">
                         <input 
                           type="text"
-                          placeholder="Search solves..."
+                          placeholder="Search solution manuals..."
                           value={fileSearchQuery}
                           onChange={(e) => setFileSearchQuery(e.target.value)}
                           className="glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
@@ -2092,132 +2092,134 @@ function App() {
                         setUploadFile: setSolvedUploadFile,
                         fileInputRef: solvedFileInputRef
                       })} className="relative group">
-                        <input
-                          type="file"
+                        <input 
+                          type="file" 
                           accept=".pdf,.docx,.doc"
                           onChange={(e) => setSolvedUploadFile(e.target.files[0])}
-                          className="hidden"
+                          className="hidden" 
                           id="solved-upload-input"
                           ref={solvedFileInputRef}
                         />
-                        <div
-                          onClick={() => checkAuthAndExecute(() => solvedFileInputRef.current?.click())}
-                          className="border-2 border-dashed border-white border-opacity-10 rounded-xl p-4 text-center cursor-pointer transition-all hover:border-accent-sky hover:bg-white/5 flex flex-col items-center justify-center space-y-2"
+                        <label 
+                          htmlFor="solved-upload-input" 
+                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
                         >
-                          <div className="p-2 rounded-lg bg-sky-500/10 text-accent-sky">
-                            <Icon name="upload" className="w-5 h-5 animate-pulse" />
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold text-white">Drag & drop solved answer or click</p>
-                            <p className="text-[9px] text-slate-400 mt-1">Supports PDF, DOCX (Max 2GB via Telegram)</p>
-                          </div>
-                        </div>
-
+                          <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
+                            {solvedUploadFile ? `Selected: ${solvedUploadFile.name}` : "Upload exam solutions or solved answer keys directly."}
+                          </p>
+                          <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
+                        </label>
+                        
                         {solvedUploadFile && (
-                          <div className="mt-3 p-3 bg-dark-900 rounded-xl border border-white/5 flex items-center justify-between">
-                            <div className="flex items-center space-x-2.5 min-w-0">
-                              <span className="text-xs font-semibold text-slate-200 truncate max-w-[150px]">{solvedUploadFile.name}</span>
-                              <span className="text-[9px] text-slate-400 bg-white/5 px-1.5 py-0.5 rounded">{(solvedUploadFile.size / (1024 * 1024)).toFixed(2)} MB</span>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <button
-                                type="submit"
-                                disabled={isSolvedUploading}
-                                className="px-2.5 py-1 che-submit-btn disabled:opacity-50 text-[10px] font-bold text-white rounded-lg transition-all"
-                              >
-                                {isSolvedUploading ? "Saving..." : "Upload"}
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setSolvedUploadFile(null)}
-                                className="px-2.5 py-1 che-cancel-btn text-[10px] rounded-lg transition-all font-bold"
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          </div>
-                        )}
-
-                        {isSolvedUploading && (
-                          <div className="space-y-1.5 mt-3">
-                            <div className="flex justify-between text-[10px] font-semibold text-slate-300">
-                              <span>Uploading to Private Telegram Storage...</span>
-                              <span>{solvedUploadProgress}%</span>
-                            </div>
-                            <div className="w-full h-1.5 bg-dark-900 rounded-full overflow-hidden border border-white/5">
-                              <div className="h-full bg-[#5C061C] rounded-full transition-all duration-300" style={{ width: `${solvedUploadProgress}%` }}></div>
-                            </div>
-                          </div>
-                        )}
-
-                        {solvedUploadStatus.message && (
-                          <div className={`mt-3 p-2.5 rounded-xl border text-[10px] font-semibold flex items-center justify-between ${solvedUploadStatus.type === 'success' ? 'bg-violet-500/10 border-violet-500/20 text-violet-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'}`}>
-                            <span>{solvedUploadStatus.message}</span>
-                            <button type="button" onClick={() => setSolvedUploadStatus({ type: '', message: '' })} className="text-slate-400 hover:text-white ml-2 text-xs">×</button>
+                          <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
+                            <button 
+                              type="button" 
+                              onClick={() => { setSolvedUploadFile(null); if (solvedFileInputRef.current) solvedFileInputRef.current.value = ""; }}
+                              className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              type="submit" 
+                              disabled={isSolvedUploading}
+                              className="px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+                            >
+                              <span>{isSolvedUploading ? "Uploading..." : "Save to Solved"}</span>
+                              <Icon name="plus" className="w-3 h-3" />
+                            </button>
                           </div>
                         )}
                       </form>
 
-                      {/* File Catalog List */}
-                      <div className="space-y-2.5 max-h-[350px] overflow-y-auto pr-1">
-                        {filteredSolved.length === 0 ? (
-                          <div className="text-center py-8 text-slate-500 text-xs">
-                            No solved answers uploaded yet.
-                          </div>
-                        ) : (
-                          filteredSolved.map((file) => {
-                            const isCurrentlyPreviewing = previewFile && previewFile.index === file.index;
-                            return (
-                              <div
-                                key={file.index}
-                                onClick={() => setPreviewFile(file)}
-                                className={`group p-3 pr-24 relative rounded-xl border transition-all cursor-pointer flex items-center justify-between ${isCurrentlyPreviewing ? 'bg-sky-500/10 border-accent-sky' : 'bg-dark-900/50 border-white/5 hover:border-white/10 hover:bg-dark-900'}`}
-                              >
-                                <div className="flex items-center space-x-3 min-w-0">
-                                  <div className="p-2 rounded-lg bg-sky-500/10 text-accent-sky group-hover:scale-110 transition-transform">
-                                    <Icon name="check" className="w-4 h-4" />
-                                  </div>
-                                  <div className="min-w-0 flex flex-col items-start justify-center">
-                                    <p className="che-book-title truncate group-hover:text-white transition-colors">
-                                      {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
-                                    </p>
-                                    <p className="text-[9px] text-slate-400 mt-0.5">{file.size} • {file.type}</p>
-                                  </div>
+                      {isSolvedUploading && (
+                        <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
+                          <div className="bg-[#5C061C] h-full transition-all duration-300" style={{ width: `${solvedUploadProgress}%` }}></div>
+                        </div>
+                      )}
+
+                      {solvedUploadStatus.message && (
+                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${solvedUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                          {solvedUploadStatus.message}
+                        </div>
+                      )}
+                      
+                      {/* Search solved */}
+                      <div className="relative">
+                        <input 
+                          type="text"
+                          placeholder="Search solved answers..."
+                          value={fileSearchQuery}
+                          onChange={(e) => setFileSearchQuery(e.target.value)}
+                          className="glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+                        />
+                        <Icon name="search" className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400" />
+                      </div>
+
+                      {/* Solved list */}
+                      <div className="space-y-2 max-h-[450px] overflow-y-auto pr-1">
+                        {filteredSolved.map((file) => {
+                          const isPreviewing = previewFile && previewFile.index === file.index;
+                          return (
+                            <div 
+                              key={file.index}
+                              onClick={() => setPreviewFile(file)}
+                              className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
+                            >
+                              <div className="flex items-center space-x-3 min-w-0">
+                                <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
+                                  <Icon name="check" className="w-5 h-5" />
                                 </div>
-                                <div className="absolute bottom-3 right-3 flex items-center space-x-2 opacity-60 group-hover:opacity-100 transition-opacity" onClick={(e) => e.stopPropagation()}>
-                                  <button
-                                    onClick={() => handleDeleteFile(file.index)}
-                                    className="p-1.5 bg-dark-900 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 rounded-lg border border-white/5 transition-all"
-                                    title="Delete file"
-                                  >
-                                    <Icon name="trash" className="w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900" />
-                                  </button>
-                                  <button
-                                    onClick={() => handleDownloadFile(file.index, file.name)}
-                                    className="p-1.5 bg-dark-900 hover:bg-sky-600 text-slate-400 hover:text-white rounded-lg border border-white/5 transition-all"
-                                    title="Download file"
-                                  >
-                                    <Icon name="download" className="w-3.5 h-3.5" />
-                                  </button>
+                                <div className="min-w-0 flex flex-col items-start justify-center">
+                                  <span className="che-book-title block line-clamp-2 leading-relaxed">
+                                    {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
+                                  </span>
+                                  <span className="text-[9px] text-slate-500 font-display">
+                                    {file.size} &bull; PDF Exam Solve
+                                  </span>
                                 </div>
                               </div>
-                            );
-                          })
+                              <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
+                                <button 
+                                  onClick={() => handleDeleteFile(file.index)}
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
+                                  title="Delete Solve"
+                                >
+                                  <Icon name="trash" className="w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900" />
+                                </button>
+                                <button 
+                                  onClick={() => handleDownloadFile(file.index, file.name)}
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
+                                  title="Download"
+                                >
+                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+
+                        {filteredSolved.length === 0 && (
+                          <div className="py-8 text-center text-slate-500 text-xs font-display">
+                            No solved papers cataloged inside this folder yet.
+                          </div>
                         )}
                       </div>
                     </div>
                   </div>
 
                   {/* Right Column: PDF Reader Pane */}
-                  <div className="lg:col-span-2 space-y-6">
+                  <div className="lg:col-span-2">
                     {previewFile && solvedList.some(f => f.index === previewFile.index) ? (
-                      <div className="glass-panel p-6 rounded-2xl space-y-4">
-                        <div className="flex items-center justify-between border-b border-white/5 pb-3">
-                          <div className="min-w-0">
-                            <h3 className="font-display font-bold text-base text-white truncate">{previewFile.name}</h3>
-                            <p className="text-[10px] text-slate-400 mt-0.5">Size: {previewFile.size} • Category: {previewFile.type}</p>
+                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky">
+                        <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
+                          <div className="flex items-center space-x-2">
+                            <Icon name="fileText" className="w-5 h-5 text-accent-sky" />
+                            <h4 className="font-display font-bold text-sm text-white line-clamp-1">
+                              Reading: {previewFile.name}
+                            </h4>
                           </div>
-                          <button
+                          <button 
                             onClick={() => setPreviewFile(null)}
                             className="che-close-reader-btn"
                           >
@@ -2259,41 +2261,36 @@ function App() {
                 </div>
               )}
 
-              {/* SUBSECTION 2: slides (Aggregated interactive learning space) */}
+              {/* SUBSECTION 2: Slides (Aggregated interactive learning space) */}
               {primarySection === 'slides' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start animate-fade-in">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
                   
-                  {/* Slides list */}
-                  <div className="lg:col-span-2 space-y-6">
-                    <div className="glass-panel p-6 rounded-2xl space-y-6">
-                      <div className="flex items-center justify-between flex-wrap gap-4">
-                        <h3 className="font-display font-bold text-lg text-white">Class Slides & Assets</h3>
-                        <div className="relative w-full sm:w-64">
-                          <input 
-                            type="text"
-                            placeholder="Filter slides..."
-                            value={fileSearchQuery}
-                            onChange={(e) => setFileSearchQuery(e.target.value)}
-                            className="glass-input w-full pl-9 pr-3 py-1.5 rounded-lg text-xs"
-                          />
-                          <Icon name="search" className="absolute left-3 top-2.5 w-3 h-3 text-slate-400" />
-                        </div>
+                  {/* Left Column: Slides List & Reference Links */}
+                  <div className="lg:col-span-1 space-y-6">
+                    
+                    {/* Slides catalog */}
+                    <div className="glass-panel p-6 rounded-2xl space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-display font-bold text-base text-white">Class Slides & Assets</h3>
+                        <span className="text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10">
+                          {slidesList.length} files
+                        </span>
                       </div>
 
                       {/* Virtual Folders Section */}
-                      <div className="space-y-3 pb-4 border-b border-white border-opacity-5">
+                      <div className="space-y-3 pb-3 border-b border-white border-opacity-5">
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] font-display font-bold text-sky-400 tracking-wider uppercase">Folders</span>
                           <button
                             type="button"
                             onClick={handleCreateFolder}
-                            className="flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2.5 py-1 rounded-md border border-sky-500/20"
+                            className="flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2 py-0.5 rounded border border-sky-500/20"
                           >
                             <Icon name="folderPlus" className="w-3 h-3" />
-                            <span>Create Folder</span>
+                            <span>Create</span>
                           </button>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5 max-h-[120px] overflow-y-auto pr-1">
                           {(activeCourse.folders || ["Root"]).map((folder) => {
                             const isSelected = currentFolder === folder;
                             return (
@@ -2301,16 +2298,16 @@ function App() {
                                 key={folder}
                                 type="button"
                                 onClick={() => { setCurrentFolder(folder); setPreviewFile(null); }}
-                                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-display font-semibold transition-all border ${
+                                className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-display font-semibold transition-all border ${
                                   isSelected 
                                     ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' 
                                     : 'bg-dark-900 border-white border-opacity-5 text-slate-400 hover:text-slate-200 hover:bg-sky-950/10'
                                 }`}
                               >
                                 <Icon name="folder" className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`} />
-                                <span>{folder}</span>
+                                <span className="truncate max-w-[80px]">{folder}</span>
                                 {folder !== "Root" && (
-                                  <div className="flex items-center space-x-1 ml-1.5">
+                                  <div className="flex items-center space-x-1 ml-1" onClick={(e) => e.stopPropagation()}>
                                     <span 
                                       onClick={(e) => handleRenameFolder(e, folder)}
                                       className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-sky-300'}`}
@@ -2337,7 +2334,7 @@ function App() {
                         </div>
                       </div>
 
-                      {/* PDF & Slides drag-and-drop upload zone */}
+                      {/* Slides drag-and-drop upload zone */}
                       <form onSubmit={(e) => handleFileUpload(e, slideUploadFile, "slide", {
                         setIsUploading: setIsSlideUploading,
                         setUploadProgress: setSlideUploadProgress,
@@ -2347,39 +2344,39 @@ function App() {
                       })} className="relative group">
                         <input 
                           type="file" 
-                          accept=".pdf,.hsc,.bk0,.docx,.doc,.xlsx,.xls"
+                          accept=".pdf,.docx,.doc,.xlsx,.xls,.pptx,.ppt,.txt,.zip,.rar"
                           onChange={(e) => setSlideUploadFile(e.target.files[0])}
                           className="hidden" 
-                          id="file-upload-input"
+                          id="slide-upload-input"
                           ref={slideFileInputRef}
                         />
                         <label 
-                          htmlFor="file-upload-input" 
-                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
+                          htmlFor="slide-upload-input" 
+                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
                         >
-                          <Icon name="upload" className="w-8 h-8 text-accent-sky mb-3 group-hover:scale-110 transition-transform" />
-                          <p className="font-display font-semibold text-xs text-sky-300 text-center max-w-lg px-4">
-                            {slideUploadFile ? `Selected: ${slideUploadFile.name}` : "Upload slides, manuals, MATLAB/HYSYS scripts, or any other resources that might be helpful to the course."}
+                          <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
+                            {slideUploadFile ? `Selected: ${slideUploadFile.name}` : "Upload lecture slides, notes, or spreadsheets."}
                           </p>
-                          <p className="text-[10px] text-slate-500 mt-1">Drag and drop or click to browse</p>
+                          <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
                         </label>
                         
                         {slideUploadFile && (
-                          <div className="flex items-center space-x-3 mt-3 justify-end animate-fade-in">
+                          <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
                             <button 
                               type="button" 
                               onClick={() => { setSlideUploadFile(null); if (slideFileInputRef.current) slideFileInputRef.current.value = ""; }}
-                              className="px-3 py-1.5 che-cancel-btn rounded-lg text-xs font-display"
+                              className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
                             </button>
                             <button 
                               type="submit" 
                               disabled={isSlideUploading}
-                              className="px-4 py-1.5 che-submit-btn text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
+                              className="px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
-                              <span>{isSlideUploading ? "Uploading..." : "Save to slides"}</span>
-                              <Icon name="plus" className="w-3.5 h-3.5" />
+                              <span>{isSlideUploading ? "Uploading..." : "Save to Slides"}</span>
+                              <Icon name="plus" className="w-3 h-3" />
                             </button>
                           </div>
                         )}
@@ -2392,12 +2389,24 @@ function App() {
                       )}
 
                       {slideUploadStatus.message && (
-                        <div className={`p-3 rounded-lg text-xs font-display font-medium ${slideUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${slideUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {slideUploadStatus.message}
                         </div>
                       )}
+                      
+                      {/* Search slides */}
+                      <div className="relative">
+                        <input 
+                          type="text"
+                          placeholder="Search slides..."
+                          value={fileSearchQuery}
+                          onChange={(e) => setFileSearchQuery(e.target.value)}
+                          className="glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+                        />
+                        <Icon name="search" className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400" />
+                      </div>
 
-                      {/* List of non-book slide files */}
+                      {/* List of slide files */}
                       <div className="space-y-2 max-h-[350px] overflow-y-auto pr-1">
                         {filteredSlides.map((file) => {
                           const isPreviewing = previewFile && previewFile.index === file.index;
@@ -2449,8 +2458,82 @@ function App() {
                       </div>
                     </div>
 
-                    {/* Interactive File Preview Pane */}
-                    {previewFile && (
+                    {/* Reference Links Column Stacked inside Sidebar */}
+                    <div className="glass-panel p-6 rounded-2xl space-y-4">
+                      <h3 className="font-display font-bold text-base text-glow text-white">Study Reference Links</h3>
+                      
+                      {/* Form to submit links */}
+                      <form onSubmit={handleAddLink} className="space-y-3">
+                        <div>
+                          <label className="text-[9px] uppercase font-semibold text-slate-400 tracking-wider font-display block mb-1">
+                            Reference Title
+                          </label>
+                          <input 
+                            type="text"
+                            placeholder="e.g. Perry's Handbook Chapter 5"
+                            value={newLink.title}
+                            onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
+                            className="glass-input w-full px-3 py-1.5 rounded-lg text-xs"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[9px] uppercase font-semibold text-slate-400 tracking-wider font-display block mb-1">
+                            Hyperlink URL
+                          </label>
+                          <input 
+                            type="url"
+                            placeholder="https://example.com/resource"
+                            value={newLink.url}
+                            onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
+                            className="glass-input w-full px-3 py-1.5 rounded-lg text-xs"
+                            required
+                          />
+                        </div>
+                        <button 
+                          type="submit"
+                          className="w-full py-2 bg-gradient-to-r from-accent-sky to-accent-violet hover:from-sky-500 hover:to-violet-600 text-white font-display font-semibold text-[10px] uppercase tracking-wider rounded-lg transition-all shadow-md shadow-sky-950/20"
+                        >
+                          Add Reference Link
+                        </button>
+                      </form>
+
+                      {/* Display of links */}
+                      <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                        {(activeCourse.reference_links || []).map((link, idx) => (
+                          <div key={idx} className="glass-panel p-2.5 rounded-xl flex items-center justify-between gap-3 text-xs border-white border-opacity-5 hover:bg-white/5 transition-colors">
+                            <a 
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-display font-medium text-slate-300 hover:text-accent-sky truncate flex items-center space-x-1.5 max-w-[170px]"
+                            >
+                              <Icon name="externalLink" className="w-3.5 h-3.5 text-accent-sky flex-shrink-0" />
+                              <span className="truncate">{link.title}</span>
+                            </a>
+                            <button
+                              onClick={() => handleDeleteLink(idx)}
+                              className="p-1 hover:bg-rose-500/20 text-slate-500 hover:text-rose-400 rounded transition-all flex-shrink-0"
+                              title="Remove Link"
+                            >
+                              <Icon name="trash" className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+
+                        {(activeCourse.reference_links || []).length === 0 && (
+                          <div className="py-4 text-center text-slate-500 text-[10px] font-display">
+                            No custom reference links added yet.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Right Column: Slides Preview Pane or Placeholder Terminal */}
+                  <div className="lg:col-span-2">
+                    {previewFile && slidesList.some(f => f.index === previewFile.index) ? (
                       <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky">
                         <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
                           <div className="flex items-center space-x-2">
@@ -2461,14 +2544,14 @@ function App() {
                           </div>
                           <button 
                             onClick={() => setPreviewFile(null)}
-                            className="text-slate-400 hover:text-white text-xs font-semibold"
+                            className="che-close-reader-btn"
                           >
                             Close Preview
                           </button>
                         </div>
 
                         {(previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? (
-                          <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "450px" }}>
+                          <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                             {previewLoading ? (
                               <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
                                 <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
@@ -2486,163 +2569,43 @@ function App() {
                             ) : null}
                           </div>
                         ) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? (
-                          <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ minHeight: "360px" }}>
+                          <div className="w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center" style={{ height: "550px" }}>
                             <video 
                               src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
                               controls 
                               preload="metadata"
                               playsInline
                               className="w-full h-full rounded-xl shadow-lg border border-white border-opacity-5" 
-                              style={{ maxHeight: "480px" }}
                             />
-                          </div>
-                        ) : (
-                          <div className="p-8 text-center bg-dark-900 rounded-xl space-y-3">
-                            <Icon name="layers" className="w-10 h-10 text-slate-500 mx-auto" />
-                            <p className="text-slate-300 font-display font-semibold text-xs">
-                              Dynamic preview is only supported for PDF assets.
-                            </p>
-                            <p className="text-[10px] text-slate-500 max-w-sm mx-auto">
-                              For HYSYS files (.hsc), Matlab files (.m) or spreadsheets (.xlsx), please download the file directly to launch locally.
+                                               <div className="p-16 text-center bg-dark-900 rounded-2xl space-y-4 border border-white border-opacity-5 flex flex-col items-center justify-center" style={{ height: "500px" }}>
+                            <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2">
+                              <Icon name="layers" className="w-8 h-8" />
+                            </div>
+                            <h4 className="font-display font-bold text-base text-white">Dynamic Preview Restricted</h4>
+                            <p className="text-slate-400 text-xs max-w-sm leading-relaxed">
+                              Dynamic previewing is only optimized for PDF and video assets. For spreadsheet models (.xlsx), HYSYS setups (.hsc), Matlab scripts (.m), or archives (.zip), download the file directly to open locally.
                             </p>
                             <button 
                               onClick={() => handleDownloadFile(previewFile.index, previewFile.name)}
-                              className="inline-block px-4 py-2 bg-accent-sky hover:bg-sky-600 transition-colors text-white font-display font-semibold text-xs rounded-lg mt-2"
+                              className="px-4 py-2 bg-gradient-to-r from-accent-sky to-accent-violet hover:from-sky-500 hover:to-violet-600 text-white font-display font-semibold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-sky-950/20 flex items-center space-x-2"
                             >
-                              Download Asset
+                              <Icon name="download" className="w-4 h-4" />
+                              <span>Download Asset</span>
                             </button>
                           </div>
                         )}
                       </div>
-                    )}
-                  </div>
-
-                  {/* Reference Links Column */}
-                  <div className="space-y-6">
-                    <div className="glass-panel p-6 rounded-2xl space-y-6">
-                      <h3 className="font-display font-bold text-base text-glow text-white">Study Reference Links</h3>
-                      
-                      {/* Form to submit links */}
-                      <form onSubmit={handleAddLink} className="space-y-3">
-                        <div>
-                          <label className="text-[9px] uppercase font-semibold text-slate-400 tracking-wider font-display block mb-1">
-                            Reference Title
-                          </label>
-                          <input 
-                            type="text" 
-                            required
-                            placeholder="e.g. Batch Reactor Heat Exchange video"
-                            value={newLink.title}
-                            onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
-                            className="glass-input w-full p-2 rounded-lg text-xs"
-                          />
+                    ) : (
+                      <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
+                        <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2">
+                          <Icon name="layers" className="w-8 h-8" />
                         </div>
-
-                        <div>
-                          <label className="text-[9px] uppercase font-semibold text-slate-400 tracking-wider font-display block mb-1">
-                            Paste URL (YouTube / website)
-                          </label>
-                          <input 
-                            type="url" 
-                            required
-                            placeholder="https://..."
-                            value={newLink.url}
-                            onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
-                            className="glass-input w-full p-2 rounded-lg text-xs"
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-3 items-end">
-                          <div>
-                            <label className="text-[9px] uppercase font-semibold text-slate-400 tracking-wider font-display block mb-1">
-                              Category type
-                            </label>
-                            <select 
-                              value={newLink.category}
-                              onChange={(e) => setNewLink({ ...newLink, category: e.target.value })}
-                              className="glass-input w-full p-2 rounded-lg text-xs"
-                            >
-                              <option value="YouTube">YouTube</option>
-                              <option value="Research Article">Research Article</option>
-                              <option value="Reference Website">Reference Website</option>
-                              <option value="Azeotropic Data">Azeotropic Data</option>
-                            </select>
-                          </div>
-                          
-                          <button 
-                            type="submit"
-                            disabled={isSavingLink}
-                            className="w-full py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-display font-semibold transition-colors flex items-center justify-center space-x-1"
-                          >
-                            <span>Add Reference</span>
-                            <Icon name="plus" className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </form>
-
-                      {/* Reference links list */}
-                      <div className="space-y-4 max-h-[400px] overflow-y-auto pr-1 pt-1">
-                        {referenceLinks.map((link) => {
-                          const embedUrl = getYouTubeEmbedUrl(link.url);
-                          const isYoutube = embedUrl !== null || link.category === 'YouTube';
-                          
-                          return (
-                            <div key={link.id} className="glass-panel p-3.5 rounded-xl space-y-3 relative group">
-                              <div className="flex items-start justify-between gap-4">
-                                <div className="min-w-0">
-                                  <span className={`inline-block px-2 py-0.5 rounded text-[8px] font-bold font-display uppercase tracking-wider mb-2 border ${isYoutube ? 'bg-rose-500/10 text-rose-300 border-rose-500/10' : 'bg-accent-violet/10 text-accent-violet border-accent-violet/10'}`}>
-                                    {link.category}
-                                  </span>
-                                  <h4 className="font-display font-semibold text-xs text-white line-clamp-2 leading-relaxed">
-                                    {link.title}
-                                  </h4>
-                                </div>
-                                <button 
-                                  onClick={() => handleDeleteLink(link.id)}
-                                  className="opacity-0 group-hover:opacity-100 absolute top-3 right-3 p-1 rounded-md bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 transition-opacity"
-                                  title="Delete Reference"
-                                >
-                                  <Icon name="trash" className="w-3 h-3 !text-rose-700 hover:!text-rose-900" />
-                                </button>
-                              </div>
-
-                              {isYoutube && embedUrl ? (
-                                <div 
-                                  onClick={() => setPlayingVideoUrl(embedUrl)}
-                                  className="cursor-pointer relative group/video rounded-lg overflow-hidden border border-white border-opacity-10 bg-dark-950 aspect-video w-full flex items-center justify-center"
-                                >
-                                  <div className="absolute inset-0 bg-gradient-to-tr from-rose-900/40 to-sky-900/30 group-hover/video:opacity-80 transition-opacity flex flex-col justify-end p-2.5">
-                                    <span className="text-[9px] text-rose-300 font-semibold tracking-wide flex items-center space-x-1">
-                                      <svg className="w-3 h-3 fill-rose-500 animate-pulse" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                                      <span>Watch on Hub player</span>
-                                    </span>
-                                  </div>
-                                  <div className="w-10 h-10 rounded-full bg-rose-600 bg-opacity-90 group-hover/video:scale-110 shadow-lg shadow-rose-600/30 transition-transform flex items-center justify-center text-white z-10">
-                                    <Icon name="play" className="w-5 h-5 ml-0.5" />
-                                  </div>
-                                </div>
-                              ) : (
-                                <a 
-                                  href={link.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="w-full py-1.5 bg-dark-950 hover:bg-dark-900 border border-white border-opacity-5 rounded-lg text-[10px] font-display font-semibold text-accent-violet flex items-center justify-center space-x-1"
-                                >
-                                  <span>Launch Reference</span>
-                                  <Icon name="externalLink" className="w-3 h-3" />
-                                </a>
-                              )}
-                            </div>
-                          );
-                        })}
-
-                        {referenceLinks.length === 0 && (
-                          <div className="py-8 text-center text-slate-500 text-xs font-display">
-                            No reference links loaded.
-                          </div>
-                        )}
+                        <h4 className="font-display font-bold text-lg text-white">Hub-Class Slides Terminal</h4>
+                        <p className="text-slate-400 text-xs max-w-md leading-relaxed">
+                          Select any slide, lecture note, or asset from the left catalog to launch our integrated interactive workspace.
+                        </p>
                       </div>
-                    </div>
+                    )}
                   </div>
 
                 </div>
@@ -2656,6 +2619,9 @@ function App() {
                     <div className="glass-panel p-6 rounded-2xl space-y-4">
                       <div className="flex items-center justify-between">
                         <h3 className="font-display font-bold text-base text-white">Recorded Class Videos</h3>
+                        <span className="text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10">
+                          {videosList.length} recordings
+                        </span>
                       </div>
 
                       {/* Virtual Folders Section */}
@@ -2756,7 +2722,7 @@ function App() {
                               disabled={isVideoUploading}
                               className="px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
-                              <span>{isVideoUploading ? "Uploading..." : "Save to videos"}</span>
+                              <span>{isVideoUploading ? "Uploading..." : "Save to Videos"}</span>
                               <Icon name="plus" className="w-3 h-3" />
                             </button>
                           </div>
@@ -2779,7 +2745,7 @@ function App() {
                       <div className="relative">
                         <input 
                           type="text"
-                          placeholder="Filter videos..."
+                          placeholder="Search videos..."
                           value={videoSearchQuery}
                           onChange={(e) => setVideoSearchQuery(e.target.value)}
                           className="glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
