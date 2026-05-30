@@ -1593,7 +1593,7 @@ function App() {
                                 </div>
                                 <div className="min-w-0">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
-                                    {file.name}
+                                    {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
                                   <span className="text-[9px] text-slate-500 font-display">
                                     {file.size} &bull; PDF Textbook
@@ -1784,7 +1784,7 @@ function App() {
                                 </div>
                                 <div className="min-w-0">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
-                                    {file.name}
+                                    {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
                                   <span className="text-[9px] text-slate-500 font-display">
                                     {file.size} &bull; PDF Question Paper
@@ -1975,7 +1975,7 @@ function App() {
                                 </div>
                                 <div className="min-w-0">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
-                                    {file.name}
+                                    {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
                                   <span className="text-[9px] text-slate-500 font-display">
                                     {file.size} &bull; PDF Exam Solve
@@ -2172,7 +2172,9 @@ function App() {
                                     <Icon name="check" className="w-4 h-4" />
                                   </div>
                                   <div className="min-w-0">
-                                    <p className="che-book-title truncate group-hover:text-white transition-colors">{file.name}</p>
+                                    <p className="che-book-title truncate group-hover:text-white transition-colors">
+                                      {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
+                                    </p>
                                     <p className="text-[9px] text-slate-400 mt-0.5">{file.size} • {file.type}</p>
                                   </div>
                                 </div>
@@ -2405,7 +2407,7 @@ function App() {
                                 </div>
                                 <div className="min-w-0">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
-                                    {file.name}
+                                    {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
                                   <span className="text-[9px] text-slate-500 font-display">
                                     {file.size} &bull; {file.type || "Class Slide"}
@@ -2795,7 +2797,7 @@ function App() {
                                 </div>
                                 <div className="min-w-0">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
-                                    {file.name}
+                                    {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
                                   <span className="text-[9px] text-slate-500 font-display">
                                     {file.size} &bull; Recorded Class

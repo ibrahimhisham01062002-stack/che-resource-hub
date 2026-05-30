@@ -511,15 +511,15 @@
             font-weight: 700 !important; /* Bold */
             background-color: rgba(158, 27, 50, 0.08) !important; /* Solid light maroon color */
             border: 1px dashed #9E1B32 !important; /* Thinner maroon dashed border outline */
-            padding: 2px 6px !important; /* Tightened compact padding */
+            padding: 3px 8px !important; /* Tightened compact padding */
             border-radius: 5px !important;
-            display: -webkit-box !important; /* Webkit box layout to enforce line clamping */
+            display: -webkit-inline-box !important; /* Use inline-box for space efficiency */
             -webkit-line-clamp: 2 !important; /* Enforce maximum 2 lines of text */
             -webkit-box-orient: vertical !important;
             overflow: hidden !important;
             text-overflow: ellipsis !important;
-            width: 100% !important; /* Stretch to fill 100% of available middle card area! */
-            margin-right: 7.5rem !important; /* Prevent overlap with absolute bottom-right action buttons! */
+            width: fit-content !important; /* Fit to text width cleanly */
+            max-width: 220px !important; /* Reduced width for every section to look compact and premium! */
             box-sizing: border-box !important;
             margin-bottom: 2px !important;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
