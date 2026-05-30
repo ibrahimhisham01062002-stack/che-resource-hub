@@ -915,7 +915,7 @@ function App() {
                   <button
                     type="submit"
                     disabled={isSavingCourseEdit}
-                    className="w-1/2 py-2.5 bg-gradient-to-r from-accent-sky to-accent-teal text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02]"
+                    className="w-1/2 py-2.5 bg-gradient-to-r from-accent-sky to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02]"
                   >
                     {isSavingCourseEdit ? "Saving..." : "Save Changes"}
                   </button>
@@ -1060,8 +1060,8 @@ function App() {
                 checkAuthAndExecute(() => {});
               }
             }}>
-              <span className={`w-2 h-2 rounded-full ${isAuthorizedState ? 'bg-teal-400 animate-pulse' : 'bg-slate-500'}`}></span>
-              <span className={`font-display text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${isAuthorizedState ? 'text-teal-400' : 'text-slate-500'}`}>
+              <span className={`w-2 h-2 rounded-full ${isAuthorizedState ? 'bg-violet-400 animate-pulse' : 'bg-slate-500'}`}></span>
+              <span className={`font-display text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${isAuthorizedState ? 'text-violet-400' : 'text-slate-500'}`}>
                 {isAuthorizedState ? '🔓 Admin Active' : '🔒 Guest'}
               </span>
             </div>
@@ -1175,7 +1175,7 @@ function App() {
                       <button
                         type="submit"
                         disabled={isCreatingCourse}
-                        className="w-full py-2 bg-gradient-to-r from-accent-sky to-accent-teal text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02] flex items-center justify-center space-x-1"
+                        className="w-full py-2 bg-gradient-to-r from-accent-sky to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02] flex items-center justify-center space-x-1"
                       >
                         <span>{isCreatingCourse ? "Adding Course..." : "Add Course"}</span>
                         <Icon name="chevronRight" className="w-3.5 h-3.5" />
@@ -1190,8 +1190,8 @@ function App() {
                 // Generates dynamic aesthetic gradient backgrounds by course code
                 const gradients = [
                   "from-accent-sky to-sky-900/30",
-                  "from-accent-teal to-teal-900/30",
-                  "from-accent-teal to-teal-900/30",
+                  "from-accent-violet to-violet-900/30",
+                  "from-accent-violet to-violet-900/30",
                   "from-accent-blue to-blue-900/30",
                   "from-accent-rose to-rose-900/30",
                 ];
@@ -1291,35 +1291,35 @@ function App() {
               <div className="flex bg-dark-950 p-1 rounded-xl border border-white border-opacity-5 flex-wrap gap-1 self-start md:self-center">
                 <button
                   onClick={() => { setPrimarySection("books"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'books' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'books' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="book" className="w-3.5 h-3.5" />
                   <span>Books</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("solutions"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="edit" className="w-3.5 h-3.5" />
                   <span>Solution Manual</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("slides"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="layers" className="w-3.5 h-3.5" />
                   <span>slides</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("questions"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'questions' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'questions' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="fileText" className="w-3.5 h-3.5" />
                   <span>Term-Final Question</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("solved"); setPreviewFile(null); }}
-                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solved' ? 'bg-gradient-to-tr from-accent-sky to-accent-teal text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solved' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
                 >
                   <Icon name="check" className="w-3.5 h-3.5" />
                   <span>Term-Final Solved</span>
@@ -1394,12 +1394,12 @@ function App() {
 
                       {isBookUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-sky to-accent-teal h-full transition-all duration-300" style={{ width: `${bookUploadProgress}%` }}></div>
+                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${bookUploadProgress}%` }}></div>
                         </div>
                       )}
 
                       {bookUploadStatus.message && (
-                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${bookUploadStatus.type === 'success' ? 'bg-teal-500/10 text-teal-300 border border-teal-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${bookUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {bookUploadStatus.message}
                         </div>
                       )}
@@ -1588,12 +1588,12 @@ function App() {
 
                       {isQuestionUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-sky to-accent-teal h-full transition-all duration-300" style={{ width: `${questionUploadProgress}%` }}></div>
+                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${questionUploadProgress}%` }}></div>
                         </div>
                       )}
 
                       {questionUploadStatus.message && (
-                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${questionUploadStatus.type === 'success' ? 'bg-teal-500/10 text-teal-300 border border-teal-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${questionUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {questionUploadStatus.message}
                         </div>
                       )}
@@ -1782,12 +1782,12 @@ function App() {
 
                       {isSolutionUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-sky to-accent-teal h-full transition-all duration-300" style={{ width: `${solutionUploadProgress}%` }}></div>
+                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${solutionUploadProgress}%` }}></div>
                         </div>
                       )}
 
                       {solutionUploadStatus.message && (
-                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${solutionUploadStatus.type === 'success' ? 'bg-teal-500/10 text-teal-300 border border-teal-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${solutionUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {solutionUploadStatus.message}
                         </div>
                       )}
@@ -1989,13 +1989,13 @@ function App() {
                               <span>{solvedUploadProgress}%</span>
                             </div>
                             <div className="w-full h-1.5 bg-dark-900 rounded-full overflow-hidden border border-white/5">
-                              <div className="h-full bg-gradient-to-r from-accent-sky to-accent-teal rounded-full transition-all duration-300" style={{ width: `${solvedUploadProgress}%` }}></div>
+                              <div className="h-full bg-gradient-to-r from-accent-sky to-accent-violet rounded-full transition-all duration-300" style={{ width: `${solvedUploadProgress}%` }}></div>
                             </div>
                           </div>
                         )}
 
                         {solvedUploadStatus.message && (
-                          <div className={`mt-3 p-2.5 rounded-xl border text-[10px] font-semibold flex items-center justify-between ${solvedUploadStatus.type === 'success' ? 'bg-teal-500/10 border-teal-500/20 text-teal-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'}`}>
+                          <div className={`mt-3 p-2.5 rounded-xl border text-[10px] font-semibold flex items-center justify-between ${solvedUploadStatus.type === 'success' ? 'bg-violet-500/10 border-violet-500/20 text-violet-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'}`}>
                             <span>{solvedUploadStatus.message}</span>
                             <button type="button" onClick={() => setSolvedUploadStatus({ type: '', message: '' })} className="text-slate-400 hover:text-white ml-2 text-xs">×</button>
                           </div>
@@ -2143,7 +2143,7 @@ function App() {
                                 onClick={() => { setCurrentFolder(folder); setPreviewFile(null); }}
                                 className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-display font-semibold transition-all border ${
                                   isSelected 
-                                    ? 'bg-gradient-to-r from-accent-sky to-accent-teal text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' 
+                                    ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' 
                                     : 'bg-dark-900 border-white border-opacity-5 text-slate-400 hover:text-slate-200 hover:bg-sky-950/10'
                                 }`}
                               >
@@ -2227,12 +2227,12 @@ function App() {
 
                       {isSlideUploading && (
                         <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
-                          <div className="bg-gradient-to-r from-accent-sky to-accent-teal h-full transition-all duration-300" style={{ width: `${slideUploadProgress}%` }}></div>
+                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${slideUploadProgress}%` }}></div>
                         </div>
                       )}
 
                       {slideUploadStatus.message && (
-                        <div className={`p-3 rounded-lg text-xs font-display font-medium ${slideUploadStatus.type === 'success' ? 'bg-teal-500/10 text-teal-300 border border-teal-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                        <div className={`p-3 rounded-lg text-xs font-display font-medium ${slideUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {slideUploadStatus.message}
                         </div>
                       )}
@@ -2428,7 +2428,7 @@ function App() {
                             <div key={link.id} className="glass-panel p-3.5 rounded-xl space-y-3 relative group">
                               <div className="flex items-start justify-between gap-4">
                                 <div className="min-w-0">
-                                  <span className={`inline-block px-2 py-0.5 rounded text-[8px] font-bold font-display uppercase tracking-wider mb-2 border ${isYoutube ? 'bg-rose-500/10 text-rose-300 border-rose-500/10' : 'bg-accent-teal/10 text-accent-teal border-accent-teal/10'}`}>
+                                  <span className={`inline-block px-2 py-0.5 rounded text-[8px] font-bold font-display uppercase tracking-wider mb-2 border ${isYoutube ? 'bg-rose-500/10 text-rose-300 border-rose-500/10' : 'bg-accent-violet/10 text-accent-violet border-accent-violet/10'}`}>
                                     {link.category}
                                   </span>
                                   <h4 className="font-display font-semibold text-xs text-white line-clamp-2 leading-relaxed">
@@ -2464,7 +2464,7 @@ function App() {
                                   href={link.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="w-full py-1.5 bg-dark-950 hover:bg-dark-900 border border-white border-opacity-5 rounded-lg text-[10px] font-display font-semibold text-accent-teal flex items-center justify-center space-x-1"
+                                  className="w-full py-1.5 bg-dark-950 hover:bg-dark-900 border border-white border-opacity-5 rounded-lg text-[10px] font-display font-semibold text-accent-violet flex items-center justify-center space-x-1"
                                 >
                                   <span>Launch Reference</span>
                                   <Icon name="externalLink" className="w-3 h-3" />
