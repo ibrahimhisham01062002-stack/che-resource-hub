@@ -312,20 +312,20 @@
             opacity: 1 !important;
         }
         
-        /* Brand text "ChE" in Header (high contrast deep royal violet against sand background) */
+        /* Brand text "ChE" in Header (high contrast crisp white with soft drop shadow against sand background) */
         header.glass-panel span.che-brand-text {
-            color: #35154D !important; 
+            color: #FFFFFF !important; 
             font-weight: 800 !important;
-            text-shadow: none !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 8px rgba(53, 21, 77, 0.25) !important; /* Premium dark drop shadow for perfect AAA contrast */
         }
         
-        /* Vibrant gradient brand text StudySpace (high contrast deep violet-to-indigo gradient) */
+        /* Vibrant gradient brand text StudySpace (high contrast white-to-neon-violet-blue gradient) */
         header.glass-panel span.gradient-text {
-            background: linear-gradient(135deg, #4C1D95 0%, #1E3A8A 100%) !important; /* Premium deep violet-indigo gradient */
+            background: linear-gradient(135deg, #FFFFFF 0%, #C084FC 50%, #60A5FA 100%) !important; /* Eye-catching White-to-Neon Violet-Blue gradient */
             -webkit-background-clip: text !important;
             -webkit-text-fill-color: transparent !important;
             font-weight: 800 !important;
-            text-shadow: none !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important; /* Subtle dark drop shadow */
         }
 
         /* Combined Sand-Beige & Deep Twilight Violet background override specifically for the top section Navigation Header panel */
@@ -353,9 +353,10 @@
             letter-spacing: 0.05em !important;
         }
         header.glass-panel p.text-slate-400 {
-            color: #35154D !important; /* High contrast deep twilight violet for outstanding legibility against sand background */
+            color: #FFFFFF !important; /* High contrast crisp white for branding subtitle */
             letter-spacing: 0.12em !important;
-            opacity: 0.85 !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45) !important; /* Crisp shadow backdrop */
+            opacity: 0.95 !important;
         }
         header.glass-panel .text-white {
             color: #FFFFFF !important; /* Crisp white for stats values */
@@ -463,19 +464,19 @@
         .prose pre code { background: transparent; color: #1E2538; padding: 0; }
         .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #687289; }
 
-        /* Premium highlighted royal violet title style with increased font size and weight (Image 2) */
+        /* Premium highlighted royal violet title style with decreased font size and weight (Image 2) */
         .glass-panel span.che-book-title,
         .glass-card span.che-book-title,
         .glass-panel p.che-book-title,
         .glass-card p.che-book-title,
         span.che-book-title {
             color: #4C1D95 !important; /* Rich deep royal violet */
-            font-size: 0.98rem !important; /* Increased font size */
+            font-size: 0.85rem !important; /* Decreased font size for elegant neat proportions */
             font-weight: 800 !important; /* Extra bold */
             background-color: rgba(111, 82, 148, 0.08) !important; /* Soft sand-violet highlight background */
             border: 1px dashed rgba(111, 82, 148, 0.25) !important; /* Subtly dashed highlight border */
-            padding: 3px 8px !important;
-            border-radius: 8px !important;
+            padding: 2.5px 7px !important; /* Tighten padding */
+            border-radius: 6px !important;
             display: inline-block !important;
             margin-bottom: 2px !important;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
