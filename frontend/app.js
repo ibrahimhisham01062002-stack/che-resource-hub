@@ -244,31 +244,20 @@ function App() {
       return;
     }
     
-    let active = true;
     setPreviewLoading(true);
-    setPreviewUrl("");
     
-    fetch(`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`)
-      .then(res => {
-        if (!res.ok) throw new Error("Failed to load PDF");
-        return res.blob();
-      })
-      .then(blob => {
-        if (!active) return;
-        const url = URL.createObjectURL(blob);
-        setPreviewUrl(url);
-        setPreviewLoading(false);
-      })
-      .catch(err => {
-        console.error("PDF Preview Load Error:", err);
-        if (active) {
-          setPreviewLoading(false);
-          setPreviewUrl("");
-        }
-      });
-      
+    // Set the preview URL directly to our secure streaming proxy endpoint.
+    // This lets the browser natively stream and render the PDF (supporting range requests and fast page-by-page loading)
+    // instead of forcing a full, memory-intensive blob download of multi-megabyte files first.
+    const directUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
+    setPreviewUrl(directUrl);
+    
+    const timer = setTimeout(() => {
+      setPreviewLoading(false);
+    }, 150);
+    
     return () => {
-      active = false;
+      clearTimeout(timer);
     };
   }, [previewFile, activeCourse]);
 
