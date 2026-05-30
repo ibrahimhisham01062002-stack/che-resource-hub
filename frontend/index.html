@@ -20,45 +20,45 @@
                 extend: {
                     colors: {
                         dark: {
-                            50: '#F0F4FA',
-                            100: '#F7F9FC',
-                            800: '#E2E8F0',
-                            900: '#F7F9FC',
-                            950: '#EDF2F7',
+                            50: '#FFFFFF',
+                            100: '#E2E8F0',
+                            800: '#2D3748',
+                            900: '#1A1C28',
+                            950: '#161824',
                         },
                         slate: {
-                            50: '#2D3748',
-                            100: '#2D3748',
-                            200: '#4A5568',
-                            300: '#718096',
-                            400: '#718096',
-                            500: '#718096',
-                            600: '#718096',
-                            700: '#4A5568',
-                            800: '#2D3748',
-                            900: '#1A202C',
+                            50: '#E2E8F0',
+                            100: '#E2E8F0',
+                            200: '#CBD5E1',
+                            300: '#94A3B8',
+                            400: '#94A3B8',
+                            500: '#94A3B8',
+                            600: '#94A3B8',
+                            700: '#CBD5E1',
+                            800: '#E2E8F0',
+                            900: '#F1F5F9',
                         },
                         sky: {
-                            50: '#E6FFFA',
-                            100: '#E6FFFA',
-                            200: '#E6FFFA',
-                            300: '#319795',
-                            400: '#319795',
-                            500: '#319795',
-                            600: '#319795',
-                            700: '#319795',
-                            950: '#E6FFFA',
+                            50: 'rgba(49, 151, 149, 0.15)',
+                            100: 'rgba(49, 151, 149, 0.15)',
+                            200: 'rgba(49, 151, 149, 0.15)',
+                            300: '#4FD1C5',
+                            400: '#4FD1C5',
+                            500: '#4FD1C5',
+                            600: '#4FD1C5',
+                            700: '#4FD1C5',
+                            950: 'rgba(49, 151, 149, 0.15)',
                         },
                         violet: {
-                            50: '#E6FFFA',
-                            100: '#E6FFFA',
-                            200: '#E6FFFA',
-                            300: '#319795',
-                            400: '#319795',
-                            500: '#319795',
-                            600: '#319795',
-                            700: '#319795',
-                            950: '#E6FFFA',
+                            50: 'rgba(49, 151, 149, 0.15)',
+                            100: 'rgba(49, 151, 149, 0.15)',
+                            200: 'rgba(49, 151, 149, 0.15)',
+                            300: '#4FD1C5',
+                            400: '#4FD1C5',
+                            500: '#4FD1C5',
+                            600: '#4FD1C5',
+                            700: '#4FD1C5',
+                            950: 'rgba(49, 151, 149, 0.15)',
                         },
                         accent: {
                             sky: '#5A8DDE',      // Primary Muted Azure
@@ -87,8 +87,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F7F9FC !important;
-            color: #2D3748 !important;
+            background-color: #1a1c28 !important;
+            color: #E2E8F0 !important;
             overflow-x: hidden;
         }
         
@@ -98,7 +98,7 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #F7F9FC;
+            background: #1a1c28;
         }
         ::-webkit-scrollbar-thumb {
             background: rgba(90, 141, 222, 0.3);
@@ -110,42 +110,42 @@
         
         /* Modern Clean Card/Panel Classes */
         .glass-panel {
-            background: #F0F4FA;
-            border: 1px solid #E2E8F0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            background: #222536;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
             border-radius: 12px;
         }
         .glass-card {
-            background: #F0F4FA;
-            border: 1px solid #E2E8F0;
+            background: #222536;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-card:hover {
-            background: #F5F8FC;
-            border-color: #CBD5E0;
+            background: #282c40;
+            border-color: rgba(90, 141, 222, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
         }
         .glass-input {
-            background: #F7F9FC;
-            border: 1px solid #E2E8F0;
-            color: #2D3748;
+            background: #161824;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #E2E8F0;
             border-radius: 12px;
             transition: all 0.2s ease-in-out;
         }
         .glass-input:focus {
-            background: #F5F8FC;
+            background: #1c1f2e;
             border-color: #5A8DDE;
             outline: none;
-            box-shadow: 0 0 0 2px rgba(90, 141, 222, 0.15);
+            box-shadow: 0 0 0 2px rgba(90, 141, 222, 0.2);
         }
         
         /* Typography & Overrides */
         h1.text-white, h2.text-white, h3.text-white, h4.text-white, h5.text-white, h6.text-white,
         .text-white {
-            color: #2D3748 !important;
+            color: #E2E8F0 !important;
             text-shadow: none !important;
         }
         
@@ -177,12 +177,12 @@
 
         /* Soft Teal Badges styling */
         .bg-sky-500\/20, .bg-sky-500\/10, .bg-accent-sky\/20, .bg-accent-sky\/10, .bg-violet-500\/10, .bg-violet-500\/20 {
-            background-color: #E6FFFA !important;
-            color: #319795 !important;
-            border-color: rgba(49, 151, 149, 0.15) !important;
+            background-color: rgba(49, 151, 149, 0.15) !important;
+            color: #4FD1C5 !important;
+            border-color: rgba(49, 151, 149, 0.2) !important;
         }
         .text-sky-300, .text-accent-sky, .text-accent-violet, .text-violet-300 {
-            color: #319795 !important;
+            color: #4FD1C5 !important;
         }
         /* Except when buttons or specific layouts want Azure */
         .text-accent-sky.text-white, button .text-accent-sky, .bg-gradient-to-r .text-accent-sky {
@@ -194,38 +194,38 @@
             text-shadow: 0 0 10px rgba(90, 141, 222, 0.15);
         }
         .gradient-text {
-            background: linear-gradient(135deg, #5A8DDE 0%, #319795 100%);
+            background: linear-gradient(135deg, #5A8DDE 0%, #4FD1C5 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
         /* Header dividers */
         header div.bg-white, header div.bg-white.bg-opacity-10 {
-            background-color: #E2E8F0 !important;
+            background-color: rgba(255, 255, 255, 0.08) !important;
             opacity: 1 !important;
         }
         
         /* Dropdown Options */
         select option {
-            background-color: #F0F4FA !important;
-            color: #2D3748 !important;
+            background-color: #222536 !important;
+            color: #E2E8F0 !important;
         }
         
-        /* Markdown Styling overrides for Light Theme */
-        .prose h1 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 700; color: #2D3748; margin-top: 1.5rem; margin-bottom: 0.8rem; border-bottom: 1px solid #E2E8F0; padding-bottom: 0.3rem;}
-        .prose h2 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 600; color: #2D3748; margin-top: 1.2rem; margin-bottom: 0.6rem; }
-        .prose h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: #4A5568; margin-top: 1rem; margin-bottom: 0.4rem; }
-        .prose p { margin-bottom: 0.8rem; line-height: 1.6; color: #4A5568; }
+        /* Markdown Styling overrides for Dim Theme */
+        .prose h1 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 700; color: #E2E8F0; margin-top: 1.5rem; margin-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.3rem;}
+        .prose h2 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 600; color: #CBD5E1; margin-top: 1.2rem; margin-bottom: 0.6rem; }
+        .prose h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: #94A3B8; margin-top: 1rem; margin-bottom: 0.4rem; }
+        .prose p { margin-bottom: 0.8rem; line-height: 1.6; color: #CBD5E1; }
         .prose ul, .prose ol { margin-left: 1.5rem; margin-bottom: 0.8rem; list-style-type: disc; }
-        .prose li { margin-bottom: 0.3rem; color: #4A5568; }
-        .prose table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem; background: #F0F4FA; border-radius: 6px; overflow: hidden; border: 1px solid #E2E8F0; }
-        .prose th { background: #EDF2F7; padding: 0.6rem; font-family: 'Outfit', sans-serif; text-align: left; font-weight: 600; border: 1px solid #E2E8F0; color: #2D3748; }
-        .prose td { padding: 0.6rem; border: 1px solid #E2E8F0; color: #4A5568; }
-        .prose tr:nth-child(even) { background: #F7F9FC; }
-        .prose code { background: #EDF2F7; color: #2B6CB0; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
-        .prose pre { background: #F7F9FC; border: 1px solid #E2E8F0; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
-        .prose pre code { background: transparent; color: #2D3748; padding: 0; }
-        .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #718096; }
+        .prose li { margin-bottom: 0.3rem; color: #CBD5E1; }
+        .prose table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem; background: #222536; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+        .prose th { background: rgba(90, 141, 222, 0.15); padding: 0.6rem; font-family: 'Outfit', sans-serif; text-align: left; font-weight: 600; border: 1px solid rgba(255,255,255,0.08); color: #E2E8F0; }
+        .prose td { padding: 0.6rem; border: 1px solid rgba(255,255,255,0.05); color: #CBD5E1; }
+        .prose tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+        .prose code { background: rgba(90, 141, 222, 0.15); color: #4FD1C5; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+        .prose pre { background: #161824; border: 1px solid rgba(255,255,255,0.08); padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
+        .prose pre code { background: transparent; color: #E2E8F0; padding: 0; }
+        .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #94A3B8; }
     </style>
     
     <!-- React 18 & ReactDOM 18 CDN -->
