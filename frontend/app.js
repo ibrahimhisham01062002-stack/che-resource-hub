@@ -2646,39 +2646,29 @@ function App() {
               )}
 
               {primarySection === 'videos' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start animate-fade-in">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
                   
-                  {/* Videos list */}
-                  <div className="lg:col-span-2 space-y-6">
-                    <div className="glass-panel p-6 rounded-2xl space-y-6">
-                      <div className="flex items-center justify-between flex-wrap gap-4">
-                        <h3 className="font-display font-bold text-lg text-white">Recorded Class Videos</h3>
-                        <div className="relative w-full sm:w-64">
-                          <input 
-                            type="text"
-                            placeholder="Filter videos..."
-                            value={videoSearchQuery}
-                            onChange={(e) => setVideoSearchQuery(e.target.value)}
-                            className="glass-input w-full pl-9 pr-3 py-1.5 rounded-lg text-xs"
-                          />
-                          <Icon name="search" className="absolute left-3 top-2.5 w-3 h-3 text-slate-400" />
-                        </div>
+                  {/* Left Column: Videos List & Folder/Search */}
+                  <div className="lg:col-span-1 space-y-6">
+                    <div className="glass-panel p-6 rounded-2xl space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-display font-bold text-base text-white">Recorded Class Videos</h3>
                       </div>
 
                       {/* Virtual Folders Section */}
-                      <div className="space-y-3 pb-4 border-b border-white border-opacity-5">
+                      <div className="space-y-3 pb-3 border-b border-white border-opacity-5">
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] font-display font-bold text-sky-400 tracking-wider uppercase">Video Folders</span>
                           <button
                             type="button"
                             onClick={handleCreateVideoFolder}
-                            className="flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2.5 py-1 rounded-md border border-sky-500/20"
+                            className="flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2 py-0.5 rounded border border-sky-500/20"
                           >
                             <Icon name="folderPlus" className="w-3 h-3" />
-                            <span>Create Folder</span>
+                            <span>Create</span>
                           </button>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5 max-h-[120px] overflow-y-auto pr-1">
                           {(activeCourse.video_folders || ["Root"]).map((folder) => {
                             const isSelected = currentVideoFolder === folder;
                             return (
@@ -2686,16 +2676,16 @@ function App() {
                                 key={folder}
                                 type="button"
                                 onClick={() => { setCurrentVideoFolder(folder); setPreviewFile(null); }}
-                                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-display font-semibold transition-all border ${
+                                className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-display font-semibold transition-all border ${
                                   isSelected 
                                     ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' 
                                     : 'bg-dark-900 border-white border-opacity-5 text-slate-400 hover:text-slate-200 hover:bg-sky-950/10'
                                 }`}
                               >
                                 <Icon name="folder" className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`} />
-                                <span>{folder}</span>
+                                <span className="truncate max-w-[80px]">{folder}</span>
                                 {folder !== "Root" && (
-                                  <div className="flex items-center space-x-1 ml-1.5">
+                                  <div className="flex items-center space-x-1 ml-1" onClick={(e) => e.stopPropagation()}>
                                     <span 
                                       onClick={(e) => handleRenameVideoFolder(e, folder)}
                                       className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-sky-300'}`}
@@ -2740,31 +2730,31 @@ function App() {
                         />
                         <label 
                           htmlFor="video-upload-input" 
-                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
+                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
                         >
-                          <Icon name="upload" className="w-8 h-8 text-accent-sky mb-3 group-hover:scale-110 transition-transform" />
-                          <p className="font-display font-semibold text-xs text-sky-300 text-center max-w-lg px-4">
-                            {videoUploadFile ? `Selected: ${videoUploadFile.name}` : "Upload recorded lectures, tutorials, HYSYS demos, or any other videos that might be helpful to the course."}
+                          <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
+                            {videoUploadFile ? `Selected: ${videoUploadFile.name}` : "Upload recorded lectures, tutorials, or HYSYS demos directly."}
                           </p>
-                          <p className="text-[10px] text-slate-500 mt-1">Drag and drop or click to browse</p>
+                          <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
                         </label>
                         
                         {videoUploadFile && (
-                          <div className="flex items-center space-x-3 mt-3 justify-end animate-fade-in">
+                          <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
                             <button 
                               type="button" 
                               onClick={() => { setVideoUploadFile(null); if (videoFileInputRef.current) videoFileInputRef.current.value = ""; }}
-                              className="px-3 py-1.5 che-cancel-btn rounded-lg text-xs font-display"
+                              className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
                             </button>
                             <button 
                               type="submit" 
                               disabled={isVideoUploading}
-                              className="px-4 py-1.5 che-submit-btn text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
+                              className="px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
                             >
                               <span>{isVideoUploading ? "Uploading..." : "Save to videos"}</span>
-                              <Icon name="plus" className="w-3.5 h-3.5" />
+                              <Icon name="plus" className="w-3 h-3" />
                             </button>
                           </div>
                         )}
@@ -2777,30 +2767,43 @@ function App() {
                       )}
 
                       {videoUploadStatus.message && (
-                        <div className={`p-3 rounded-lg text-xs font-display font-medium ${videoUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                        <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${videoUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {videoUploadStatus.message}
                         </div>
                       )}
+                      
+                      {/* Search videos */}
+                      <div className="relative">
+                        <input 
+                          type="text"
+                          placeholder="Filter videos..."
+                          value={videoSearchQuery}
+                          onChange={(e) => setVideoSearchQuery(e.target.value)}
+                          className="glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+                        />
+                        <Icon name="search" className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400" />
+                      </div>
 
                       {/* List of video files */}
-                      <div className="space-y-2 max-h-[350px] overflow-y-auto pr-1">
+                      <div className="space-y-2 max-h-[450px] overflow-y-auto pr-1">
                         {filteredVideos.map((file) => {
                           const isPreviewing = previewFile && previewFile.index === file.index;
                           return (
                             <div 
                               key={file.index}
-                              className={`glass-panel border-opacity-5 p-3 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
+                              onClick={() => setPreviewFile(file)}
+                              className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name="video" className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
-                                  <span className="che-book-title block line-clamp-1 leading-normal">
+                                  <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name}
                                   </span>
-                                  <span className="text-[10px] text-slate-500 font-display">
-                                    {file.type} &bull; {file.size}
+                                  <span className="text-[9px] text-slate-500 font-display">
+                                    {file.size} &bull; Recorded Class
                                   </span>
                                 </div>
                               </div>
@@ -2840,36 +2843,48 @@ function App() {
                     </div>
                   </div>
 
-                  {/* Interactive File Preview Pane */}
-                  {previewFile && (
-                    <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky">
-                      <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
-                        <div className="flex items-center space-x-2">
-                          <Icon name="video" className="w-5 h-5 text-accent-sky" />
-                          <h4 className="font-display font-bold text-sm text-white line-clamp-1">
-                            Play Class: {previewFile.name}
-                          </h4>
+                  {/* Right Column: Video Preview Pane or Placeholder Terminal */}
+                  <div className="lg:col-span-2">
+                    {previewFile && videosList.some(f => f.index === previewFile.index) ? (
+                      <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky">
+                        <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
+                          <div className="flex items-center space-x-2">
+                            <Icon name="video" className="w-5 h-5 text-accent-sky" />
+                            <h4 className="font-display font-bold text-sm text-white line-clamp-1">
+                              Play Class: {previewFile.name}
+                            </h4>
+                          </div>
+                          <button 
+                            onClick={() => setPreviewFile(null)}
+                            className="che-close-reader-btn"
+                          >
+                            Close Preview
+                          </button>
                         </div>
-                        <button 
-                          onClick={() => setPreviewFile(null)}
-                          className="che-close-reader-btn"
-                        >
-                          Close Preview
-                        </button>
-                      </div>
 
-                      <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ minHeight: "360px" }}>
-                        <video 
-                          src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
-                          controls 
-                          preload="metadata"
-                          playsInline
-                          className="w-full h-full rounded-xl shadow-lg border border-white border-opacity-5" 
-                          style={{ maxHeight: "480px" }}
-                        />
+                        <div className="w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center" style={{ height: "550px" }}>
+                          <video 
+                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
+                            controls 
+                            preload="metadata"
+                            playsInline
+                            className="w-full h-full rounded-xl shadow-lg border border-white border-opacity-5" 
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
+                        <div className="w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2">
+                          <Icon name="video" className="w-8 h-8" />
+                        </div>
+                        <h4 className="font-display font-bold text-lg text-white">Hub-Class Video Terminal</h4>
+                        <p className="text-slate-400 text-xs max-w-md leading-relaxed">
+                          Select any recorded class lecture or HYSYS tutorial from the left catalog to launch our high-performance stream player.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
                 </div>
               )}
 
