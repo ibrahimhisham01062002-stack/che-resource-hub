@@ -144,6 +144,8 @@ function App() {
 
   // Files & Preview states
   const [previewFile, setPreviewFile] = useState(null); // {name, path, size, type}
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [previewLoading, setPreviewLoading] = useState(false);
   
   // Book upload states
   const [bookUploadFile, setBookUploadFile] = useState(null);
@@ -228,6 +230,48 @@ function App() {
     localStorage.setItem("che_selected_level", selectedLevel);
     localStorage.setItem("che_selected_term", selectedTerm);
   }, [selectedLevel, selectedTerm]);
+
+  // Load PDF dynamically in-memory as an Object URL to bypass all cross-origin framing security blocks (X-Frame-Options/SAMEORIGIN)
+  useEffect(() => {
+    if (!previewFile || !activeCourse) {
+      setPreviewUrl("");
+      return;
+    }
+    
+    const isPdf = (previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf');
+    if (!isPdf) {
+      setPreviewUrl("");
+      return;
+    }
+    
+    let active = true;
+    setPreviewLoading(true);
+    setPreviewUrl("");
+    
+    fetch(`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`)
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to load PDF");
+        return res.blob();
+      })
+      .then(blob => {
+        if (!active) return;
+        const url = URL.createObjectURL(blob);
+        setPreviewUrl(url);
+        setPreviewLoading(false);
+      })
+      .catch(err => {
+        console.error("PDF Preview Load Error:", err);
+        if (active) {
+          setPreviewLoading(false);
+          setPreviewUrl("");
+        }
+      });
+      
+    return () => {
+      active = false;
+    };
+  }, [previewFile, activeCourse]);
+
 
   // Restore active course from localStorage once courses list is loaded
   useEffect(() => {
@@ -1445,11 +1489,23 @@ function App() {
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                          <iframe 
-                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
-                            className="w-full h-full border-none"
-                            title="PDF Viewer Frame"
-                          ></iframe>
+                          {previewLoading ? (
+                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
+                              <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                              <p className="text-xs font-semibold">Streaming textbook secure from Telegram cloud...</p>
+                            </div>
+                          ) : previewUrl ? (
+                            <iframe 
+                              src={previewUrl}
+                              className="w-full h-full border-none"
+                              title="PDF Viewer Frame"
+                            ></iframe>
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
+                              <p>Failed to load PDF preview.</p>
+                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ) : (
@@ -1627,11 +1683,23 @@ function App() {
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                          <iframe 
-                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
-                            className="w-full h-full border-none"
-                            title="PDF Viewer Frame"
-                          ></iframe>
+                          {previewLoading ? (
+                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
+                              <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                              <p className="text-xs font-semibold">Streaming lecture slides secure from Telegram...</p>
+                            </div>
+                          ) : previewUrl ? (
+                            <iframe 
+                              src={previewUrl}
+                              className="w-full h-full border-none"
+                              title="PDF Viewer Frame"
+                            ></iframe>
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
+                              <p>Failed to load PDF preview.</p>
+                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ) : (
@@ -1809,11 +1877,23 @@ function App() {
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                          <iframe 
-                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
-                            className="w-full h-full border-none"
-                            title="PDF Viewer Frame"
-                          ></iframe>
+                          {previewLoading ? (
+                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
+                              <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                              <p className="text-xs font-semibold">Streaming exam question paper secure from Telegram...</p>
+                            </div>
+                          ) : previewUrl ? (
+                            <iframe 
+                              src={previewUrl}
+                              className="w-full h-full border-none"
+                              title="PDF Viewer Frame"
+                            ></iframe>
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
+                              <p>Failed to load PDF preview.</p>
+                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ) : (
@@ -1984,11 +2064,23 @@ function App() {
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                          <iframe
-                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
-                            className="w-full h-full border-none"
-                            title="PDF Viewer Frame"
-                          ></iframe>
+                          {previewLoading ? (
+                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
+                              <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                              <p className="text-xs font-semibold">Streaming solved guide secure from Telegram...</p>
+                            </div>
+                          ) : previewUrl ? (
+                            <iframe 
+                              src={previewUrl}
+                              className="w-full h-full border-none"
+                              title="PDF Viewer Frame"
+                            ></iframe>
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
+                              <p>Failed to load PDF preview.</p>
+                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ) : (
@@ -2223,11 +2315,23 @@ function App() {
 
                         {(previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? (
                           <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "450px" }}>
-                            <iframe 
-                              src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
-                              className="w-full h-full border-none"
-                              title="PDF Viewer Frame"
-                            ></iframe>
+                            {previewLoading ? (
+                              <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
+                                <div className="w-8 h-8 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                                <p className="text-xs font-semibold">Streaming resource secure from Telegram...</p>
+                              </div>
+                            ) : previewUrl ? (
+                              <iframe 
+                                src={previewUrl}
+                                className="w-full h-full border-none"
+                                title="PDF Viewer Frame"
+                              ></iframe>
+                            ) : (
+                              <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
+                                <p>Failed to load PDF preview.</p>
+                                <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-indigo-500/20 text-accent-indigo border border-indigo-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                              </div>
+                            )}
                           </div>
                         ) : (
                           <div className="p-8 text-center bg-dark-900 rounded-xl space-y-3">
