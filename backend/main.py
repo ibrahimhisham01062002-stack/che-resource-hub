@@ -1,6 +1,7 @@
 import os
 import json
 import shutil
+import asyncio
 from typing import Optional, List
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form, BackgroundTasks, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,6 +15,7 @@ import io
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
+
 
 load_dotenv()
 
@@ -122,6 +124,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+async def startup_event():
+    await async_sync_database_from_telegram()
+
+
 # Root workspace directory
 WORKSPACE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(WORKSPACE_DIR, "backend", "data")
@@ -137,9 +144,122 @@ def load_courses_config():
     with open(COURSES_CONF_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
+async def async_sync_database_to_telegram():
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
+        print("Telegram not configured. Skipping database cloud backup.")
+        return
+    try:
+        print("Starting background database backup to Telegram channel...")
+        if not os.path.exists(COURSES_CONF_PATH):
+            print("courses.json does not exist. Cannot back up.")
+            return
+            
+        with open(COURSES_CONF_PATH, "rb") as f:
+            file_content = f.read()
+            
+        # 1. Upload the courses.json as a new document
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument"
+        files = {
+            "document": ("courses.json", file_content)
+        }
+        data = {
+            "chat_id": TELEGRAM_CHANNEL_ID
+        }
+        resp = await http_client.post(url, data=data, files=files)
+        if resp.status_code != 200:
+            print(f"Database upload to Telegram failed: {resp.text}")
+            return
+        res = resp.json()
+        if not res.get("ok"):
+            print(f"Telegram returned error on database upload: {res.get('description')}")
+            return
+            
+        message_id = res["result"]["message_id"]
+        
+        # 2. Pin the new courses.json document message
+        pin_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/pinChatMessage"
+        pin_data = {
+            "chat_id": TELEGRAM_CHANNEL_ID,
+            "message_id": message_id,
+            "disable_notification": True
+        }
+        pin_resp = await http_client.post(pin_url, json=pin_data)
+        if pin_resp.status_code == 200 and pin_resp.json().get("ok"):
+            print(f"Successfully uploaded and pinned new database (message_id: {message_id}) on Telegram channel!")
+        else:
+            print(f"Failed to pin the new database message: {pin_resp.text}")
+    except Exception as e:
+        print(f"Error during background database cloud sync to Telegram: {str(e)}")
+
+async def async_sync_database_from_telegram():
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
+        print("Telegram not configured. Skipping startup database sync.")
+        return
+    try:
+        print("Fetching channel info to find pinned database...")
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getChat?chat_id={TELEGRAM_CHANNEL_ID}"
+        resp = await http_client.get(url)
+        if resp.status_code != 200:
+            print(f"Failed to get channel info: {resp.text}")
+            return
+        chat_data = resp.json()
+        if not chat_data.get("ok"):
+            print(f"Telegram API returned error for getChat: {chat_data.get('description')}")
+            return
+        
+        pinned = chat_data["result"].get("pinned_message")
+        if not pinned:
+            print("No pinned database message found in channel. We will create one on the first save.")
+            return
+            
+        doc = pinned.get("document")
+        if not doc or doc.get("file_name") != "courses.json":
+            print("Pinned message is not courses.json. Skipping sync.")
+            return
+            
+        file_id = doc["file_id"]
+        print(f"Found pinned database file_id: {file_id}. Downloading...")
+        
+        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+        file_resp = await http_client.get(get_file_url)
+        if file_resp.status_code != 200:
+            print("Failed to get file details from Telegram.")
+            return
+        file_result = file_resp.json()
+        if not file_result.get("ok"):
+            print("Telegram getFile returned error.")
+            return
+            
+        file_path = file_result["result"]["file_path"]
+        download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+        db_resp = await http_client.get(download_url)
+        if db_resp.status_code == 200:
+            try:
+                json_data = db_resp.json()
+                if "courses" in json_data:
+                    with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
+                        json.dump(json_data, f, indent=2, ensure_ascii=False)
+                    print("Successfully restored courses.json database from Telegram pinned message!")
+                else:
+                    print("Downloaded database JSON is missing 'courses' root key. Skipping write.")
+            except Exception as e:
+                print(f"Downloaded database is not valid JSON: {str(e)}")
+        else:
+            print(f"Failed to download courses.json from Telegram: {db_resp.status_code}")
+    except Exception as e:
+        print(f"Error during startup database restore from Telegram: {str(e)}")
+
 def save_courses_config(config):
     with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
+    # Queue the background cloud backup
+    try:
+        loop = asyncio.get_running_loop()
+        if loop.is_running():
+            loop.create_task(async_sync_database_to_telegram())
+    except RuntimeError:
+        pass
+
 
 def find_course_key(course_id: str, courses: dict) -> Optional[str]:
     if not course_id:
@@ -270,16 +390,11 @@ def get_notes(course_id: str):
         raise HTTPException(status_code=404, detail="Course not found")
     course_id = resolved_course_id
     
-    notes_path = os.path.join(DATA_DIR, f"{course_id}_notes.md")
-    if not os.path.exists(notes_path):
-        # Bootstrap with default notes
-        default_notes = config["courses"][course_id].get("default_notes", "# " + config["courses"][course_id]["title"] + "\n\nStart writing notes...")
-        with open(notes_path, "w", encoding="utf-8") as f:
-            f.write(default_notes)
-        return {"notes": default_notes}
-        
-    with open(notes_path, "r", encoding="utf-8") as f:
-        return {"notes": f.read()}
+    course = config["courses"][course_id]
+    notes = course.get("notes")
+    if notes is None:
+        notes = course.get("default_notes", "# " + course["title"] + "\n\nStart writing notes...")
+    return {"notes": notes}
 
 @app.post("/api/courses/{course_id}/notes")
 def save_notes(course_id: str, note_data: NoteUpdate):
@@ -289,9 +404,8 @@ def save_notes(course_id: str, note_data: NoteUpdate):
         raise HTTPException(status_code=404, detail="Course not found")
     course_id = resolved_course_id
     
-    notes_path = os.path.join(DATA_DIR, f"{course_id}_notes.md")
-    with open(notes_path, "w", encoding="utf-8") as f:
-        f.write(note_data.notes)
+    config["courses"][course_id]["notes"] = note_data.notes
+    save_courses_config(config)
     return {"status": "success", "message": "Notes saved successfully"}
 
 @app.get("/api/courses/{course_id}/logs")
@@ -302,16 +416,11 @@ def get_logs(course_id: str):
         raise HTTPException(status_code=404, detail="Course not found")
     course_id = resolved_course_id
     
-    logs_path = os.path.join(DATA_DIR, f"{course_id}_logs.json")
-    if not os.path.exists(logs_path):
-        # Bootstrap with defaults
-        default_logs = config["courses"][course_id].get("default_logs", [])
-        with open(logs_path, "w", encoding="utf-8") as f:
-            json.dump(default_logs, f, indent=2, ensure_ascii=False)
-        return default_logs
-        
-    with open(logs_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    course = config["courses"][course_id]
+    logs = course.get("logs")
+    if logs is None:
+        logs = course.get("default_logs", [])
+    return logs
 
 @app.post("/api/courses/{course_id}/logs")
 def add_log(course_id: str, item: LogItem):
@@ -321,25 +430,21 @@ def add_log(course_id: str, item: LogItem):
         raise HTTPException(status_code=404, detail="Course not found")
     course_id = resolved_course_id
     
-    logs_path = os.path.join(DATA_DIR, f"{course_id}_logs.json")
-    logs = []
-    if os.path.exists(logs_path):
-        with open(logs_path, "r", encoding="utf-8") as f:
-            logs = json.load(f)
-            
+    course = config["courses"][course_id]
+    if "logs" not in course:
+        course["logs"] = list(course.get("default_logs", []))
+        
     # Generate unique ID
     import uuid
     new_log = item.dict()
     new_log["id"] = f"log-{uuid.uuid4().hex[:8]}"
-    logs.append(new_log)
+    course["logs"].append(new_log)
     
-    # Sort logs by date (newest first or chronologically? Let's sort chronologically)
-    logs.sort(key=lambda x: x.get("date", ""))
+    # Sort logs by date (chronologically)
+    course["logs"].sort(key=lambda x: x.get("date", ""))
     
-    with open(logs_path, "w", encoding="utf-8") as f:
-        json.dump(logs, f, indent=2, ensure_ascii=False)
-        
-    return logs
+    save_courses_config(config)
+    return course["logs"]
 
 @app.get("/api/courses/{course_id}/links")
 def get_links(course_id: str):
@@ -349,16 +454,11 @@ def get_links(course_id: str):
         raise HTTPException(status_code=404, detail="Course not found")
     course_id = resolved_course_id
     
-    links_path = os.path.join(DATA_DIR, f"{course_id}_links.json")
-    if not os.path.exists(links_path):
-        # Bootstrap with defaults
-        default_links = config["courses"][course_id].get("default_links", [])
-        with open(links_path, "w", encoding="utf-8") as f:
-            json.dump(default_links, f, indent=2, ensure_ascii=False)
-        return default_links
-        
-    with open(links_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    course = config["courses"][course_id]
+    links = course.get("links")
+    if links is None:
+        links = course.get("default_links", [])
+    return links
 
 @app.post("/api/courses/{course_id}/links")
 def add_link(course_id: str, item: LinkItem):
@@ -368,21 +468,17 @@ def add_link(course_id: str, item: LinkItem):
         raise HTTPException(status_code=404, detail="Course not found")
     course_id = resolved_course_id
     
-    links_path = os.path.join(DATA_DIR, f"{course_id}_links.json")
-    links = []
-    if os.path.exists(links_path):
-        with open(links_path, "r", encoding="utf-8") as f:
-            links = json.load(f)
-            
+    course = config["courses"][course_id]
+    if "links" not in course:
+        course["links"] = list(course.get("default_links", []))
+        
     import uuid
     new_link = item.dict()
     new_link["id"] = f"link-{uuid.uuid4().hex[:8]}"
-    links.append(new_link)
+    course["links"].append(new_link)
     
-    with open(links_path, "w", encoding="utf-8") as f:
-        json.dump(links, f, indent=2, ensure_ascii=False)
-        
-    return links
+    save_courses_config(config)
+    return course["links"]
 
 @app.delete("/api/courses/{course_id}/links/{link_id}")
 def delete_link(course_id: str, link_id: str):
@@ -392,19 +488,15 @@ def delete_link(course_id: str, link_id: str):
         raise HTTPException(status_code=404, detail="Course not found")
     course_id = resolved_course_id
     
-    links_path = os.path.join(DATA_DIR, f"{course_id}_links.json")
-    if not os.path.exists(links_path):
-        return []
+    course = config["courses"][course_id]
+    if "links" not in course:
+        course["links"] = list(course.get("default_links", []))
         
-    with open(links_path, "r", encoding="utf-8") as f:
-        links = json.load(f)
-        
-    links = [link for link in links if link.get("id") != link_id]
+    course["links"] = [link for link in course["links"] if link.get("id") != link_id]
     
-    with open(links_path, "w", encoding="utf-8") as f:
-        json.dump(links, f, indent=2, ensure_ascii=False)
-        
-    return links
+    save_courses_config(config)
+    return course["links"]
+
 
 # Stream files securely from the course folder
 @app.get("/api/files/{course_id}/{filepath:path}")
