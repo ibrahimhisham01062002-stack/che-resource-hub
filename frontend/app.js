@@ -1248,7 +1248,7 @@ function App() {
         ) : (
           
           /* DETAILED COURSE SPACE */
-          <div className="space-y-6 flex-grow flex flex-col">
+          <div className="space-y-6 flex-grow flex flex-col che-course-workspace">
             
             {/* Top Workspace Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white border-opacity-5 pb-6">

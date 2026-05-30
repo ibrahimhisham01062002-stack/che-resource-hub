@@ -465,23 +465,45 @@
         .prose pre code { background: transparent; color: #1E2538; padding: 0; }
         .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #687289; }
 
-        /* Premium highlighted white title style filled with light but contrasted maroon box (Image 2) */
+        /* Premium highlighted black title style filled with soft maroon box and maroon border (Image 2) */
         .glass-panel span.che-book-title,
         .glass-card span.che-book-title,
         .glass-panel p.che-book-title,
         .glass-card p.che-book-title,
         span.che-book-title {
-            color: #FFFFFF !important; /* Crisp pure white text */
+            color: #1E2538 !important; /* Crisp deep slate-black text */
             font-size: 0.85rem !important; /* Decreased font size for elegant neat proportions */
             font-weight: 800 !important; /* Extra bold */
-            background-color: #9E1B32 !important; /* Premium light but highly contrasted maroon color */
-            border: 1.5px dashed rgba(255, 255, 255, 0.35) !important; /* Subtly dashed white highlight border for spectacular look */
+            background-color: rgba(158, 27, 50, 0.08) !important; /* Premium light pastel maroon color fill */
+            border: 1.5px dashed #9E1B32 !important; /* Stitched-effect maroon dashed border boundary */
             padding: 2.5px 7px !important; /* Tighten padding */
             border-radius: 6px !important;
             display: inline-block !important;
             margin-bottom: 2px !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important; /* Subtle text shadow for perfect crisp reading */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+            text-shadow: none !important;
+        }
+
+        /* Majestic 3.5px rounded gradient border (White, Maroon, Deep Violet) for course workspace panels (Image 3 and Image 4) */
+        .che-course-workspace .glass-panel {
+            border: 3.5px solid transparent !important;
+            background: linear-gradient(#EDEEF5, #EDEEF5) padding-box,
+                        linear-gradient(135deg, #FFFFFF 0%, #9E1B32 50%, #2A0845 100%) border-box !important;
+            border-radius: 16px !important;
+        }
+
+        /* Elegant light maroon dashed border for upload label boundaries (Image 1 and Image 3) */
+        .che-course-workspace .glass-panel label.border-dashed {
+            border-color: rgba(158, 27, 50, 0.25) !important;
+            background-color: rgba(158, 27, 50, 0.03) !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+        .che-course-workspace .glass-panel label.border-dashed:hover {
+            border-color: #9E1B32 !important;
+            background-color: rgba(158, 27, 50, 0.08) !important;
+        }
+        .che-course-workspace .glass-panel label.border-dashed * {
+            color: #9E1B32 !important;
         }
     </style>
     
