@@ -858,7 +858,7 @@ async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
     
     return doc["file_id"]
 
-CHUNK_SIZE_LIMIT = 45 * 1024 * 1024 # 45 MB
+CHUNK_SIZE_LIMIT = 19 * 1024 * 1024 # 19 MB (safely under Telegram 20 MB download limit)
 
 async def upload_file_in_chunks_to_telegram(file_bytes: bytes, filename: str) -> List[str]:
     file_ids = []
