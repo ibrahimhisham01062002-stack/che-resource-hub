@@ -146,6 +146,7 @@ function App() {
   const [previewFile, setPreviewFile] = useState(null); // {name, path, size, type}
   const [previewUrl, setPreviewUrl] = useState("");
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewRetryCount, setPreviewRetryCount] = useState(0); // tracks cold-start wakeup retry attempts
   
   // Book upload states
   const [bookUploadFile, setBookUploadFile] = useState(null);
@@ -242,60 +243,90 @@ function App() {
     localStorage.setItem("che_selected_term", selectedTerm);
   }, [selectedLevel, selectedTerm]);
 
-  // Load PDF dynamically in-memory as an Object URL to bypass all cross-origin framing security blocks (X-Frame-Options/SAMEORIGIN)
-  // and to handle Render free-tier cold-start (server sleeping) gracefully — fetch waits for wakeup before rendering.
+  // Load PDF with retry loop to survive Render free-tier cold-start (connection refused)
+  // Retries up to MAX_RETRIES times with RETRY_DELAY ms between attempts,
+  // gives user clear feedback on each retry, then falls back to download link.
   useEffect(() => {
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
+      setPreviewRetryCount(0);
       return;
     }
     
     const isPdf = (previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf');
     if (!isPdf) {
       setPreviewUrl("");
+      setPreviewRetryCount(0);
       return;
     }
     
     setPreviewLoading(true);
-    setPreviewUrl(""); // clear old blob URL before fetching new one
+    setPreviewRetryCount(0);
+    setPreviewUrl(""); // clear any previous blob URL
     
     const controller = new AbortController();
-    
+    const MAX_RETRIES = 10;
+    const RETRY_DELAY = 6000; // 6 seconds between each attempt
     const downloadUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
     
-    // Fetch the PDF binary as a blob — this approach:
-    // 1. Waits for Render server to wake up (no "refused to connect" flash)
-    // 2. Creates a local blob URL immune to X-Frame-Options restrictions
-    // 3. Gives us a clean loading spinner while streaming
-    fetch(downloadUrl, { signal: controller.signal })
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.blob();
-      })
-      .then(blob => {
+    let retryTimer = null;
+    
+    const attemptFetch = async (attempt) => {
+      if (controller.signal.aborted) return;
+      
+      setPreviewRetryCount(attempt);
+      
+      try {
+        const res = await fetch(downloadUrl, {
+          signal: controller.signal,
+          // No cache — always get fresh from Telegram stream
+          cache: "no-store"
+        });
+        
+        if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
+        
+        const blob = await res.blob();
+        
+        if (controller.signal.aborted) return; // component unmounted during fetch
+        
+        // Create a local browser-side URL from the binary blob
+        // — this is never blocked by X-Frame-Options or CORS
         const objectUrl = URL.createObjectURL(blob);
         setPreviewUrl(objectUrl);
         setPreviewLoading(false);
-      })
-      .catch(err => {
-        if (err.name !== "AbortError") {
-          console.error("PDF preview fetch failed:", err);
+        setPreviewRetryCount(0);
+        
+      } catch (err) {
+        if (err.name === "AbortError" || controller.signal.aborted) return;
+        
+        console.warn(`PDF preview attempt ${attempt + 1} failed:`, err.message);
+        
+        if (attempt < MAX_RETRIES) {
+          // Server sleeping — schedule a retry
+          retryTimer = setTimeout(() => attemptFetch(attempt + 1), RETRY_DELAY);
+        } else {
+          // All retries exhausted — show download fallback
           setPreviewLoading(false);
-          setPreviewUrl(""); // triggers the fallback download-link UI
+          setPreviewUrl("");
+          setPreviewRetryCount(-1); // sentinel: indicates terminal failure
         }
-      });
+      }
+    };
+    
+    // Kick off the first attempt immediately
+    attemptFetch(0);
     
     return () => {
       controller.abort();
-      // Revoke previous object URL to free memory
+      if (retryTimer) clearTimeout(retryTimer);
+      setPreviewRetryCount(0);
+      // Revoke previous object URL to free browser memory
       setPreviewUrl(prev => {
         if (prev && prev.startsWith("blob:")) URL.revokeObjectURL(prev);
         return "";
       });
     };
   }, [previewFile, activeCourse]);
-
-
 
   // Restore active course from localStorage once courses list is loaded
   useEffect(() => {
@@ -1650,11 +1681,31 @@ function App() {
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
-                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                              <div className="text-center space-y-1">
-                                <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
-                                <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                            <div className="w-full h-full flex flex-col items-center justify-center space-y-5 bg-dark-900 text-slate-400">
+                              <div className="relative">
+                                <div className="w-14 h-14 rounded-full border-4 border-[#5C061C]/30"></div>
+                                <div className="w-14 h-14 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin absolute top-0 left-0"></div>
+                              </div>
+                              <div className="text-center space-y-2 px-4">
+                                <p className="text-sm font-bold text-slate-200">
+                                  {previewRetryCount === 0 ? "Connecting to server..." : `Waking server up... (attempt ${previewRetryCount + 1}/11)`}
+                                </p>
+                                <p className="text-[11px] text-slate-500 leading-relaxed">
+                                  {previewRetryCount === 0
+                                    ? "Streaming PDF securely from Telegram cloud"
+                                    : "Server was asleep — retrying every 6 seconds. This may take up to 60 seconds on first visit."}
+                                </p>
+                                {previewRetryCount > 0 && (
+                                  <div className="w-full max-w-[200px] mx-auto mt-2">
+                                    <div className="w-full h-1 bg-slate-700 rounded-full overflow-hidden">
+                                      <div
+                                        className="h-full bg-[#5C061C] rounded-full transition-all duration-500"
+                                        style={{ width: `${Math.min((previewRetryCount / 10) * 100, 100)}%` }}
+                                      ></div>
+                                    </div>
+                                    <p className="text-[9px] text-slate-600 mt-1">{previewRetryCount} of 10 retries</p>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           ) : previewUrl ? (
@@ -1664,9 +1715,22 @@ function App() {
                               title="PDF Viewer Frame"
                             ></iframe>
                           ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
-                              <p>Failed to load PDF preview.</p>
-                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-3 px-6">
+                              <div className="w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center">
+                                <Icon name="wifiOff" className="w-6 h-6 text-rose-400" />
+                              </div>
+                              <div className="text-center space-y-1">
+                                <p className="text-sm font-bold text-slate-300">Server Unavailable</p>
+                                <p className="text-[10px] text-slate-500">Could not connect after 10 attempts. The server may be restarting.</p>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                <button onClick={() => setPreviewFile({ ...previewFile })} className="px-3 py-1.5 bg-[#5C061C] hover:bg-[#7A0D22] text-white rounded-lg text-[10px] font-bold transition-all">
+                                  Try Again
+                                </button>
+                                <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">
+                                  Download Instead
+                                </a>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -1847,11 +1911,31 @@ function App() {
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
-                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                              <div className="text-center space-y-1">
-                                <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
-                                <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                            <div className="w-full h-full flex flex-col items-center justify-center space-y-5 bg-dark-900 text-slate-400">
+                              <div className="relative">
+                                <div className="w-14 h-14 rounded-full border-4 border-[#5C061C]/30"></div>
+                                <div className="w-14 h-14 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin absolute top-0 left-0"></div>
+                              </div>
+                              <div className="text-center space-y-2 px-4">
+                                <p className="text-sm font-bold text-slate-200">
+                                  {previewRetryCount === 0 ? "Connecting to server..." : `Waking server up... (attempt ${previewRetryCount + 1}/11)`}
+                                </p>
+                                <p className="text-[11px] text-slate-500 leading-relaxed">
+                                  {previewRetryCount === 0
+                                    ? "Streaming PDF securely from Telegram cloud"
+                                    : "Server was asleep — retrying every 6 seconds. This may take up to 60 seconds on first visit."}
+                                </p>
+                                {previewRetryCount > 0 && (
+                                  <div className="w-full max-w-[200px] mx-auto mt-2">
+                                    <div className="w-full h-1 bg-slate-700 rounded-full overflow-hidden">
+                                      <div
+                                        className="h-full bg-[#5C061C] rounded-full transition-all duration-500"
+                                        style={{ width: `${Math.min((previewRetryCount / 10) * 100, 100)}%` }}
+                                      ></div>
+                                    </div>
+                                    <p className="text-[9px] text-slate-600 mt-1">{previewRetryCount} of 10 retries</p>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           ) : previewUrl ? (
@@ -1861,9 +1945,22 @@ function App() {
                               title="PDF Viewer Frame"
                             ></iframe>
                           ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
-                              <p>Failed to load PDF preview.</p>
-                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-3 px-6">
+                              <div className="w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center">
+                                <Icon name="wifiOff" className="w-6 h-6 text-rose-400" />
+                              </div>
+                              <div className="text-center space-y-1">
+                                <p className="text-sm font-bold text-slate-300">Server Unavailable</p>
+                                <p className="text-[10px] text-slate-500">Could not connect after 10 attempts. The server may be restarting.</p>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                <button onClick={() => setPreviewFile({ ...previewFile })} className="px-3 py-1.5 bg-[#5C061C] hover:bg-[#7A0D22] text-white rounded-lg text-[10px] font-bold transition-all">
+                                  Try Again
+                                </button>
+                                <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">
+                                  Download Instead
+                                </a>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -2044,11 +2141,31 @@ function App() {
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
-                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                              <div className="text-center space-y-1">
-                                <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
-                                <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                            <div className="w-full h-full flex flex-col items-center justify-center space-y-5 bg-dark-900 text-slate-400">
+                              <div className="relative">
+                                <div className="w-14 h-14 rounded-full border-4 border-[#5C061C]/30"></div>
+                                <div className="w-14 h-14 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin absolute top-0 left-0"></div>
+                              </div>
+                              <div className="text-center space-y-2 px-4">
+                                <p className="text-sm font-bold text-slate-200">
+                                  {previewRetryCount === 0 ? "Connecting to server..." : `Waking server up... (attempt ${previewRetryCount + 1}/11)`}
+                                </p>
+                                <p className="text-[11px] text-slate-500 leading-relaxed">
+                                  {previewRetryCount === 0
+                                    ? "Streaming PDF securely from Telegram cloud"
+                                    : "Server was asleep — retrying every 6 seconds. This may take up to 60 seconds on first visit."}
+                                </p>
+                                {previewRetryCount > 0 && (
+                                  <div className="w-full max-w-[200px] mx-auto mt-2">
+                                    <div className="w-full h-1 bg-slate-700 rounded-full overflow-hidden">
+                                      <div
+                                        className="h-full bg-[#5C061C] rounded-full transition-all duration-500"
+                                        style={{ width: `${Math.min((previewRetryCount / 10) * 100, 100)}%` }}
+                                      ></div>
+                                    </div>
+                                    <p className="text-[9px] text-slate-600 mt-1">{previewRetryCount} of 10 retries</p>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           ) : previewUrl ? (
@@ -2058,9 +2175,22 @@ function App() {
                               title="PDF Viewer Frame"
                             ></iframe>
                           ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
-                              <p>Failed to load PDF preview.</p>
-                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-3 px-6">
+                              <div className="w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center">
+                                <Icon name="wifiOff" className="w-6 h-6 text-rose-400" />
+                              </div>
+                              <div className="text-center space-y-1">
+                                <p className="text-sm font-bold text-slate-300">Server Unavailable</p>
+                                <p className="text-[10px] text-slate-500">Could not connect after 10 attempts. The server may be restarting.</p>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                <button onClick={() => setPreviewFile({ ...previewFile })} className="px-3 py-1.5 bg-[#5C061C] hover:bg-[#7A0D22] text-white rounded-lg text-[10px] font-bold transition-all">
+                                  Try Again
+                                </button>
+                                <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">
+                                  Download Instead
+                                </a>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -2232,11 +2362,31 @@ function App() {
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
-                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                              <div className="text-center space-y-1">
-                                <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
-                                <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                            <div className="w-full h-full flex flex-col items-center justify-center space-y-5 bg-dark-900 text-slate-400">
+                              <div className="relative">
+                                <div className="w-14 h-14 rounded-full border-4 border-[#5C061C]/30"></div>
+                                <div className="w-14 h-14 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin absolute top-0 left-0"></div>
+                              </div>
+                              <div className="text-center space-y-2 px-4">
+                                <p className="text-sm font-bold text-slate-200">
+                                  {previewRetryCount === 0 ? "Connecting to server..." : `Waking server up... (attempt ${previewRetryCount + 1}/11)`}
+                                </p>
+                                <p className="text-[11px] text-slate-500 leading-relaxed">
+                                  {previewRetryCount === 0
+                                    ? "Streaming PDF securely from Telegram cloud"
+                                    : "Server was asleep — retrying every 6 seconds. This may take up to 60 seconds on first visit."}
+                                </p>
+                                {previewRetryCount > 0 && (
+                                  <div className="w-full max-w-[200px] mx-auto mt-2">
+                                    <div className="w-full h-1 bg-slate-700 rounded-full overflow-hidden">
+                                      <div
+                                        className="h-full bg-[#5C061C] rounded-full transition-all duration-500"
+                                        style={{ width: `${Math.min((previewRetryCount / 10) * 100, 100)}%` }}
+                                      ></div>
+                                    </div>
+                                    <p className="text-[9px] text-slate-600 mt-1">{previewRetryCount} of 10 retries</p>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           ) : previewUrl ? (
@@ -2246,9 +2396,22 @@ function App() {
                               title="PDF Viewer Frame"
                             ></iframe>
                           ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
-                              <p>Failed to load PDF preview.</p>
-                              <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-3 px-6">
+                              <div className="w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center">
+                                <Icon name="wifiOff" className="w-6 h-6 text-rose-400" />
+                              </div>
+                              <div className="text-center space-y-1">
+                                <p className="text-sm font-bold text-slate-300">Server Unavailable</p>
+                                <p className="text-[10px] text-slate-500">Could not connect after 10 attempts. The server may be restarting.</p>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                <button onClick={() => setPreviewFile({ ...previewFile })} className="px-3 py-1.5 bg-[#5C061C] hover:bg-[#7A0D22] text-white rounded-lg text-[10px] font-bold transition-all">
+                                  Try Again
+                                </button>
+                                <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">
+                                  Download Instead
+                                </a>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -2486,11 +2649,31 @@ function App() {
                         {(previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? (
                           <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "450px" }}>
                             {previewLoading ? (
-                              <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                                <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                                <div className="text-center space-y-1">
-                                  <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
-                                  <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                              <div className="w-full h-full flex flex-col items-center justify-center space-y-5 bg-dark-900 text-slate-400">
+                                <div className="relative">
+                                  <div className="w-14 h-14 rounded-full border-4 border-[#5C061C]/30"></div>
+                                  <div className="w-14 h-14 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin absolute top-0 left-0"></div>
+                                </div>
+                                <div className="text-center space-y-2 px-4">
+                                  <p className="text-sm font-bold text-slate-200">
+                                    {previewRetryCount === 0 ? "Connecting to server..." : `Waking server up... (attempt ${previewRetryCount + 1}/11)`}
+                                  </p>
+                                  <p className="text-[11px] text-slate-500 leading-relaxed">
+                                    {previewRetryCount === 0
+                                      ? "Streaming PDF securely from Telegram cloud"
+                                      : "Server was asleep — retrying every 6 seconds. This may take up to 60 seconds on first visit."}
+                                  </p>
+                                  {previewRetryCount > 0 && (
+                                    <div className="w-full max-w-[200px] mx-auto mt-2">
+                                      <div className="w-full h-1 bg-slate-700 rounded-full overflow-hidden">
+                                        <div
+                                          className="h-full bg-[#5C061C] rounded-full transition-all duration-500"
+                                          style={{ width: `${Math.min((previewRetryCount / 10) * 100, 100)}%` }}
+                                        ></div>
+                                      </div>
+                                      <p className="text-[9px] text-slate-600 mt-1">{previewRetryCount} of 10 retries</p>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             ) : previewUrl ? (
@@ -2500,9 +2683,22 @@ function App() {
                                 title="PDF Viewer Frame"
                               ></iframe>
                             ) : (
-                              <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-2">
-                                <p>Failed to load PDF preview.</p>
-                                <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">Download Directly Instead</a>
+                              <div className="w-full h-full flex flex-col items-center justify-center bg-dark-900 text-slate-500 text-xs space-y-3 px-6">
+                                <div className="w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center">
+                                  <Icon name="wifiOff" className="w-6 h-6 text-rose-400" />
+                                </div>
+                                <div className="text-center space-y-1">
+                                  <p className="text-sm font-bold text-slate-300">Server Unavailable</p>
+                                  <p className="text-[10px] text-slate-500">Could not connect after 10 attempts. The server may be restarting.</p>
+                                </div>
+                                <div className="flex items-center space-x-3">
+                                  <button onClick={() => setPreviewFile({ ...previewFile })} className="px-3 py-1.5 bg-[#5C061C] hover:bg-[#7A0D22] text-white rounded-lg text-[10px] font-bold transition-all">
+                                    Try Again
+                                  </button>
+                                  <a href={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} download className="px-3 py-1.5 bg-sky-500/20 text-accent-sky border border-sky-500/30 rounded-lg text-[10px] font-semibold">
+                                    Download Instead
+                                  </a>
+                                </div>
                               </div>
                             )}
                           </div>
