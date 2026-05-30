@@ -623,13 +623,19 @@ async def download_file(course_id: str, file_index: int):
         try:
             if not file_ids and file_id:
                 file_ids = [file_id]
+            headers = {
+                "Content-Disposition": f'inline; filename="{file_name}"',
+                "Content-Type": content_type,
+            }
+            # Provide exact Content-Length if present in catalog to support smooth browser PDF loading
+            raw_bytes = file_item.get("bytes")
+            if raw_bytes:
+                headers["Content-Length"] = str(raw_bytes)
+                
             return StreamingResponse(
                 stream_telegram_chunks(file_ids),
                 media_type=content_type,
-                headers={
-                    "Content-Disposition": f'inline; filename="{file_name}"',
-                    "Content-Type": content_type
-                }
+                headers=headers
             )
         except Exception as e:
             raise HTTPException(status_code=502, detail=f"Telegram chunked streaming failed: {str(e)}")
@@ -637,13 +643,18 @@ async def download_file(course_id: str, file_index: int):
     # Case B: Google Drive Storage
     if storage_type == "gdrive":
         try:
+            headers = {
+                "Content-Disposition": f'inline; filename="{file_name}"',
+                "Content-Type": content_type,
+            }
+            raw_bytes = file_item.get("bytes")
+            if raw_bytes:
+                headers["Content-Length"] = str(raw_bytes)
+                
             return StreamingResponse(
                 stream_gdrive_file(gdrive_file_id),
                 media_type=content_type,
-                headers={
-                    "Content-Disposition": f'inline; filename="{file_name}"',
-                    "Content-Type": content_type
-                }
+                headers=headers
             )
         except Exception as e:
             raise HTTPException(status_code=502, detail=f"Google Drive streaming failed: {str(e)}")
@@ -679,6 +690,7 @@ async def download_file(course_id: str, file_index: int):
             raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
             
         file_path = result["result"]["file_path"]
+        telegram_file_size = result["result"].get("file_size")
         
         # Securely stream the binary file back to the browser
         download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
@@ -691,13 +703,22 @@ async def download_file(course_id: str, file_index: int):
                 async for chunk in r.aiter_bytes():
                     yield chunk
                     
+        headers = {
+            "Content-Disposition": f'inline; filename="{file_name}"',
+            "Content-Type": content_type,
+        }
+        # Provide Content-Length from Telegram Bot API response (100% accurate)
+        if telegram_file_size:
+            headers["Content-Length"] = str(telegram_file_size)
+        else:
+            raw_bytes = file_item.get("bytes")
+            if raw_bytes:
+                headers["Content-Length"] = str(raw_bytes)
+                
         return StreamingResponse(
             stream_generator(),
             media_type=content_type,
-            headers={
-                "Content-Disposition": f'inline; filename="{file_name}"',
-                "Content-Type": content_type
-            }
+            headers=headers
         )
     except Exception as e:
         # Fallback to a beautiful HTML guidance page for placeholders or Telegram errors
@@ -910,6 +931,7 @@ async def upload_file(
     new_file_item = {
         "name": filename,
         "size": format_size(bytes_size),
+        "bytes": bytes_size,
         "type": file_type,
         "storage_type": storage_type
     }
