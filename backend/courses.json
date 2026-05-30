@@ -228,7 +228,7 @@
     },
     "HYSYS": {
       "id": "HYSYS",
-      "code": "ChE 312",
+      "code": "ChE 306",
       "title": "Process Simulation Lab (HYSYS)",
       "folder": "HYSYS",
       "level": "Level-3",
@@ -315,6 +315,140 @@
         }
       ],
       "files": []
+    },
+    "ChE-311": {
+      "id": "ChE-311",
+      "code": "ChE 311",
+      "title": "Unit Operation",
+      "description": "Study materials for ChE 311",
+      "folder": "ChE-311",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Parrticle Technology and Separations .pdf",
+          "size": "13.35 MB",
+          "bytes": 13996173,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAN0ahpkqX-v-r6vKoCVvD8pEzgZdKoAAiMgAALFINFUozWIcTPAG0o7BA"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 311: Unit Operation\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-301": {
+      "id": "ChE-301",
+      "code": "ChE 301",
+      "title": "Heat Transfer",
+      "description": "Study materials for ChE 301",
+      "folder": "ChE-301",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "[Jack_P._Holman]_Heat_Transfer,_Tenth_Edition.pdf",
+          "size": "18.72 MB",
+          "bytes": 19630246,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAANxahpkfavG4fg3NRV65teI5Vfb6OoAAiAgAALFINFUW6lZcDpA_3Y7BA"
+          ]
+        },
+        {
+          "name": "heat-transfer-a-practical-approach-by-y-a-cengel.pdf",
+          "size": "11.76 MB",
+          "bytes": 12335485,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAN3ahplTWInuW3-ID0V0l8mN3sbyeIAAiUgAALFINFUpYOq5ZoRPq87BA"
+          ]
+        },
+        {
+          "name": "Process_Heat_Transfer_Kern,_Donald_Quentin_Tate_McGraw_Hill_ed,.pdf",
+          "size": "38.39 MB",
+          "bytes": 40257159,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAN6ahplZqslPLz2lWIwOj-ie7kcdawAAicgAALFINFUOKqfUqxHfpw7BA"
+          ]
+        },
+        {
+          "name": "Heat Transfer 10th Edition Solution Manual.pdf",
+          "size": "19.35 MB",
+          "bytes": 20286137,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAN9ahplguCw_v76tpv5wotuL2bKN9AAAikgAALFINFUQXTS9l4vJLA7BA"
+          ]
+        },
+        {
+          "name": "CENGEL SOLUTION MANUAL.pdf",
+          "size": "8.32 MB",
+          "bytes": 8727471,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOAahpll-wzKVd7c1R6CYexoS7IpPYAAisgAALFINFU4waC5iZ1-J47BA"
+          ]
+        },
+        {
+          "name": "APPENDIX_Heat Transfer by Çengel.pdf",
+          "size": "34.12 MB",
+          "bytes": 35772506,
+          "type": "Term-Final Solved",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAODahply3bnTlm5ZkwQshieVCokM8wAAi4gAALFINFUCd9L7VaBLmk7BA"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 301: Heat Transfer\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-313": {
+      "id": "ChE-313",
+      "code": "ChE 313",
+      "title": "Solution Thermodynamics ",
+      "description": "Study materials for ChE 313",
+      "folder": "ChE-313",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Themodynamics_8 th ed (2018).pdf",
+          "size": "17.76 MB",
+          "bytes": 18622772,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOGahpmDo5mAuP3yKsVyTyCmnzcQgEAAjEgAALFINFUy-hV5_oTICk7BA"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 313: Solution Thermodynamics \n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
     }
   }
 }

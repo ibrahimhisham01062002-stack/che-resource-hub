@@ -378,7 +378,8 @@ def get_courses(response: Response):
             "syllabus": course.get("syllabus", []),
             "fileCount": len(files),
             "files": files,
-            "folders": course.get("folders", ["Root"])
+            "folders": course.get("folders", ["Root"]),
+            "video_folders": course.get("video_folders", ["Root"])
         })
     return courses_data
 
@@ -620,6 +621,18 @@ async def download_file(course_id: str, file_index: int, preview: Optional[bool]
         content_type = "application/zip"
     elif file_name.lower().endswith((".png", ".jpg", ".jpeg")):
         content_type = "image/png" if file_name.lower().endswith(".png") else "image/jpeg"
+    elif file_name.lower().endswith((".mp4", ".m4v")):
+        content_type = "video/mp4"
+    elif file_name.lower().endswith(".webm"):
+        content_type = "video/webm"
+    elif file_name.lower().endswith(".ogg"):
+        content_type = "video/ogg"
+    elif file_name.lower().endswith(".mov"):
+        content_type = "video/quicktime"
+    elif file_name.lower().endswith(".avi"):
+        content_type = "video/x-msvideo"
+    elif file_name.lower().endswith(".mkv"):
+        content_type = "video/x-matroska"
         
     # Case A: Telegram Chunks Storage (Multi-part upload)
     if storage_type == "telegram_chunks" or file_ids:
@@ -942,6 +955,8 @@ async def upload_file(
         file_type = "Solution Manual"
     elif category == "solved":
         file_type = "Term-Final Solved"
+    elif category == "video" or category == "recorded_class":
+        file_type = "Recorded Class"
     else:
         file_type = get_file_type(filename)
         
@@ -1041,6 +1056,7 @@ def create_course(new_course: CourseCreate):
         "syllabus": [],
         "files": [],
         "folders": ["Root"],
+        "video_folders": ["Root"],
         "default_notes": f"# {new_course.code}: {new_course.title}\n\nStart writing notes...",
         "default_logs": [],
         "default_links": []
@@ -1060,7 +1076,8 @@ def create_course(new_course: CourseCreate):
         "syllabus": [],
         "fileCount": 0,
         "files": [],
-        "folders": ["Root"]
+        "folders": ["Root"],
+        "video_folders": ["Root"]
     }
 
 @app.put("/api/courses/{course_id}")
@@ -1197,6 +1214,112 @@ def rename_folder(course_id: str, old_folder_name: str, folder_data: FolderRenam
     save_courses_config(config)
     
     return {"status": "success", "folders": course["folders"]}
+
+
+@app.post("/api/courses/{course_id}/video-folders")
+def create_video_folder(course_id: str, folder_data: FolderCreate):
+    config = load_courses_config()
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
+        raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
+        
+    course = config["courses"][course_id]
+    if "video_folders" not in course:
+        course["video_folders"] = ["Root"]
+        
+    folder_name = folder_data.name.strip()
+    if not folder_name:
+        raise HTTPException(status_code=400, detail="Folder name cannot be empty")
+        
+    if folder_name in course["video_folders"]:
+        raise HTTPException(status_code=400, detail=f"Folder '{folder_name}' already exists")
+        
+    course["video_folders"].append(folder_name)
+    save_courses_config(config)
+    
+    return {"status": "success", "video_folders": course["video_folders"]}
+
+@app.delete("/api/courses/{course_id}/video-folders/{folder_name}")
+def delete_video_folder(course_id: str, folder_name: str):
+    config = load_courses_config()
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
+        raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
+        
+    course = config["courses"][course_id]
+    if "video_folders" not in course:
+        course["video_folders"] = ["Root"]
+        
+    if folder_name not in course["video_folders"]:
+        raise HTTPException(status_code=404, detail=f"Folder '{folder_name}' not found")
+        
+    if folder_name == "Root":
+        raise HTTPException(status_code=400, detail="Cannot delete the Root folder")
+        
+    # Remove the folder from the catalog
+    course["video_folders"].remove(folder_name)
+    
+    # Clean up all Recorded Class files matching this folder
+    files = course.get("files", [])
+    new_files = []
+    for file_item in files:
+        if file_item.get("folder") == folder_name and file_item.get("type") == "Recorded Class":
+            # Delete local physical file if it exists
+            filename = file_item["name"]
+            try:
+                local_path = os.path.join(WORKSPACE_DIR, course["folder"], filename)
+                if os.path.exists(local_path) and os.path.isfile(local_path):
+                    os.remove(local_path)
+            except Exception as e:
+                print(f"Failed to delete local video file '{filename}' during folder purge: {str(e)}")
+        else:
+            new_files.append(file_item)
+            
+    course["files"] = new_files
+    save_courses_config(config)
+    
+    return {"status": "success", "video_folders": course["video_folders"]}
+
+@app.put("/api/courses/{course_id}/video-folders/{old_folder_name}")
+def rename_video_folder(course_id: str, old_folder_name: str, folder_data: FolderRename):
+    config = load_courses_config()
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
+        raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
+        
+    course = config["courses"][course_id]
+    if "video_folders" not in course:
+        course["video_folders"] = ["Root"]
+        
+    if old_folder_name not in course["video_folders"]:
+        raise HTTPException(status_code=404, detail=f"Folder '{old_folder_name}' not found")
+        
+    if old_folder_name == "Root":
+        raise HTTPException(status_code=400, detail="Cannot rename the Root folder")
+        
+    new_folder_name = folder_data.new_name.strip()
+    if not new_folder_name:
+        raise HTTPException(status_code=400, detail="New folder name cannot be empty")
+        
+    if new_folder_name in course["video_folders"]:
+        raise HTTPException(status_code=400, detail=f"Folder '{new_folder_name}' already exists")
+        
+    # 1. Update the folder name in the course video_folders catalog list
+    idx = course["video_folders"].index(old_folder_name)
+    course["video_folders"][idx] = new_folder_name
+    
+    # 2. Update the folder tag of all Recorded Class video file assets matching the old name
+    files = course.get("files", [])
+    for file_item in files:
+        if file_item.get("folder") == old_folder_name and file_item.get("type") == "Recorded Class":
+            file_item["folder"] = new_folder_name
+            
+    save_courses_config(config)
+    
+    return {"status": "success", "video_folders": course["video_folders"]}
 
 
 # Serve the frontend

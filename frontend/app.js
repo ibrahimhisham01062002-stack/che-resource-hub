@@ -185,6 +185,17 @@ function App() {
   // Current active folder in slides section
   const [currentFolder, setCurrentFolder] = useState("Root");
 
+  // Current active folder in recorded class section
+  const [currentVideoFolder, setCurrentVideoFolder] = useState("Root");
+  const [videoSearchQuery, setVideoSearchQuery] = useState("");
+
+  // Recorded Class video upload states
+  const [videoUploadFile, setVideoUploadFile] = useState(null);
+  const [isVideoUploading, setIsVideoUploading] = useState(false);
+  const [videoUploadProgress, setVideoUploadProgress] = useState(0);
+  const [videoUploadStatus, setVideoUploadStatus] = useState({ type: "", message: "" });
+  const videoFileInputRef = useRef(null);
+
   // Reference to track previous course ID to prevent tab resetting on same-course refresh
   const prevCourseIdRef = useRef(null);
 
@@ -295,8 +306,10 @@ function App() {
     if (isNewCourse) {
       setPreviewFile(null);
       setFileSearchQuery("");
+      setVideoSearchQuery("");
       setPrimarySection("books"); // Default to Books section
       setCurrentFolder("Root"); // Reset folder to Root
+      setCurrentVideoFolder("Root"); // Reset video folder to Root
     }
     
     // Load reference links
@@ -378,20 +391,23 @@ function App() {
            file.bytes > 5 * 1024 * 1024; // Files > 5MB are highly likely books
   };
 
-  // Split files into Books, Solutions, Slides, Questions, and Solved
-  const { booksList, solutionsList, slidesList, questionsList, solvedList } = useMemo(() => {
-    if (!activeCourse || !activeCourse.files) return { booksList: [], solutionsList: [], slidesList: [], questionsList: [], solvedList: [] };
+  // Split files into Books, Solutions, Slides, Questions, Solved, and Videos
+  const { booksList, solutionsList, slidesList, questionsList, solvedList, videosList } = useMemo(() => {
+    if (!activeCourse || !activeCourse.files) return { booksList: [], solutionsList: [], slidesList: [], questionsList: [], solvedList: [], videosList: [] };
     const books = [];
     const solutions = [];
     const slides = [];
     const questions = [];
     const solved = [];
+    const videos = [];
 
     activeCourse.files.forEach((file, index) => {
       const fileWithIndex = { ...file, index };
       const typeLower = (file.type || "").toLowerCase();
 
-      if (typeLower.includes("reference book") || (typeLower.includes("book") && !typeLower.includes("manual") && !typeLower.includes("solved") && !typeLower.includes("solution"))) {
+      if (typeLower.includes("video") || typeLower.includes("recorded class") || file.category === "video" || file.category === "recorded_class") {
+        videos.push(fileWithIndex);
+      } else if (typeLower.includes("reference book") || (typeLower.includes("book") && !typeLower.includes("manual") && !typeLower.includes("solved") && !typeLower.includes("solution"))) {
         books.push(fileWithIndex);
       } else if (typeLower.includes("solution manual") || typeLower.includes("manual")) {
         solutions.push(fileWithIndex);
@@ -403,7 +419,7 @@ function App() {
         slides.push(fileWithIndex);
       }
     });
-    return { booksList: books, solutionsList: solutions, slidesList: slides, questionsList: questions, solvedList: solved };
+    return { booksList: books, solutionsList: solutions, slidesList: slides, questionsList: questions, solvedList: solved, videosList: videos };
   }, [activeCourse]);
 
 
@@ -672,6 +688,121 @@ function App() {
     });
   };
 
+  // Handle creating a virtual video folder in the active course
+  const handleCreateVideoFolder = () => {
+    checkAuthAndExecute(async () => {
+      const folderName = window.prompt("Enter new video folder name:");
+      if (!folderName) return;
+      const trimmed = folderName.trim();
+      if (!trimmed) {
+        alert("Folder name cannot be empty");
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/video-folders`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name: trimmed })
+        });
+        if (res.ok) {
+          await fetchCourses();
+          const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+          const coursesList = await updatedRes.json();
+          const found = coursesList.find(c => c.id === activeCourse.id);
+          if (found) {
+            setActiveCourse(found);
+            setCurrentVideoFolder(trimmed); // Auto-select the newly created folder!
+          }
+        } else {
+          const data = await res.json();
+          alert(data.detail || "Failed to create video folder");
+        }
+      } catch (err) {
+        alert("Failed to create video folder: network error");
+      }
+    });
+  };
+
+  // Handle deleting a virtual video folder and all its contents
+  const handleDeleteVideoFolder = (e, folderName) => {
+    if (e) e.stopPropagation(); // Prevent selecting the folder chip when clicking delete
+    if (folderName === "Root") {
+      alert("Cannot delete the Root folder");
+      return;
+    }
+    checkAuthAndExecute(async () => {
+      if (!window.confirm(`Are you sure you want to delete the video folder "${folderName}"? This will completely purge all recorded class videos cataloged inside it!`)) {
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/video-folders/${encodeURIComponent(folderName)}?t=${Date.now()}`, {
+          method: "DELETE"
+        });
+        if (res.ok) {
+          if (currentVideoFolder === folderName) {
+            setCurrentVideoFolder("Root");
+          }
+          await fetchCourses();
+          const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+          const coursesList = await updatedRes.json();
+          const found = coursesList.find(c => c.id === activeCourse.id);
+          if (found) setActiveCourse(found);
+        } else {
+          const data = await res.json();
+          alert(data.detail || "Failed to delete video folder");
+        }
+      } catch (err) {
+        alert("Failed to delete video folder: network error");
+      }
+    });
+  };
+
+  // Handle renaming a virtual video folder
+  const handleRenameVideoFolder = (e, oldName) => {
+    if (e) e.stopPropagation(); // Prevent selecting the folder chip when clicking rename
+    if (oldName === "Root") {
+      alert("Cannot rename the Root folder");
+      return;
+    }
+    checkAuthAndExecute(async () => {
+      const newName = window.prompt(`Enter new name for video folder "${oldName}":`, oldName);
+      if (!newName) return;
+      const trimmed = newName.trim();
+      if (!trimmed) {
+        alert("Folder name cannot be empty");
+        return;
+      }
+      if (trimmed === oldName) return;
+      
+      try {
+        const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/video-folders/${encodeURIComponent(oldName)}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ new_name: trimmed })
+        });
+        if (res.ok) {
+          if (currentVideoFolder === oldName) {
+            setCurrentVideoFolder(trimmed); // Preserves active folder view under the new name!
+          }
+          await fetchCourses();
+          const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+          const coursesList = await updatedRes.json();
+          const found = coursesList.find(c => c.id === activeCourse.id);
+          if (found) setActiveCourse(found);
+        } else {
+          const data = await res.json();
+          alert(data.detail || "Failed to rename video folder");
+        }
+      } catch (err) {
+        alert("Failed to rename video folder: network error");
+      }
+    });
+  };
+
   // Handle file uploads
   const handleFileUpload = (e, file, category, setters) => {
     if (e) e.preventDefault();
@@ -686,9 +817,9 @@ function App() {
 
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("category", category); // "book" or "slide"
-      if (category === "slide" && currentFolder) {
-        formData.append("folder", currentFolder);
+      formData.append("category", category); // "book" or "slide" or "video"
+      if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
+        formData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
       }
 
       const xhr = new XMLHttpRequest();
@@ -790,6 +921,16 @@ function App() {
       return matchesSearch && fileFolder === currentFolder;
     });
   }, [slidesList, fileSearchQuery, currentFolder]);
+
+  // Filtering videos inside active section
+  const filteredVideos = useMemo(() => {
+    return videosList.filter(f => {
+      const matchesSearch = f.name.toLowerCase().includes(videoSearchQuery.toLowerCase()) ||
+                            f.type.toLowerCase().includes(videoSearchQuery.toLowerCase());
+      const fileFolder = f.folder || "Root";
+      return matchesSearch && fileFolder === currentVideoFolder;
+    });
+  }, [videosList, videoSearchQuery, currentVideoFolder]);
 
   // Filtering questions inside active section
   const filteredQuestions = useMemo(() => {
@@ -1297,6 +1438,13 @@ function App() {
                 >
                   <Icon name="layers" className="w-3.5 h-3.5" />
                   <span>slides</span>
+                </button>
+                <button
+                  onClick={() => { setPrimarySection("videos"); setPreviewFile(null); }}
+                  className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'videos' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}
+                >
+                  <Icon name="video" className="w-3.5 h-3.5" />
+                  <span>Recorded Class</span>
                 </button>
                 <button
                   onClick={() => { setPrimarySection("questions"); setPreviewFile(null); }}
@@ -2321,6 +2469,15 @@ function App() {
                               </div>
                             )}
                           </div>
+                        ) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? (
+                          <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ minHeight: "360px" }}>
+                            <video 
+                              src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
+                              controls 
+                              className="w-full h-full rounded-xl shadow-lg border border-white border-opacity-5" 
+                              style={{ maxHeight: "480px" }}
+                            />
+                          </div>
                         ) : (
                           <div className="p-8 text-center bg-dark-900 rounded-xl space-y-3">
                             <Icon name="layers" className="w-10 h-10 text-slate-500 mx-auto" />
@@ -2471,6 +2628,233 @@ function App() {
                     </div>
                   </div>
 
+                </div>
+              )}
+
+              {primarySection === 'videos' && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start animate-fade-in">
+                  
+                  {/* Videos list */}
+                  <div className="lg:col-span-2 space-y-6">
+                    <div className="glass-panel p-6 rounded-2xl space-y-6">
+                      <div className="flex items-center justify-between flex-wrap gap-4">
+                        <h3 className="font-display font-bold text-lg text-white">Recorded Class Videos</h3>
+                        <div className="relative w-full sm:w-64">
+                          <input 
+                            type="text"
+                            placeholder="Filter videos..."
+                            value={videoSearchQuery}
+                            onChange={(e) => setVideoSearchQuery(e.target.value)}
+                            className="glass-input w-full pl-9 pr-3 py-1.5 rounded-lg text-xs"
+                          />
+                          <Icon name="search" className="absolute left-3 top-2.5 w-3 h-3 text-slate-400" />
+                        </div>
+                      </div>
+
+                      {/* Virtual Folders Section */}
+                      <div className="space-y-3 pb-4 border-b border-white border-opacity-5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-display font-bold text-sky-400 tracking-wider uppercase">Video Folders</span>
+                          <button
+                            type="button"
+                            onClick={handleCreateVideoFolder}
+                            className="flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2.5 py-1 rounded-md border border-sky-500/20"
+                          >
+                            <Icon name="folderPlus" className="w-3 h-3" />
+                            <span>Create Folder</span>
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {(activeCourse.video_folders || ["Root"]).map((folder) => {
+                            const isSelected = currentVideoFolder === folder;
+                            return (
+                              <button
+                                key={folder}
+                                type="button"
+                                onClick={() => { setCurrentVideoFolder(folder); setPreviewFile(null); }}
+                                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-display font-semibold transition-all border ${
+                                  isSelected 
+                                    ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' 
+                                    : 'bg-dark-900 border-white border-opacity-5 text-slate-400 hover:text-slate-200 hover:bg-sky-950/10'
+                                }`}
+                              >
+                                <Icon name="folder" className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`} />
+                                <span>{folder}</span>
+                                {folder !== "Root" && (
+                                  <div className="flex items-center space-x-1 ml-1.5">
+                                    <span 
+                                      onClick={(e) => handleRenameVideoFolder(e, folder)}
+                                      className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-sky-300'}`}
+                                      title={`Rename ${folder}`}
+                                    >
+                                      <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                      </svg>
+                                    </span>
+                                    <span 
+                                      onClick={(e) => handleDeleteVideoFolder(e, folder)}
+                                      className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-rose-400'}`}
+                                      title={`Delete ${folder}`}
+                                    >
+                                      <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                      </svg>
+                                    </span>
+                                  </div>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Video drag-and-drop upload zone */}
+                      <form onSubmit={(e) => handleFileUpload(e, videoUploadFile, "video", {
+                        setIsUploading: setIsVideoUploading,
+                        setUploadProgress: setVideoUploadProgress,
+                        setUploadStatus: setVideoUploadStatus,
+                        setUploadFile: setVideoUploadFile,
+                        fileInputRef: videoFileInputRef
+                      })} className="relative group">
+                        <input 
+                          type="file" 
+                          accept="video/*"
+                          onChange={(e) => setVideoUploadFile(e.target.files[0])}
+                          className="hidden" 
+                          id="video-upload-input"
+                          ref={videoFileInputRef}
+                        />
+                        <label 
+                          htmlFor="video-upload-input" 
+                          className="glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
+                        >
+                          <Icon name="upload" className="w-8 h-8 text-accent-sky mb-3 group-hover:scale-110 transition-transform" />
+                          <p className="font-display font-semibold text-xs text-sky-300 text-center max-w-lg px-4">
+                            {videoUploadFile ? `Selected: ${videoUploadFile.name}` : "Upload recorded lectures, tutorials, HYSYS demos, or any other videos that might be helpful to the course."}
+                          </p>
+                          <p className="text-[10px] text-slate-500 mt-1">Drag and drop or click to browse</p>
+                        </label>
+                        
+                        {videoUploadFile && (
+                          <div className="flex items-center space-x-3 mt-3 justify-end animate-fade-in">
+                            <button 
+                              type="button" 
+                              onClick={() => { setVideoUploadFile(null); if (videoFileInputRef.current) videoFileInputRef.current.value = ""; }}
+                              className="px-3 py-1.5 border border-white border-opacity-10 text-slate-400 rounded-lg text-xs font-display hover:text-white"
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              type="submit" 
+                              disabled={isVideoUploading}
+                              className="px-4 py-1.5 bg-accent-sky hover:bg-sky-600 text-white rounded-lg text-xs font-display font-semibold flex items-center space-x-1"
+                            >
+                              <span>{isVideoUploading ? "Uploading..." : "Save to videos"}</span>
+                              <Icon name="plus" className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        )}
+                      </form>
+
+                      {isVideoUploading && (
+                        <div className="w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse">
+                          <div className="bg-gradient-to-r from-accent-sky to-accent-violet h-full transition-all duration-300" style={{ width: `${videoUploadProgress}%` }}></div>
+                        </div>
+                      )}
+
+                      {videoUploadStatus.message && (
+                        <div className={`p-3 rounded-lg text-xs font-display font-medium ${videoUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
+                          {videoUploadStatus.message}
+                        </div>
+                      )}
+
+                      {/* List of video files */}
+                      <div className="space-y-2 max-h-[350px] overflow-y-auto pr-1">
+                        {filteredVideos.map((file) => {
+                          const isPreviewing = previewFile && previewFile.index === file.index;
+                          return (
+                            <div 
+                              key={file.index}
+                              className={`glass-panel border-opacity-5 p-3 rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
+                            >
+                              <div className="flex items-center space-x-3 min-w-0">
+                                <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
+                                  <Icon name="video" className="w-5 h-5" />
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="che-book-title block line-clamp-1 leading-normal">
+                                    {file.name}
+                                  </span>
+                                  <span className="text-[10px] text-slate-500 font-display">
+                                    {file.type} &bull; {file.size}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center space-x-2">
+                                <button 
+                                  onClick={() => setPreviewFile(file)}
+                                  className="px-2.5 py-1.5 bg-dark-900 border border-white border-opacity-5 hover:border-accent-sky hover:text-accent-sky rounded-lg text-[10px] font-display font-semibold text-slate-300"
+                                >
+                                  View
+                                </button>
+                                <button 
+                                  onClick={() => handleDeleteFile(file.index)}
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:text-accent-rose text-slate-500 rounded-lg transition-colors"
+                                  title="Delete Video"
+                                >
+                                  <Icon name="trash" className="w-3.5 h-3.5" />
+                                </button>
+                                <a 
+                                  href={`${API_BASE}/api/download/${activeCourse.id}/${file.index}`}
+                                  download
+                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
+                                  title="Download"
+                                >
+                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                </a>
+                              </div>
+                            </div>
+                          );
+                        })}
+
+                        {filteredVideos.length === 0 && (
+                          <div className="py-8 text-center text-slate-500 text-xs font-display">
+                            No recorded videos cataloged inside this folder yet.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Interactive File Preview Pane */}
+                  {previewFile && (
+                    <div className="glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky">
+                      <div className="flex items-center justify-between border-b border-white border-opacity-5 pb-3">
+                        <div className="flex items-center space-x-2">
+                          <Icon name="video" className="w-5 h-5 text-accent-sky" />
+                          <h4 className="font-display font-bold text-sm text-white line-clamp-1">
+                            Play Class: {previewFile.name}
+                          </h4>
+                        </div>
+                        <button 
+                          onClick={() => setPreviewFile(null)}
+                          className="text-slate-400 hover:text-white text-xs font-semibold"
+                        >
+                          Close Preview
+                        </button>
+                      </div>
+
+                      <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ minHeight: "360px" }}>
+                        <video 
+                          src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
+                          controls 
+                          className="w-full h-full rounded-xl shadow-lg border border-white border-opacity-5" 
+                          style={{ maxHeight: "480px" }}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
