@@ -578,7 +578,7 @@ async def get_file_id_from_message_id(message_id: int) -> str:
     return file_id
 
 @app.get("/api/download/{course_id}/{file_index}")
-async def download_file(course_id: str, file_index: int):
+async def download_file(course_id: str, file_index: int, preview: Optional[bool] = None):
     config = load_courses_config()
     resolved_course_id = find_course_key(course_id, config["courses"])
     if not resolved_course_id:
@@ -598,6 +598,9 @@ async def download_file(course_id: str, file_index: int):
     file_id = file_item.get("telegram_file_id")
     file_ids = file_item.get("telegram_file_ids")
     message_id = file_item.get("telegram_message_id")
+    
+    # Determine disposition: inline for active previewer iframe, attachment for direct download click
+    disposition_type = "inline" if preview else "attachment"
     
     # 1. Determine storage type if not explicitly set
     if not storage_type:
@@ -624,8 +627,10 @@ async def download_file(course_id: str, file_index: int):
             if not file_ids and file_id:
                 file_ids = [file_id]
             headers = {
-                "Content-Disposition": f'inline; filename="{file_name}"',
+                "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
                 "Content-Type": content_type,
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *"
             }
             # Provide exact Content-Length if present in catalog to support smooth browser PDF loading
             raw_bytes = file_item.get("bytes")
@@ -644,8 +649,10 @@ async def download_file(course_id: str, file_index: int):
     if storage_type == "gdrive":
         try:
             headers = {
-                "Content-Disposition": f'inline; filename="{file_name}"',
+                "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
                 "Content-Type": content_type,
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *"
             }
             raw_bytes = file_item.get("bytes")
             if raw_bytes:
@@ -668,7 +675,15 @@ async def download_file(course_id: str, file_index: int):
             raise HTTPException(status_code=403, detail="Access denied")
             
         if os.path.exists(absolute_filepath) and not os.path.isdir(absolute_filepath):
-            return FileResponse(absolute_filepath, media_type=content_type)
+            return FileResponse(
+                absolute_filepath, 
+                media_type=content_type,
+                headers={
+                    "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                    "X-Frame-Options": "ALLOWALL",
+                    "Content-Security-Policy": "frame-ancestors *"
+                }
+            )
             
     # Case D: Single-file Telegram Storage
     try:
@@ -704,8 +719,10 @@ async def download_file(course_id: str, file_index: int):
                     yield chunk
                     
         headers = {
-            "Content-Disposition": f'inline; filename="{file_name}"',
+            "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
             "Content-Type": content_type,
+            "X-Frame-Options": "ALLOWALL",
+            "Content-Security-Policy": "frame-ancestors *"
         }
         # Provide Content-Length from Telegram Bot API response (100% accurate)
         if telegram_file_size:

@@ -1446,7 +1446,7 @@ function App() {
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           <iframe 
-                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
+                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
                             className="w-full h-full border-none"
                             title="PDF Viewer Frame"
                           ></iframe>
@@ -1628,7 +1628,7 @@ function App() {
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           <iframe 
-                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
+                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
                             className="w-full h-full border-none"
                             title="PDF Viewer Frame"
                           ></iframe>
@@ -1810,7 +1810,7 @@ function App() {
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           <iframe 
-                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
+                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
                             className="w-full h-full border-none"
                             title="PDF Viewer Frame"
                           ></iframe>
@@ -1985,7 +1985,7 @@ function App() {
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           <iframe
-                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
+                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
                             className="w-full h-full border-none"
                             title="PDF Viewer Frame"
                           ></iframe>
@@ -2224,7 +2224,7 @@ function App() {
                         {(previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? (
                           <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "450px" }}>
                             <iframe 
-                              src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`}
+                              src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`}
                               className="w-full h-full border-none"
                               title="PDF Viewer Frame"
                             ></iframe>
