@@ -386,20 +386,23 @@
             border-color: #8F75B2 !important;
         }
         
-        /* High contrast for the workspace back button (soft eye-soothing lavender-silver background, NOT pure white) */
-        button.che-back-btn,
-        button.che-back-btn * {
-            background-color: #F0EEF6 !important; /* Premium warm desaturated silver-lavender */
-            color: #1E2538 !important; /* High contrast black/dark-slate back arrow */
-            border: 1.5px solid #1E2538 !important; /* Solid black border outline */
+        /* Workspace back button filled with deep violet color and black border outline (Image 5) */
+        button.che-back-btn {
+            background-color: #2A0845 !important; /* Deep violet color fill */
+            color: #FFFFFF !important; /* Crisp pure white back arrow */
+            border: 2px solid #000000 !important; /* Black border outline with certain thickness */
             transition: all 0.2s ease-in-out !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
         }
-        button.che-back-btn:hover,
+        button.che-back-btn * {
+            color: #FFFFFF !important; /* Crisp pure white back arrow icon */
+        }
+        button.che-back-btn:hover {
+            background-color: #3C125E !important; /* Slightly lighter deep violet hover */
+            border-color: #000000 !important;
+        }
         button.che-back-btn:hover * {
-            background-color: #E2DFEB !important; /* Deeper soft lavender hover */
-            color: #6F5294 !important; /* Deep brand violet on hover */
-            border-color: #8F75B2 !important;
+            color: #FFFFFF !important;
         }
         
         /* High contrast and bold typography for course card badges */
@@ -465,45 +468,58 @@
         .prose pre code { background: transparent; color: #1E2538; padding: 0; }
         .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #687289; }
 
-        /* Premium highlighted black title style filled with soft maroon box and maroon border (Image 2) */
+        /* Premium highlighted black title style filled with solid light maroon box and maroon border (Image 2) */
         .glass-panel span.che-book-title,
         .glass-card span.che-book-title,
         .glass-panel p.che-book-title,
         .glass-card p.che-book-title,
         span.che-book-title {
-            color: #1E2538 !important; /* Crisp deep slate-black text */
+            color: #000000 !important; /* Crisp deep black text inside filename box */
             font-size: 0.85rem !important; /* Decreased font size for elegant neat proportions */
             font-weight: 800 !important; /* Extra bold */
-            background-color: rgba(158, 27, 50, 0.08) !important; /* Premium light pastel maroon color fill */
-            border: 1.5px dashed #9E1B32 !important; /* Stitched-effect maroon dashed border boundary */
+            background-color: rgba(158, 27, 50, 0.12) !important; /* Beautiful filled solid light maroon color */
+            border: 1.5px dashed #9E1B32 !important; /* Maroon dashed border boundary outline */
             padding: 2.5px 7px !important; /* Tighten padding */
             border-radius: 6px !important;
             display: inline-block !important;
             margin-bottom: 2px !important;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+            box-shadow: 0 1px 2.5px rgba(0, 0, 0, 0.05) !important;
             text-shadow: none !important;
         }
 
-        /* Majestic 3.5px rounded gradient border (White, Maroon, Deep Violet) for course workspace panels (Image 3 and Image 4) */
+        /* Majestic 3.5px rounded gradient border (Maroon, Deep Violet) for course workspace panels (Image 1) */
         .che-course-workspace .glass-panel {
             border: 3.5px solid transparent !important;
             background: linear-gradient(#EDEEF5, #EDEEF5) padding-box,
-                        linear-gradient(135deg, #FFFFFF 0%, #9E1B32 50%, #2A0845 100%) border-box !important;
+                        linear-gradient(135deg, #9E1B32 0%, #2A0845 100%) border-box !important;
             border-radius: 16px !important;
         }
 
-        /* Elegant light maroon dashed border for upload label boundaries (Image 1 and Image 3) */
+        /* Elegant light maroon dashed border for upload label boundaries filled with light maroon and black text (Image 3) */
         .che-course-workspace .glass-panel label.border-dashed {
-            border-color: rgba(158, 27, 50, 0.25) !important;
-            background-color: rgba(158, 27, 50, 0.03) !important;
+            border-color: #9E1B32 !important; /* Maroon dashed border boundary */
+            background-color: rgba(158, 27, 50, 0.12) !important; /* Soft light maroon background fill */
+            color: #000000 !important; /* Black text */
             transition: all 0.2s ease-in-out !important;
         }
-        .che-course-workspace .glass-panel label.border-dashed:hover {
-            border-color: #9E1B32 !important;
-            background-color: rgba(158, 27, 50, 0.08) !important;
-        }
         .che-course-workspace .glass-panel label.border-dashed * {
-            color: #9E1B32 !important;
+            color: #000000 !important; /* Force all icon and text inside to be black */
+        }
+        .che-course-workspace .glass-panel label.border-dashed:hover {
+            border-color: #2A0845 !important; /* Dark violet border outline on hover */
+            background-color: rgba(158, 27, 50, 0.18) !important; /* Richer light maroon hover */
+        }
+
+        /* Volumes and papers count badge: deep violet text, solid black border outline with certain thickness (Image 4) */
+        .che-course-workspace .glass-panel h3 + span,
+        .che-course-workspace .glass-panel h3 + span * {
+            color: #2A0845 !important; /* Deep violet text color */
+            border: 2px solid #000000 !important; /* Black borderline outline with certain thickness */
+            background-color: #EDEEF5 !important; /* Off-white fill background */
+            font-weight: 800 !important;
+            border-radius: 8px !important;
+            padding: 3px 8px !important;
+            display: inline-block !important;
         }
     </style>
     
