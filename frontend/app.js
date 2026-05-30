@@ -1021,74 +1021,72 @@ function App() {
           )}
         </div>
         
-        {/* Row 2: Stats & Selector */}
-        {!activeCourse && (
-          <div className="flex items-center justify-between md:justify-end w-full md:w-auto space-x-4 md:space-x-8 text-sm border-t border-white/5 pt-2.5 md:pt-0 md:border-t-0">
-            <div className="hidden md:block text-right">
-              <span className="text-slate-400 block text-[11px] font-medium tracking-wider uppercase">Active Courses</span>
-              <span className="font-display font-semibold text-white">{courses.length} courses</span>
-            </div>
-            <div className="hidden md:block h-8 w-px bg-white bg-opacity-10"></div>
-            
-            {/* Resources Loaded stat */}
-            <div className="text-left md:text-right">
-              <span className="text-slate-400 block text-[9px] md:text-[11px] font-semibold tracking-wider uppercase">Resources Loaded</span>
-              <span className="font-display font-bold text-xs md:text-sm text-accent-sky">{totalFilesCount} files</span>
-            </div>
-            
-            <div className="h-6 md:h-8 w-px bg-white bg-opacity-10"></div>
-
-            {/* Padlock Session Status */}
-            <div className="flex items-center space-x-1.5 cursor-pointer select-none" onClick={() => {
-              if (isAuthorizedState) {
-                if (window.confirm("Do you want to end your administrator session?")) {
-                  localStorage.removeItem("che_auth_until");
-                  setIsAuthorizedState(false);
-                }
-              } else {
-                checkAuthAndExecute(() => {});
-              }
-            }}>
-              <span className={`w-2 h-2 rounded-full ${isAuthorizedState ? 'bg-violet-400 animate-pulse' : 'bg-slate-500'}`}></span>
-              <span className={`font-display text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${isAuthorizedState ? 'text-violet-400' : 'text-slate-500'}`}>
-                {isAuthorizedState ? '🔓 Admin Active' : '🔒 Guest'}
-              </span>
-            </div>
-
-            <div className="h-6 md:h-8 w-px bg-white bg-opacity-10"></div>
-            
-            {/* Unified Level and Term Dropdown */}
-            <div className="flex flex-col text-left">
-              <span className="text-slate-400 block text-[9px] md:text-[10px] font-bold tracking-wider uppercase mb-1">Level and term</span>
-              <select 
-                value={selectedLevel && selectedTerm ? `${selectedLevel}, ${selectedTerm}` : ""}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  if (!val) {
-                    setSelectedLevel("");
-                    setSelectedTerm("");
-                  } else {
-                    const [lvl, trm] = val.split(", ");
-                    setSelectedLevel(lvl);
-                    setSelectedTerm(trm);
-                  }
-                }}
-                className="glass-input px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-sky-500 border border-white/10"
-              >
-                <option value="">All Levels & Terms</option>
-                <option value="Level-1, Term-1">Level 1, Term 1</option>
-                <option value="Level-1, Term-2">Level 1, Term 2</option>
-                <option value="Level-2, Term-1">Level 2, Term 1</option>
-                <option value="Level-2, Term-2">Level 2, Term 2</option>
-                <option value="Level-3, Term-1">Level 3, Term 1</option>
-                <option value="Level-3, Term-2">Level 3, Term 2</option>
-                <option value="Level-4, Term-1">Level 4, Term 1</option>
-                <option value="Level-4, Term-2">Level 4, Term 2</option>
-              </select>
-            </div>
-
+        {/* Row 2: Stats & Selector (Always Visible) */}
+        <div className="flex items-center justify-between md:justify-end w-full md:w-auto space-x-4 md:space-x-8 text-sm border-t border-white/5 pt-2.5 md:pt-0 md:border-t-0">
+          <div className="hidden md:block text-right">
+            <span className="text-slate-400 block text-[11px] font-medium tracking-wider uppercase">Active Courses</span>
+            <span className="font-display font-semibold text-white">{courses.length} courses</span>
           </div>
-        )}
+          <div className="hidden md:block h-8 w-px bg-white bg-opacity-10"></div>
+          
+          {/* Resources Loaded stat */}
+          <div className="text-left md:text-right">
+            <span className="text-slate-400 block text-[9px] md:text-[11px] font-semibold tracking-wider uppercase">Resources Loaded</span>
+            <span className="font-display font-bold text-xs md:text-sm text-accent-sky">{totalFilesCount} files</span>
+          </div>
+          
+          <div className="h-6 md:h-8 w-px bg-white bg-opacity-10"></div>
+
+          {/* Padlock Session Status */}
+          <div className="flex items-center space-x-1.5 cursor-pointer select-none" onClick={() => {
+            if (isAuthorizedState) {
+              if (window.confirm("Do you want to end your administrator session?")) {
+                localStorage.removeItem("che_auth_until");
+                setIsAuthorizedState(false);
+              }
+            } else {
+              checkAuthAndExecute(() => {});
+            }
+          }}>
+            <span className={`w-2 h-2 rounded-full ${isAuthorizedState ? 'bg-violet-400 animate-pulse' : 'bg-slate-500'}`}></span>
+            <span className={`font-display text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${isAuthorizedState ? 'text-violet-400' : 'text-slate-500'}`}>
+              {isAuthorizedState ? '🔓 Admin Active' : '🔒 Guest'}
+            </span>
+          </div>
+
+          <div className="h-6 md:h-8 w-px bg-white bg-opacity-10"></div>
+          
+          {/* Unified Level and Term Dropdown */}
+          <div className="flex flex-col text-left">
+            <span className="text-slate-400 block text-[9px] md:text-[10px] font-bold tracking-wider uppercase mb-1">Level and term</span>
+            <select 
+              value={selectedLevel && selectedTerm ? `${selectedLevel}, ${selectedTerm}` : ""}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (!val) {
+                  setSelectedLevel("");
+                  setSelectedTerm("");
+                } else {
+                  const [lvl, trm] = val.split(", ");
+                  setSelectedLevel(lvl);
+                  setSelectedTerm(trm);
+                }
+              }}
+              className="glass-input px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-sky-500 border border-white/10"
+            >
+              <option value="">All Levels & Terms</option>
+              <option value="Level-1, Term-1">Level 1, Term 1</option>
+              <option value="Level-1, Term-2">Level 1, Term 2</option>
+              <option value="Level-2, Term-1">Level 2, Term 1</option>
+              <option value="Level-2, Term-2">Level 2, Term 2</option>
+              <option value="Level-3, Term-1">Level 3, Term 1</option>
+              <option value="Level-3, Term-2">Level 3, Term 2</option>
+              <option value="Level-4, Term-1">Level 4, Term 1</option>
+              <option value="Level-4, Term-2">Level 4, Term 2</option>
+            </select>
+          </div>
+
+        </div>
       </header>
 
       {/* Main Workspace Body */}
