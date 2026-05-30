@@ -2483,6 +2483,8 @@ function App() {
                             <video 
                               src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
                               controls 
+                              preload="metadata"
+                              playsInline
                               className="w-full h-full rounded-xl shadow-lg border border-white border-opacity-5" 
                               style={{ maxHeight: "480px" }}
                             />
@@ -2856,6 +2858,8 @@ function App() {
                         <video 
                           src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
                           controls 
+                          preload="metadata"
+                          playsInline
                           className="w-full h-full rounded-xl shadow-lg border border-white border-opacity-5" 
                           style={{ maxHeight: "480px" }}
                         />

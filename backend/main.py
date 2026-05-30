@@ -3,7 +3,7 @@ import json
 import shutil
 import asyncio
 from typing import Optional, List
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form, BackgroundTasks, Response
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, BackgroundTasks, Response, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -579,7 +579,7 @@ async def get_file_id_from_message_id(message_id: int) -> str:
     return file_id
 
 @app.get("/api/download/{course_id}/{file_index}")
-async def download_file(course_id: str, file_index: int, preview: Optional[bool] = None):
+async def download_file(course_id: str, file_index: int, request: Request, preview: Optional[bool] = None):
     config = load_courses_config()
     resolved_course_id = find_course_key(course_id, config["courses"])
     if not resolved_course_id:
@@ -634,19 +634,65 @@ async def download_file(course_id: str, file_index: int, preview: Optional[bool]
     elif file_name.lower().endswith(".mkv"):
         content_type = "video/x-matroska"
         
+    range_header = request.headers.get("range")
+        
     # Case A: Telegram Chunks Storage (Multi-part upload)
     if storage_type == "telegram_chunks" or file_ids:
         try:
             if not file_ids and file_id:
                 file_ids = [file_id]
+                
+            raw_bytes = file_item.get("bytes")
+            if not raw_bytes:
+                # If total bytes is missing, sum up from getFile sizes of all chunks (rare/fallback)
+                raw_bytes = 0
+                for fid in file_ids:
+                    get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={fid}"
+                    resp = await http_client.get(get_file_url)
+                    if resp.status_code == 200:
+                        res_json = resp.json()
+                        if res_json.get("ok"):
+                            raw_bytes += res_json["result"].get("file_size", 0)
+            
+            # Check for range request
+            if range_header and range_header.startswith("bytes="):
+                # Parse Range header
+                start = 0
+                end = None
+                parts = range_header.replace("bytes=", "").split("-")
+                if len(parts) == 2:
+                    if parts[0].strip():
+                        start = int(parts[0].strip())
+                    if parts[1].strip():
+                        end = int(parts[1].strip())
+                
+                if end is None or end >= raw_bytes:
+                    end = raw_bytes - 1
+                
+                headers = {
+                    "Content-Range": f"bytes {start}-{end}/{raw_bytes}",
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": str(end - start + 1),
+                    "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                    "Content-Type": content_type,
+                    "X-Frame-Options": "ALLOWALL",
+                    "Content-Security-Policy": "frame-ancestors *"
+                }
+                return StreamingResponse(
+                    stream_telegram_chunks_range(file_ids, start, end, raw_bytes, CHUNK_SIZE_LIMIT),
+                    status_code=206,
+                    media_type=content_type,
+                    headers=headers
+                )
+            
+            # Standard sequential download
             headers = {
+                "Accept-Ranges": "bytes",
                 "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
                 "Content-Type": content_type,
                 "X-Frame-Options": "ALLOWALL",
                 "Content-Security-Policy": "frame-ancestors *"
             }
-            # Provide exact Content-Length if present in catalog to support smooth browser PDF loading
-            raw_bytes = file_item.get("bytes")
             if raw_bytes:
                 headers["Content-Length"] = str(raw_bytes)
                 
@@ -720,9 +766,55 @@ async def download_file(course_id: str, file_index: int, preview: Optional[bool]
         file_path = result["result"]["file_path"]
         telegram_file_size = result["result"].get("file_size")
         
+        # Determine total size
+        total_size = telegram_file_size
+        if not total_size:
+            total_size = file_item.get("bytes")
+            
         # Securely stream the binary file back to the browser
         download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
         
+        # Check for range request
+        if range_header and range_header.startswith("bytes=") and total_size:
+            # Parse Range header
+            start = 0
+            end = None
+            parts = range_header.replace("bytes=", "").split("-")
+            if len(parts) == 2:
+                if parts[0].strip():
+                    start = int(parts[0].strip())
+                if parts[1].strip():
+                    end = int(parts[1].strip())
+            
+            if end is None or end >= total_size:
+                end = total_size - 1
+            
+            async def stream_range_generator():
+                tg_headers = {"Range": f"bytes={start}-{end}"}
+                async with http_client.stream("GET", download_url, headers=tg_headers) as r:
+                    if r.status_code not in (200, 206):
+                        yield b"Error streaming range from Telegram servers"
+                        return
+                    async for chunk in r.aiter_bytes():
+                        yield chunk
+            
+            headers = {
+                "Content-Range": f"bytes {start}-{end}/{total_size}",
+                "Accept-Ranges": "bytes",
+                "Content-Length": str(end - start + 1),
+                "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                "Content-Type": content_type,
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *"
+            }
+            return StreamingResponse(
+                stream_range_generator(),
+                status_code=206,
+                media_type=content_type,
+                headers=headers
+            )
+            
+        # Standard sequential download
         async def stream_generator():
             async with http_client.stream("GET", download_url) as r:
                 if r.status_code != 200:
@@ -732,19 +824,16 @@ async def download_file(course_id: str, file_index: int, preview: Optional[bool]
                     yield chunk
                     
         headers = {
+            "Accept-Ranges": "bytes",
             "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
             "Content-Type": content_type,
             "X-Frame-Options": "ALLOWALL",
             "Content-Security-Policy": "frame-ancestors *"
         }
         # Provide Content-Length from Telegram Bot API response (100% accurate)
-        if telegram_file_size:
-            headers["Content-Length"] = str(telegram_file_size)
-        else:
-            raw_bytes = file_item.get("bytes")
-            if raw_bytes:
-                headers["Content-Length"] = str(raw_bytes)
-                
+        if total_size:
+            headers["Content-Length"] = str(total_size)
+            
         return StreamingResponse(
             stream_generator(),
             media_type=content_type,
@@ -894,6 +983,48 @@ async def stream_telegram_chunks(file_ids: List[str]):
                 return
             async for chunk in r.aiter_bytes():
                 yield chunk
+
+
+async def stream_telegram_chunks_range(
+    file_ids: List[str],
+    start: int,
+    end: int,
+    total_size: int,
+    chunk_size_limit: int
+):
+    for i, file_id in enumerate(file_ids):
+        chunk_start = i * chunk_size_limit
+        chunk_end = min((i + 1) * chunk_size_limit - 1, total_size - 1)
+        
+        # Check if the requested range overlaps with this chunk
+        if start <= chunk_end and end >= chunk_start:
+            overlap_start = max(start, chunk_start)
+            overlap_end = min(end, chunk_end)
+            
+            rel_start = overlap_start - chunk_start
+            rel_end = overlap_end - chunk_start
+            
+            # Fetch file path from Telegram
+            get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+            resp = await http_client.get(get_file_url)
+            if resp.status_code != 200:
+                print(f"Failed to getFile details for chunk {i}: {resp.text}")
+                return
+            result = resp.json()
+            if not result.get("ok"):
+                print(f"Telegram Bot API error for chunk {i}")
+                return
+                
+            file_path = result["result"]["file_path"]
+            download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+            
+            headers = {"Range": f"bytes={rel_start}-{rel_end}"}
+            async with http_client.stream("GET", download_url, headers=headers) as r:
+                if r.status_code not in (200, 206):
+                    print(f"Telegram download failed for chunk {i} range {rel_start}-{rel_end}: status {r.status_code}")
+                    return
+                async for chunk in r.aiter_bytes():
+                    yield chunk
 
 
 # Handle file upload (proxies to Telegram storage)
