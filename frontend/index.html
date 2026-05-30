@@ -183,6 +183,14 @@
             text-shadow: none !important;
         }
         
+        /* High-contrast visibility override for all delete button icons */
+        .glass-card button[title*="Delete"] *,
+        .glass-panel button[title*="Delete"] *,
+        .glass-card button.hover\:bg-rose-50 *,
+        .glass-panel button.hover\:bg-rose-50 * {
+            color: #be123c !important; /* Deep red-rose */
+        }
+        
         /* Translucent lavender/violet tags and badges inside cards */
         .glass-card .bg-sky-500\/20, .glass-panel .bg-sky-500\/20,
         .glass-card .bg-sky-500\/10, .glass-panel .bg-sky-500\/10,
