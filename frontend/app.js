@@ -2396,29 +2396,24 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              className={`glass-panel border-opacity-5 p-3 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
+                              onClick={() => setPreviewFile(file)}
+                              className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name={(file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf') ? 'fileText' : 'layers'} className="w-5 h-5" />
                                 </div>
                                 <div className="min-w-0">
-                                  <span className="che-book-title block line-clamp-1 leading-normal">
+                                  <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name}
                                   </span>
-                                  <span className="text-[10px] text-slate-500 font-display">
-                                    {file.type} &bull; {file.size}
+                                  <span className="text-[9px] text-slate-500 font-display">
+                                    {file.size} &bull; {file.type || "Class Slide"}
                                   </span>
                                 </div>
                               </div>
 
                               <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
-                                <button 
-                                  onClick={() => setPreviewFile(file)}
-                                  className="che-view-btn"
-                                >
-                                  View
-                                </button>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
                                   className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
@@ -2809,12 +2804,6 @@ function App() {
                               </div>
 
                               <div className="absolute bottom-3 right-3 flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
-                                <button 
-                                  onClick={() => setPreviewFile(file)}
-                                  className="che-view-btn"
-                                >
-                                  View
-                                </button>
                                 <button 
                                   onClick={() => handleDeleteFile(file.index)}
                                   className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors"
