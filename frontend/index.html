@@ -149,29 +149,62 @@
             text-shadow: none !important;
         }
         
-        /* High-Legibility Overrides for Elements inside Cards and Panels */
-        .glass-card, .glass-panel {
-            color: #1E2538 !important;
-        }
-        .glass-card h1, .glass-card h2, .glass-card h3, .glass-card h4, .glass-card h5, .glass-card h6,
-        .glass-panel h1, .glass-panel h2, .glass-panel h3, .glass-panel h4, .glass-panel h5, .glass-panel h6,
-        .glass-card .font-display, .glass-panel .font-display {
-            color: #1E2538 !important;
+        /* Complete Dark Text & Bold Heading Overrides for Cards and Panels */
+        .glass-card *, .glass-panel * {
             text-shadow: none !important;
         }
-        .glass-card p, .glass-card span:not(.bg-sky-500\/20):not(.text-sky-300):not(.text-accent-sky):not(.bg-accent-sky\/20),
-        .glass-panel p, .glass-panel span:not(.bg-sky-500\/20):not(.text-sky-300):not(.text-accent-sky):not(.bg-accent-sky\/20) {
-            color: #4A5568 !important;
+        
+        /* Targets ALL headings inside cards/panels to be bold and dark slate-blue (#1E2538) */
+        .glass-card h1, .glass-card h2, .glass-card h3, .glass-card h4, .glass-card h5, .glass-card h6,
+        .glass-panel h1, .glass-panel h2, .glass-panel h3, .glass-panel h4, .glass-panel h5, .glass-panel h6,
+        .glass-card select, .glass-panel select,
+        .glass-card .font-display:not(.text-glow) {
+            color: #1E2538 !important;
+            font-weight: 800 !important; /* Bold headings as requested! */
         }
         
-        /* Retain white text for solid buttons and active tabs inside cards */
-        .glass-card button:not(.p-1\.5):not(.p-2\.5), .glass-panel button:not(.p-1\.5):not(.p-2\.5),
+        /* Targets ALL paragraph, span, div, and standard text elements inside cards/panels to be dark gray (#3A4454) */
+        .glass-card p, .glass-card span, .glass-card div, .glass-card a, .glass-card label,
+        .glass-panel p, .glass-panel span, .glass-panel div, .glass-panel a, .glass-panel label {
+            color: #3A4454 !important; /* Make the text dark as requested! */
+            font-weight: 500 !important; /* Make it highly legible and distinct! */
+        }
+        
+        /* EXCEPTIONS: We must protect buttons, solid tags, and active links that have background colors */
+        .glass-card button, .glass-panel button,
+        .glass-card button *, .glass-panel button *,
         .glass-card .bg-gradient-to-r, .glass-panel .bg-gradient-to-r,
+        .glass-card .bg-gradient-to-r *, .glass-panel .bg-gradient-to-r *,
         .glass-card .bg-accent-sky, .glass-panel .bg-accent-sky,
-        .glass-card .text-white, .glass-panel .text-white,
-        .bg-gradient-to-tr.text-white,
-        header span.text-white {
+        .glass-card .bg-accent-sky *, .glass-panel .bg-accent-sky *,
+        .glass-card .bg-sky-600, .glass-panel .bg-sky-600,
+        .glass-card .bg-sky-600 *, .glass-panel .bg-sky-600 * {
             color: #FFFFFF !important;
+            text-shadow: none !important;
+        }
+        
+        /* Translucent lavender/violet tags and badges inside cards */
+        .glass-card .bg-sky-500\/20, .glass-panel .bg-sky-500\/20,
+        .glass-card .bg-sky-500\/10, .glass-panel .bg-sky-500\/10,
+        .glass-card .bg-accent-sky\/20, .glass-panel .bg-accent-sky\/20,
+        .glass-card .bg-accent-sky\/10, .glass-panel .bg-accent-sky\/10,
+        .glass-card .bg-violet-500\/10, .glass-panel .bg-violet-500\/10,
+        .glass-card .bg-violet-500\/20, .glass-panel .bg-violet-500\/20 {
+            background-color: #F0EBF5 !important;
+            border-color: rgba(111, 82, 148, 0.25) !important;
+        }
+        .glass-card .bg-sky-500\/20 *, .glass-panel .bg-sky-500\/20 *,
+        .glass-card .bg-sky-500\/10 *, .glass-panel .bg-sky-500\/10 *,
+        .glass-card .bg-accent-sky\/20 *, .glass-panel .bg-accent-sky\/20 *,
+        .glass-card .bg-accent-sky\/10 *, .glass-panel .bg-accent-sky\/10 *,
+        .glass-card .bg-violet-500\/10 *, .glass-panel .bg-violet-500\/10 *,
+        .glass-card .bg-violet-500\/20 *, .glass-panel .bg-violet-500\/20 *,
+        .glass-card .text-sky-300, .glass-panel .text-sky-300,
+        .glass-card .text-accent-sky, .glass-panel .text-accent-sky,
+        .glass-card .text-accent-violet, .glass-panel .text-accent-violet,
+        .glass-card .text-violet-300, .glass-panel .text-violet-300 {
+            color: #6F5294 !important;
+            font-weight: 700 !important;
         }
         
         /* Dropdowns & Selects Visibility inside Header and Cards */
@@ -194,11 +227,23 @@
             color: #1E2538 !important;
         }
 
+        /* Inputs and Placeholders Visibility inside Cards */
+        .glass-card input, .glass-panel input,
+        input.glass-input {
+            color: #1E2538 !important;
+            background-color: #EDEEF5 !important;
+            border: 1px solid #CBD2E1 !important;
+            font-weight: 600 !important;
+        }
+        input.glass-input::placeholder {
+            color: #718096 !important;
+        }
+
         /* Highly Standard Typography Sizing and Margins for Cards */
         .glass-card h3 {
             font-size: 1.25rem !important;
             line-height: 1.75rem !important;
-            font-weight: 700 !important;
+            font-weight: 800 !important;
             margin-bottom: 0.25rem !important;
         }
         .glass-card p {
@@ -283,6 +328,12 @@
         .prose li { margin-bottom: 0.3rem; color: #687289; }
         .prose table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem; background: #EDEEF5; border-radius: 6px; overflow: hidden; border: 1px solid #CBD2E1; }
         .prose th { background: rgba(90, 141, 222, 0.1); padding: 0.6rem; font-family: 'Outfit', sans-serif; text-align: left; font-weight: 600; border: 1px solid #CBD2E1; color: #1E2538; }
+        .prose td { padding: 0.6rem; border: 1px solid #CBD2E1; color: #687289; }
+        .prose tr:nth-child(even) { background: rgba(255, 255, 255, 0.3); }
+        .prose code { background: rgba(90, 141, 222, 0.1); color: #6F5294; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+        .prose pre { background: #EDEEF5; border: 1px solid #CBD2E1; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
+        .prose pre code { background: transparent; color: #1E2538; padding: 0; }
+        .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #687289; }
         .prose td { padding: 0.6rem; border: 1px solid #CBD2E1; color: #687289; }
         .prose tr:nth-child(even) { background: rgba(255, 255, 255, 0.3); }
         .prose code { background: rgba(90, 141, 222, 0.1); color: #6F5294; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
