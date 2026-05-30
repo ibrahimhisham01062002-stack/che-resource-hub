@@ -511,9 +511,9 @@
             font-weight: 700 !important; /* Bold */
             background-color: rgba(158, 27, 50, 0.08) !important; /* Solid light maroon color */
             border: 1px dashed #9E1B32 !important; /* Thinner maroon dashed border outline */
-            padding: 3px 8px !important; /* Tightened compact padding */
+            padding: 4px 8px !important; /* Tightened compact padding */
             border-radius: 5px !important;
-            display: -webkit-inline-box !important; /* Use inline-box for space efficiency */
+            display: -webkit-box !important; /* Webkit box layout to enforce line clamping and block wrapping */
             -webkit-line-clamp: 2 !important; /* Enforce maximum 2 lines of text */
             -webkit-box-orient: vertical !important;
             overflow: hidden !important;
@@ -521,11 +521,14 @@
             width: fit-content !important; /* Fit to text width cleanly */
             max-width: 220px !important; /* Reduced width for every section to look compact and premium! */
             box-sizing: border-box !important;
-            margin-bottom: 2px !important;
+            margin-bottom: 4px !important; /* Separates cleanly from size metadata */
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
             text-shadow: none !important;
             word-break: keep-all !important; /* Keep words intact, don't cut between characters */
             overflow-wrap: break-word !important; /* Wrap long words elegantly at boundaries */
+            text-align: left !important; /* Align text perfectly inside the box */
+            line-height: 1.4 !important; /* Balanced line spacing for perfect internal alignment */
+            vertical-align: middle !important;
         }
 
         /* High-contrast and visible Close Reader / Close Preview buttons styled as deep violet with white text */

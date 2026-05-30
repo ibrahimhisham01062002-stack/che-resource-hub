@@ -1597,7 +1597,7 @@ function App() {
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name="bookOpen" className="w-5 h-5" />
                                 </div>
-                                <div className="min-w-0">
+                                <div className="min-w-0 flex flex-col items-start justify-center">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
@@ -1788,7 +1788,7 @@ function App() {
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name="fileText" className="w-5 h-5" />
                                 </div>
-                                <div className="min-w-0">
+                                <div className="min-w-0 flex flex-col items-start justify-center">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
@@ -1979,7 +1979,7 @@ function App() {
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name="edit" className="w-5 h-5" />
                                 </div>
-                                <div className="min-w-0">
+                                <div className="min-w-0 flex flex-col items-start justify-center">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
@@ -2177,7 +2177,7 @@ function App() {
                                   <div className="p-2 rounded-lg bg-sky-500/10 text-accent-sky group-hover:scale-110 transition-transform">
                                     <Icon name="check" className="w-4 h-4" />
                                   </div>
-                                  <div className="min-w-0">
+                                  <div className="min-w-0 flex flex-col items-start justify-center">
                                     <p className="che-book-title truncate group-hover:text-white transition-colors">
                                       {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                     </p>
@@ -2411,7 +2411,7 @@ function App() {
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name={(file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf') ? 'fileText' : 'layers'} className="w-5 h-5" />
                                 </div>
-                                <div className="min-w-0">
+                                <div className="min-w-0 flex flex-col items-start justify-center">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
@@ -2801,7 +2801,7 @@ function App() {
                                 <div className="w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0">
                                   <Icon name="video" className="w-5 h-5" />
                                 </div>
-                                <div className="min-w-0">
+                                <div className="min-w-0 flex flex-col items-start justify-center">
                                   <span className="che-book-title block line-clamp-2 leading-relaxed">
                                     {file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''}
                                   </span>
