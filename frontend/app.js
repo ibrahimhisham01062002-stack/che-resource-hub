@@ -243,6 +243,7 @@ function App() {
   }, [selectedLevel, selectedTerm]);
 
   // Load PDF dynamically in-memory as an Object URL to bypass all cross-origin framing security blocks (X-Frame-Options/SAMEORIGIN)
+  // and to handle Render free-tier cold-start (server sleeping) gracefully — fetch waits for wakeup before rendering.
   useEffect(() => {
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
@@ -256,21 +257,44 @@ function App() {
     }
     
     setPreviewLoading(true);
+    setPreviewUrl(""); // clear old blob URL before fetching new one
     
-    // Set the preview URL directly to our secure streaming proxy endpoint.
-    // This lets the browser natively stream and render the PDF (supporting range requests and fast page-by-page loading)
-    // instead of forcing a full, memory-intensive blob download of multi-megabyte files first.
-    const directUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
-    setPreviewUrl(directUrl);
+    const controller = new AbortController();
     
-    const timer = setTimeout(() => {
-      setPreviewLoading(false);
-    }, 150);
+    const downloadUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
+    
+    // Fetch the PDF binary as a blob — this approach:
+    // 1. Waits for Render server to wake up (no "refused to connect" flash)
+    // 2. Creates a local blob URL immune to X-Frame-Options restrictions
+    // 3. Gives us a clean loading spinner while streaming
+    fetch(downloadUrl, { signal: controller.signal })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.blob();
+      })
+      .then(blob => {
+        const objectUrl = URL.createObjectURL(blob);
+        setPreviewUrl(objectUrl);
+        setPreviewLoading(false);
+      })
+      .catch(err => {
+        if (err.name !== "AbortError") {
+          console.error("PDF preview fetch failed:", err);
+          setPreviewLoading(false);
+          setPreviewUrl(""); // triggers the fallback download-link UI
+        }
+      });
     
     return () => {
-      clearTimeout(timer);
+      controller.abort();
+      // Revoke previous object URL to free memory
+      setPreviewUrl(prev => {
+        if (prev && prev.startsWith("blob:")) URL.revokeObjectURL(prev);
+        return "";
+      });
     };
   }, [previewFile, activeCourse]);
+
 
 
   // Restore active course from localStorage once courses list is loaded
@@ -1627,8 +1651,11 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
                             <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
-                              <p className="text-xs font-semibold">Streaming textbook secure from Telegram cloud...</p>
+                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
+                              <div className="text-center space-y-1">
+                                <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
+                                <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                              </div>
                             </div>
                           ) : previewUrl ? (
                             <iframe 
@@ -1821,8 +1848,11 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
                             <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
-                              <p className="text-xs font-semibold">Streaming lecture slides secure from Telegram...</p>
+                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
+                              <div className="text-center space-y-1">
+                                <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
+                                <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                              </div>
                             </div>
                           ) : previewUrl ? (
                             <iframe 
@@ -2015,8 +2045,11 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
                             <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
-                              <p className="text-xs font-semibold">Streaming exam question paper secure from Telegram...</p>
+                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
+                              <div className="text-center space-y-1">
+                                <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
+                                <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                              </div>
                             </div>
                           ) : previewUrl ? (
                             <iframe 
@@ -2200,8 +2233,11 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {previewLoading ? (
                             <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
-                              <p className="text-xs font-semibold">Streaming solved guide secure from Telegram...</p>
+                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
+                              <div className="text-center space-y-1">
+                                <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
+                                <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                              </div>
                             </div>
                           ) : previewUrl ? (
                             <iframe 
@@ -2451,8 +2487,11 @@ function App() {
                           <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "450px" }}>
                             {previewLoading ? (
                               <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                                <div className="w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent animate-spin"></div>
-                                <p className="text-xs font-semibold">Streaming resource secure from Telegram...</p>
+                                <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
+                                <div className="text-center space-y-1">
+                                  <p className="text-xs font-bold text-slate-300">Loading PDF...</p>
+                                  <p className="text-[10px] text-slate-500">Waking up server &amp; streaming from Telegram — please wait</p>
+                                </div>
                               </div>
                             ) : previewUrl ? (
                               <iframe 
