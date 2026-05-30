@@ -27,16 +27,16 @@
                             950: '#161924',
                         },
                         slate: {
-                            50: '#1E2538',
-                            100: '#1E2538',
-                            200: '#1E2538',
-                            300: '#1E2538',
-                            400: '#687289',
-                            500: '#687289',
-                            600: '#687289',
-                            700: '#3A4454',
-                            800: '#1E2538',
-                            900: '#0F131C',
+                            50: '#FFFFFF',
+                            100: '#FFFFFF',
+                            200: '#F8FAFC',
+                            300: '#E2E8F0',
+                            400: '#CBD5E1',
+                            500: '#94A3B8',
+                            600: '#94A3B8',
+                            700: '#E2E8F0',
+                            800: '#FFFFFF',
+                            900: '#F8FAFC',
                         },
                         sky: {
                             50: '#F0EBF5',
@@ -149,24 +149,79 @@
             text-shadow: none !important;
         }
         
+        /* High-Legibility Overrides for Elements inside Cards and Panels */
+        .glass-card, .glass-panel {
+            color: #1E2538 !important;
+        }
+        .glass-card h1, .glass-card h2, .glass-card h3, .glass-card h4, .glass-card h5, .glass-card h6,
+        .glass-panel h1, .glass-panel h2, .glass-panel h3, .glass-panel h4, .glass-panel h5, .glass-panel h6,
+        .glass-card .font-display, .glass-panel .font-display {
+            color: #1E2538 !important;
+            text-shadow: none !important;
+        }
+        .glass-card p, .glass-card span:not(.bg-sky-500\/20):not(.text-sky-300):not(.text-accent-sky):not(.bg-accent-sky\/20),
+        .glass-panel p, .glass-panel span:not(.bg-sky-500\/20):not(.text-sky-300):not(.text-accent-sky):not(.bg-accent-sky\/20) {
+            color: #4A5568 !important;
+        }
+        
+        /* Retain white text for solid buttons and active tabs inside cards */
+        .glass-card button:not(.p-1\.5):not(.p-2\.5), .glass-panel button:not(.p-1\.5):not(.p-2\.5),
+        .glass-card .bg-gradient-to-r, .glass-panel .bg-gradient-to-r,
+        .glass-card .bg-accent-sky, .glass-panel .bg-accent-sky,
+        .glass-card .text-white, .glass-panel .text-white,
+        .bg-gradient-to-tr.text-white,
+        header span.text-white {
+            color: #FFFFFF !important;
+        }
+        
+        /* Dropdowns & Selects Visibility inside Header and Cards */
+        header select {
+            background-color: rgba(5, 11, 30, 0.7) !important;
+            color: #FFFFFF !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        header select option {
+            background-color: #161924 !important;
+            color: #FFFFFF !important;
+        }
+        .glass-card select, .glass-panel select {
+            color: #1E2538 !important;
+            background-color: #EDEEF5 !important;
+            border: 1px solid #CBD2E1 !important;
+        }
+        .glass-card select option, .glass-panel select option {
+            background-color: #EDEEF5 !important;
+            color: #1E2538 !important;
+        }
+
+        /* Highly Standard Typography Sizing and Margins for Cards */
+        .glass-card h3 {
+            font-size: 1.25rem !important;
+            line-height: 1.75rem !important;
+            font-weight: 700 !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .glass-card p {
+            font-size: 0.825rem !important;
+            line-height: 1.35rem !important;
+        }
+
+        /* Outstanding Beaker Logo Visibility */
+        header img {
+            background-color: #FFFFFF !important;
+            border: 2px solid #8F75B2 !important;
+            box-shadow: 0 0 15px rgba(143, 117, 178, 0.5) !important;
+            padding: 2px !important;
+            border-radius: 12px !important;
+        }
+        
         /* Ensure major hero welcome headers render in white against the dark canvas background */
         h2.font-display.font-extrabold.text-white,
         .font-display.text-glow,
         header h1.text-white,
-        header p {
-            color: #FFFFFF !important;
-        }
-        
-        /* Ensure white text is retained on buttons and badges with backgrounds */
-        .bg-gradient-to-r.text-white,
-        .bg-gradient-to-tr.text-white,
-        button.text-white,
-        a.text-white,
-        .bg-accent-sky.text-white,
-        .bg-sky-600.text-white,
-        button.bg-accent-sky,
-        button.bg-sky-600 {
-            color: #FFFFFF !important;
+        header p,
+        .text-slate-400 {
+            color: #CBD5E1 !important;
         }
         
         /* Handle specific link hover effects to turn into Azure/Violet instead of white */
