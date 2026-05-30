@@ -1257,9 +1257,10 @@ function App() {
               <div className="flex items-center space-x-4">
                 <button
                   onClick={() => { setActiveCourse(null); setSearchQuery(""); setFileSearchQuery(""); }}
-                  className="bg-dark-900 hover:bg-dark-800 border border-white border-opacity-10 p-2.5 rounded-xl transition-all hover:scale-105"
+                  className="che-back-btn p-2.5 rounded-xl transition-all hover:scale-105"
+                  title="Back to Hub"
                 >
-                  <Icon name="arrowLeft" className="w-5 h-5 text-slate-300" />
+                  <Icon name="arrowLeft" className="w-5 h-5" />
                 </button>
                 <div>
                   <div className="flex items-center space-x-3">

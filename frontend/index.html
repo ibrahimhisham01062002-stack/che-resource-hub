@@ -350,30 +350,72 @@
             color: #4A5568 !important;
         }
         
-        /* High contrast for the course card edit details button */
+        /* High contrast for the course card edit details button (soft eye-soothing lavender-silver background, NOT pure white) */
         .glass-card button.che-edit-course-btn,
         .glass-card button.che-edit-course-btn * {
-            background-color: #FFFFFF !important;
-            color: #1E2538 !important; /* Black/dark slate-blue color icon */
-            border: 1px solid #1E2538 !important; /* High-contrast black outline border */
+            background-color: #F0EEF6 !important; /* Premium warm desaturated silver-lavender */
+            color: #1E2538 !important; /* High contrast black/dark-slate icon */
+            border: 1px solid #1E2538 !important; /* Solid high-contrast black border */
             transition: all 0.2s ease-in-out !important;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
         }
         
         .glass-card button.che-edit-course-btn:hover,
         .glass-card button.che-edit-course-btn:hover * {
-            background-color: #F2F4F9 !important; /* Soft premium hover */
-            color: #6F5294 !important; /* Deep brand violet color on hover */
+            background-color: #E2DFEB !important; /* Deeper soft lavender hover */
+            color: #6F5294 !important; /* Deep brand violet on hover */
+            border-color: #8F75B2 !important;
+        }
+        
+        /* High contrast for the workspace back button (soft eye-soothing lavender-silver background, NOT pure white) */
+        button.che-back-btn,
+        button.che-back-btn * {
+            background-color: #F0EEF6 !important; /* Premium warm desaturated silver-lavender */
+            color: #1E2538 !important; /* High contrast black/dark-slate back arrow */
+            border: 1.5px solid #1E2538 !important; /* Solid black border outline */
+            transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        }
+        button.che-back-btn:hover,
+        button.che-back-btn:hover * {
+            background-color: #E2DFEB !important; /* Deeper soft lavender hover */
+            color: #6F5294 !important; /* Deep brand violet on hover */
             border-color: #8F75B2 !important;
         }
         
         /* High contrast and bold typography for course card badges */
         .glass-card span.che-course-badge {
-            background-color: #F0EBF5 !important;
+            background-color: #EAE8F2 !important; /* Warm eye-soothing desaturated badge background */
             color: #1E2538 !important; /* High-contrast dark charcoal/black text */
             font-weight: 800 !important; /* Extra bold as requested! */
-            border: 1px solid #1E2538 !important; /* High-contrast black outline border */
+            border: 1px solid #1E2538 !important; /* High-contrast solid black outline border */
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        /* High-contrast and bold overrides for forms, labels, empty states, and title headings (Image 3) */
+        .glass-card .text-glow,
+        .glass-panel .text-glow,
+        .glass-card h3.text-white,
+        .glass-panel h3.text-white {
+            color: #1E2538 !important; /* Deep dark slate-black for headers */
+            font-weight: 800 !important; /* Force extremely bold/eye-catching! */
+            text-shadow: none !important;
+        }
+        
+        .glass-card label,
+        .glass-panel label,
+        .glass-card label.text-slate-400,
+        .glass-panel label.text-slate-400 {
+            color: #1E2538 !important; /* Bold, dark slate-black for high contrast labels! */
+            font-weight: 800 !important; /* Force extra bold to be highly eye-catching! */
+            letter-spacing: 0.05em !important;
+        }
+        
+        /* Empty states text color and bold (e.g. No reference links loaded) */
+        .glass-card .py-8,
+        .glass-panel .py-8 {
+            color: #4A5568 !important; /* Elegant dark slate gray */
+            font-weight: 800 !important; /* Force extremely bold/eye-catching! */
         }
         
         /* Dropdown Options */
