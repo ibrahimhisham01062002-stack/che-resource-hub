@@ -111,7 +111,8 @@ async def stream_gdrive_file(file_id: str):
         yield chunk
 
 
-http_client = httpx.AsyncClient(timeout=120.0)
+limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
 
 app = FastAPI(title="Chemical Engineering Study Resource Hub API")
 
@@ -144,52 +145,68 @@ def load_courses_config():
     with open(COURSES_CONF_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
+db_backup_lock = asyncio.Lock()
+db_backup_pending = False
+
 async def async_sync_database_to_telegram():
+    global db_backup_pending
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
         print("Telegram not configured. Skipping database cloud backup.")
         return
-    try:
-        print("Starting background database backup to Telegram channel...")
-        if not os.path.exists(COURSES_CONF_PATH):
-            print("courses.json does not exist. Cannot back up.")
-            return
-            
-        with open(COURSES_CONF_PATH, "rb") as f:
-            file_content = f.read()
-            
-        # 1. Upload the courses.json as a new document
-        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument"
-        files = {
-            "document": ("courses.json", file_content)
-        }
-        data = {
-            "chat_id": TELEGRAM_CHANNEL_ID
-        }
-        resp = await http_client.post(url, data=data, files=files)
-        if resp.status_code != 200:
-            print(f"Database upload to Telegram failed: {resp.text}")
-            return
-        res = resp.json()
-        if not res.get("ok"):
-            print(f"Telegram returned error on database upload: {res.get('description')}")
-            return
-            
-        message_id = res["result"]["message_id"]
         
-        # 2. Pin the new courses.json document message
-        pin_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/pinChatMessage"
-        pin_data = {
-            "chat_id": TELEGRAM_CHANNEL_ID,
-            "message_id": message_id,
-            "disable_notification": True
-        }
-        pin_resp = await http_client.post(pin_url, json=pin_data)
-        if pin_resp.status_code == 200 and pin_resp.json().get("ok"):
-            print(f"Successfully uploaded and pinned new database (message_id: {message_id}) on Telegram channel!")
-        else:
-            print(f"Failed to pin the new database message: {pin_resp.text}")
-    except Exception as e:
-        print(f"Error during background database cloud sync to Telegram: {str(e)}")
+    if db_backup_lock.locked():
+        db_backup_pending = True
+        print("Database backup already in progress. Queueing next sync...")
+        return
+        
+    async with db_backup_lock:
+        try:
+            print("Starting background database backup to Telegram channel...")
+            if not os.path.exists(COURSES_CONF_PATH):
+                print("courses.json does not exist. Cannot back up.")
+                return
+                
+            with open(COURSES_CONF_PATH, "rb") as f:
+                file_content = f.read()
+                
+            # 1. Upload the courses.json as a new document
+            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument"
+            files = {
+                "document": ("courses.json", file_content)
+            }
+            data = {
+                "chat_id": TELEGRAM_CHANNEL_ID
+            }
+            resp = await http_client.post(url, data=data, files=files)
+            if resp.status_code != 200:
+                print(f"Database upload to Telegram failed: {resp.text}")
+                return
+            res = resp.json()
+            if not res.get("ok"):
+                print(f"Telegram returned error on database upload: {res.get('description')}")
+                return
+                
+            message_id = res["result"]["message_id"]
+            
+            # 2. Pin the new courses.json document message
+            pin_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/pinChatMessage"
+            pin_data = {
+                "chat_id": TELEGRAM_CHANNEL_ID,
+                "message_id": message_id,
+                "disable_notification": True
+            }
+            pin_resp = await http_client.post(pin_url, json=pin_data)
+            if pin_resp.status_code == 200 and pin_resp.json().get("ok"):
+                print(f"Successfully uploaded and pinned new database (message_id: {message_id}) on Telegram channel!")
+            else:
+                print(f"Failed to pin the new database message: {pin_resp.text}")
+        except Exception as e:
+            print(f"Error during background database cloud sync to Telegram: {str(e)}")
+        finally:
+            # If another backup was requested while the lock was held, execute it now
+            if db_backup_pending:
+                db_backup_pending = False
+                asyncio.create_task(async_sync_database_to_telegram())
 
 async def async_sync_database_from_telegram():
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
@@ -950,17 +967,33 @@ async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
 CHUNK_SIZE_LIMIT = 19 * 1024 * 1024 # 19 MB (safely under Telegram 20 MB download limit)
 
 async def upload_file_in_chunks_to_telegram(file_bytes: bytes, filename: str) -> List[str]:
-    file_ids = []
     total_bytes = len(file_bytes)
     num_parts = (total_bytes + CHUNK_SIZE_LIMIT - 1) // CHUNK_SIZE_LIMIT
     
+    if num_parts == 1:
+        file_id = await upload_file_to_telegram(file_bytes, filename)
+        return [file_id]
+        
+    tasks = []
     for i in range(num_parts):
         start = i * CHUNK_SIZE_LIMIT
         end = min(start + CHUNK_SIZE_LIMIT, total_bytes)
         chunk_data = file_bytes[start:end]
-        part_filename = f"{filename}.part{i+1}" if num_parts > 1 else filename
-        file_id = await upload_file_to_telegram(chunk_data, part_filename)
-        file_ids.append(file_id)
+        part_filename = f"{filename}.part{i+1}"
+        tasks.append(upload_file_to_telegram(chunk_data, part_filename))
+        
+    # Upload all parts concurrently
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    
+    # Validate results and catch any chunk failures
+    file_ids = []
+    for r in results:
+        if isinstance(r, Exception):
+            raise HTTPException(
+                status_code=502, 
+                detail=f"Telegram chunked upload failed: {str(r)}"
+            )
+        file_ids.append(r)
         
     return file_ids
 
@@ -1050,34 +1083,17 @@ async def upload_file(
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to read upload file payload: {str(e)}")
         
-    storage_type = "telegram_chunks"
-    telegram_file_ids = []
-    gdrive_file_id = None
-    
-    # 1. Attempt Telegram chunked upload first if configured
-    telegram_success = False
-    telegram_error_msg = ""
-    if TELEGRAM_BOT_TOKEN and not TELEGRAM_BOT_TOKEN.startswith("your_") and TELEGRAM_CHANNEL_ID and not TELEGRAM_CHANNEL_ID.startswith("your_"):
-        try:
-            telegram_file_ids = await upload_file_in_chunks_to_telegram(file_bytes, filename)
-            storage_type = "telegram_chunks"
-            telegram_success = True
-        except Exception as e:
-            telegram_error_msg = str(e)
-            print(f"Telegram chunked upload failed for '{filename}', falling back to Google Drive: {telegram_error_msg}")
-            
-    # 2. If Telegram not configured or Telegram upload failed, fallback to Google Drive
-    if not telegram_success:
-        try:
-            gdrive_file_id = await upload_file_to_gdrive(file_bytes, filename)
-            storage_type = "gdrive"
-        except Exception as ge:
-            err_details = f"Google Drive fallback failed: {str(ge)}."
-            if telegram_error_msg:
-                err_details += f" Telegram attempt also failed: {telegram_error_msg}"
-            raise HTTPException(status_code=502, detail=err_details)
-            
-    # 3. Construct file catalog item
+    # Exclusively direct-to-Telegram chunked upload
+    try:
+        telegram_file_ids = await upload_file_in_chunks_to_telegram(file_bytes, filename)
+    except Exception as te:
+        # Surfacing the actual Telegram error directly to the user!
+        raise HTTPException(
+            status_code=502, 
+            detail=f"Telegram upload failed: {str(te)}. Please verify that your bot is added to your Telegram channel as an Administrator with document posting permissions."
+        )
+        
+    # Construct file catalog item
     if category == "book":
         file_type = "Reference Book"
     elif category == "question":
@@ -1096,12 +1112,9 @@ async def upload_file(
         "size": format_size(bytes_size),
         "bytes": bytes_size,
         "type": file_type,
-        "storage_type": storage_type
+        "storage_type": "telegram_chunks",
+        "telegram_file_ids": telegram_file_ids
     }
-    if storage_type == "telegram_chunks":
-        new_file_item["telegram_file_ids"] = telegram_file_ids
-    elif storage_type == "gdrive":
-        new_file_item["gdrive_file_id"] = gdrive_file_id
         
     if folder:
         new_file_item["folder"] = folder
@@ -1117,8 +1130,8 @@ async def upload_file(
     return {
         "status": "success", 
         "filename": filename, 
-        "storage_type": storage_type,
-        "message": f"File uploaded successfully to {storage_type.upper()}!"
+        "storage_type": "telegram_chunks",
+        "message": "File uploaded successfully to Telegram channel!"
     }
 
 @app.delete("/api/courses/{course_id}/files/{file_index}")
@@ -1139,13 +1152,6 @@ async def delete_file(course_id: str, file_index: int):
     file_item = files.pop(file_index)
     filename = file_item["name"]
     
-    gdrive_file_id = file_item.get("gdrive_file_id")
-    if gdrive_file_id:
-        try:
-            await delete_from_gdrive(gdrive_file_id)
-        except Exception as e:
-            print(f"Failed to delete {filename} from Google Drive: {str(e)}")
-            
     # Try deleting the local file fallback if it exists on disk
     try:
         local_path = os.path.join(WORKSPACE_DIR, course["folder"], filename)

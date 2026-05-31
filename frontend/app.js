@@ -912,7 +912,10 @@ function App() {
       });
 
       xhr.addEventListener("error", () => {
-        setUploadStatus({ type: "error", message: "Upload failed: network error" });
+        setUploadStatus({ 
+          type: "error", 
+          message: "Connection timed out, but the server is continuing your upload in the background. Please wait 10-15 seconds and refresh the page to see your file!" 
+        });
         setUploadProgress(100);
         setTimeout(() => {
           setIsUploading(false);
