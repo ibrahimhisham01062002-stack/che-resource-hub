@@ -4,6 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChE Study Hub | Chemical Engineering Resource Space</title>
+    
+    <!-- Global Fail-safe Script Error Recovery Listener -->
+    <script>
+        window.addEventListener('error', function(e) {
+            console.error("Global captured error:", e);
+            const root = document.getElementById('root');
+            if (root && root.innerHTML === "") {
+                root.innerHTML = `
+                    <div class="min-h-screen flex items-center justify-center bg-[#161924] p-6 font-sans">
+                        <div class="glass-panel max-w-md w-full p-8 text-center border border-[#CBD2E1] bg-[#EDEEF5] rounded-2xl shadow-xl" style="color: #1E2538 !important; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3) !important;">
+                            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-[#D9534F]">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-8 h-8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            <h2 class="font-display font-extrabold text-xl mb-2 text-[#1E2538]" style="font-weight: 800 !important;">Failed to Load Study Space</h2>
+                            <p class="text-[#3A4454] text-sm mb-6 leading-relaxed" style="font-weight: 500 !important;">
+                                This may be caused by a slow mobile connection, content blockers, or an incompatible browser. Please try reloading the page or disabling private mode.
+                            </p>
+                            <button onclick="window.location.reload(true)" class="w-full bg-[#5C061C] hover:bg-[#7A0D22] text-white font-extrabold py-3 px-4 rounded-xl border border-white/20 transition-all hover:scale-[1.02] shadow-md cursor-pointer" style="font-weight: 800 !important; color: #FFFFFF !important;">
+                                Reload Resources
+                            </button>
+                            <div class="mt-4 text-[10px] text-[#718096] truncate">
+                                Error: ${e.message || "Script compilation/loading failed"}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }, true);
+    </script>
     <link rel="icon" type="image/png" href="che_hub_logo.png">
     
     <!-- Google Fonts: Inter for reading body, Outfit for headers -->
@@ -725,17 +756,35 @@
         button.che-submit-btn:disabled * {
             color: #CBD5E1 !important;
         }
+
+        /* High contrast Return to Hub button styling with absolute black text */
+        .glass-panel button.che-return-to-hub-btn,
+        button.che-return-to-hub-btn {
+            background-color: #FFFFFF !important; /* Premium clean solid white background */
+            color: #000000 !important; /* Solid bold black text color */
+            font-weight: 800 !important; /* Extra bold text */
+            border: 2px solid #1E2538 !important; /* High contrast dark borderline outline */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+        .glass-panel button.che-return-to-hub-btn:hover,
+        button.che-return-to-hub-btn:hover {
+            background-color: #EAE8F2 !important; /* Smooth silver-lavender hover state */
+            color: #5C061C !important; /* Vibrant deep maroon hover text */
+            border-color: #5C061C !important; /* Maroon border on hover */
+            transform: scale(1.02) !important;
+        }
     </style>
     
-    <!-- React 18 & ReactDOM 18 CDN -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- React 18 & ReactDOM 18 CDN (jsDelivr high-performance global network) -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     
-    <!-- Babel for on-the-fly JSX compilation -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Babel for on-the-fly JSX compilation (jsDelivr edge compile network) -->
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
     
     <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     
     <!-- Marked Markdown Parser CDN -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

@@ -1,5 +1,31 @@
 const { useState, useEffect, useRef, useMemo } = React;
 
+// Safe LocalStorage Wrapper to prevent crashes in private-browsing or restricted cookie environments
+const safeStorage = {
+  getItem: (key) => {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      console.warn("localStorage.getItem failed:", e);
+      return null;
+    }
+  },
+  setItem: (key, val) => {
+    try {
+      localStorage.setItem(key, val);
+    } catch (e) {
+      console.warn("localStorage.setItem failed:", e);
+    }
+  },
+  removeItem: (key) => {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      console.warn("localStorage.removeItem failed:", e);
+    }
+  }
+};
+
 // In-React high-fidelity SVG icon system
 const Icon = ({ name, className = "w-5 h-5", ...props }) => {
   const icons = {
@@ -124,10 +150,10 @@ function App() {
 
   // Academic Level & Term selections
   const [selectedLevel, setSelectedLevel] = useState(() => {
-    return localStorage.getItem("che_selected_level") || "Level-3";
+    return safeStorage.getItem("che_selected_level") || "Level-3";
   });
   const [selectedTerm, setSelectedTerm] = useState(() => {
-    return localStorage.getItem("che_selected_term") || "Term-2";
+    return safeStorage.getItem("che_selected_term") || "Term-2";
   });
   
   const [searchQuery, setSearchQuery] = useState("");
@@ -238,8 +264,8 @@ function App() {
 
   // Persist Level & Term changes
   useEffect(() => {
-    localStorage.setItem("che_selected_level", selectedLevel);
-    localStorage.setItem("che_selected_term", selectedTerm);
+    safeStorage.setItem("che_selected_level", selectedLevel);
+    safeStorage.setItem("che_selected_term", selectedTerm);
   }, [selectedLevel, selectedTerm]);
 
   // Load PDF directly using standard streaming proxy endpoint
@@ -273,10 +299,10 @@ function App() {
     };
   }, [previewFile, activeCourse]);
 
-  // Restore active course from localStorage once courses list is loaded
+  // Restore active course from safeStorage once courses list is loaded
   useEffect(() => {
     if (courses.length > 0 && !activeCourse) {
-      const savedCourseId = localStorage.getItem("che_active_course_id");
+      const savedCourseId = safeStorage.getItem("che_active_course_id");
       if (savedCourseId) {
         const found = courses.find(c => c.id === savedCourseId);
         if (found) {
@@ -289,9 +315,9 @@ function App() {
   // Persist active course ID when activeCourse changes
   useEffect(() => {
     if (activeCourse) {
-      localStorage.setItem("che_active_course_id", activeCourse.id);
+      safeStorage.setItem("che_active_course_id", activeCourse.id);
     } else {
-      localStorage.removeItem("che_active_course_id");
+      safeStorage.removeItem("che_active_course_id");
     }
   }, [activeCourse]);
 
@@ -329,7 +355,7 @@ function App() {
   // Admin Session Expiry checker (12 hours duration)
   useEffect(() => {
     const checkStatus = () => {
-      const authTime = localStorage.getItem("che_auth_until");
+      const authTime = safeStorage.getItem("che_auth_until");
       setIsAuthorizedState(authTime && Date.now() < parseInt(authTime));
     };
     checkStatus();
@@ -339,7 +365,7 @@ function App() {
 
   // Secure authorization wrapper for creating, editing, and deleting items
   const checkAuthAndExecute = (callback) => {
-    const authTime = localStorage.getItem("che_auth_until");
+    const authTime = safeStorage.getItem("che_auth_until");
     const isAuthorized = authTime && Date.now() < parseInt(authTime);
     
     if (isAuthorized) {
@@ -357,7 +383,7 @@ function App() {
     e.preventDefault();
     if (authPasswordInput.trim() === "Chemical Engineering is Life") {
       const expiry = Date.now() + 12 * 60 * 60 * 1000; // 12 hours session
-      localStorage.setItem("che_auth_until", expiry.toString());
+      safeStorage.setItem("che_auth_until", expiry.toString());
       setIsAuthorizedState(true);
       setShowAuthModal(false);
       setAuthError("");
@@ -1176,13 +1202,12 @@ function App() {
               <p className="text-[9px] md:text-[10px] text-slate-400 font-medium tracking-widest uppercase truncate">Department of Chemical Engineering</p>
             </div>
           </div>
-          
-          {activeCourse && (
+                    {activeCourse && (
             <button
               onClick={() => { setActiveCourse(null); setSearchQuery(""); setFileSearchQuery(""); }}
-              className="md:hidden bg-dark-900 hover:bg-dark-800 border border-white border-opacity-10 px-3 py-1.5 rounded-xl text-[10px] font-display font-semibold text-slate-300"
+              className="md:hidden che-return-to-hub-btn px-3 py-1.5 rounded-xl text-[10px] font-display font-bold uppercase tracking-wider"
             >
-              Back to Hub
+              Return to Hub
             </button>
           )}
         </div>
@@ -1202,12 +1227,12 @@ function App() {
           </div>
           
           <div className="h-6 md:h-8 w-px bg-white bg-opacity-10"></div>
-
+ 
           {/* Padlock Session Status */}
           <div className="flex items-center space-x-1.5 cursor-pointer select-none" onClick={() => {
             if (isAuthorizedState) {
               if (window.confirm("Do you want to end your administrator session?")) {
-                localStorage.removeItem("che_auth_until");
+                safeStorage.removeItem("che_auth_until");
                 setIsAuthorizedState(false);
               }
             } else {
