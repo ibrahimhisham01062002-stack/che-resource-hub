@@ -1185,7 +1185,7 @@ function App() {
           <div className="glass-panel w-full max-w-sm rounded-2xl p-6 shadow-2xl relative border border-accent-rose border-opacity-30">
             <button 
               onClick={() => { setShowAuthModal(false); setPendingAuthCallback(null); }}
-              className="absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-black hover:text-black transition-colors"
+              className="absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-black hover:text-black transition-colors che-admin-auth-close"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
