@@ -113,6 +113,50 @@ async def stream_gdrive_file(file_id: str):
 
 http_client = None
 
+import threading
+file_lock = threading.Lock()
+
+async def safe_telegram_request(method: str, url: str, **kwargs) -> httpx.Response:
+    global http_client
+    if http_client is None:
+        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+        
+    max_retries = 5
+    backoff = 1.0
+    for attempt in range(max_retries):
+        try:
+            resp = await http_client.request(method, url, **kwargs)
+            if resp.status_code == 429:
+                try:
+                    res = resp.json()
+                    retry_after = res.get("parameters", {}).get("retry_after", 3)
+                except Exception:
+                    retry_after = 3
+                print(f"Telegram rate limit hit (429) on attempt {attempt+1}. Sleeping {retry_after}s...")
+                await asyncio.sleep(retry_after)
+                continue
+                
+            if resp.status_code == 200:
+                try:
+                    res = resp.json()
+                    if not res.get("ok") and res.get("error_code") == 429:
+                        retry_after = res.get("parameters", {}).get("retry_after", 3)
+                        print(f"Telegram API 429 inside JSON response on attempt {attempt+1}. Sleeping {retry_after}s...")
+                        await asyncio.sleep(retry_after)
+                        continue
+                except Exception:
+                    pass
+            return resp
+        except (httpx.ConnectError, httpx.TimeoutException, httpx.RequestError) as exc:
+            if attempt == max_retries - 1:
+                raise exc
+            sleep_time = backoff * (2 ** attempt)
+            print(f"Telegram connection/network issue ({type(exc).__name__}) on attempt {attempt+1}. Retrying in {sleep_time}s...")
+            await asyncio.sleep(sleep_time)
+            
+    return await http_client.request(method, url, **kwargs)
+
 app = FastAPI(title="Chemical Engineering Study Resource Hub API")
 
 # Enable CORS for local development
@@ -142,10 +186,11 @@ os.makedirs(DATA_DIR, exist_ok=True)
 
 # Helper to load course config
 def load_courses_config():
-    if not os.path.exists(COURSES_CONF_PATH):
-        raise HTTPException(status_code=500, detail="courses.json configuration missing")
-    with open(COURSES_CONF_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+    with file_lock:
+        if not os.path.exists(COURSES_CONF_PATH):
+            raise HTTPException(status_code=500, detail="courses.json configuration missing")
+        with open(COURSES_CONF_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
 
 db_backup_lock = asyncio.Lock()
 db_backup_pending = False
@@ -168,8 +213,9 @@ async def async_sync_database_to_telegram():
                 print("courses.json does not exist. Cannot back up.")
                 return
                 
-            with open(COURSES_CONF_PATH, "rb") as f:
-                file_content = f.read()
+            with file_lock:
+                with open(COURSES_CONF_PATH, "rb") as f:
+                    file_content = f.read()
                 
             # 1. Upload the courses.json as a new document
             url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument"
@@ -179,7 +225,7 @@ async def async_sync_database_to_telegram():
             data = {
                 "chat_id": TELEGRAM_CHANNEL_ID
             }
-            resp = await http_client.post(url, data=data, files=files)
+            resp = await safe_telegram_request("POST", url, data=data, files=files)
             if resp.status_code != 200:
                 print(f"Database upload to Telegram failed: {resp.text}")
                 return
@@ -197,13 +243,13 @@ async def async_sync_database_to_telegram():
                 "message_id": message_id,
                 "disable_notification": True
             }
-            pin_resp = await http_client.post(pin_url, json=pin_data)
+            pin_resp = await safe_telegram_request("POST", pin_url, json=pin_data)
             if pin_resp.status_code == 200 and pin_resp.json().get("ok"):
                 print(f"Successfully uploaded and pinned new database (message_id: {message_id}) on Telegram channel!")
             else:
                 print(f"Failed to pin the new database message: {pin_resp.text}")
         except Exception as e:
-            print(f"Error during background database cloud sync to Telegram: {str(e)}")
+            print(f"Error during background database cloud sync to Telegram: {str(e) or repr(e)}")
         finally:
             # If another backup was requested while the lock was held, execute it now
             if db_backup_pending:
@@ -217,7 +263,7 @@ async def async_sync_database_from_telegram():
     try:
         print("Fetching channel info to find pinned database...")
         url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getChat?chat_id={TELEGRAM_CHANNEL_ID}"
-        resp = await http_client.get(url)
+        resp = await safe_telegram_request("GET", url)
         if resp.status_code != 200:
             print(f"Failed to get channel info: {resp.text}")
             return
@@ -240,7 +286,7 @@ async def async_sync_database_from_telegram():
         print(f"Found pinned database file_id: {file_id}. Downloading...")
         
         get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-        file_resp = await http_client.get(get_file_url)
+        file_resp = await safe_telegram_request("GET", get_file_url)
         if file_resp.status_code != 200:
             print("Failed to get file details from Telegram.")
             return
@@ -251,26 +297,28 @@ async def async_sync_database_from_telegram():
             
         file_path = file_result["result"]["file_path"]
         download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
-        db_resp = await http_client.get(download_url)
+        db_resp = await safe_telegram_request("GET", download_url)
         if db_resp.status_code == 200:
             try:
                 json_data = db_resp.json()
                 if "courses" in json_data:
-                    with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
-                        json.dump(json_data, f, indent=2, ensure_ascii=False)
+                    with file_lock:
+                        with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
+                            json.dump(json_data, f, indent=2, ensure_ascii=False)
                     print("Successfully restored courses.json database from Telegram pinned message!")
                 else:
                     print("Downloaded database JSON is missing 'courses' root key. Skipping write.")
             except Exception as e:
-                print(f"Downloaded database is not valid JSON: {str(e)}")
+                print(f"Downloaded database is not valid JSON: {str(e) or repr(e)}")
         else:
             print(f"Failed to download courses.json from Telegram: {db_resp.status_code}")
     except Exception as e:
-        print(f"Error during startup database restore from Telegram: {str(e)}")
+        print(f"Error during startup database restore from Telegram: {str(e) or repr(e)}")
 
 def save_courses_config(config):
-    with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
-        json.dump(config, f, indent=2, ensure_ascii=False)
+    with file_lock:
+        with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
+            json.dump(config, f, indent=2, ensure_ascii=False)
     # Queue the background cloud backup
     try:
         loop = asyncio.get_running_loop()
@@ -567,7 +615,7 @@ async def get_file_id_from_message_id(message_id: int) -> str:
         "from_chat_id": TELEGRAM_CHANNEL_ID,
         "message_id": message_id
     }
-    resp = await http_client.post(forward_url, json=payload)
+    resp = await safe_telegram_request("POST", forward_url, json=payload)
     if resp.status_code != 200:
         raise HTTPException(status_code=502, detail=f"Telegram forward failed: {resp.text}")
     
@@ -587,7 +635,7 @@ async def get_file_id_from_message_id(message_id: int) -> str:
         
     # Delete the temporary duplicate message immediately to keep the channel clean
     delete_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/deleteMessage"
-    await http_client.post(delete_url, json={
+    await safe_telegram_request("POST", delete_url, json={
         "chat_id": TELEGRAM_CHANNEL_ID,
         "message_id": new_msg_id
     })
@@ -667,7 +715,7 @@ async def download_file(course_id: str, file_index: int, request: Request, previ
                 raw_bytes = 0
                 for fid in file_ids:
                     get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={fid}"
-                    resp = await http_client.get(get_file_url)
+                    resp = await safe_telegram_request("GET", get_file_url)
                     if resp.status_code == 200:
                         res_json = resp.json()
                         if res_json.get("ok"):
@@ -774,7 +822,7 @@ async def download_file(course_id: str, file_index: int, request: Request, previ
             
         # Fetch file path from Telegram
         get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-        resp = await http_client.get(get_file_url)
+        resp = await safe_telegram_request("GET", get_file_url)
         if resp.status_code != 200:
             raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
             
@@ -952,7 +1000,7 @@ async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
     data = {
         "chat_id": TELEGRAM_CHANNEL_ID
     }
-    resp = await http_client.post(url, data=data, files=files)
+    resp = await safe_telegram_request("POST", url, data=data, files=files)
     if resp.status_code != 200:
         raise HTTPException(status_code=502, detail=f"Telegram upload failed: {resp.text}")
     
@@ -1004,7 +1052,7 @@ async def upload_file_in_chunks_to_telegram(file_bytes: bytes, filename: str) ->
 async def stream_telegram_chunks(file_ids: List[str]):
     for file_id in file_ids:
         get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-        resp = await http_client.get(get_file_url)
+        resp = await safe_telegram_request("GET", get_file_url)
         if resp.status_code != 200:
             raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
             
@@ -1043,7 +1091,7 @@ async def stream_telegram_chunks_range(
             
             # Fetch file path from Telegram
             get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-            resp = await http_client.get(get_file_url)
+            resp = await safe_telegram_request("GET", get_file_url)
             if resp.status_code != 200:
                 print(f"Failed to getFile details for chunk {i}: {resp.text}")
                 return
@@ -1094,9 +1142,10 @@ async def upload_file(
         raise he
     except Exception as te:
         # Surfacing the actual Telegram error directly to the user!
+        err_msg = str(te) or repr(te)
         raise HTTPException(
             status_code=502, 
-            detail=f"Telegram upload failed: {str(te)}. Please verify that your bot is added to your Telegram channel as an Administrator with document posting permissions."
+            detail=f"Telegram upload failed: {err_msg}. Please verify that your bot is added to your Telegram channel as an Administrator with document posting permissions."
         )
         
     # Construct file catalog item
