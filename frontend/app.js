@@ -248,6 +248,12 @@ function App() {
   const [pendingAuthCallback, setPendingAuthCallback] = useState(null);
   const [isAuthorizedState, setIsAuthorizedState] = useState(false);
 
+  // Secure Download Passcode System States
+  const [showDownloadAuthModal, setShowDownloadAuthModal] = useState(false);
+  const [downloadPasswordInput, setDownloadPasswordInput] = useState("");
+  const [downloadAuthError, setDownloadAuthError] = useState("");
+  const [pendingDownloadCallback, setPendingDownloadCallback] = useState(null);
+
   // Fetch all courses on mount
   const fetchCourses = async () => {
     try {
@@ -399,6 +405,38 @@ function App() {
       }
     } else {
       setAuthError("Incorrect passcode. Access denied.");
+    }
+  };
+
+  // Secure authorization wrapper for downloading files/videos
+  const checkDownloadAuthAndExecute = (callback) => {
+    const authTime = safeStorage.getItem("che_download_auth_until");
+    const isAuthorized = authTime && Date.now() < parseInt(authTime);
+    if (isAuthorized) {
+      callback();
+    } else {
+      setPendingDownloadCallback(() => callback);
+      setDownloadPasswordInput("");
+      setDownloadAuthError("");
+      setShowDownloadAuthModal(true);
+    }
+  };
+
+  // Passcode verification for downloads (supports designated and admin passcodes)
+  const handleVerifyDownloadPassword = (e) => {
+    if (e) e.preventDefault();
+    const inputPass = downloadPasswordInput.trim();
+    if (inputPass === "che@obe" || inputPass === "Chemical Engineering is Life") {
+      const expiry = Date.now() + 6 * 60 * 60 * 1000; // Exactly 6 hours session
+      safeStorage.setItem("che_download_auth_until", expiry.toString());
+      setShowDownloadAuthModal(false);
+      setDownloadAuthError("");
+      if (pendingDownloadCallback) {
+        pendingDownloadCallback();
+        setPendingDownloadCallback(null);
+      }
+    } else {
+      setDownloadAuthError("Incorrect download passcode. Access denied.");
     }
   };
 
@@ -839,24 +877,26 @@ function App() {
   // This function fetches the binary, creates a blob URL, and triggers a real download.
   const handleDownloadFile = async (fileIndex, fileName) => {
     if (!activeCourse) return;
-    const url = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const blob = await res.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = fileName || "download";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-    } catch (err) {
-      console.error("Download failed:", err);
-      // Fallback: open in new tab
-      window.open(url, "_blank");
-    }
+    checkDownloadAuthAndExecute(async () => {
+      const url = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const blob = await res.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = fileName || "download";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+      } catch (err) {
+        console.error("Download failed:", err);
+        // Fallback: open in new tab
+        window.open(url, "_blank");
+      }
+    });
   };
 
   // Handle file uploads recursively for multiple files sequentially
@@ -1226,6 +1266,61 @@ function App() {
                   className="w-full py-2.5 bg-gradient-to-r from-accent-rose to-red-600 text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-rose-500/25 transition-transform hover:scale-[1.02]"
                 >
                   Verify and Unlock (1 Hour)
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Premium Secure Download Authentication Modal */}
+      {showDownloadAuthModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
+          <div className="glass-panel w-full max-w-sm rounded-2xl p-6 shadow-2xl relative border border-accent-sky border-opacity-30">
+            <button 
+              onClick={() => { setShowDownloadAuthModal(false); setPendingDownloadCallback(null); }}
+              className="absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-black hover:text-black transition-colors che-admin-auth-close"
+              title="Close Panel"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            <div className="space-y-4 text-center">
+              <div className="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center border border-sky-500/20 text-accent-sky mx-auto mb-2 animate-bounce">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              
+              <h3 className="font-display font-bold text-lg text-white">Secure Download Lock</h3>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                This asset requires download authorization. Enter the passcode to unlock all files and videos for the next 6 hours.
+              </p>
+              
+              <form onSubmit={handleVerifyDownloadPassword} className="space-y-4 pt-2">
+                <div>
+                  <input 
+                    type="password" 
+                    required
+                    placeholder="Enter download passcode..."
+                    value={downloadPasswordInput}
+                    onChange={(e) => setDownloadPasswordInput(e.target.value)}
+                    className="glass-input w-full p-2.5 rounded-xl text-sm focus:border-accent-sky text-center text-white placeholder-slate-500 border border-white border-opacity-15 bg-white bg-opacity-5"
+                    autoFocus
+                  />
+                </div>
+                
+                {downloadAuthError && (
+                  <p className="text-xs text-rose-400 font-semibold">{downloadAuthError}</p>
+                )}
+                
+                <button
+                  type="submit"
+                  className="w-full py-2.5 bg-gradient-to-r from-accent-sky to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02]"
+                >
+                  Verify and Unlock (6 Hours)
                 </button>
               </form>
             </div>
@@ -1722,7 +1817,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => setPreviewFile(file)}
+                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -1948,7 +2043,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => setPreviewFile(file)}
+                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -2174,7 +2269,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => setPreviewFile(file)}
+                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -2400,7 +2495,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => setPreviewFile(file)}
+                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -2685,7 +2780,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => setPreviewFile(file)}
+                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -3069,7 +3164,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => setPreviewFile(file)}
+                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
