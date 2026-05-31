@@ -2889,8 +2889,14 @@ function App() {
       </main>
 
       {/* Footer copyright */}
-      <footer className="glass-panel border-t border-white border-opacity-5 py-4 px-6 mt-auto text-center text-slate-500 text-xs">
+      <footer className="glass-panel border-t border-white border-opacity-5 py-4 px-6 mt-auto text-center text-slate-500 text-xs flex flex-col md:flex-row items-center justify-between gap-4">
         <p>&copy; {new Date().getFullYear()} Chemical Engineering Hub Space. Designed for premium study acceleration.</p>
+        <div className="flex items-center space-x-2">
+          <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Developed by</span>
+          <span className="font-display font-bold text-xs bg-sky-500/10 px-3 py-1 rounded-lg border border-sky-500/20 text-accent-sky shadow-sm shadow-sky-500/5">
+            2102072
+          </span>
+        </div>
       </footer>
     </div>
   );
