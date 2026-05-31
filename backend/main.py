@@ -988,7 +988,9 @@ async def upload_file_in_chunks_to_telegram(file_bytes: bytes, filename: str) ->
     # Validate results and catch any chunk failures
     file_ids = []
     for r in results:
-        if isinstance(r, Exception):
+        if isinstance(r, HTTPException):
+            raise r
+        elif isinstance(r, Exception):
             raise HTTPException(
                 status_code=502, 
                 detail=f"Telegram chunked upload failed: {str(r)}"
@@ -1086,6 +1088,8 @@ async def upload_file(
     # Exclusively direct-to-Telegram chunked upload
     try:
         telegram_file_ids = await upload_file_in_chunks_to_telegram(file_bytes, filename)
+    except HTTPException as he:
+        raise he
     except Exception as te:
         # Surfacing the actual Telegram error directly to the user!
         raise HTTPException(
