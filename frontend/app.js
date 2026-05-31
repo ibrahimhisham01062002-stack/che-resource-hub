@@ -1294,7 +1294,7 @@ function App() {
         
         {/* DASHBOARD PAGE */}
         {!activeCourse ? (
-          <div className="space-y-8 flex-grow flex flex-col justify-between">
+          <div className="space-y-8 flex-grow flex flex-col justify-start">
             {/* Elegant Greeting and Global search */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
