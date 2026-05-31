@@ -1272,52 +1272,6 @@ def create_course(new_course: CourseCreate):
         "video_folders": ["Root"]
     }
 
-@app.get("/api/diagnostic")
-async def diagnostic_check():
-    # 1. Mask credentials
-    bot_token_masked = "Not Configured"
-    if TELEGRAM_BOT_TOKEN:
-        bot_token_masked = TELEGRAM_BOT_TOKEN[:4] + "..." + TELEGRAM_BOT_TOKEN[-4:]
-        
-    channel_id_masked = "Not Configured"
-    if TELEGRAM_CHANNEL_ID:
-        channel_id_masked = TELEGRAM_CHANNEL_ID[:5] + "..." + TELEGRAM_CHANNEL_ID[-4:]
-        
-    # 2. Test getMe connection
-    get_me_status = "Skipped"
-    get_me_result = None
-    if TELEGRAM_BOT_TOKEN:
-        try:
-            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getMe"
-            resp = await safe_telegram_request("GET", url)
-            get_me_status = f"HTTP {resp.status_code}"
-            if resp.status_code == 200:
-                get_me_result = resp.json().get("result", {})
-        except Exception as e:
-            get_me_status = f"Error: {str(e)}"
-            
-    # 3. Test getChat connection
-    get_chat_status = "Skipped"
-    get_chat_result = None
-    if TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL_ID:
-        try:
-            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getChat?chat_id={TELEGRAM_CHANNEL_ID}"
-            resp = await safe_telegram_request("GET", url)
-            get_chat_status = f"HTTP {resp.status_code}"
-            if resp.status_code == 200:
-                get_chat_result = resp.json().get("result", {})
-        except Exception as e:
-            get_chat_status = f"Error: {str(e)}"
-
-    return {
-        "telegram_bot_token_masked": bot_token_masked,
-        "telegram_channel_id_masked": channel_id_masked,
-        "get_me_connection": get_me_status,
-        "get_me_result": get_me_result,
-        "get_chat_connection": get_chat_status,
-        "get_chat_result": get_chat_result
-    }
-
 @app.put("/api/courses/{course_id}")
 def update_course(course_id: str, course_data: CourseUpdate):
     config = load_courses_config()
