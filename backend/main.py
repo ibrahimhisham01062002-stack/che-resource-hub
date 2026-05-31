@@ -111,8 +111,7 @@ async def stream_gdrive_file(file_id: str):
         yield chunk
 
 
-limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+http_client = None
 
 app = FastAPI(title="Chemical Engineering Study Resource Hub API")
 
@@ -127,6 +126,9 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_event():
+    global http_client
+    limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+    http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
     await async_sync_database_from_telegram()
 
 
@@ -1488,4 +1490,6 @@ def serve_frontend_or_spa(path: str):
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    await http_client.aclose()
+    global http_client
+    if http_client:
+        await http_client.aclose()
