@@ -2329,7 +2329,7 @@ function App() {
                                 className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-display font-semibold transition-all border ${
                                   isSelected 
                                     ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' 
-                                    : 'bg-dark-900 border-white border-opacity-5 text-slate-400 hover:text-slate-200 hover:bg-sky-950/10'
+                                    : 'folder-btn-unselected'
                                 }`}
                               >
                                 <Icon name="folder" className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`} />
@@ -2678,7 +2678,7 @@ function App() {
                                 className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-display font-semibold transition-all border ${
                                   isSelected 
                                     ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' 
-                                    : 'bg-dark-900 border-white border-opacity-5 text-slate-400 hover:text-slate-200 hover:bg-sky-950/10'
+                                    : 'folder-btn-unselected'
                                 }`}
                               >
                                 <Icon name="folder" className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`} />

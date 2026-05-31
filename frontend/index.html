@@ -234,6 +234,45 @@
             color: #FFFFFF !important; /* High-contrast white on hover */
         }
 
+        /* Unselected folder button styles override to ensure perfect high-contrast visibility */
+        .folder-btn-unselected {
+            background-color: #FFFFFF !important;
+            border: 1.5px solid #6F5294 !important; /* Proper borderline with deep color */
+            color: #1E2538 !important; /* Black/deep text color */
+        }
+        
+        /* Force text and main folder icon to be deep color/black */
+        .folder-btn-unselected > svg,
+        .folder-btn-unselected > span {
+            color: #1E2538 !important;
+        }
+        
+        /* Subfolder actions (rename, delete) styling inside unselected button */
+        .folder-btn-unselected [title*="Rename"] {
+            color: #5A8DDE !important; /* Muted brand blue */
+        }
+        .folder-btn-unselected [title*="Rename"]:hover {
+            color: #0284c7 !important;
+            background-color: rgba(90, 141, 222, 0.15) !important;
+        }
+        
+        .folder-btn-unselected [title*="Delete"] {
+            color: #D9534F !important; /* Elegant brand red-rose */
+        }
+        .folder-btn-unselected [title*="Delete"]:hover {
+            color: #be123c !important;
+            background-color: rgba(217, 83, 79, 0.15) !important;
+        }
+        
+        .folder-btn-unselected:hover {
+            background-color: #F0EBF5 !important;
+            border-color: #5C061C !important;
+        }
+        .folder-btn-unselected:hover > svg,
+        .folder-btn-unselected:hover > span {
+            color: #5C061C !important;
+        }
+
         /* Allow file catalog column and inner min-w-0 details container to expand and use full width */
         .glass-panel .flex.items-center.space-x-3.min-w-0,
         .glass-card .flex.items-center.space-x-3.min-w-0 {
