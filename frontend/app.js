@@ -128,6 +128,11 @@ const Icon = ({ name, className = "w-5 h-5", ...props }) => {
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
+    ),
+    loader: (
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" />
+      </svg>
     )
   };
   return icons[name] || (
@@ -174,35 +179,35 @@ function App() {
   const [previewLoading, setPreviewLoading] = useState(false);
   
   // Book upload states
-  const [bookUploadFile, setBookUploadFile] = useState(null);
+  const [bookUploadFile, setBookUploadFile] = useState([]);
   const [isBookUploading, setIsBookUploading] = useState(false);
   const [bookUploadProgress, setBookUploadProgress] = useState(0);
   const [bookUploadStatus, setBookUploadStatus] = useState({ type: "", message: "" });
   const bookFileInputRef = useRef(null);
 
   // Slide upload states
-  const [slideUploadFile, setSlideUploadFile] = useState(null);
+  const [slideUploadFile, setSlideUploadFile] = useState([]);
   const [isSlideUploading, setIsSlideUploading] = useState(false);
   const [slideUploadProgress, setSlideUploadProgress] = useState(0);
   const [slideUploadStatus, setSlideUploadStatus] = useState({ type: "", message: "" });
   const slideFileInputRef = useRef(null);
 
   // Term-Final Question upload states
-  const [questionUploadFile, setQuestionUploadFile] = useState(null);
+  const [questionUploadFile, setQuestionUploadFile] = useState([]);
   const [isQuestionUploading, setIsQuestionUploading] = useState(false);
   const [questionUploadProgress, setQuestionUploadProgress] = useState(0);
   const [questionUploadStatus, setQuestionUploadStatus] = useState({ type: "", message: "" });
   const questionFileInputRef = useRef(null);
 
   // Solution Manual upload states
-  const [solutionUploadFile, setSolutionUploadFile] = useState(null);
+  const [solutionUploadFile, setSolutionUploadFile] = useState([]);
   const [isSolutionUploading, setIsSolutionUploading] = useState(false);
   const [solutionUploadProgress, setSolutionUploadProgress] = useState(0);
   const [solutionUploadStatus, setSolutionUploadStatus] = useState({ type: "", message: "" });
   const solutionFileInputRef = useRef(null);
 
   // Term-Final Solved upload states
-  const [solvedUploadFile, setSolvedUploadFile] = useState(null);
+  const [solvedUploadFile, setSolvedUploadFile] = useState([]);
   const [isSolvedUploading, setIsSolvedUploading] = useState(false);
   const [solvedUploadProgress, setSolvedUploadProgress] = useState(0);
   const [solvedUploadStatus, setSolvedUploadStatus] = useState({ type: "", message: "" });
@@ -216,7 +221,7 @@ function App() {
   const [videoSearchQuery, setVideoSearchQuery] = useState("");
 
   // Recorded Class video upload states
-  const [videoUploadFile, setVideoUploadFile] = useState(null);
+  const [videoUploadFile, setVideoUploadFile] = useState([]);
   const [isVideoUploading, setIsVideoUploading] = useState(false);
   const [videoUploadProgress, setVideoUploadProgress] = useState(0);
   const [videoUploadStatus, setVideoUploadStatus] = useState({ type: "", message: "" });
@@ -854,77 +859,141 @@ function App() {
     }
   };
 
-  // Handle file uploads
-  const handleFileUpload = (e, file, category, setters) => {
+  // Handle file uploads recursively for multiple files sequentially
+  const handleFileUpload = async (e, filesInput, category, setters) => {
     if (e) e.preventDefault();
-    if (!file) return;
+    const files = Array.isArray(filesInput) ? filesInput : (filesInput ? [filesInput] : []);
+    if (files.length === 0) return;
     
-    checkAuthAndExecute(() => {
+    checkAuthAndExecute(async () => {
       const { setIsUploading, setUploadProgress, setUploadStatus, setUploadFile, fileInputRef } = setters;
       
       setIsUploading(true);
-      setUploadStatus({ type: "", message: "" });
       setUploadProgress(0);
+      
+      // Initialize files status map in state to show queue visual indicators
+      const initialQueueStatus = files.map((f, index) => ({
+        name: f.name,
+        size: f.size,
+        status: index === 0 ? "uploading" : "pending",
+        progress: 0,
+        error: ""
+      }));
+      setUploadStatus({ type: "batch", queue: initialQueueStatus });
 
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("category", category); // "book" or "slide" or "video"
-      if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
-        formData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
+      // Sequential Queue loop
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        // Update state to highlight currently uploading file
+        setUploadStatus(prev => {
+          const queue = prev.queue ? prev.queue : initialQueueStatus;
+          const newQueue = [...queue];
+          if (newQueue[i]) {
+            newQueue[i].status = "uploading";
+          }
+          return { type: "batch", queue: newQueue };
+        });
+
+        try {
+          await new Promise((resolve) => {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("category", category);
+            if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
+              formData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
+            }
+
+            const xhr = new XMLHttpRequest();
+            
+            xhr.upload.addEventListener("progress", (event) => {
+              if (event.lengthComputable) {
+                const percentage = Math.round((event.loaded / event.total) * 90);
+                
+                // Update specific file progress and batch overall progress
+                setUploadProgress(Math.round(((i * 100) + percentage) / files.length));
+                setUploadStatus(prev => {
+                  const queue = prev.queue ? prev.queue : initialQueueStatus;
+                  const newQueue = [...queue];
+                  if (newQueue[i]) {
+                    newQueue[i].progress = percentage;
+                  }
+                  return { type: "batch", queue: newQueue };
+                });
+              }
+            });
+
+            xhr.addEventListener("load", () => {
+              if (xhr.status >= 200 && xhr.status < 300) {
+                setUploadStatus(prev => {
+                  const queue = prev.queue ? prev.queue : initialQueueStatus;
+                  const newQueue = [...queue];
+                  if (newQueue[i]) {
+                    newQueue[i].status = "success";
+                    newQueue[i].progress = 100;
+                  }
+                  return { type: "batch", queue: newQueue };
+                });
+                resolve();
+              } else {
+                let err = "Upload failed";
+                try {
+                  const data = JSON.parse(xhr.responseText);
+                  err = data.detail || err;
+                } catch (e) {}
+                setUploadStatus(prev => {
+                  const queue = prev.queue ? prev.queue : initialQueueStatus;
+                  const newQueue = [...queue];
+                  if (newQueue[i]) {
+                    newQueue[i].status = "error";
+                    newQueue[i].error = err;
+                  }
+                  return { type: "batch", queue: newQueue };
+                });
+                // Continue queue even if a specific file fails
+                resolve();
+              }
+            });
+
+            xhr.addEventListener("error", () => {
+              setUploadStatus(prev => {
+                const queue = prev.queue ? prev.queue : initialQueueStatus;
+                const newQueue = [...queue];
+                if (newQueue[i]) {
+                  newQueue[i].status = "error";
+                  newQueue[i].error = "Network timeout";
+                }
+                return { type: "batch", queue: newQueue };
+              });
+              resolve();
+            });
+
+            xhr.open("POST", `${API_BASE}/api/upload/${activeCourse.id}`);
+            xhr.send(formData);
+          });
+        } catch (err) {
+          console.error("Queue execution error:", err);
+        }
       }
 
-      const xhr = new XMLHttpRequest();
+      // Finish entire batch upload
+      setUploadProgress(100);
+      setUploadFile(Array.isArray(filesInput) ? [] : null); // Clear queue state
+      if (fileInputRef.current) fileInputRef.current.value = "";
       
-      // Monitor upload progress in real-time!
-      xhr.upload.addEventListener("progress", (event) => {
-        if (event.lengthComputable) {
-          const percentage = Math.round((event.loaded / event.total) * 90);
-          setUploadProgress(percentage);
-        }
-      });
+      // Reload course contents
+      await fetchCourses();
+      const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
+      const coursesList = await updatedRes.json();
+      const found = coursesList.find(c => c.id === activeCourse.id);
+      if (found) setActiveCourse(found);
 
-      xhr.addEventListener("load", async () => {
-        setUploadProgress(95);
-        if (xhr.status >= 200 && xhr.status < 300) {
-          setUploadStatus({ type: "success", message: "File uploaded successfully!" });
-          setUploadFile(null);
-          if (fileInputRef.current) fileInputRef.current.value = "";
-          
-          await fetchCourses();
-          const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
-          const coursesList = await updatedRes.json();
-          const found = coursesList.find(c => c.id === activeCourse.id);
-          if (found) setActiveCourse(found);
-        } else {
-          let errorMessage = "Upload failed";
-          try {
-            const data = JSON.parse(xhr.responseText);
-            errorMessage = data.detail || errorMessage;
-          } catch (e) {}
-          setUploadStatus({ type: "error", message: errorMessage });
-        }
-        
-        setUploadProgress(100);
-        setTimeout(() => {
-          setIsUploading(false);
-          setUploadProgress(0);
-        }, 800);
-      });
-
-      xhr.addEventListener("error", () => {
-        setUploadStatus({ 
-          type: "error", 
-          message: "Connection timed out, but the server is continuing your upload in the background. Please wait 10-15 seconds and refresh the page to see your file!" 
-        });
-        setUploadProgress(100);
-        setTimeout(() => {
-          setIsUploading(false);
-          setUploadProgress(0);
-        }, 800);
-      });
-
-      xhr.open("POST", `${API_BASE}/api/upload/${activeCourse.id}`);
-      xhr.send(formData);
+      // Dismiss batch uploader dialog after a brief delay
+      setTimeout(() => {
+        setIsUploading(false);
+        setUploadProgress(0);
+        setUploadStatus({ type: "", message: "" });
+      }, 2000);
     });
   };
 
@@ -1549,8 +1618,9 @@ function App() {
                       })} className="relative group">
                         <input 
                           type="file" 
+                          multiple
                           accept=".pdf,.docx,.doc,.xlsx,.xls"
-                          onChange={(e) => setBookUploadFile(e.target.files[0])}
+                          onChange={(e) => setBookUploadFile(Array.from(e.target.files))}
                           className="hidden" 
                           id="book-upload-input"
                           ref={bookFileInputRef}
@@ -1561,16 +1631,16 @@ function App() {
                         >
                           <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
                           <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
-                            {bookUploadFile ? `Selected: ${bookUploadFile.name}` : "Upload reference textbooks or manuals directly."}
+                            {bookUploadFile && bookUploadFile.length > 0 ? (bookUploadFile.length === 1 ? `Selected: ${bookUploadFile[0].name}` : `Selected: ${bookUploadFile.length} files`) : "Upload reference textbooks or manuals directly."}
                           </p>
                           <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
                         </label>
                         
-                        {bookUploadFile && (
+                        {bookUploadFile && bookUploadFile.length > 0 && (
                           <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
                             <button 
                               type="button" 
-                              onClick={() => { setBookUploadFile(null); if (bookFileInputRef.current) bookFileInputRef.current.value = ""; }}
+                              onClick={() => { setBookUploadFile([]); if (bookFileInputRef.current) bookFileInputRef.current.value = ""; }}
                               className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
@@ -1596,6 +1666,40 @@ function App() {
                       {bookUploadStatus.message && (
                         <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${bookUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {bookUploadStatus.message}
+                        </div>
+                      )}
+
+                      {/* Active Queue Visual Feedback Panel */}
+                      {bookUploadStatus.type === "batch" && (
+                        <div className="glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left">
+                          <div className="flex items-center justify-between border-b border-black/5 pb-2">
+                            <span className="font-display font-bold text-xs text-slate-300">Upload Batch Queue</span>
+                            <span className="text-[10px] text-accent-sky font-bold">
+                              {bookUploadStatus.queue.filter(q => q.status === "success").length} / {bookUploadStatus.queue.length} completed
+                            </span>
+                          </div>
+                          <div className="space-y-2 max-h-[150px] overflow-y-auto pr-1">
+                            {bookUploadStatus.queue.map((item, idx) => (
+                              <div key={idx} className="flex items-center justify-between text-xs py-1">
+                                <span className="truncate max-w-[180px] font-medium text-slate-400">{item.name}</span>
+                                <div className="flex items-center space-x-2">
+                                  {item.status === "pending" && <span className="w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse" />}
+                                  {item.status === "uploading" && (
+                                    <div className="flex items-center space-x-2 text-accent-violet">
+                                      <Icon name="loader" className="w-3.5 h-3.5 animate-spin" />
+                                      <span className="text-[10px] font-bold">{item.progress}%</span>
+                                    </div>
+                                  )}
+                                  {item.status === "success" && <Icon name="check" className="w-4 h-4 text-emerald-500 font-bold" />}
+                                  {item.status === "error" && (
+                                    <span className="text-[9px] text-rose-500 font-semibold" title={item.error}>
+                                      Failed
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                       
@@ -1740,8 +1844,9 @@ function App() {
                       })} className="relative group">
                         <input 
                           type="file" 
+                          multiple
                           accept=".pdf,.docx,.doc"
-                          onChange={(e) => setQuestionUploadFile(e.target.files[0])}
+                          onChange={(e) => setQuestionUploadFile(Array.from(e.target.files))}
                           className="hidden" 
                           id="question-upload-input"
                           ref={questionFileInputRef}
@@ -1752,16 +1857,16 @@ function App() {
                         >
                           <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
                           <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
-                            {questionUploadFile ? `Selected: ${questionUploadFile.name}` : "Upload term-final exam question papers directly."}
+                            {questionUploadFile && questionUploadFile.length > 0 ? (questionUploadFile.length === 1 ? `Selected: ${questionUploadFile[0].name}` : `Selected: ${questionUploadFile.length} files`) : "Upload term-final exam question papers directly."}
                           </p>
                           <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
                         </label>
                         
-                        {questionUploadFile && (
+                        {questionUploadFile && questionUploadFile.length > 0 && (
                           <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
                             <button 
                               type="button" 
-                              onClick={() => { setQuestionUploadFile(null); if (questionFileInputRef.current) questionFileInputRef.current.value = ""; }}
+                              onClick={() => { setQuestionUploadFile([]); if (questionFileInputRef.current) questionFileInputRef.current.value = ""; }}
                               className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
@@ -1787,6 +1892,40 @@ function App() {
                       {questionUploadStatus.message && (
                         <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${questionUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {questionUploadStatus.message}
+                        </div>
+                      )}
+
+                      {/* Active Queue Visual Feedback Panel */}
+                      {questionUploadStatus.type === "batch" && (
+                        <div className="glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left">
+                          <div className="flex items-center justify-between border-b border-black/5 pb-2">
+                            <span className="font-display font-bold text-xs text-slate-300">Upload Batch Queue</span>
+                            <span className="text-[10px] text-accent-sky font-bold">
+                              {questionUploadStatus.queue.filter(q => q.status === "success").length} / {questionUploadStatus.queue.length} completed
+                            </span>
+                          </div>
+                          <div className="space-y-2 max-h-[150px] overflow-y-auto pr-1">
+                            {questionUploadStatus.queue.map((item, idx) => (
+                              <div key={idx} className="flex items-center justify-between text-xs py-1">
+                                <span className="truncate max-w-[180px] font-medium text-slate-400">{item.name}</span>
+                                <div className="flex items-center space-x-2">
+                                  {item.status === "pending" && <span className="w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse" />}
+                                  {item.status === "uploading" && (
+                                    <div className="flex items-center space-x-2 text-accent-violet">
+                                      <Icon name="loader" className="w-3.5 h-3.5 animate-spin" />
+                                      <span className="text-[10px] font-bold">{item.progress}%</span>
+                                    </div>
+                                  )}
+                                  {item.status === "success" && <Icon name="check" className="w-4 h-4 text-emerald-500 font-bold" />}
+                                  {item.status === "error" && (
+                                    <span className="text-[9px] text-rose-500 font-semibold" title={item.error}>
+                                      Failed
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                       
@@ -1931,8 +2070,9 @@ function App() {
                       })} className="relative group">
                         <input 
                           type="file" 
+                          multiple
                           accept=".pdf,.docx,.doc"
-                          onChange={(e) => setSolutionUploadFile(e.target.files[0])}
+                          onChange={(e) => setSolutionUploadFile(Array.from(e.target.files))}
                           className="hidden" 
                           id="solution-upload-input"
                           ref={solutionFileInputRef}
@@ -1943,16 +2083,16 @@ function App() {
                         >
                           <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
                           <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
-                            {solutionUploadFile ? `Selected: ${solutionUploadFile.name}` : "Upload exam solutions or step-by-step guides directly."}
+                            {solutionUploadFile && solutionUploadFile.length > 0 ? (solutionUploadFile.length === 1 ? `Selected: ${solutionUploadFile[0].name}` : `Selected: ${solutionUploadFile.length} files`) : "Upload exam solutions or step-by-step guides directly."}
                           </p>
                           <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
                         </label>
                         
-                        {solutionUploadFile && (
+                        {solutionUploadFile && solutionUploadFile.length > 0 && (
                           <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
                             <button 
                               type="button" 
-                              onClick={() => { setSolutionUploadFile(null); if (solutionFileInputRef.current) solutionFileInputRef.current.value = ""; }}
+                              onClick={() => { setSolutionUploadFile([]); if (solutionFileInputRef.current) solutionFileInputRef.current.value = ""; }}
                               className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
@@ -1978,6 +2118,40 @@ function App() {
                       {solutionUploadStatus.message && (
                         <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${solutionUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {solutionUploadStatus.message}
+                        </div>
+                      )}
+
+                      {/* Active Queue Visual Feedback Panel */}
+                      {solutionUploadStatus.type === "batch" && (
+                        <div className="glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left">
+                          <div className="flex items-center justify-between border-b border-black/5 pb-2">
+                            <span className="font-display font-bold text-xs text-slate-300">Upload Batch Queue</span>
+                            <span className="text-[10px] text-accent-sky font-bold">
+                              {solutionUploadStatus.queue.filter(q => q.status === "success").length} / {solutionUploadStatus.queue.length} completed
+                            </span>
+                          </div>
+                          <div className="space-y-2 max-h-[150px] overflow-y-auto pr-1">
+                            {solutionUploadStatus.queue.map((item, idx) => (
+                              <div key={idx} className="flex items-center justify-between text-xs py-1">
+                                <span className="truncate max-w-[180px] font-medium text-slate-400">{item.name}</span>
+                                <div className="flex items-center space-x-2">
+                                  {item.status === "pending" && <span className="w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse" />}
+                                  {item.status === "uploading" && (
+                                    <div className="flex items-center space-x-2 text-accent-violet">
+                                      <Icon name="loader" className="w-3.5 h-3.5 animate-spin" />
+                                      <span className="text-[10px] font-bold">{item.progress}%</span>
+                                    </div>
+                                  )}
+                                  {item.status === "success" && <Icon name="check" className="w-4 h-4 text-emerald-500 font-bold" />}
+                                  {item.status === "error" && (
+                                    <span className="text-[9px] text-rose-500 font-semibold" title={item.error}>
+                                      Failed
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                       
@@ -2122,8 +2296,9 @@ function App() {
                       })} className="relative group">
                         <input 
                           type="file" 
+                          multiple
                           accept=".pdf,.docx,.doc"
-                          onChange={(e) => setSolvedUploadFile(e.target.files[0])}
+                          onChange={(e) => setSolvedUploadFile(Array.from(e.target.files))}
                           className="hidden" 
                           id="solved-upload-input"
                           ref={solvedFileInputRef}
@@ -2134,16 +2309,16 @@ function App() {
                         >
                           <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
                           <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
-                            {solvedUploadFile ? `Selected: ${solvedUploadFile.name}` : "Upload exam solutions or solved answer keys directly."}
+                            {solvedUploadFile && solvedUploadFile.length > 0 ? (solvedUploadFile.length === 1 ? `Selected: ${solvedUploadFile[0].name}` : `Selected: ${solvedUploadFile.length} files`) : "Upload exam solutions or solved answer keys directly."}
                           </p>
                           <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
                         </label>
                         
-                        {solvedUploadFile && (
+                        {solvedUploadFile && solvedUploadFile.length > 0 && (
                           <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
                             <button 
                               type="button" 
-                              onClick={() => { setSolvedUploadFile(null); if (solvedFileInputRef.current) solvedFileInputRef.current.value = ""; }}
+                              onClick={() => { setSolvedUploadFile([]); if (solvedFileInputRef.current) solvedFileInputRef.current.value = ""; }}
                               className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
@@ -2169,6 +2344,40 @@ function App() {
                       {solvedUploadStatus.message && (
                         <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${solvedUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {solvedUploadStatus.message}
+                        </div>
+                      )}
+
+                      {/* Active Queue Visual Feedback Panel */}
+                      {solvedUploadStatus.type === "batch" && (
+                        <div className="glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left">
+                          <div className="flex items-center justify-between border-b border-black/5 pb-2">
+                            <span className="font-display font-bold text-xs text-slate-300">Upload Batch Queue</span>
+                            <span className="text-[10px] text-accent-sky font-bold">
+                              {solvedUploadStatus.queue.filter(q => q.status === "success").length} / {solvedUploadStatus.queue.length} completed
+                            </span>
+                          </div>
+                          <div className="space-y-2 max-h-[150px] overflow-y-auto pr-1">
+                            {solvedUploadStatus.queue.map((item, idx) => (
+                              <div key={idx} className="flex items-center justify-between text-xs py-1">
+                                <span className="truncate max-w-[180px] font-medium text-slate-400">{item.name}</span>
+                                <div className="flex items-center space-x-2">
+                                  {item.status === "pending" && <span className="w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse" />}
+                                  {item.status === "uploading" && (
+                                    <div className="flex items-center space-x-2 text-accent-violet">
+                                      <Icon name="loader" className="w-3.5 h-3.5 animate-spin" />
+                                      <span className="text-[10px] font-bold">{item.progress}%</span>
+                                    </div>
+                                  )}
+                                  {item.status === "success" && <Icon name="check" className="w-4 h-4 text-emerald-500 font-bold" />}
+                                  {item.status === "error" && (
+                                    <span className="text-[9px] text-rose-500 font-semibold" title={item.error}>
+                                      Failed
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                       
@@ -2372,8 +2581,9 @@ function App() {
                       })} className="relative group">
                         <input 
                           type="file" 
+                          multiple
                           accept=".pdf,.docx,.doc,.xlsx,.xls,.pptx,.ppt,.txt,.zip,.rar"
-                          onChange={(e) => setSlideUploadFile(e.target.files[0])}
+                          onChange={(e) => setSlideUploadFile(Array.from(e.target.files))}
                           className="hidden" 
                           id="slide-upload-input"
                           ref={slideFileInputRef}
@@ -2384,16 +2594,16 @@ function App() {
                         >
                           <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
                           <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
-                            {slideUploadFile ? `Selected: ${slideUploadFile.name}` : "Upload lecture slides, notes, or spreadsheets."}
+                            {slideUploadFile && slideUploadFile.length > 0 ? (slideUploadFile.length === 1 ? `Selected: ${slideUploadFile[0].name}` : `Selected: ${slideUploadFile.length} files`) : "Upload lecture slides, notes, or spreadsheets."}
                           </p>
                           <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
                         </label>
                         
-                        {slideUploadFile && (
+                        {slideUploadFile && slideUploadFile.length > 0 && (
                           <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
                             <button 
                               type="button" 
-                              onClick={() => { setSlideUploadFile(null); if (slideFileInputRef.current) slideFileInputRef.current.value = ""; }}
+                              onClick={() => { setSlideUploadFile([]); if (slideFileInputRef.current) slideFileInputRef.current.value = ""; }}
                               className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
@@ -2419,6 +2629,40 @@ function App() {
                       {slideUploadStatus.message && (
                         <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${slideUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {slideUploadStatus.message}
+                        </div>
+                      )}
+
+                      {/* Active Queue Visual Feedback Panel */}
+                      {slideUploadStatus.type === "batch" && (
+                        <div className="glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left">
+                          <div className="flex items-center justify-between border-b border-black/5 pb-2">
+                            <span className="font-display font-bold text-xs text-slate-300">Upload Batch Queue</span>
+                            <span className="text-[10px] text-accent-sky font-bold">
+                              {slideUploadStatus.queue.filter(q => q.status === "success").length} / {slideUploadStatus.queue.length} completed
+                            </span>
+                          </div>
+                          <div className="space-y-2 max-h-[150px] overflow-y-auto pr-1">
+                            {slideUploadStatus.queue.map((item, idx) => (
+                              <div key={idx} className="flex items-center justify-between text-xs py-1">
+                                <span className="truncate max-w-[180px] font-medium text-slate-400">{item.name}</span>
+                                <div className="flex items-center space-x-2">
+                                  {item.status === "pending" && <span className="w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse" />}
+                                  {item.status === "uploading" && (
+                                    <div className="flex items-center space-x-2 text-accent-violet">
+                                      <Icon name="loader" className="w-3.5 h-3.5 animate-spin" />
+                                      <span className="text-[10px] font-bold">{item.progress}%</span>
+                                    </div>
+                                  )}
+                                  {item.status === "success" && <Icon name="check" className="w-4 h-4 text-emerald-500 font-bold" />}
+                                  {item.status === "error" && (
+                                    <span className="text-[9px] text-rose-500 font-semibold" title={item.error}>
+                                      Failed
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                       
@@ -2721,8 +2965,9 @@ function App() {
                       })} className="relative group">
                         <input 
                           type="file" 
+                          multiple
                           accept="video/*"
-                          onChange={(e) => setVideoUploadFile(e.target.files[0])}
+                          onChange={(e) => setVideoUploadFile(Array.from(e.target.files))}
                           className="hidden" 
                           id="video-upload-input"
                           ref={videoFileInputRef}
@@ -2733,16 +2978,16 @@ function App() {
                         >
                           <Icon name="upload" className="w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform" />
                           <p className="font-display font-semibold text-[10px] text-sky-300 text-center px-2">
-                            {videoUploadFile ? `Selected: ${videoUploadFile.name}` : "Upload recorded lectures, tutorials, or HYSYS demos directly."}
+                            {videoUploadFile && videoUploadFile.length > 0 ? (videoUploadFile.length === 1 ? `Selected: ${videoUploadFile[0].name}` : `Selected: ${videoUploadFile.length} files`) : "Upload recorded lectures, tutorials, or HYSYS demos directly."}
                           </p>
                           <p className="text-[9px] text-slate-500 mt-0.5">Drag & drop or click to browse</p>
                         </label>
                         
-                        {videoUploadFile && (
+                        {videoUploadFile && videoUploadFile.length > 0 && (
                           <div className="flex items-center space-x-2 mt-2 justify-end animate-fade-in">
                             <button 
                               type="button" 
-                              onClick={() => { setVideoUploadFile(null); if (videoFileInputRef.current) videoFileInputRef.current.value = ""; }}
+                              onClick={() => { setVideoUploadFile([]); if (videoFileInputRef.current) videoFileInputRef.current.value = ""; }}
                               className="px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
                             >
                               Cancel
@@ -2768,6 +3013,40 @@ function App() {
                       {videoUploadStatus.message && (
                         <div className={`p-2 rounded-lg text-[10px] font-display font-medium ${videoUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`}>
                           {videoUploadStatus.message}
+                        </div>
+                      )}
+
+                      {/* Active Queue Visual Feedback Panel */}
+                      {videoUploadStatus.type === "batch" && (
+                        <div className="glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left">
+                          <div className="flex items-center justify-between border-b border-black/5 pb-2">
+                            <span className="font-display font-bold text-xs text-slate-300">Upload Batch Queue</span>
+                            <span className="text-[10px] text-accent-sky font-bold">
+                              {videoUploadStatus.queue.filter(q => q.status === "success").length} / {videoUploadStatus.queue.length} completed
+                            </span>
+                          </div>
+                          <div className="space-y-2 max-h-[150px] overflow-y-auto pr-1">
+                            {videoUploadStatus.queue.map((item, idx) => (
+                              <div key={idx} className="flex items-center justify-between text-xs py-1">
+                                <span className="truncate max-w-[180px] font-medium text-slate-400">{item.name}</span>
+                                <div className="flex items-center space-x-2">
+                                  {item.status === "pending" && <span className="w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse" />}
+                                  {item.status === "uploading" && (
+                                    <div className="flex items-center space-x-2 text-accent-violet">
+                                      <Icon name="loader" className="w-3.5 h-3.5 animate-spin" />
+                                      <span className="text-[10px] font-bold">{item.progress}%</span>
+                                    </div>
+                                  )}
+                                  {item.status === "success" && <Icon name="check" className="w-4 h-4 text-emerald-500 font-bold" />}
+                                  {item.status === "error" && (
+                                    <span className="text-[9px] text-rose-500 font-semibold" title={item.error}>
+                                      Failed
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                       
