@@ -2891,10 +2891,16 @@ function App() {
       {/* Footer copyright */}
       <footer className="glass-panel border-t border-white border-opacity-5 py-4 px-6 mt-auto text-center text-slate-500 text-xs flex flex-col md:flex-row items-center justify-between gap-4">
         <p>&copy; {new Date().getFullYear()} Chemical Engineering Hub Space. Designed for premium study acceleration.</p>
-        <div className="flex items-center space-x-2">
-          <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Developed by</span>
-          <span className="font-display font-bold text-xs bg-sky-500/10 px-3 py-1 rounded-lg border border-sky-500/20 text-accent-sky shadow-sm shadow-sky-500/5">
-            2102072
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex items-center space-x-1.5">
+            <span className="credit-developed-by text-[10px] uppercase tracking-wider">Developed by</span>
+            <span className="credit-2102072 font-display text-xs px-2.5 py-0.5 rounded-md shadow-sm">
+              2102072
+            </span>
+          </div>
+          <span className="text-[10px] text-slate-400 font-bold">&bull;</span>
+          <span className="credit-presented-by text-[10px] uppercase tracking-wider">
+            Presented by DDC
           </span>
         </div>
       </footer>
