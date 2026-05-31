@@ -3173,8 +3173,8 @@ function App() {
         <div className="flex flex-wrap items-center justify-center gap-3">
           <div className="flex items-center space-x-1.5">
             <span className="credit-developed-by text-[10px] uppercase tracking-wider">Developed by</span>
-            <span className="credit-2102072 font-display text-xs px-2.5 py-0.5 rounded-md shadow-sm">
-              2102072
+            <span className="credit-2102072 font-display text-xs">
+              Ibrahim Hisham-2102072
             </span>
           </div>
           <span className="text-[10px] text-slate-400 font-bold">&bull;</span>
