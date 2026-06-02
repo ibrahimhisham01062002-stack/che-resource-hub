@@ -91,6 +91,27 @@
             "BQACAgUAAyEGAATqgTaTAAIB-WoekK2l-4xLjH9DusqIRlsuY791AAJbIgAC9u7wVAsX-cgYc62DOwQ"
           ],
           "folder": "Root"
+        },
+        {
+          "name": "diagnostic_test.txt",
+          "size": "29 B",
+          "bytes": 29,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICBWoemZHAqixtvE-Xj0eY2XkKSotzAAJ2IgAC9u7wVLDlXGH_HDQuOwQ"
+          ]
+        },
+        {
+          "name": "ChE 401_Lecture 5 -10_July 25-MRD.pdf",
+          "size": "1.68 MB",
+          "bytes": 1757268,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICCGoemkE_FU1eAjw6J3itXljlwDB3AAJ5IgAC9u7wVK43OfiCOocBOwQ"
+          ],
+          "folder": "Root"
         }
       ],
       "folders": [

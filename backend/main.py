@@ -1028,21 +1028,37 @@ async def upload_file_in_chunks_to_telegram(file_obj, filename: str, total_bytes
         gc.collect()
         return [file_id]
         
-    file_ids = []
-    for i in range(num_parts):
-        start = i * CHUNK_SIZE_LIMIT
-        file_obj.seek(start)
-        chunk_data = file_obj.read(CHUNK_SIZE_LIMIT)
+    sem = asyncio.Semaphore(2)
+    file_ids = [None] * num_parts
+    file_read_lock = asyncio.Lock()
+    
+    async def upload_part(part_index: int):
+        start = part_index * CHUNK_SIZE_LIMIT
         
-        part_filename = f"{filename}.part{i+1}"
+        # Read the chunk under a thread-safe / async-safe lock to prevent read pointer races
+        async with file_read_lock:
+            file_obj.seek(start)
+            chunk_data = file_obj.read(CHUNK_SIZE_LIMIT)
+            
+        part_filename = f"{filename}.part{part_index+1}"
         
-        try:
-            file_id = await upload_file_to_telegram(chunk_data, part_filename)
-            file_ids.append(file_id)
-        finally:
-            # Guarantee memory release and run GC collection
-            del chunk_data
-            gc.collect()
+        async with sem:
+            try:
+                file_id = await upload_file_to_telegram(chunk_data, part_filename)
+                file_ids[part_index] = file_id
+            finally:
+                del chunk_data
+                gc.collect()
+                
+    tasks = [upload_part(i) for i in range(num_parts)]
+    await asyncio.gather(*tasks)
+    
+    for i, fid in enumerate(file_ids):
+        if fid is None:
+            raise HTTPException(
+                status_code=502,
+                detail=f"Telegram chunked upload failed: Part {i+1} was not completed."
+            )
             
     return file_ids
 
