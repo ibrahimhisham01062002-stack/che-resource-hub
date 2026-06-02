@@ -80,6 +80,17 @@
             "BQACAgUAAyEGAATqgTaTAAPHahtlrynJXO2ExiWa0Ow_m4wuVxgAAmshAALFINlUXiO18eYhkUc7BA",
             "BQACAgUAAyEGAATqgTaTAAPIahtlsOUBzGtN7Ajpfbuv-MGLtXEAAmwhAALFINlUaEEBTWjzLAY7BA"
           ]
+        },
+        {
+          "name": "ChE 401_Lecture 3 & 4_July 25-MRD.pdf",
+          "size": "725.89 KB",
+          "bytes": 743308,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB-WoekK2l-4xLjH9DusqIRlsuY791AAJbIgAC9u7wVAsX-cgYc62DOwQ"
+          ],
+          "folder": "Root"
         }
       ],
       "folders": [
@@ -476,6 +487,116 @@
             "BQACAgUAAyEGAATqgTaTAAOwahtQsxqHnQQQur5_fT4WzQvXmgwAAkghAALFINlUVjocriO0-PM7BA"
           ],
           "folder": "Root"
+        },
+        {
+          "name": "1) ChE_301_Introduction.pdf",
+          "size": "7.64 MB",
+          "bytes": 8015352,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB22oekEtjyq5Tt1CdWTUTp6U0UqbgAAJGIgAC9u7wVPYzg26arIaaOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "2) ChE_301_Conduction_p1.pdf",
+          "size": "2.13 MB",
+          "bytes": 2232991,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB3moekFd4HdWquf21hAP0RboqwTbkAAJJIgAC9u7wVG9-urRBziJsOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "3) CHE 301 02_Conduction_p2.pdf",
+          "size": "2.56 MB",
+          "bytes": 2686314,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB4WoekFltCQpa0Umyo4jYSlu4a4fvAAJLIgAC9u7wVAABtIRE4yUObDsE"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "4) CHE 301 05_Covection.pdf",
+          "size": "7.06 MB",
+          "bytes": 7399312,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB5GoekF1KtiElm4rcCt__TDuJlomAAAJNIgAC9u7wVKsPo4so6vo1OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "5) CHE 301 06_F_Covection.pdf",
+          "size": "5.49 MB",
+          "bytes": 5759432,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB52oekGxEtx9ZAlYJdU2bi1-To2bOAAJPIgAC9u7wVKJlVHjixYceOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "6) CHE 301 07_N_Covection.pdf",
+          "size": "5.13 MB",
+          "bytes": 5384214,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB6moekG9ZuqRDm8y5Vju4yjK7IMhYAAJRIgAC9u7wVFBWE74deb9pOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "7) CHE 301 09_Condensation.pdf",
+          "size": "2.76 MB",
+          "bytes": 2890113,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB7GoekHECkv2sZE119dhHy_r50XyKAAJTIgAC9u7wVIAxLEumzEe0OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "8) CHE 301 09_Condensation_Boiling.pdf",
+          "size": "7.06 MB",
+          "bytes": 7401888,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB72oekIiEXpSCbdLSJg3oBiY5sdhkAAJVIgAC9u7wVHnL_2O96WVMOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "9) CHE 301 Heat_Exchanger_p1.pdf",
+          "size": "6.27 MB",
+          "bytes": 6579752,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB82oekJpBtwuc9ToK0toGhRPJaNaeAAJXIgAC9u7wVOtjHR5hzvm1OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "10) CHE 301 Heat_Exchanger_p2.pdf",
+          "size": "11.52 MB",
+          "bytes": 12075981,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB9moekKDgZEQ4uyT9ZZIZxoKsCtObAAJZIgAC9u7wVDZIB4NH5QAB0jsE"
+          ],
+          "folder": "Root"
         }
       ],
       "folders": [
@@ -767,6 +888,48 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBC2ob2nFnWUaU2au6x1cUbSC7Gdz2AAIRHQAC4pPhVBCzgBAEvVucOwQ"
           ]
+        },
+        {
+          "name": "Tf transport soln.pdf",
+          "size": "13.01 MB",
+          "bytes": 13646879,
+          "type": "Term-Final Solved",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBpmoeVKN1z9HhGPtaKsrxhMfpg3jqAAJDIQAC9u7wVAT8lRZ-K0hkOwQ"
+          ]
+        },
+        {
+          "name": "TF Transport Solve by Srabon.pdf",
+          "size": "33.52 MB",
+          "bytes": 35144686,
+          "type": "Term-Final Solved",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBqmoeVLRy6gPKPkL_OIUWiLzykLBuAAJGIQAC9u7wVPGdzSv5AAGsbjsE",
+            "BQACAgUAAyEGAATqgTaTAAIBqWoeVLPkVuitMU3Njc-pUsLMzEYmAAJFIQAC9u7wVMOStK5GGRbDOwQ"
+          ]
+        },
+        {
+          "name": "Handwritten SOLUTION Transport Phenomena 2nd Edition.pdf",
+          "size": "11.64 MB",
+          "bytes": 12206598,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBrWoeVMsR4VCOxqmCAhsZ3TkW6_svAAJIIQAC9u7wVHEzk0ha_EdoOwQ"
+          ]
+        },
+        {
+          "name": "SOLUTION Transport Phenomena 2nd Edition.pdf",
+          "size": "37.10 MB",
+          "bytes": 38904675,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBsGoeVNTX5GuZ2D0IgZtdC7oOscU3AAJKIQAC9u7wVE6TcYJPnJasOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBsWoeVNW3D5kM_pSIndtoY-YqZlp7AAJLIQAC9u7wVJeefBguIFGyOwQ"
+          ]
         }
       ],
       "folders": [
@@ -791,7 +954,8 @@
       "syllabus": [],
       "files": [],
       "folders": [
-        "Root"
+        "Root",
+        "EXP-1"
       ],
       "video_folders": [
         "Root"
@@ -1299,6 +1463,160 @@
         "Root"
       ],
       "default_notes": "# ChE 413: Process Design\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "CHE-208": {
+      "id": "CHE-208",
+      "code": "CHE 308",
+      "title": "Chemical Process Analysis Sessional",
+      "description": "Study materials for CHE 208",
+      "folder": "CHE-208",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Shreves Chemical Process Industries, 5th Edition ( PDFDrive ).pdf",
+          "size": "44.61 MB",
+          "bytes": 46772664,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBtWoejNIvmNG4EIH42KJyFHkbaq_-AAInIgAC9u7wVMa1x9i7w80sOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBvGoejUrqXjV1wRJlBvGhMy1XuCicAAIsIgAC9u7wVGj1pzBOdyN5OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBtGoejNGCpLTaKYnAs86dPQABO0IPnwACJiIAAvbu8FQ7JZNkGWwBwTsE"
+          ]
+        },
+        {
+          "name": "DESIGN OF SULFURIC ACID MANUFACTURING PLANT FROM SULFUR.pdf",
+          "size": "2.17 MB",
+          "bytes": 2275788,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBwmoejXb9Ed_hTLOxV9z6ZgxYulp0AAIxIgAC9u7wVPyglGLkZZtEOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "ChE 308 Hydrogen Peroxide.pptx",
+          "size": "712.65 KB",
+          "bytes": 729751,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBxWoeja9YvJZfqeswPcfbwji1fuK4AAIzIgAC9u7wVGDp77Vw-sWwOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "ChE 308 Introduction.pptx",
+          "size": "1.02 MB",
+          "bytes": 1068347,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIByGoejbEyoMkBw1hCJTK1AXgSRT2KAAI1IgAC9u7wVNbNoyjO2G6yOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Online lecture on Ammonia.pdf",
+          "size": "3.41 MB",
+          "bytes": 3574890,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBy2oejb57cNCHTeBo4JLCugZovSgcAAI3IgAC9u7wVDgXfs-66JOFOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Ammonia Production.pdf",
+          "size": "271.08 KB",
+          "bytes": 277587,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBzmoejdXW-9flkyL_NPlvh_19dyNwAAI5IgAC9u7wVGf67Ng0b_1SOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "chapter8_Part 3_Jul23.pdf",
+          "size": "2.20 MB",
+          "bytes": 2303792,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB0Woejdi1_P2C42Q7-4x395kLNmmTAAI7IgAC9u7wVP4vts0FwktZOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Methanol Production.pdf",
+          "size": "74.69 KB",
+          "bytes": 76480,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB1WoejdxJFMZLqX0ZPGqn8AtcGnV_AAI-IgAC9u7wVFpH8BAlK6iGOwQ"
+          ],
+          "folder": "Root"
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# CHE 208: Chemical Process Analysis Sessional\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "CHE-471": {
+      "id": "CHE-471",
+      "code": "CHE 471",
+      "title": "Biochemistry",
+      "description": "This is an elective course.",
+      "folder": "CHE-471",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Lehninger 4e Chapter 3a Amino acids and peptides.pdf",
+          "size": "22.69 MB",
+          "bytes": 23796373,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB_WoekgbGEwfpPWsHDvR27ISkUV14AAJhIgAC9u7wVDnsIww1y1ixOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIB_GoekgUMbwTxQZiITerDyOXmI6uTAAJgIgAC9u7wVFPxu0qLnjmnOwQ"
+          ]
+        },
+        {
+          "name": "Lehninger Principles of Biochemistry, Fourth Edition Chapter 2.pdf",
+          "size": "46.33 MB",
+          "bytes": 48578741,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICAWoelmaKSPY_S0P5--77Aaq4NBEKAAJxIgAC9u7wVIDy83acLXjcOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICAAFqHpZl7_XRYnp2sCJxK18pT4aNqQACcCIAAvbu8FQyV2RhVe9hITsE",
+            "BQACAgUAAyEGAATqgTaTAAICAmoelty3CQigMZ7jR8Cnufv_uwqAAAJyIgAC9u7wVEc8nbvA3KcAATsE"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# CHE 471: Biochemistry\n\nStart writing notes...",
       "default_logs": [],
       "default_links": []
     }

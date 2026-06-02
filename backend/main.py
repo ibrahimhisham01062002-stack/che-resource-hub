@@ -1016,37 +1016,34 @@ async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
 
 CHUNK_SIZE_LIMIT = 19 * 1024 * 1024 # 19 MB (safely under Telegram 20 MB download limit)
 
-async def upload_file_in_chunks_to_telegram(file_bytes: bytes, filename: str) -> List[str]:
-    total_bytes = len(file_bytes)
+async def upload_file_in_chunks_to_telegram(file_obj, filename: str, total_bytes: int) -> List[str]:
+    import gc
     num_parts = (total_bytes + CHUNK_SIZE_LIMIT - 1) // CHUNK_SIZE_LIMIT
     
     if num_parts == 1:
-        file_id = await upload_file_to_telegram(file_bytes, filename)
+        file_obj.seek(0)
+        chunk_data = file_obj.read()
+        file_id = await upload_file_to_telegram(chunk_data, filename)
+        del chunk_data
+        gc.collect()
         return [file_id]
         
-    tasks = []
+    file_ids = []
     for i in range(num_parts):
         start = i * CHUNK_SIZE_LIMIT
-        end = min(start + CHUNK_SIZE_LIMIT, total_bytes)
-        chunk_data = file_bytes[start:end]
+        file_obj.seek(start)
+        chunk_data = file_obj.read(CHUNK_SIZE_LIMIT)
+        
         part_filename = f"{filename}.part{i+1}"
-        tasks.append(upload_file_to_telegram(chunk_data, part_filename))
         
-    # Upload all parts concurrently
-    results = await asyncio.gather(*tasks, return_exceptions=True)
-    
-    # Validate results and catch any chunk failures
-    file_ids = []
-    for r in results:
-        if isinstance(r, HTTPException):
-            raise r
-        elif isinstance(r, Exception):
-            raise HTTPException(
-                status_code=502, 
-                detail=f"Telegram chunked upload failed: {str(r)}"
-            )
-        file_ids.append(r)
-        
+        try:
+            file_id = await upload_file_to_telegram(chunk_data, part_filename)
+            file_ids.append(file_id)
+        finally:
+            # Guarantee memory release and run GC collection
+            del chunk_data
+            gc.collect()
+            
     return file_ids
 
 async def stream_telegram_chunks(file_ids: List[str]):
@@ -1120,6 +1117,7 @@ async def upload_file(
     category: Optional[str] = Form(None),
     folder: Optional[str] = Form(None)
 ):
+    import gc
     config = load_courses_config()
     resolved_course_id = find_course_key(course_id, config["courses"])
     if not resolved_course_id:
@@ -1130,23 +1128,28 @@ async def upload_file(
     filename = os.path.basename(file.filename)
     
     try:
-        file_bytes = await file.read()
-        bytes_size = len(file_bytes)
+        # Seek metadata directly on disk spooled file to get size without loading into RAM
+        await file.seek(0, 2)
+        bytes_size = await file.tell()
+        await file.seek(0)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Failed to read upload file payload: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Failed to read upload file payload metadata: {str(e)}")
         
-    # Exclusively direct-to-Telegram chunked upload
+    # Exclusively direct-to-Telegram chunked upload using disk-spooled stream piping
     try:
-        telegram_file_ids = await upload_file_in_chunks_to_telegram(file_bytes, filename)
+        telegram_file_ids = await upload_file_in_chunks_to_telegram(file.file, filename, bytes_size)
     except HTTPException as he:
         raise he
     except Exception as te:
-        # Surfacing the actual Telegram error directly to the user!
         err_msg = str(te) or repr(te)
         raise HTTPException(
             status_code=502, 
             detail=f"Telegram upload failed: {err_msg}. Please verify that your bot is added to your Telegram channel as an Administrator with document posting permissions."
         )
+    finally:
+        # Clean up descriptors and force garbage collection
+        await file.close()
+        gc.collect()
         
     # Construct file catalog item
     if category == "book":
@@ -1174,12 +1177,10 @@ async def upload_file(
     if folder:
         new_file_item["folder"] = folder
         
-    # Append to courses.json files list
     if "files" not in course:
         course["files"] = []
     course["files"].append(new_file_item)
     
-    # Save updated config
     save_courses_config(config)
     
     return {
