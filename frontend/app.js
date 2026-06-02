@@ -1817,7 +1817,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
+                              onClick={() => setPreviewFile(file)}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -2043,7 +2043,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
+                              onClick={() => setPreviewFile(file)}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -2269,7 +2269,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
+                              onClick={() => setPreviewFile(file)}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -2495,7 +2495,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
+                              onClick={() => setPreviewFile(file)}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -2780,7 +2780,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
+                              onClick={() => setPreviewFile(file)}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">
@@ -3164,7 +3164,7 @@ function App() {
                           return (
                             <div 
                               key={file.index}
-                              onClick={() => checkDownloadAuthAndExecute(() => setPreviewFile(file))}
+                              onClick={() => setPreviewFile(file)}
                               className={`glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`}
                             >
                               <div className="flex items-center space-x-3 min-w-0">

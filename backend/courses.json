@@ -47,7 +47,41 @@
           "category": "Reference Website"
         }
       ],
-      "files": [],
+      "files": [
+        {
+          "name": "Hill 2nd Edition.pdf",
+          "size": "8.85 MB",
+          "bytes": 9279083,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAO_ahtfg_r8z6gNOBwSNfKgzw5m-Z0AAmUhAALFINlUVLwVFUi-Sbg7BA"
+          ]
+        },
+        {
+          "name": "Fogler ED5.pdf",
+          "size": "44.78 MB",
+          "bytes": 46957409,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPCahtgs6GR6oUX1zIelJ_a2N4FA64AAmchAALFINlUW8glwFbYCnA7BA",
+            "BQACAgUAAyEGAATqgTaTAAPDahtgtdqC3kKReEpjeb_ztjocJpwAAmghAALFINlUwVLrrmODXTM7BA",
+            "BQACAgUAAyEGAATqgTaTAAPEahtgtnifG_9iQ5k2XEj85GnkJ3MAAmkhAALFINlUTN_4soOYVe47BA"
+          ]
+        },
+        {
+          "name": "Levenspiel  CRE SOLUTION  ( PDFDrive )_2.pdf",
+          "size": "21.24 MB",
+          "bytes": 22272247,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPHahtlrynJXO2ExiWa0Ow_m4wuVxgAAmshAALFINlUXiO18eYhkUc7BA",
+            "BQACAgUAAyEGAATqgTaTAAPIahtlsOUBzGtN7Ajpfbuv-MGLtXEAAmwhAALFINlUaEEBTWjzLAY7BA"
+          ]
+        }
+      ],
       "folders": [
         "Root"
       ]
@@ -55,7 +89,7 @@
     "ChE-305": {
       "id": "ChE-305",
       "code": "ChE 305",
-      "title": "Mass Transfer I",
+      "title": "Mass Transfer II",
       "folder": "ChE-305",
       "level": "Level-3",
       "term": "Term-2",
@@ -333,7 +367,18 @@
           "type": "Reference Book",
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
-            "BQACAgUAAyEGAATqgTaTAAN0ahpkqX-v-r6vKoCVvD8pEzgZdKoAAiMgAALFINFUozWIcTPAG0o7BA"
+            "BQACAgUAAyEGAATqgTaTAAOLahsnrq0CxGOYJaVl95W5R6xTTc0AAgwhAALFINlUjTZj_KcVPZ87BA"
+          ]
+        },
+        {
+          "name": "Ludwig_Volume 1.pdf",
+          "size": "28.87 MB",
+          "bytes": 30272710,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOlahtOwfzc5Qz_ePIMcEdYSEdoNpkAAjQhAALFINlUPHIewE56lAg7BA",
+            "BQACAgUAAyEGAATqgTaTAAOmahtOw50gxHFQYOn_x51yqCYO_7QAAjUhAALFINlUMMRx4I3U-L07BA"
           ]
         }
       ],
@@ -413,6 +458,24 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAODahply3bnTlm5ZkwQshieVCokM8wAAi4gAALFINFUCd9L7VaBLmk7BA"
           ]
+        },
+        {
+          "name": "3.mp4",
+          "size": "147.42 MB",
+          "bytes": 154579079,
+          "type": "Recorded Class",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOpahtQpNNuGNYmZnKCb2whamg_mUsAAkAhAALFINlUJxtvO6s6w-A7BA",
+            "BQACAgUAAyEGAATqgTaTAAOqahtQpwzaAAF2UVZPUZWuonB8z3baAAJCIQACxSDZVEpUlNri9T42OwQ",
+            "BQACAgUAAyEGAATqgTaTAAOrahtQqZ3eQoEXQIK2lnHEhjIkAawAAkMhAALFINlUffxW6-mpA2w7BA",
+            "BQACAgUAAyEGAATqgTaTAAOsahtQq8YSvPLD8fQj3KWxk1lMA0sAAkQhAALFINlUaRGedoKmvtI7BA",
+            "BQACAgUAAyEGAATqgTaTAAOtahtQrUZxGdFdLXDigTqws-1p77MAAkUhAALFINlUOmfC1Xx6vZk7BA",
+            "BQACAgUAAyEGAATqgTaTAAOuahtQr0yjddjE6DHZojkSGJDPGbsAAkYhAALFINlUPl7O1LfiZLs7BA",
+            "BQACAgUAAyEGAATqgTaTAAOvahtQsTbhZK-JXNOje4RODE8Q-ngAAkchAALFINlUuz5yAAGCGsMqOwQ",
+            "BQACAgUAAyEGAATqgTaTAAOwahtQsxqHnQQQur5_fT4WzQvXmgwAAkghAALFINlUVjocriO0-PM7BA"
+          ],
+          "folder": "Root"
         }
       ],
       "folders": [
@@ -447,6 +510,795 @@
         "Root"
       ],
       "default_notes": "# ChE 313: Solution Thermodynamics \n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-303": {
+      "id": "ChE-303",
+      "code": "ChE 303",
+      "title": "Mass Transfer I",
+      "description": "Study materials for ChE 303",
+      "folder": "ChE-303",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Wankat_separation_process_engineering.pdf",
+          "size": "26.41 MB",
+          "bytes": 27692296,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOzahtdRWYC1Sj7pU5W6xCOlHsNwuoAAl0hAALFINlUwwXpqR0hFMY7BA",
+            "BQACAgUAAyEGAATqgTaTAAO0ahtdRpMYqyyeDLZI0JsztjHPZt4AAl4hAALFINlUynxdO_kw8KQ7BA"
+          ]
+        },
+        {
+          "name": "wankat_solution_manual_separation_process_engineering_3rd_ed_compress.pdf",
+          "size": "29.85 MB",
+          "bytes": 31295036,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAO3ahtdnBNFcijq0mpdyI11bFoRC6YAAmAhAALFINlUKfkYwXgR15E7BA",
+            "BQACAgUAAyEGAATqgTaTAAO4ahtdnX2ocp-jLAniFWwPrgab6kgAAmEhAALFINlUxkiOHQmFdrs7BA"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 303: Mass Transfer I\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-101": {
+      "id": "ChE-101",
+      "code": "ChE 101",
+      "title": "Material & Energy Balance",
+      "description": "Study materials for ChE 101",
+      "folder": "ChE-101",
+      "level": "Level-1",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 101: Material & Energy Balance\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-403": {
+      "id": "ChE-403",
+      "code": "ChE 403",
+      "title": "Process Control",
+      "description": "Study materials for ChE 403",
+      "folder": "ChE-403",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Process Dynamics and Control 4th Edition.pdf",
+          "size": "4.87 MB",
+          "bytes": 5106870,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPLahvGz7H9cmKuhm8LhczsLJz0VlUAAtIcAALik-FUTWBjkk2Ni8Y7BA"
+          ]
+        },
+        {
+          "name": "Solution Manual Process Dynamics and Control 4th Edition.pdf",
+          "size": "12.59 MB",
+          "bytes": 13204837,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPSahvL3oZEjWnRVKmhOKbjlf3a0wsAAtkcAALik-FUJLtQe1850SU7BA"
+          ]
+        },
+        {
+          "name": "Chapter_1m.pdf",
+          "size": "1.10 MB",
+          "bytes": 1155057,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPcahvMmkSrGnvxKCDivZESjNAAAZZDAALgHAAC4pPhVAABQYP423ZbFTsE"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Chapter_2m.pdf",
+          "size": "778.87 KB",
+          "bytes": 797560,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPkahvNMbufEjDAYCvSKJToGkycojMAAuUcAALik-FUN3eMxX2ct087BA"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Chapter_3m.pdf",
+          "size": "605.51 KB",
+          "bytes": 620043,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPsahvNneq5fw2fVWMyydK40BlosX8AAuocAALik-FUthOdWEpbqpo7BA"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Chapter_4m.pdf",
+          "size": "648.96 KB",
+          "bytes": 664530,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPvahvNx6G4GFk6byPvpG_3NFxGX3YAAu0cAALik-FUyAtS83nJIRA7BA"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Chapter_5m.pdf",
+          "size": "1.15 MB",
+          "bytes": 1202565,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPyahvN0QYWjFRvS_zRSCD21c5x540AAu8cAALik-FUM3uGh6eA_LM7BA"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Chapter_6.pdf",
+          "size": "1.80 MB",
+          "bytes": 1885112,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAP1ahvOkiAPzhiTolbpGKZrgxcSQUAAAvEcAALik-FULZhHtrcIkyA7BA"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Chapter_7.pdf",
+          "size": "1.29 MB",
+          "bytes": 1349609,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAP4ahvOm4765uC8ReXN6tkcMlYS_S0AAvMcAALik-FUs4ldNpo1zr87BA"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Chapter_8m_June2021.pdf",
+          "size": "5.08 MB",
+          "bytes": 5327963,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAP7ahvOplI7SxoIpIxDpN5ygbQpxXsAAvUcAALik-FURczPEu8VrBs7BA"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Chapter_9.pdf",
+          "size": "1.82 MB",
+          "bytes": 1909242,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAP-ahvOsU_0cBGvDdx0fuLwohonWLQAAvccAALik-FUXcqyUGIbziI7BA"
+          ],
+          "folder": "Root"
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 403: Process Control\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-453": {
+      "id": "ChE-453",
+      "code": "ChE 453",
+      "title": "Transport Phenomena ",
+      "description": "Study materials for ChE 453",
+      "folder": "ChE-453",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "IAK_ChE453 Chapter 1.pdf",
+          "size": "2.78 MB",
+          "bytes": 2916380,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBAWob0ttt5xQrtQc51anEcOEnaKpvAAMdAALik-FU9lUgzSyBoYI7BA"
+          ],
+          "folder": "IAK Sir"
+        },
+        {
+          "name": "IAK_ChE453 Chapter 2.pdf",
+          "size": "5.32 MB",
+          "bytes": 5574974,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBBGob0uY8xXIKLLbrv1RRM1FkQO1vAAICHQAC4pPhVOAWAQ111wtQOwQ"
+          ],
+          "folder": "IAK Sir"
+        },
+        {
+          "name": "Introductory Transport Phenomena.pdf",
+          "size": "8.10 MB",
+          "bytes": 8494437,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBCGob2Wd11BMCXyG19ZvbxpbcTIwmAAIPHQAC4pPhVF-_sqWIDMMvOwQ"
+          ]
+        },
+        {
+          "name": "Transport Phenomena 2nd Edition.pdf",
+          "size": "7.90 MB",
+          "bytes": 8284516,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBC2ob2nFnWUaU2au6x1cUbSC7Gdz2AAIRHQAC4pPhVBCzgBAEvVucOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root",
+        "IAK Sir"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 453: Transport Phenomena \n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-402": {
+      "id": "ChE-402",
+      "code": "ChE 402",
+      "title": "Chemical Engineering Laboratory IV",
+      "description": "Study materials for ChE 402",
+      "folder": "ChE-402",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 402: Chemical Engineering Laboratory IV\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-475": {
+      "id": "ChE-475",
+      "code": "ChE 475",
+      "title": "Biochemical Engineering II",
+      "description": "Study materials for ChE 475",
+      "folder": "ChE-475",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "CHE_475_CT1_Lecture_1-6.pdf",
+          "size": "5.94 MB",
+          "bytes": 6231391,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBDmob3SC3JrZf_BC9Dvl9e3YHD6igAAIaHQAC4pPhVNeCOuhhNkGnOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "CHE_475_CT2_Lecture_7-25.pdf",
+          "size": "3.98 MB",
+          "bytes": 4171795,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBEWob3Sn_mPImAfl2QwjfQBsSAeRwAAIdHQAC4pPhVN20CkvqGzE5OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "CHE_475_CT3_Lecture_16-26.pdf",
+          "size": "6.76 MB",
+          "bytes": 7088603,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBFGob3TQBDHzIlU_FSAu2ZsR7EklUAAIfHQAC4pPhVHcED93WMOdTOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "CHE_475_CT4_Lecture_27-33.pdf",
+          "size": "6.05 MB",
+          "bytes": 6340807,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBHGob3WaYMJFeNYl4DkLKHiK-nUE0AAInHQAC4pPhVPhFthK-Q3I1OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "CHE_475_Oindrila_Hossain_Lecture_34_July_26_2025.pdf",
+          "size": "846.40 KB",
+          "bytes": 866711,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBH2ob4HQmHn_cqc2t2CFMU9goNrR1AAItHQAC4pPhVAVlT3ytaj34OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Bioreactor.pdf",
+          "size": "14.77 MB",
+          "bytes": 15485331,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBU2ocGAvvDjXCmRjAZjFUhdRMXX-hAAKxHQAC4pPhVCmNstUHYMWJOwQ"
+          ],
+          "folder": "Nafisa Mam"
+        },
+        {
+          "name": "Bioreactor 2.pdf",
+          "size": "3.16 MB",
+          "bytes": 3309666,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBVmocGBXdcL7cl8kHD4xrKJz7byqHAAKzHQAC4pPhVDLFzYmcj2lbOwQ"
+          ],
+          "folder": "Nafisa Mam"
+        },
+        {
+          "name": "Bioproduct.pdf",
+          "size": "1.26 MB",
+          "bytes": 1318721,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBWWocGCgG6qIpHreaZVsRhHK2OpGEAAK1HQAC4pPhVMKqmwjUecNjOwQ"
+          ],
+          "folder": "Nafisa Mam"
+        },
+        {
+          "name": "Biosensor.pdf",
+          "size": "2.10 MB",
+          "bytes": 2205951,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBXGocGECAscu6nbl_-t5ATlRHy9FhAAK3HQAC4pPhVF_5HS4ovLkiOwQ"
+          ],
+          "folder": "Nafisa Mam"
+        }
+      ],
+      "folders": [
+        "Root",
+        "Nafisa Mam"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 475: Biochemical Engineering II\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-417": {
+      "id": "ChE-417",
+      "code": "ChE 417",
+      "title": "Fundamental of Process Safety ",
+      "description": "Study materials for ChE 417",
+      "folder": "ChE-417",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Chemical Process Safety 3rd Edition.pdf",
+          "size": "35.66 MB",
+          "bytes": 37387253,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBImob4oKZDrM9KjJNlht-_zBFBJFdAAIxHQAC4pPhVDSO61xbyscUOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBI2ob4oNqRbgf2TYKWpoQm00xPFS_AAIyHQAC4pPhVLTYLNsW7CgZOwQ"
+          ]
+        },
+        {
+          "name": "loss-prevention-in-the-process-industries-chapter-1.pdf",
+          "size": "148.86 KB",
+          "bytes": 152430,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBJmob4pGlFOe96KVLEI4zQiNMsuqYAAI0HQAC4pPhVHzwEKM2QmOBOwQ"
+          ]
+        },
+        {
+          "name": "loss-prevention-in-the-process-industries-chapter-8.pdf",
+          "size": "705.44 KB",
+          "bytes": 722370,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBKWob4pt5wkzG_tsF1g5jY8QDi06JAAI2HQAC4pPhVNOBaz6jDh7kOwQ"
+          ]
+        },
+        {
+          "name": "pdfcoffee.com_loss-prevention-in-the-process-industries-volume-1-pdf-free.pdf",
+          "size": "8.40 MB",
+          "bytes": 8807067,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBLGob4qYGoZqM0CLvDrswV4nCkaq4AAI4HQAC4pPhVF9ftlJ0GCOZOwQ"
+          ]
+        },
+        {
+          "name": "Guidelines for Chemical Process Quantitative Risk Analysis_ CCPS_Guidelines (2010, John Wiley & Sons, Inc.) [10.1002_9780470935422] - libgen.li.pdf",
+          "size": "22.52 MB",
+          "bytes": 23609919,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBL2ob4rWhWjfPyNDHbjRyVCtYFUUfAAI6HQAC4pPhVLAKD7xydu-JOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBOGob46osbo5IPoHyedSxNtsHOBTMAAJFHQAC4pPhVK7rQSAjHKdkOwQ"
+          ]
+        },
+        {
+          "name": "L1 FPS 2025.pdf",
+          "size": "3.40 MB",
+          "bytes": 3560573,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBO2ob6tCvXGpmL_NtTXOtiS9RdbFpAAJiHQAC4pPhVCcMantx1Ie-OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L2 FPS Toxicology.pdf",
+          "size": "2.52 MB",
+          "bytes": 2643047,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBPmob6tqD6aoqedGFqVeoqbCFPRPXAAJkHQAC4pPhVHVZTfvrN7hdOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L3 FPS Industrial Hygiene.pdf",
+          "size": "2.57 MB",
+          "bytes": 2696555,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBQWob6uiucBawgvAzgb8cd9jbtGhCAAJmHQAC4pPhVHXWojQ0zeIjOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L4 FPS Source Models.pdf",
+          "size": "5.08 MB",
+          "bytes": 5327132,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBRGob6vSFCuQzMNrZmMq_cNRO0eXPAAJoHQAC4pPhVLr6wXxCyJHhOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L5 FPS Dispersion Modelling.pdf",
+          "size": "3.84 MB",
+          "bytes": 4023461,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBR2ob6wiqELLcj37qynv7Rrn1usNKAAJqHQAC4pPhVCbcV6hifQABZzsE"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L6 FPS  Fire and Explosion.pdf",
+          "size": "4.89 MB",
+          "bytes": 5130513,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBSmob69WvQDwV_PLK8djmL69dSYM2AAJsHQAC4pPhVNVq0ip632AnOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L7 FPS  How to prevent Fire and Explosion.pdf",
+          "size": "5.78 MB",
+          "bytes": 6059341,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBUGob7NUsbnJxZh5tusr690a4_71OAAJwHQAC4pPhVOpFJqnM2kFhOwQ"
+          ],
+          "folder": "Root"
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 417: Fundamental of Process Safety \n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-413": {
+      "id": "ChE-413",
+      "code": "ChE 413",
+      "title": "Process Design",
+      "description": "Study materials for ChE 413",
+      "folder": "ChE-413",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "ChE 413 Lecture 1 Introduction - Copy.pdf",
+          "size": "2.41 MB",
+          "bytes": 2524310,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBX2ocGrBNXpfCEw0oUSN_wlDgbj8kAAK6HQAC4pPhVHNy1i05DYq1OwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 3 Process flow sheet development 1.pdf",
+          "size": "6.17 MB",
+          "bytes": 6468854,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBYmocGsw1gA4VWs76u0z6WIO53jeaAAK8HQAC4pPhVO1YzGZGC6ncOwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 4 Cost estimation.pdf",
+          "size": "5.73 MB",
+          "bytes": 6004123,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBZWocGuEPq-BrsN0j1spGMztQDxcZAAK-HQAC4pPhVKTRoD9NvyIYOwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 5 Optimum design_feb 2024 [Compatibility Mode].pdf",
+          "size": "1.77 MB",
+          "bytes": 1857005,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBaGocGvEAAVi4x5eQHiI3yv_i9oHLRgACwB0AAuKT4VTYWeLGsi7vCDsE"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 6 Energy Integration_Pinch analysis.pdf",
+          "size": "1.79 MB",
+          "bytes": 1877499,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBbGocHd7v0IGLaBiNNXsuRSRjolfyAALDHQAC4pPhVFilh1VALHuQOwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 7.pdf",
+          "size": "1.87 MB",
+          "bytes": 1957708,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBb2ocHeFOd4hnNT1iWU2ujNbMjfSvAALFHQAC4pPhVPiS6dM20ob5OwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 8.pdf",
+          "size": "3.13 MB",
+          "bytes": 3281999,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBd2ocHl1-m32uqBzeXA5HIoa-yJI8AALKHQAC4pPhVHP-27ISQ5jnOwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "Chap_10_Materials.pdf",
+          "size": "5.12 MB",
+          "bytes": 5364920,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBemocHvooEWgVw_LzYGo7roTBiG00AALMHQAC4pPhVP0EN18RfFahOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_12_Pressure Vessel.pdf",
+          "size": "3.19 MB",
+          "bytes": 3342897,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBfWocHv08R61Onl90PL6ucSwefz7_AALOHQAC4pPhVFZ80JuEdyP6OwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_12_Pump.pdf",
+          "size": "1.93 MB",
+          "bytes": 2024893,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBgGocH0Y1FgeCvfHXaXtbM9SqahiyAALQHQAC4pPhVKeoaDEmUNcwOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_14_Double-Pipe.pdf",
+          "size": "948.33 KB",
+          "bytes": 971086,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBg2ocH2c4guGa6yVJRwSCn17avB6oAALTHQAC4pPhVK8sIf_oChEoOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_14_Heat-Exhanger.pdf",
+          "size": "8.78 MB",
+          "bytes": 9208822,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBhmocH69rzTfiHznGyYLvjIoOpz1kAALVHQAC4pPhVIb0mYauwkySOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_15_Separation-Eqipment.pdf",
+          "size": "4.25 MB",
+          "bytes": 4452708,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBiWocH7MGJQzn1g85Vcbplk0ZDSwJAALXHQAC4pPhVA3pZT7_AwXMOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Pump _ Separation.pdf",
+          "size": "3.25 MB",
+          "bytes": 3405212,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBi2ocH7Y1oo4AATemNmQapQXBduvcmwAC2R0AAuKT4VSfhK68SWCcGjsE"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Max Peters, Klaus Timmerhaus, Ronald West, Max Peters - Plant Design and Economics for Chemical Engineers (2002, McGraw-Hill Education).pdf",
+          "size": "24.62 MB",
+          "bytes": 25813890,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBj2ocINZNSqnFSMSpfG3ILZJSSJ2yAALcHQAC4pPhVJ8YJiWyrl0rOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBkGocIU0TXYxg4k4h5iiOgAPzsEFFAALdHQAC4pPhVPX3copfsMbMOwQ"
+          ]
+        },
+        {
+          "name": "pdfcoffee.com_208468464-product-and-process-design-principles-synthesis-analysis-and-design-third-edition-1-pdf-free.pdf",
+          "size": "10.83 MB",
+          "bytes": 11357829,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBk2ocIVGNN9Jl0ziNgxgiGyX-K2jsAALfHQAC4pPhVB04m0XqNHicOwQ"
+          ]
+        },
+        {
+          "name": "Towler, Gavin_ Sinnott, Ray K.-Chemical Engineering Design - Principles, Practice and Economics of Plant and Process Design-Elsevier (2013).pdf",
+          "size": "19.61 MB",
+          "bytes": 20564430,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBl2ocIkq8ZGlai4UvASj_dGYN3-lSAALiHQAC4pPhVHiAngmC2rqBOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBlWocIVVFY8_y_Hrwpg0muobXwydgAALhHQAC4pPhVKikaGF8zVoqOwQ"
+          ]
+        },
+        {
+          "name": "Plant Design and Economics for Chemical Engineers 5th edition.pdf",
+          "size": "25.55 MB",
+          "bytes": 26790795,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBmmocIr1MncUkptIAAdhnPtCzDPVRCwAC6R0AAuKT4VRPbniUvQQn6TsE",
+            "BQACAgUAAyEGAATqgTaTAAIBn2ocIzWSVbpVtQYi-uYOv1nMLIRiAALvHQAC4pPhVAhwe8B_Cr15OwQ"
+          ]
+        },
+        {
+          "name": "Solutions Manual Plant Design and Economics for Chemical Engineers 5th edition.pdf",
+          "size": "24.77 MB",
+          "bytes": 25976890,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBo2ocI4Rcd-xQMyNJ8d82IbR2we0CAALyHQAC4pPhVKLhhRjUJLK-OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBomocI4NLo8ia-0zYah7zbbUKbredAALxHQAC4pPhVLobQqug11gEOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root",
+        "MR Sir",
+        "SI Sir"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 413: Process Design\n\nStart writing notes...",
       "default_logs": [],
       "default_links": []
     }
