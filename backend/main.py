@@ -1128,10 +1128,10 @@ async def upload_file(
     filename = os.path.basename(file.filename)
     
     try:
-        # Seek metadata directly on disk spooled file to get size without loading into RAM
-        await file.seek(0, 2)
-        bytes_size = await file.tell()
-        await file.seek(0)
+        # Seek metadata directly on the underlying spooled file to get size without loading into RAM
+        file.file.seek(0, 2)
+        bytes_size = file.file.tell()
+        file.file.seek(0)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to read upload file payload metadata: {str(e)}")
         
