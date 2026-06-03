@@ -428,6 +428,11 @@ class CourseUpdate(BaseModel):
 
 # API ENDPOINTS
 
+@app.get("/api/health")
+@app.head("/api/health")
+def health_check():
+    return {"status": "healthy"}
+
 @app.get("/api/courses")
 def get_courses(response: Response):
     response.headers["Cache-Control"] = "public, max-age=300"
