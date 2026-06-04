@@ -1223,9 +1223,28 @@ function App() {
       return match;
     });
 
-    // 2. Process inline equations/symbols wrapped in ( ... )
-    // We match any parenthesized block without newlines to identify variables or math symbols
-    const inlineRegex = /\(([^\(\)\r\n]+?)\)/g;
+    // 2. Temporarily mask all $$ ... $$ and $ ... $ math blocks
+    // This prevents the parenthetical preprocessor from matching parentheses inside equations
+    const mathBlocks = [];
+    
+    // Mask display math $$ ... $$ (can span multiple lines)
+    processed = processed.replace(/\$\$(.*?)\$\$/gs, (match) => {
+      const placeholder = `__MATH_BLOCK_PLACEHOLDER_${mathBlocks.length}__`;
+      mathBlocks.push({ placeholder, content: match });
+      return placeholder;
+    });
+
+    // Mask inline math $ ... $ (single line)
+    processed = processed.replace(/\$([^\$\r\n]+?)\$/g, (match) => {
+      const placeholder = `__MATH_BLOCK_PLACEHOLDER_${mathBlocks.length}__`;
+      mathBlocks.push({ placeholder, content: match });
+      return placeholder;
+    });
+
+    // 3. Process inline equations/symbols wrapped in ( ... )
+    // We match any parenthesized block without newlines to identify variables or math symbols.
+    // We use lookbehind and lookahead to ensure they are standalone delimiters (not function calls like f(x) or derivatives like d(y)/dt)
+    const inlineRegex = /(?<=^|[\s\-\*\•])\(\s*([^\(\)\r\n]+?)\s*\)(?=[\s\:\,\.\;\-\?\!\)]|$)/g;
     processed = processed.replace(inlineRegex, (match, content) => {
       const trimmed = content.trim();
       const hasSpaces = match.startsWith('( ') && match.endsWith(' )');
@@ -1238,7 +1257,12 @@ function App() {
       return match;
     });
 
-    // 3. Correct malformed LaTeX commands starting with | or / instead of \
+    // 4. Restore the masked math blocks in reverse order
+    for (let i = mathBlocks.length - 1; i >= 0; i--) {
+      processed = processed.replace(mathBlocks[i].placeholder, mathBlocks[i].content);
+    }
+
+    // 5. Correct malformed LaTeX commands starting with | or / instead of \
     // E.g. |frac -> \frac, /mu -> \mu
     // We ensure they are preceded by start of line, whitespace, or math/bracket punctuation to avoid matching URLs
     const malformedCommandRegex = /(?<=^|[\s\(\[\{\=\+\-\*\/])[\|\/](frac|overline|underline|text|mathrm|mu|alpha|beta|gamma|delta|epsilon|theta|lambda|pi|rho|sigma|tau|phi|omega|partial|sum|int|infty|times|div|pm|mp|le|ge|ne|approx|hat|bar|tilde|dot|ddot|sqrt|left|right|begin|end|matrix|array|sin|cos|tan|ln|log|exp|deg)\b/g;
