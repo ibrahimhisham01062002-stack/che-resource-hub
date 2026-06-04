@@ -1232,19 +1232,18 @@ function App() {
     });
 
     // 2. Process inline equations/symbols wrapped in ( ... )
-    // We match ( ... ) with spaces or LaTeX commands inside, and prevent matching across lines
-    const inlineRegex = /\(\s+([^\(\)\r\n]+?)\s+\)/g;
+    // We match any parenthesized block without newlines to identify variables or math symbols
+    const inlineRegex = /\(([^\(\)\r\n]+?)\)/g;
     processed = processed.replace(inlineRegex, (match, content) => {
-      if (content.length <= 30) {
-        return '$' + content.trim() + '$';
+      const trimmed = content.trim();
+      const hasSpaces = match.startsWith('( ') && match.endsWith(' )');
+      const isSingleChar = trimmed.length === 1 && /^[a-zA-Z\d]$/.test(trimmed);
+      const hasMathSymbols = /[\_=^\\+\-*\/\[\]]/.test(trimmed);
+      
+      if (trimmed.length <= 30 && ((isSingleChar && hasSpaces) || hasMathSymbols)) {
+        return '$' + trimmed + '$';
       }
       return match;
-    });
-
-    // 3. Match inline LaTeX commands inside parentheses without spaces, e.g. (\mu)
-    const inlineLatexRegex = /\(\s*(\\[a-zA-Z]+)\s*\)/g;
-    processed = processed.replace(inlineLatexRegex, (match, command) => {
-      return '$' + command.trim() + '$';
     });
 
     return processed;
