@@ -1565,7 +1565,7 @@ def rename_folder(course_id: str, old_folder_name: str, folder_data: FolderRenam
     # 2. Update the folder tag of all file assets matching the old name
     files = course.get("files", [])
     for file_item in files:
-        if file_item.get("folder") == old_folder_name:
+        if file_item.get("folder") == old_folder_name or (old_folder_name == "Root" and not file_item.get("folder")):
             file_item["folder"] = new_folder_name
             
     save_courses_config(config)
@@ -1669,7 +1669,7 @@ def rename_video_folder(course_id: str, old_folder_name: str, folder_data: Folde
     # 2. Update the folder tag of all Recorded Class video file assets matching the old name
     files = course.get("files", [])
     for file_item in files:
-        if file_item.get("folder") == old_folder_name and file_item.get("type") == "Recorded Class":
+        if (file_item.get("folder") == old_folder_name or (old_folder_name == "Root" and not file_item.get("folder"))) and file_item.get("type") == "Recorded Class":
             file_item["folder"] = new_folder_name
             
     save_courses_config(config)

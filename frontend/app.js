@@ -371,8 +371,10 @@ function App() {
       setFileSearchQuery("");
       setVideoSearchQuery("");
       setPrimarySection("books"); // Default to Books section
-      setCurrentFolder("Root"); // Reset folder to Root
-      setCurrentVideoFolder("Root"); // Reset video folder to Root
+      const firstFolder = (activeCourse.folders && activeCourse.folders.length > 0) ? activeCourse.folders[0] : "Root";
+      setCurrentFolder(firstFolder);
+      const firstVideoFolder = (activeCourse.video_folders && activeCourse.video_folders.length > 0) ? activeCourse.video_folders[0] : "Root";
+      setCurrentVideoFolder(firstVideoFolder);
     }
     
     // Load reference links
@@ -721,14 +723,17 @@ function App() {
           method: "DELETE"
         });
         if (res.ok) {
-          if (currentFolder === folderName) {
-            setCurrentFolder("Root");
-          }
           await fetchCourses();
           const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
           const coursesList = await updatedRes.json();
           const found = coursesList.find(c => c.id === activeCourse.id);
-          if (found) setActiveCourse(found);
+          if (found) {
+            setActiveCourse(found);
+            if (currentFolder === folderName) {
+              const remaining = found.folders || [];
+              setCurrentFolder(remaining.length > 0 ? remaining[0] : "Root");
+            }
+          }
         } else {
           const data = await res.json();
           alert(data.detail || "Failed to delete folder");
@@ -832,14 +837,17 @@ function App() {
           method: "DELETE"
         });
         if (res.ok) {
-          if (currentVideoFolder === folderName) {
-            setCurrentVideoFolder("Root");
-          }
           await fetchCourses();
           const updatedRes = await fetch(`${API_BASE}/api/courses?t=${Date.now()}`);
           const coursesList = await updatedRes.json();
           const found = coursesList.find(c => c.id === activeCourse.id);
-          if (found) setActiveCourse(found);
+          if (found) {
+            setActiveCourse(found);
+            if (currentVideoFolder === folderName) {
+              const remaining = found.video_folders || [];
+              setCurrentVideoFolder(remaining.length > 0 ? remaining[0] : "Root");
+            }
+          }
         } else {
           const data = await res.json();
           alert(data.detail || "Failed to delete video folder");
@@ -1204,14 +1212,39 @@ function App() {
     return null;
   };
 
-  // Preprocess LaTeX math delimiters to convert non-standard delimiters [ ... ] and ( ... )
+  // Preprocess LaTeX math delimiters and mask math blocks to protect them from Markdown parsing
   const preprocessMarkdownMath = (text) => {
-    if (!text) return "";
+    if (!text) return { processed: "", mathBlocks: [] };
     let processed = text;
+    const mathBlocks = [];
 
-    // 1. Process block display equations wrapped in [ ... ]
-    // We match [ ... ] with nested bracket support for concentrations like [S]
-    const blockRegex = /\[\s*((?:[^\[\]]|\[[^\[\]]*\])+?)\s*\]/g;
+    const maskPattern = (regex) => {
+      processed = processed.replace(regex, (match) => {
+        const placeholder = `MATHBLOCKPLACEHOLDERXYZ${mathBlocks.length}`;
+        mathBlocks.push({ placeholder, content: match });
+        return placeholder;
+      });
+    };
+
+    // Stage 1: Mask all existing standard math blocks (protecting them from any further replacements!)
+    maskPattern(/\$\$[\s\S]*?\$\$/g);
+    maskPattern(/\\\[[\s\S]*?\\\]/g);
+    maskPattern(/\\begin\{([a-zA-Z\*]+)\}[\s\S]*?\\end\{\1\}/g);
+    maskPattern(/\\\([\s\S]*?\\\)/g);
+    
+    // Mask single dollar math blocks (without paragraph breaks)
+    processed = processed.replace(/\$[^\$]+?\$/g, (match) => {
+      if (match.includes('\n\n') || match.includes('\r\n\r\n')) {
+        return match;
+      }
+      const placeholder = `MATHBLOCKPLACEHOLDERXYZ${mathBlocks.length}`;
+      mathBlocks.push({ placeholder, content: match });
+      return placeholder;
+    });
+
+    // Stage 2: Process non-standard display/inline delimiters and convert them to standard ones
+    // a. Process block display equations wrapped in [ ... ]
+    const blockRegex = /(?<!\\)\[\s*((?:[^\[\]]|\[[^\[\]]*\])+?)\s*\]/g;
     processed = processed.replace(blockRegex, (match, content) => {
       const hasSpaces = match.startsWith('[ ') && match.endsWith(' ]');
       const hasMathChars = /[\_=^\\+\-*\/]/.test(content);
@@ -1223,59 +1256,74 @@ function App() {
       return match;
     });
 
-    // 2. Temporarily mask all $$ ... $$ and $ ... $ math blocks
-    // This prevents the parenthetical preprocessor from matching parentheses inside equations
-    const mathBlocks = [];
-    
-    // Mask display math $$ ... $$ (can span multiple lines)
-    processed = processed.replace(/\$\$(.*?)\$\$/gs, (match) => {
-      const placeholder = `__MATH_BLOCK_PLACEHOLDER_${mathBlocks.length}__`;
-      mathBlocks.push({ placeholder, content: match });
-      return placeholder;
-    });
-
-    // Mask inline math $ ... $ (single line)
-    processed = processed.replace(/\$([^\$\r\n]+?)\$/g, (match) => {
-      const placeholder = `__MATH_BLOCK_PLACEHOLDER_${mathBlocks.length}__`;
-      mathBlocks.push({ placeholder, content: match });
-      return placeholder;
-    });
-
-    // 3. Process inline equations/symbols wrapped in ( ... )
-    // We match any parenthesized block without newlines to identify variables or math symbols.
-    // We use lookbehind and lookahead to ensure they are standalone delimiters (not function calls like f(x) or derivatives like d(y)/dt)
-    const inlineRegex = /(?<=^|[\s\-\*\•])\(\s*([^\(\)\r\n]+?)\s*\)(?=[\s\:\,\.\;\-\?\!\)]|$)/g;
-    processed = processed.replace(inlineRegex, (match, content) => {
+    // b. Process inline equations/symbols wrapped in ( ... )
+    const inlineRegex = /(?<![a-zA-Z0-9])\(\s*([^\(\)\r\n]+?)\s*\)(?=[\s\:\,\.\;\-\?\!\)]|$)/g;
+    processed = processed.replace(inlineRegex, (match, content, offset, string) => {
       const trimmed = content.trim();
       const hasSpaces = match.startsWith('( ') && match.endsWith(' )');
       const isSingleChar = trimmed.length === 1 && /^[a-zA-Z\d]$/.test(trimmed);
       const hasMathSymbols = /[\_=^\\+\-*\/\[\]]/.test(trimmed);
       
-      if (trimmed.length <= 30 && ((isSingleChar && hasSpaces) || hasMathSymbols)) {
+      // Guard: do not replace if preceded by \left or followed by \right (with optional backslashes)
+      const before = string.substring(0, offset);
+      const after = string.substring(offset + match.length);
+      const isFollowedByColon = /^\s*\:/.test(after);
+      
+      if (/\\?left\s*$/i.test(before) || /^\s*\\?right\b/i.test(after)) {
+        return match;
+      }
+      
+      if (trimmed.length <= 30 && (hasMathSymbols || (isSingleChar && (hasSpaces || isFollowedByColon)))) {
         return '$' + trimmed + '$';
       }
       return match;
     });
 
-    // 4. Restore the masked math blocks in reverse order
-    for (let i = mathBlocks.length - 1; i >= 0; i--) {
-      processed = processed.replace(mathBlocks[i].placeholder, mathBlocks[i].content);
-    }
+    // Stage 3: Mask the newly created math blocks from Stage 2
+    maskPattern(/\$\$[\s\S]*?\$\$/g);
+    maskPattern(/\\\[[\s\S]*?\\\]/g);
+    maskPattern(/\\\([\s\S]*?\\\)/g);
+    processed = processed.replace(/\$[^\$]+?\$/g, (match) => {
+      if (match.includes('\n\n') || match.includes('\r\n\r\n')) {
+        return match;
+      }
+      const placeholder = `MATHBLOCKPLACEHOLDERXYZ${mathBlocks.length}`;
+      mathBlocks.push({ placeholder, content: match });
+      return placeholder;
+    });
 
-    // 5. Correct malformed LaTeX commands starting with | or / instead of \
-    // E.g. |frac -> \frac, /mu -> \mu
-    // We ensure they are preceded by start of line, whitespace, or math/bracket punctuation to avoid matching URLs
-    const malformedCommandRegex = /(?<=^|[\s\(\[\{\=\+\-\*\/])[\|\/](frac|overline|underline|text|mathrm|mu|alpha|beta|gamma|delta|epsilon|theta|lambda|pi|rho|sigma|tau|phi|omega|partial|sum|int|infty|times|div|pm|mp|le|ge|ne|approx|hat|bar|tilde|dot|ddot|sqrt|left|right|begin|end|matrix|array|sin|cos|tan|ln|log|exp|deg)\b/g;
-    processed = processed.replace(malformedCommandRegex, '\\$1');
+    // 5. Correct malformed LaTeX commands inside the masked math blocks (100% safe from URLs)
+    const malformedLayoutRegex = /[\|\/]+\\?(frac|overline|underline|sqrt|left|right|begin|end)\b/g;
+    const malformedSymbolRegex = /[\|\/]+(text|mathrm|mu|alpha|beta|gamma|delta|epsilon|theta|lambda|pi|rho|sigma|tau|phi|omega|partial|sum|int|infty|times|div|pm|mp|le|ge|ne|approx|hat|bar|tilde|dot|ddot|matrix|array|sin|cos|tan|ln|log|exp|deg)\b/g;
 
-    return processed;
+    mathBlocks.forEach(block => {
+      block.content = block.content.replace(malformedLayoutRegex, '\\$1');
+      block.content = block.content.replace(malformedSymbolRegex, '\\$1');
+    });
+
+    return { processed, mathBlocks };
   };
 
   // Render markdown text dynamically using Marked
   const renderMarkdown = (text) => {
     if (!text) return { __html: "" };
-    const preprocessedText = preprocessMarkdownMath(text);
-    return { __html: marked.parse(preprocessedText) };
+    
+    const { processed, mathBlocks } = preprocessMarkdownMath(text);
+    let parsedHtml = marked.parse(processed);
+    
+    // Restore math blocks in reverse order
+    for (let i = mathBlocks.length - 1; i >= 0; i--) {
+      parsedHtml = parsedHtml.replace(mathBlocks[i].placeholder, () => mathBlocks[i].content);
+    }
+    
+    // Correct malformed LaTeX in the remaining text
+    const globalLayoutRegex = /(?<![a-zA-Z0-9\:\.\/])[\|\/]+\\?(frac|overline|underline|sqrt|left|right|begin|end)\b/g;
+    const globalSymbolRegex = /(?<![a-zA-Z0-9\:\.\/])[\|\/]+(text|mathrm|mu|alpha|beta|gamma|delta|epsilon|theta|lambda|pi|rho|sigma|tau|phi|omega|partial|sum|int|infty|times|div|pm|mp|le|ge|ne|approx|hat|bar|tilde|dot|ddot|matrix|array|sin|cos|tan|ln|log|exp|deg)\b/g;
+
+    parsedHtml = parsedHtml.replace(globalLayoutRegex, '\\$1');
+    parsedHtml = parsedHtml.replace(globalSymbolRegex, '\\$1');
+
+    return { __html: parsedHtml };
   };
 
   // Filtering courses by search bar, level, and term
@@ -1305,20 +1353,22 @@ function App() {
     return slidesList.filter(f => {
       const matchesSearch = f.name.toLowerCase().includes(fileSearchQuery.toLowerCase()) ||
                             f.type.toLowerCase().includes(fileSearchQuery.toLowerCase());
-      const fileFolder = f.folder || "Root";
+      const defaultFolder = (activeCourse && activeCourse.folders && activeCourse.folders.length > 0) ? activeCourse.folders[0] : "Root";
+      const fileFolder = f.folder || defaultFolder;
       return matchesSearch && fileFolder === currentFolder;
     });
-  }, [slidesList, fileSearchQuery, currentFolder]);
+  }, [slidesList, fileSearchQuery, currentFolder, activeCourse]);
 
   // Filtering videos inside active section
   const filteredVideos = useMemo(() => {
     return videosList.filter(f => {
       const matchesSearch = f.name.toLowerCase().includes(videoSearchQuery.toLowerCase()) ||
                             f.type.toLowerCase().includes(videoSearchQuery.toLowerCase());
-      const fileFolder = f.folder || "Root";
+      const defaultVideoFolder = (activeCourse && activeCourse.video_folders && activeCourse.video_folders.length > 0) ? activeCourse.video_folders[0] : "Root";
+      const fileFolder = f.folder || defaultVideoFolder;
       return matchesSearch && fileFolder === currentVideoFolder;
     });
-  }, [videosList, videoSearchQuery, currentVideoFolder]);
+  }, [videosList, videoSearchQuery, currentVideoFolder, activeCourse]);
 
   // Filtering questions inside active section
   const filteredQuestions = useMemo(() => {
@@ -2870,7 +2920,7 @@ function App() {
                                   <div className="flex items-center space-x-1 ml-1" onClick={(e) => e.stopPropagation()}>
                                     <span 
                                       onClick={(e) => handleRenameFolder(e, folder)}
-                                      className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-sky-300'}`}
+                                      className="p-0.5 rounded hover:bg-black/10 transition-all text-black"
                                       title={`Rename ${folder}`}
                                     >
                                       <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -2880,7 +2930,7 @@ function App() {
                                     {folder !== "Root" && (
                                       <span 
                                         onClick={(e) => handleDeleteFolder(e, folder)}
-                                        className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-rose-400'}`}
+                                        className="p-0.5 rounded hover:bg-black/10 transition-all text-black"
                                         title={`Delete ${folder}`}
                                       >
                                         <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -3257,7 +3307,7 @@ function App() {
                                   <div className="flex items-center space-x-1 ml-1" onClick={(e) => e.stopPropagation()}>
                                     <span 
                                       onClick={(e) => handleRenameVideoFolder(e, folder)}
-                                      className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-sky-300'}`}
+                                      className="p-0.5 rounded hover:bg-black/10 transition-all text-black"
                                       title={`Rename ${folder}`}
                                     >
                                       <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -3267,7 +3317,7 @@ function App() {
                                     {folder !== "Root" && (
                                       <span 
                                         onClick={(e) => handleDeleteVideoFolder(e, folder)}
-                                        className={`p-0.5 rounded hover:bg-white/20 transition-all ${isSelected ? 'text-white' : 'text-slate-500 hover:text-rose-400'}`}
+                                        className="p-0.5 rounded hover:bg-black/10 transition-all text-black"
                                         title={`Delete ${folder}`}
                                       >
                                         <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
