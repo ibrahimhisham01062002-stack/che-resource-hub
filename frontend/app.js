@@ -1066,7 +1066,7 @@ function App() {
         <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/5 space-y-3 animate-pulse">
           <div className="flex items-center space-x-3">
             <Icon name="loader" className="w-5 h-5 text-indigo-500 animate-spin" />
-            <span className="text-xs font-semibold text-indigo-400 font-display">Qwen AI is analyzing your document...</span>
+            <span className="text-xs font-semibold text-indigo-400 font-display">Generating...</span>
           </div>
           <p className="text-[10px] text-slate-500 leading-relaxed pl-8">
             Extracting text from PDF and compiling a structured study guide with topic outline, key concepts, formulas, and comparative tables. This may take 30-60 seconds depending on document size.
@@ -1106,11 +1106,16 @@ function App() {
             </p>
           </div>
           <button
+            disabled={isSummarizing}
             onClick={() => handleSummarizePdf(file.index)}
-            className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm"
+            className={`px-4 py-1.5 rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm ${
+              isSummarizing 
+                ? "bg-indigo-400 text-white cursor-not-allowed" 
+                : "bg-indigo-600 hover:bg-indigo-700 text-white"
+            }`}
           >
-            <Icon name="sparkles" className="w-3.5 h-3.5" />
-            <span>Summarize Document</span>
+            <Icon name={isSummarizing ? "loader" : "sparkles"} className={`w-3.5 h-3.5 ${isSummarizing ? "animate-spin" : ""}`} />
+            <span>{isSummarizing ? "Generating..." : "Summarize Document"}</span>
           </button>
         </div>
       );
@@ -1122,7 +1127,7 @@ function App() {
           <summary className="flex items-center justify-between p-4 cursor-pointer select-none font-display font-semibold text-xs text-indigo-700 hover:text-indigo-800">
             <div className="flex items-center space-x-2">
               <Icon name="sparkles" className={`w-4 h-4 text-indigo-500 ${isSummarizing ? "animate-pulse" : ""}`} />
-              <span>Qwen AI Study Companion {isSummarizing && <span className="text-[10px] text-indigo-500 font-medium animate-pulse">(Streaming...)</span>}</span>
+              <span>Qwen AI Study Companion {isSummarizing && <span className="text-[10px] text-indigo-500 font-medium animate-pulse">(Generating...)</span>}</span>
             </div>
             <div className="flex items-center space-x-2">
               <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold group-open:hidden bg-indigo-50">Show Summary</span>
@@ -1391,9 +1396,7 @@ function App() {
       mathBlocks.push({ placeholder, content: match });
       return placeholder;
     });
-
-    // Stage 2: Process non-standard display/inline delimiters and convert them to standard ones
-    // a. Process block display equations wrapped in [ ... ]
+    // Stage 2: Process non-standard display delimiters (display blocks wrapped in [ ... ])
     const blockRegex = /(?<!\\)\[\s*((?:[^\[\]]|\[[^\[\]]*\])+?)\s*\]/g;
     processed = processed.replace(blockRegex, (match, content) => {
       const hasSpaces = match.startsWith('[ ') && match.endsWith(' ]');
@@ -1406,7 +1409,56 @@ function App() {
       return match;
     });
 
-    // b. Process inline equations/symbols wrapped in ( ... )
+    // Mask newly created block display equations
+    maskPattern(/\$\$[\s\S]*?\$\$/g);
+
+    // Stage 2.5: Process raw mathematical equations LHS = RHS
+    processed = processed.replace(/(?<![\w\$])([\w\(\)\[\]\/\\\{\}\+\-\^']+\s*=\s*[a-zA-Z\d_\{\}\(\)\[\]\+\-\*\/\\'\.\^\s\:\,\;\!\?\-\’]+)/g, (match, eqPart) => {
+      const tokens = eqPart.split(/(\s+)/);
+      let equationTokens = [];
+      let textTokens = [];
+      let foundText = false;
+      const stopWords = new Set(['with', 'parameters', 'and', 'the', 'is', 'for', 'at', 'by', 'on', 'where', 'of', 'in', 'to', 'a', 'an']);
+      
+      for (let i = 0; i < tokens.length; i++) {
+        const token = tokens[i].trim();
+        if (!token) {
+          if (!foundText) equationTokens.push(tokens[i]);
+          else textTokens.push(tokens[i]);
+          continue;
+        }
+        if (foundText) {
+          textTokens.push(tokens[i]);
+          continue;
+        }
+        const isWord = /^[a-z]{3,}$/.test(token) && !/^(ln|log|exp|sin|cos|tan|sqrt)$/.test(token);
+        if (stopWords.has(token.toLowerCase()) || isWord) {
+          foundText = true;
+          if (equationTokens.length > 0 && /^\s+$/.test(equationTokens[equationTokens.length - 1])) {
+            textTokens.push(equationTokens.pop());
+          }
+          textTokens.push(tokens[i]);
+        } else {
+          equationTokens.push(tokens[i]);
+        }
+      }
+      
+      const eqText = equationTokens.join('').trim();
+      const remainingText = textTokens.join('');
+      
+      if (eqText.includes('=') && eqText.length > 3) {
+        const hasMathIndicator = /[\_=^\\+\-*\/\[\]\d]/.test(eqText) || eqText.length > 8;
+        if (hasMathIndicator) {
+          return `$${eqText}$${remainingText}`;
+        }
+      }
+      return match;
+    });
+
+    // Mask newly created raw equations
+    maskPattern(/\$[^\$]+?\$/g);
+
+    // Stage 3: Process inline equations/symbols wrapped in ( ... )
     const inlineRegex = /(?<![a-zA-Z0-9])\(\s*([^\(\)\r\n]+?)\s*\)(?=[\s\:\,\.\;\-\?\!\)]|$)/g;
     processed = processed.replace(inlineRegex, (match, content, offset, string) => {
       const trimmed = content.trim();
@@ -1417,30 +1469,51 @@ function App() {
       // Guard: do not replace if preceded by \left or followed by \right (with optional backslashes)
       const before = string.substring(0, offset);
       const after = string.substring(offset + match.length);
-      const isFollowedByColon = /^\s*\:/.test(after);
+      const isStartOfLine = /^\s*$/.test(before) || /[\r\n]\s*$/.test(before);
+      const isListItem = isStartOfLine && /^[a-d|i-j\d]$/i.test(trimmed);
       
       if (/\\?left\s*$/i.test(before) || /^\s*\\?right\b/i.test(after)) {
         return match;
       }
       
-      if (trimmed.length <= 30 && (hasMathSymbols || (isSingleChar && (hasSpaces || isFollowedByColon)))) {
+      if (trimmed.length <= 30 && (hasMathSymbols || (isSingleChar && !isListItem))) {
         return '$' + trimmed + '$';
       }
       return match;
     });
 
-    // Stage 3: Mask the newly created math blocks from Stage 2
-    maskPattern(/\$\$[\s\S]*?\$\$/g);
-    maskPattern(/\\\[[\s\S]*?\\\]/g);
-    maskPattern(/\\\([\s\S]*?\\\)/g);
-    processed = processed.replace(/\$[^\$]+?\$/g, (match) => {
-      if (match.includes('\n\n') || match.includes('\r\n\r\n')) {
+    // Mask newly created inline parenthesized blocks
+    maskPattern(/\$[^\$]+?\$/g);
+
+    // Stage 4: Process raw subscript variables, concentrations, and LaTeX keywords
+    // a. Bracketed chemical concentrations/species, e.g. [S], [E], [ES], [P] (excluding markdown links)
+    processed = processed.replace(/(?<!\\)\[\s*([a-zA-Z0-9\-\+]+)\s*\](?!\()/g, (match, content) => {
+      if (content === ' ' || content === 'x' || content === 'X') {
         return match;
       }
-      const placeholder = `MATHBLOCKPLACEHOLDERXYZ${mathBlocks.length}`;
-      mathBlocks.push({ placeholder, content: match });
-      return placeholder;
+      return `$[${content.trim()}]$`;
     });
+
+    // b. Subscripted variables, e.g. V_max, V_{\text{max}}, K_m, k_d, C_A, C_{A0}, r_A
+    const subscriptVarRegex = /\b([a-zA-Z\u0370-\u03ff\u1f00-\u1fff]+_(?:[a-zA-Z0-9]+|\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}))(?![a-zA-Z0-9])/g;
+    processed = processed.replace(subscriptVarRegex, (match) => {
+      if (match.startsWith('MATHBLOCKPLACEHOLDERXYZ')) return match;
+      return `$${match}$`;
+    });
+
+    // c. Raw LaTeX commands/Greek letters (excluding left/right layout modifiers)
+    const rawLatexRegex = /\\(?!n|r|t|left|right\b)[a-zA-Z]+(?:\{[^{}]*\})*/g;
+    processed = processed.replace(rawLatexRegex, (match, offset, string) => {
+      const before = string.substring(Math.max(0, offset - 1), offset);
+      const after = string.substring(offset + match.length, offset + match.length + 1);
+      if (before === '$' && after === '$') {
+        return match;
+      }
+      return `$${match}$`;
+    });
+
+    // Mask the newly created math blocks from Stage 4
+    maskPattern(/\$[^\$]+?\$/g);
 
     // 5. Correct malformed LaTeX commands inside the masked math blocks (100% safe from URLs)
     const malformedLayoutRegex = /[\|\/]+\\?(frac|overline|underline|sqrt|left|right|begin|end)\b/g;
