@@ -1236,7 +1236,7 @@ function App() {
     const inlineRegex = /\(\s+([^\(\)\r\n]+?)\s+\)/g;
     processed = processed.replace(inlineRegex, (match, content) => {
       if (content.length <= 30) {
-        return `\\(${content.trim()}\\)`;
+        return '$' + content.trim() + '$';
       }
       return match;
     });
@@ -1244,7 +1244,7 @@ function App() {
     // 3. Match inline LaTeX commands inside parentheses without spaces, e.g. (\mu)
     const inlineLatexRegex = /\(\s*(\\[a-zA-Z]+)\s*\)/g;
     processed = processed.replace(inlineLatexRegex, (match, command) => {
-      return `\\(${command.trim()}\\)`;
+      return '$' + command.trim() + '$';
     });
 
     return processed;
