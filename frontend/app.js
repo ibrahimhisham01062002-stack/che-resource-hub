@@ -1733,7 +1733,7 @@ function App() {
         
         {/* DASHBOARD PAGE */}
         {!activeCourse ? (
-          <div className="space-y-8 flex-grow flex flex-col justify-start">
+          <div className="space-y-8 flex-grow flex flex-col justify-start animate-section-entrance">
             {/* Elegant Greeting and Global search */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
@@ -1887,7 +1887,7 @@ function App() {
         ) : (
           
           /* DETAILED COURSE SPACE */
-          <div className="space-y-6 flex-grow flex flex-col che-course-workspace">
+          <div className="space-y-6 flex-grow flex flex-col che-course-workspace animate-section-entrance">
             
             {/* Top Workspace Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white border-opacity-5 pb-6">
@@ -1966,7 +1966,7 @@ function App() {
               
               {/* SUBSECTION 1: BOOKS */}
               {primarySection === 'books' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance">
                   
                   {/* Left Column: Books List & Search */}
                   <div className="lg:col-span-1 space-y-6">
@@ -2193,7 +2193,7 @@ function App() {
 
               {/* SUBSECTION 3: TERM-FINAL QUESTIONS */}
               {primarySection === 'questions' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance">
                   
                   {/* Left Column: Questions List & Search */}
                   <div className="lg:col-span-1 space-y-6">
@@ -2420,7 +2420,7 @@ function App() {
 
               {/* SUBSECTION 4: TERM-FINAL SOLVES */}
               {primarySection === 'solutions' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance">
                   
                   {/* Left Column: Solutions List & Search */}
                   <div className="lg:col-span-1 space-y-6">
@@ -2647,7 +2647,7 @@ function App() {
 
               {/* SUBSECTION 5: TERM-FINAL SOLVED */}
               {primarySection === 'solved' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance">
 
                   {/* Left Column: Solved List & Search */}
                   <div className="lg:col-span-1 space-y-6">
@@ -2874,7 +2874,7 @@ function App() {
 
               {/* SUBSECTION 2: Slides (Aggregated interactive learning space) */}
               {primarySection === 'slides' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance">
                   
                   {/* Left Column: Slides List & Reference Links */}
                   <div className="lg:col-span-1 space-y-6">
@@ -3263,7 +3263,7 @@ function App() {
               )}
 
               {primarySection === 'videos' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-fade-in">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance">
                   
                   {/* Left Column: Videos List & Folder/Search */}
                   <div className="lg:col-span-1 space-y-6">
