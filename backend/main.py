@@ -22,7 +22,7 @@ load_dotenv()
 import pypdf
 
 HF_TOKEN = os.getenv("HF_TOKEN")
-HF_API_URL = "https://api-inference.huggingface.co/v1/chat/completions"
+HF_API_URL = "https://router.huggingface.co/v1/chat/completions"
 
 def extract_text_from_pdf(pdf_bytes: bytes, max_chars: int = 40000) -> str:
     pdf_file = io.BytesIO(pdf_bytes)
