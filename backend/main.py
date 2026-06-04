@@ -84,6 +84,66 @@ async def query_qwen_summary(text: str, filename: str) -> str:
     result = resp.json()
     return result["choices"][0]["message"]["content"]
 
+async def query_qwen_summary_stream(text: str, filename: str):
+    if not HF_TOKEN:
+        raise HTTPException(status_code=500, detail="Hugging Face API token (HF_TOKEN) is not configured in environment variables")
+        
+    headers = {
+        "Authorization": f"Bearer {HF_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    
+    prompt = (
+        f"You are an expert tutor for Chemical Engineering students.\n"
+        f"Provide a highly descriptive, detailed, and structured study summary "
+        f"of the following textbook/document named '{filename}'.\n\n"
+        f"CRITICAL FORMATTING REQUIREMENT FOR MATHEMATICAL FORMULAS:\n"
+        f"- For all equations, variables, physical notations, and constants, you MUST use standard LaTeX delimiters for MathJax to render them correctly on the website.\n"
+        f"- Use '$$ ... $$' or '\\[ ... \\]' for separate block equations (display equations).\n"
+        f"- Use '$ ... $' or '\\( ... \\)' for inline variables, inline equations, or physical constants (e.g. $K_s$ or $\\mu$). Never output un-delimited LaTeX commands like \\mu or \\frac, and never use brackets like [\\mu] or (\\mu) without dollar signs.\n\n"
+        f"Structure your response strictly with the following 4 sections in beautiful GitHub Markdown:\n\n"
+        f"### 1. Topic-by-Topic Outline & Summary\n"
+        f"Walk through the document content chronologically, summarizing the topics from section to section.\n\n"
+        f"### 2. Key Concepts & Explanations\n"
+        f"Identify and define the fundamental chemical engineering concepts, theories, and processes presented.\n\n"
+        f"### 3. Formulas & Notations Dictated\n"
+        f"Provide a descriptive analysis of all key mathematical equations, variables, and physical notations. Explain what every variable stands for and its physical significance.\n\n"
+        f"### 4. Comparative Analysis Table\n"
+        f"Create a markdown table comparing/contrasting the different methods, methodologies, reactors, processes, or theories analyzed in the text (including assumptions, parameters, advantages, and limitations).\n\n"
+        f"Content:\n{text}"
+    )
+    
+    payload = {
+        "model": "Qwen/Qwen2.5-72B-Instruct",
+        "messages": [
+            {"role": "user", "content": prompt}
+        ],
+        "temperature": 0.3,
+        "max_tokens": 2000,
+        "stream": True
+    }
+    
+    async with http_client.stream("POST", HF_API_URL, headers=headers, json=payload, timeout=120.0) as r:
+        if r.status_code != 200:
+            error_text = await r.aread()
+            raise HTTPException(status_code=502, detail=f"Hugging Face API Error: {error_text.decode('utf-8', errors='ignore')}")
+            
+        async for line in r.aiter_lines():
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith("data: "):
+                data_str = line[6:].strip()
+                if data_str == "[DONE]":
+                    break
+                try:
+                    chunk = json.loads(data_str)
+                    delta = chunk.get("choices", [{}])[0].get("delta", {})
+                    if "content" in delta:
+                        yield delta["content"]
+                except Exception:
+                    continue
+
 # Google Drive service initializer
 def get_gdrive_service():
     project_id = os.getenv("GDRIVE_PROJECT_ID")
@@ -1343,18 +1403,34 @@ async def summarize_pdf_file(course_id: str, file_index: int):
         if not extracted_text.strip():
             raise HTTPException(status_code=400, detail="Could not extract any readable text from the PDF file")
             
-        # Generate summary using Qwen AI model on Hugging Face Serverless Inference API
-        summary_text = await query_qwen_summary(extracted_text, filename)
+        async def sse_generator():
+            accumulated_text = []
+            try:
+                async for chunk in query_qwen_summary_stream(extracted_text, filename):
+                    accumulated_text.append(chunk)
+                    yield f"data: {json.dumps({'chunk': chunk})}\n\n"
+                
+                summary_text = "".join(accumulated_text)
+                
+                # Cache summary inside the course files metadata database
+                g_config = load_courses_config()
+                g_course = g_config["courses"].get(course_id)
+                if g_course:
+                    g_files = g_course.get("files", [])
+                    if 0 <= file_index < len(g_files):
+                        g_files[file_index]["summary"] = summary_text
+                        save_courses_config(g_config)
+                        
+                yield "data: [DONE]\n\n"
+            except Exception as e:
+                yield f"data: {json.dumps({'error': str(e)})}\n\n"
+
+        return StreamingResponse(sse_generator(), media_type="text/event-stream")
+
     except HTTPException as he:
         raise he
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate summary: {str(e)}")
-        
-    # Cache summary inside the course files metadata database
-    file_item["summary"] = summary_text
-    save_courses_config(config)
-    
-    return {"status": "success", "summary": summary_text, "cached": False}
 
 @app.delete("/api/courses/{course_id}/files/{file_index}")
 async def delete_file(course_id: str, file_index: int):

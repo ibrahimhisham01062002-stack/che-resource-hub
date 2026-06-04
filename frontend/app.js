@@ -925,11 +925,68 @@ function App() {
     });
   };
 
-  // Handle PDF Summarization with DeepSeek AI
+  // Handle downloading generated PDF summary as Markdown
+  const handleDownloadSummary = (file) => {
+    if (!file || !file.summary) return;
+    const element = document.createElement("a");
+    const fileContent = `# AI Study Summary: ${file.name}\n\n${file.summary}`;
+    const fileBlob = new Blob([fileContent], { type: 'text/markdown;charset=utf-8;' });
+    element.href = URL.createObjectURL(fileBlob);
+    
+    const cleanCourseCode = activeCourse ? activeCourse.code.replace(/[^a-zA-Z0-9_-]/g, "_") : "course";
+    const cleanFileName = file.name.replace(/\.[a-zA-Z0-9]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_");
+    element.download = `${cleanCourseCode}_${cleanFileName}_summary.md`;
+    
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
+  // Helper to update summary state across all arrays
+  const updateSummaryState = (fileIndex, summaryText) => {
+    setPreviewFile(prev => {
+      if (prev && prev.index === fileIndex) {
+        return { ...prev, summary: summaryText };
+      }
+      return prev;
+    });
+
+    setActiveCourse(prev => {
+      if (!prev) return prev;
+      const updatedFiles = prev.files.map((file, idx) => {
+        if (idx === fileIndex) {
+          return { ...file, summary: summaryText };
+        }
+        return file;
+      });
+      return { ...prev, files: updatedFiles };
+    });
+
+    setCourses(prev => {
+      return prev.map(c => {
+        if (c.id === activeCourse.id) {
+          const updatedFiles = c.files.map((file, idx) => {
+            if (idx === fileIndex) {
+              return { ...file, summary: summaryText };
+            }
+            return file;
+          });
+          return { ...c, files: updatedFiles };
+        }
+        return c;
+      });
+    });
+  };
+
+  // Handle PDF Summarization with Qwen AI
   const handleSummarizePdf = async (fileIndex) => {
     if (!activeCourse) return;
     setIsSummarizing(true);
     setSummaryError("");
+    
+    // Clear old summary in state to force visual reset
+    updateSummaryState(fileIndex, "");
+
     try {
       const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/files/${fileIndex}/summarize`, {
         method: "POST",
@@ -938,44 +995,52 @@ function App() {
         const errorData = await res.json().catch(() => ({}));
         throw new Error(errorData.detail || `HTTP ${res.status}`);
       }
-      const data = await res.json();
       
-      // Update preview file summary in real-time
-      setPreviewFile(prev => {
-        if (prev && prev.index === fileIndex) {
-          return { ...prev, summary: data.summary };
-        }
-        return prev;
-      });
-
-      // Update activeCourse.files array so cache persists locally
-      setActiveCourse(prev => {
-        if (!prev) return prev;
-        const updatedFiles = prev.files.map((file, idx) => {
-          if (idx === fileIndex) {
-            return { ...file, summary: data.summary };
-          }
-          return file;
-        });
-        return { ...prev, files: updatedFiles };
-      });
-
-      // Also update courses database if it exists in state
-      setCourses(prev => {
-        return prev.map(c => {
-          if (c.id === activeCourse.id) {
-            const updatedFiles = c.files.map((file, idx) => {
-              if (idx === fileIndex) {
-                return { ...file, summary: data.summary };
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        // Fast path: cached summary loaded directly
+        const data = await res.json();
+        updateSummaryState(fileIndex, data.summary);
+      } else {
+        // Stream path: consume Server-Sent Events line by line
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let accumulatedSummary = "";
+        let buffer = "";
+        
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() || "";
+          
+          for (const line of lines) {
+            const cleanLine = line.trim();
+            if (!cleanLine) continue;
+            
+            if (cleanLine.startsWith("data: ")) {
+              const dataVal = cleanLine.substring(6).trim();
+              if (dataVal === "[DONE]") {
+                break;
               }
-              return file;
-            });
-            return { ...c, files: updatedFiles };
+              try {
+                const parsed = JSON.parse(dataVal);
+                if (parsed.error) {
+                  throw new Error(parsed.error);
+                }
+                if (parsed.chunk) {
+                  accumulatedSummary += parsed.chunk;
+                  updateSummaryState(fileIndex, accumulatedSummary);
+                }
+              } catch (e) {
+                console.error("Error decoding chunk:", e);
+              }
+            }
           }
-          return c;
-        });
-      });
-
+        }
+      }
     } catch (err) {
       console.error("Summarization failed:", err);
       setSummaryError(err.message || "Failed to generate AI summary.");
@@ -990,7 +1055,7 @@ function App() {
     const isPdf = (file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf');
     if (!isPdf) return null;
 
-    if (isSummarizing) {
+    if (isSummarizing && !file.summary) {
       return (
         <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/5 space-y-3 animate-pulse">
           <div className="flex items-center space-x-3">
@@ -1050,11 +1115,26 @@ function App() {
         <details open className="group bg-[#6366F1]/5 border border-[#6366F1]/15 rounded-xl transition-all duration-300">
           <summary className="flex items-center justify-between p-4 cursor-pointer select-none font-display font-semibold text-xs text-indigo-700 hover:text-indigo-800">
             <div className="flex items-center space-x-2">
-              <Icon name="sparkles" className="w-4 h-4 text-indigo-500 animate-pulse" />
-              <span>Qwen AI Study Companion</span>
+              <Icon name="sparkles" className={`w-4 h-4 text-indigo-500 ${isSummarizing ? "animate-pulse" : ""}`} />
+              <span>Qwen AI Study Companion {isSummarizing && <span className="text-[10px] text-indigo-500 font-medium animate-pulse">(Streaming...)</span>}</span>
             </div>
-            <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold group-open:hidden bg-indigo-50">Show Summary</span>
-            <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold hidden group-open:inline bg-indigo-50">Hide Summary</span>
+            <div className="flex items-center space-x-2">
+              <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold group-open:hidden bg-indigo-50">Show Summary</span>
+              <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold hidden group-open:inline bg-indigo-50">Hide Summary</span>
+              {file.summary && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDownloadSummary(file);
+                  }}
+                  className="flex items-center space-x-1 text-[10px] text-indigo-600 hover:text-indigo-800 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold bg-indigo-50 hover:bg-indigo-100 transition-all active:scale-95"
+                  title="Download Summary as Markdown File"
+                >
+                  <Icon name="download" className="w-3 h-3 text-indigo-600" />
+                  <span>Download</span>
+                </button>
+              )}
+            </div>
           </summary>
           <div className="px-4 pb-5 pt-3 border-t border-indigo-500/10 text-xs text-slate-700 space-y-4 leading-relaxed font-sans max-h-[500px] overflow-y-auto custom-scrollbar prose prose-indigo">
             <div dangerouslySetInnerHTML={renderMarkdown(file.summary)} />
@@ -1218,6 +1298,70 @@ function App() {
     let processed = text;
     const mathBlocks = [];
 
+    // Helper to balance unescaped curly braces in math blocks
+    const balanceMathBraces = (content) => {
+      let openCount = 0;
+      let closeCount = 0;
+      for (let i = 0; i < content.length; i++) {
+        if (content[i] === '{') {
+          let backslashCount = 0;
+          let j = i - 1;
+          while (j >= 0 && content[j] === '\\') {
+            backslashCount++;
+            j--;
+          }
+          if (backslashCount % 2 === 0) {
+            openCount++;
+          }
+        } else if (content[i] === '}') {
+          let backslashCount = 0;
+          let j = i - 1;
+          while (j >= 0 && content[j] === '\\') {
+            backslashCount++;
+            j--;
+          }
+          if (backslashCount % 2 === 0) {
+            closeCount++;
+          }
+        }
+      }
+      if (openCount > closeCount) {
+        return content + '}'.repeat(openCount - closeCount);
+      }
+      return content;
+    };
+
+    // Auto-close unclosed display/inline math blocks at paragraph level
+    let paragraphs = processed.split(/\n\n+/);
+    for (let i = 0; i < paragraphs.length; i++) {
+      let p = paragraphs[i].trim();
+      
+      // Case 1: starts with $$ and no other $$ or odd number of $$
+      if (p.startsWith('$$')) {
+        const dollarCount = (p.match(/\$\$/g) || []).length;
+        if (dollarCount % 2 !== 0) {
+          paragraphs[i] = paragraphs[i] + '\n$$';
+        }
+      }
+      // Case 2: starts with \[ and no \]
+      else if (p.startsWith('\\[') && !p.includes('\\]')) {
+        paragraphs[i] = paragraphs[i] + '\n\\]';
+      }
+      // Case 3: starts with \( and no \)
+      else if (p.startsWith('\\(') && !p.includes('\\)')) {
+        paragraphs[i] = paragraphs[i] + '\n\\)';
+      }
+      // Case 4: starts with [ (not a link, checkbox, or task) and has math indicators but no ]
+      else if (p.startsWith('[') && !p.includes(']')) {
+        const isLinkOrCheckbox = p.startsWith('[ ]') || p.startsWith('[x]') || p.startsWith('[X]') || /^[a-zA-Z0-9\s]+\]\(/.test(p);
+        const hasMath = /[\_=^\\+\-*\/]/.test(p) || p.includes('\\mathcal') || p.includes('\\frac');
+        if (!isLinkOrCheckbox && hasMath) {
+          paragraphs[i] = paragraphs[i] + '\n]';
+        }
+      }
+    }
+    processed = paragraphs.join('\n\n');
+
     const maskPattern = (regex) => {
       processed = processed.replace(regex, (match) => {
         const placeholder = `MATHBLOCKPLACEHOLDERXYZ${mathBlocks.length}`;
@@ -1299,6 +1443,42 @@ function App() {
     mathBlocks.forEach(block => {
       block.content = block.content.replace(malformedLayoutRegex, '\\$1');
       block.content = block.content.replace(malformedSymbolRegex, '\\$1');
+      
+      // Auto-balance braces and \left/\right delimiters
+      let delimStart = "";
+      let delimEnd = "";
+      let inner = block.content;
+      
+      if (block.content.startsWith('$$') && block.content.endsWith('$$')) {
+        delimStart = '$$'; delimEnd = '$$';
+        inner = block.content.slice(2, -2);
+      } else if (block.content.startsWith('\\[') && block.content.endsWith('\\]')) {
+        delimStart = '\\['; delimEnd = '\\]';
+        inner = block.content.slice(2, -2);
+      } else if (block.content.startsWith('\\(') && block.content.endsWith('\\)')) {
+        delimStart = '\\('; delimEnd = '\\)';
+        inner = block.content.slice(2, -2);
+      } else if (block.content.startsWith('$') && block.content.endsWith('$')) {
+        delimStart = '$'; delimEnd = '$';
+        inner = block.content.slice(1, -1);
+      }
+      
+      inner = inner.trim();
+      inner = balanceMathBraces(inner);
+      
+      const leftCount = (inner.match(/\\left\b/g) || []).length;
+      const rightCount = (inner.match(/\\right\b/g) || []).length;
+      if (leftCount > rightCount) {
+        inner += ' \\right.'.repeat(leftCount - rightCount);
+      }
+      
+      if (delimStart === '$$' || delimStart === '\\[') {
+        block.content = `${delimStart}\n${inner}\n${delimEnd}`;
+      } else if (delimStart === '$' || delimStart === '\\(') {
+        block.content = `${delimStart}${inner}${delimEnd}`;
+      } else {
+        block.content = inner;
+      }
     });
 
     return { processed, mathBlocks };
