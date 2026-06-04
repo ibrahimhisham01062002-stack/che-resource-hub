@@ -597,10 +597,10 @@
         .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #1E2538 !important; }
         
         /* MathJax contrast fix: force math elements inside glass components to render as high-contrast dark text */
-        .glass-panel mjx-container, .glass-card mjx-container,
-        .glass-panel .MathJax, .glass-card .MathJax,
-        .glass-panel math, .glass-card math,
-        .glass-panel mjx-container *, .glass-card mjx-container * {
+        .glass-panel mjx-container, .glass-card mjx-container, .prose mjx-container,
+        .glass-panel .MathJax, .glass-card .MathJax, .prose .MathJax,
+        .glass-panel math, .glass-card math, .prose math,
+        .glass-panel mjx-container *, .glass-card mjx-container *, .prose mjx-container * {
             color: #1E2538 !important;
             fill: #1E2538 !important;
         }

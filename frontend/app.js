@@ -1212,10 +1212,49 @@ function App() {
     return null;
   };
 
+  // Preprocess LaTeX math delimiters to convert non-standard delimiters [ ... ] and ( ... )
+  const preprocessMarkdownMath = (text) => {
+    if (!text) return "";
+    let processed = text;
+
+    // 1. Process block display equations wrapped in [ ... ]
+    // We match [ ... ] with nested bracket support for concentrations like [S]
+    const blockRegex = /\[\s*((?:[^\[\]]|\[[^\[\]]*\])+?)\s*\]/g;
+    processed = processed.replace(blockRegex, (match, content) => {
+      const hasSpaces = match.startsWith('[ ') && match.endsWith(' ]');
+      const hasMathChars = /[\_=^\\+\-*\/]/.test(content);
+      const isCheckbox = content === ' ' || content === 'x' || content === 'X';
+      
+      if ((hasSpaces || hasMathChars) && !isCheckbox && content.length > 2) {
+        return `\n$$\n${content.trim()}\n$$\n`;
+      }
+      return match;
+    });
+
+    // 2. Process inline equations/symbols wrapped in ( ... )
+    // We match ( ... ) with spaces or LaTeX commands inside, and prevent matching across lines
+    const inlineRegex = /\(\s+([^\(\)\r\n]+?)\s+\)/g;
+    processed = processed.replace(inlineRegex, (match, content) => {
+      if (content.length <= 30) {
+        return `\\(${content.trim()}\\)`;
+      }
+      return match;
+    });
+
+    // 3. Match inline LaTeX commands inside parentheses without spaces, e.g. (\mu)
+    const inlineLatexRegex = /\(\s*(\\[a-zA-Z]+)\s*\)/g;
+    processed = processed.replace(inlineLatexRegex, (match, command) => {
+      return `\\(${command.trim()}\\)`;
+    });
+
+    return processed;
+  };
+
   // Render markdown text dynamically using Marked
   const renderMarkdown = (text) => {
-    if (!text) return "";
-    return { __html: marked.parse(text) };
+    if (!text) return { __html: "" };
+    const preprocessedText = preprocessMarkdownMath(text);
+    return { __html: marked.parse(preprocessedText) };
   };
 
   // Filtering courses by search bar, level, and term
