@@ -1001,9 +1001,9 @@ function App() {
             <p className="text-[10px] text-slate-600">{summaryError}</p>
             <button 
               onClick={() => handleSummarizePdf(file.index)}
-              className="mt-2 text-[10px] text-indigo-600 hover:text-indigo-800 underline font-bold"
+              className="mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center"
             >
-              Retry Generation
+              <span>Retry Generation</span>
             </button>
           </div>
         </div>
