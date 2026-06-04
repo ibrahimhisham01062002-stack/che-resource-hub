@@ -943,7 +943,7 @@ function App() {
   };
 
   // Helper to update summary state across all arrays
-  const updateSummaryState = (fileIndex, summaryText) => {
+  const updateSummaryState = (courseId, fileIndex, summaryText) => {
     setPreviewFile(prev => {
       if (prev && prev.index === fileIndex) {
         return { ...prev, summary: summaryText };
@@ -953,6 +953,7 @@ function App() {
 
     setActiveCourse(prev => {
       if (!prev) return prev;
+      if (prev.id !== courseId) return prev;
       const updatedFiles = prev.files.map((file, idx) => {
         if (idx === fileIndex) {
           return { ...file, summary: summaryText };
@@ -964,7 +965,7 @@ function App() {
 
     setCourses(prev => {
       return prev.map(c => {
-        if (c.id === activeCourse.id) {
+        if (c.id === courseId) {
           const updatedFiles = c.files.map((file, idx) => {
             if (idx === fileIndex) {
               return { ...file, summary: summaryText };
@@ -981,14 +982,15 @@ function App() {
   // Handle PDF Summarization with Qwen AI
   const handleSummarizePdf = async (fileIndex) => {
     if (!activeCourse) return;
+    const courseId = activeCourse.id;
     setIsSummarizing(true);
     setSummaryError("");
     
     // Clear old summary in state to force visual reset
-    updateSummaryState(fileIndex, "");
+    updateSummaryState(courseId, fileIndex, "");
 
     try {
-      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/files/${fileIndex}/summarize`, {
+      const res = await fetch(`${API_BASE}/api/courses/${courseId}/files/${fileIndex}/summarize`, {
         method: "POST",
       });
       if (!res.ok) {
@@ -1000,9 +1002,12 @@ function App() {
       if (contentType.includes("application/json")) {
         // Fast path: cached summary loaded directly
         const data = await res.json();
-        updateSummaryState(fileIndex, data.summary);
+        updateSummaryState(courseId, fileIndex, data.summary);
       } else {
         // Stream path: consume Server-Sent Events line by line
+        if (!res.body) {
+          throw new Error("Streaming is not supported by your browser or the response has no body.");
+        }
         const reader = res.body.getReader();
         const decoder = new TextDecoder("utf-8");
         let accumulatedSummary = "";
@@ -1032,10 +1037,11 @@ function App() {
                 }
                 if (parsed.chunk) {
                   accumulatedSummary += parsed.chunk;
-                  updateSummaryState(fileIndex, accumulatedSummary);
+                  updateSummaryState(courseId, fileIndex, accumulatedSummary);
                 }
               } catch (e) {
                 console.error("Error decoding chunk:", e);
+                throw e; // Propagate chunk decode/API errors to show error card
               }
             }
           }
