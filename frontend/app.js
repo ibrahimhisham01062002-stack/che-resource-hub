@@ -1238,6 +1238,12 @@ function App() {
       return match;
     });
 
+    // 3. Correct malformed LaTeX commands starting with | or / instead of \
+    // E.g. |frac -> \frac, /mu -> \mu
+    // We ensure they are preceded by start of line, whitespace, or math/bracket punctuation to avoid matching URLs
+    const malformedCommandRegex = /(?<=^|[\s\(\[\{\=\+\-\*\/])[\|\/](frac|overline|underline|text|mathrm|mu|alpha|beta|gamma|delta|epsilon|theta|lambda|pi|rho|sigma|tau|phi|omega|partial|sum|int|infty|times|div|pm|mp|le|ge|ne|approx|hat|bar|tilde|dot|ddot|sqrt|left|right|begin|end|matrix|array|sin|cos|tan|ln|log|exp|deg)\b/g;
+    processed = processed.replace(malformedCommandRegex, '\\$1');
+
     return processed;
   };
 
