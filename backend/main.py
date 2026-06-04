@@ -1550,9 +1550,7 @@ def rename_folder(course_id: str, old_folder_name: str, folder_data: FolderRenam
     if old_folder_name not in course["folders"]:
         raise HTTPException(status_code=404, detail=f"Folder '{old_folder_name}' not found")
         
-    if old_folder_name == "Root":
-        raise HTTPException(status_code=400, detail="Cannot rename the Root folder")
-        
+
     new_folder_name = folder_data.new_name.strip()
     if not new_folder_name:
         raise HTTPException(status_code=400, detail="New folder name cannot be empty")
@@ -1656,9 +1654,7 @@ def rename_video_folder(course_id: str, old_folder_name: str, folder_data: Folde
     if old_folder_name not in course["video_folders"]:
         raise HTTPException(status_code=404, detail=f"Folder '{old_folder_name}' not found")
         
-    if old_folder_name == "Root":
-        raise HTTPException(status_code=400, detail="Cannot rename the Root folder")
-        
+
     new_folder_name = folder_data.new_name.strip()
     if not new_folder_name:
         raise HTTPException(status_code=400, detail="New folder name cannot be empty")

@@ -265,21 +265,18 @@
             color: #1E2538 !important;
         }
         
-        /* Subfolder actions (rename, delete) styling inside unselected button */
-        .folder-btn-unselected [title*="Rename"] {
-            color: #5A8DDE !important; /* Muted brand blue */
+        /* Subfolder actions (rename, delete) styling inside buttons to be solid dark black */
+        .che-course-workspace button [title*="Rename"],
+        .che-course-workspace button [title*="Delete"],
+        .che-course-workspace button [title*="Rename"] *,
+        .che-course-workspace button [title*="Delete"] * {
+            color: #000000 !important;
+            stroke: #000000 !important;
+            opacity: 1 !important;
         }
-        .folder-btn-unselected [title*="Rename"]:hover {
-            color: #0284c7 !important;
-            background-color: rgba(90, 141, 222, 0.15) !important;
-        }
-        
-        .folder-btn-unselected [title*="Delete"] {
-            color: #D9534F !important; /* Elegant brand red-rose */
-        }
-        .folder-btn-unselected [title*="Delete"]:hover {
-            color: #be123c !important;
-            background-color: rgba(217, 83, 79, 0.15) !important;
+        .che-course-workspace button [title*="Rename"]:hover,
+        .che-course-workspace button [title*="Delete"]:hover {
+            background-color: rgba(0, 0, 0, 0.08) !important;
         }
         
         .folder-btn-unselected:hover {
