@@ -19,6 +19,67 @@ from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 
 load_dotenv()
 
+import pypdf
+
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
+
+def extract_text_from_pdf(pdf_bytes: bytes, max_chars: int = 40000) -> str:
+    pdf_file = io.BytesIO(pdf_bytes)
+    reader = pypdf.PdfReader(pdf_file)
+    extracted_text = []
+    total_chars = 0
+    
+    for page in reader.pages:
+        text = page.extract_text() or ""
+        extracted_text.append(text)
+        total_chars += len(text)
+        if total_chars >= max_chars:
+            break
+            
+    return "\n".join(extracted_text)[:max_chars]
+
+async def query_deepseek_summary(text: str, filename: str) -> str:
+    if not DEEPSEEK_API_KEY:
+        raise HTTPException(status_code=500, detail="DeepSeek API key is not configured in environment variables")
+        
+    headers = {
+        "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    
+    prompt = (
+        f"You are an expert tutor for Chemical Engineering students.\n"
+        f"Provide a highly descriptive, detailed, and structured study summary "
+        f"of the following textbook/document named '{filename}'.\n\n"
+        f"Structure your response strictly with the following 4 sections in beautiful GitHub Markdown:\n\n"
+        f"### 1. Topic-by-Topic Outline & Summary\n"
+        f"Walk through the document content chronologically, summarizing the topics from section to section.\n\n"
+        f"### 2. Key Concepts & Explanations\n"
+        f"Identify and define the fundamental chemical engineering concepts, theories, and processes presented.\n\n"
+        f"### 3. Formulas & Notations Dictated\n"
+        f"Provide a descriptive analysis of all key mathematical equations, variables, and physical notations. Explain what every variable stands for and its physical significance.\n\n"
+        f"### 4. Comparative Analysis Table\n"
+        f"Create a markdown table comparing/contrasting the different methods, methodologies, reactors, processes, or theories analyzed in the text (including assumptions, parameters, advantages, and limitations).\n\n"
+        f"Content:\n{text}"
+    )
+    
+    payload = {
+        "model": "deepseek-chat",
+        "messages": [
+            {"role": "user", "content": prompt}
+        ],
+        "temperature": 0.3,
+        "max_tokens": 2000
+    }
+    
+    resp = await http_client.post(DEEPSEEK_API_URL, headers=headers, json=payload, timeout=90.0)
+    if resp.status_code != 200:
+        raise HTTPException(status_code=502, detail=f"DeepSeek API Error: {resp.text}")
+        
+    result = resp.json()
+    return result["choices"][0]["message"]["content"]
+
 # Google Drive service initializer
 def get_gdrive_service():
     project_id = os.getenv("GDRIVE_PROJECT_ID")
@@ -1211,6 +1272,85 @@ async def upload_file(
         "storage_type": "telegram_chunks",
         "message": "File uploaded successfully to Telegram channel!"
     }
+
+# Handle PDF Summarization with DeepSeek
+@app.post("/api/courses/{course_id}/files/{file_index}/summarize")
+async def summarize_pdf_file(course_id: str, file_index: int):
+    config = load_courses_config()
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
+        raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
+        
+    course = config["courses"][course_id]
+    files = course.get("files", [])
+    
+    if file_index < 0 or file_index >= len(files):
+        raise HTTPException(status_code=404, detail="File not found")
+        
+    file_item = files[file_index]
+    filename = file_item["name"]
+    
+    if not filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files can be summarized")
+        
+    # Check if a summary already exists
+    if "summary" in file_item:
+        return {"status": "success", "summary": file_item["summary"], "cached": True}
+        
+    # Download file content from Telegram chunks
+    telegram_file_ids = file_item.get("telegram_file_ids", [])
+    if not telegram_file_ids:
+        # Fallback to single telegram_file_id if present
+        single_id = file_item.get("telegram_file_id")
+        if single_id:
+            telegram_file_ids = [single_id]
+        else:
+            raise HTTPException(status_code=400, detail="File has no Telegram storage metadata")
+            
+    # Accumulate file bytes
+    file_bytes_accumulator = io.BytesIO()
+    for file_id in telegram_file_ids:
+        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+        resp = await safe_telegram_request("GET", get_file_url)
+        if resp.status_code != 200:
+            raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
+            
+        result = resp.json()
+        if not result.get("ok"):
+            raise HTTPException(status_code=502, detail=f"Telegram Bot API error: {result.get('description', '')}")
+            
+        file_path = result["result"]["file_path"]
+        download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+        
+        async with http_client.stream("GET", download_url) as r:
+            if r.status_code != 200:
+                raise HTTPException(status_code=502, detail="Failed to download file chunk from Telegram")
+            async for chunk in r.aiter_bytes():
+                file_bytes_accumulator.write(chunk)
+                
+    pdf_bytes = file_bytes_accumulator.getvalue()
+    if not pdf_bytes:
+        raise HTTPException(status_code=400, detail="Downloaded PDF file is empty")
+        
+    try:
+        # Extract text from PDF
+        extracted_text = extract_text_from_pdf(pdf_bytes)
+        if not extracted_text.strip():
+            raise HTTPException(status_code=400, detail="Could not extract any readable text from the PDF file")
+            
+        # Generate summary using DeepSeek AI model
+        summary_text = await query_deepseek_summary(extracted_text, filename)
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to generate summary: {str(e)}")
+        
+    # Cache summary inside the course files metadata database
+    file_item["summary"] = summary_text
+    save_courses_config(config)
+    
+    return {"status": "success", "summary": summary_text, "cached": False}
 
 @app.delete("/api/courses/{course_id}/files/{file_index}")
 async def delete_file(course_id: str, file_index: int):

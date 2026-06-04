@@ -133,6 +133,16 @@ const Icon = ({ name, className = "w-5 h-5", ...props }) => {
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" />
       </svg>
+    ),
+    sparkles: (
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 21l-.813-5.096L3 15l5.096-.813L9 9l.813 5.096L15 15l-5.096.813zM19.071 4.929l-.707 1.414-1.414.707 1.414.707.707 1.414.707-1.414 1.414-.707-1.414-.707-.707-1.414z" />
+      </svg>
+    ),
+    alertTriangle: (
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
     )
   };
   return icons[name] || (
@@ -177,6 +187,8 @@ function App() {
   const [previewFile, setPreviewFile] = useState(null); // {name, path, size, type}
   const [previewUrl, setPreviewUrl] = useState("");
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [isSummarizing, setIsSummarizing] = useState(false);
+  const [summaryError, setSummaryError] = useState("");
   
   // Book upload states
   const [bookUploadFile, setBookUploadFile] = useState([]);
@@ -281,6 +293,8 @@ function App() {
 
   // Load PDF directly using standard streaming proxy endpoint
   useEffect(() => {
+    setSummaryError("");
+    setIsSummarizing(false);
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
       setPreviewLoading(false);
@@ -897,6 +911,145 @@ function App() {
         window.open(url, "_blank");
       }
     });
+  };
+
+  // Handle PDF Summarization with DeepSeek AI
+  const handleSummarizePdf = async (fileIndex) => {
+    if (!activeCourse) return;
+    setIsSummarizing(true);
+    setSummaryError("");
+    try {
+      const res = await fetch(`${API_BASE}/api/courses/${activeCourse.id}/files/${fileIndex}/summarize`, {
+        method: "POST",
+      });
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      
+      // Update preview file summary in real-time
+      setPreviewFile(prev => {
+        if (prev && prev.index === fileIndex) {
+          return { ...prev, summary: data.summary };
+        }
+        return prev;
+      });
+
+      // Update activeCourse.files array so cache persists locally
+      setActiveCourse(prev => {
+        if (!prev) return prev;
+        const updatedFiles = prev.files.map((file, idx) => {
+          if (idx === fileIndex) {
+            return { ...file, summary: data.summary };
+          }
+          return file;
+        });
+        return { ...prev, files: updatedFiles };
+      });
+
+      // Also update courses database if it exists in state
+      setCourses(prev => {
+        return prev.map(c => {
+          if (c.id === activeCourse.id) {
+            const updatedFiles = c.files.map((file, idx) => {
+              if (idx === fileIndex) {
+                return { ...file, summary: data.summary };
+              }
+              return file;
+            });
+            return { ...c, files: updatedFiles };
+          }
+          return c;
+        });
+      });
+
+    } catch (err) {
+      console.error("Summarization failed:", err);
+      setSummaryError(err.message || "Failed to generate AI summary.");
+    } finally {
+      setIsSummarizing(false);
+    }
+  };
+
+  // Render PDF AI summary card
+  const renderPdfSummary = (file) => {
+    if (!file) return null;
+    const isPdf = (file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf');
+    if (!isPdf) return null;
+
+    if (isSummarizing) {
+      return (
+        <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/5 space-y-3 animate-pulse">
+          <div className="flex items-center space-x-3">
+            <Icon name="loader" className="w-5 h-5 text-indigo-500 animate-spin" />
+            <span className="text-xs font-semibold text-indigo-400 font-display">DeepSeek is analyzing your document...</span>
+          </div>
+          <p className="text-[10px] text-slate-500 leading-relaxed pl-8">
+            Extracting text from PDF and compiling a structured study guide with topic outline, key concepts, formulas, and comparative tables. This may take 30-60 seconds depending on document size.
+          </p>
+        </div>
+      );
+    }
+
+    if (summaryError) {
+      return (
+        <div className="glass-panel p-4 mt-4 rounded-xl border border-rose-500/20 bg-rose-500/5 flex items-start space-x-3">
+          <Icon name="alertTriangle" className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
+          <div className="space-y-1">
+            <h5 className="text-xs font-bold text-rose-700">Summarization Error</h5>
+            <p className="text-[10px] text-slate-600">{summaryError}</p>
+            <button 
+              onClick={() => handleSummarizePdf(file.index)}
+              className="mt-2 text-[10px] text-indigo-600 hover:text-indigo-800 underline font-bold"
+            >
+              Retry Generation
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    if (!file.summary) {
+      return (
+        <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/15 bg-[#6366F1]/5 flex flex-col items-center justify-center text-center space-y-3">
+          <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-600">
+            <Icon name="sparkles" className="w-5 h-5" />
+          </div>
+          <div className="space-y-1">
+            <h5 className="text-xs font-bold text-slate-700">DeepSeek AI PDF Summarizer</h5>
+            <p className="text-[10px] text-slate-500 max-w-sm">
+              Generate a comprehensive structured overview including key formulas, concepts, and comparison tables.
+            </p>
+          </div>
+          <button
+            onClick={() => handleSummarizePdf(file.index)}
+            className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm"
+          >
+            <Icon name="sparkles" className="w-3.5 h-3.5" />
+            <span>Summarize Document</span>
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="mt-4">
+        <details open className="group bg-[#6366F1]/5 border border-[#6366F1]/15 rounded-xl transition-all duration-300">
+          <summary className="flex items-center justify-between p-4 cursor-pointer select-none font-display font-semibold text-xs text-indigo-700 hover:text-indigo-800">
+            <div className="flex items-center space-x-2">
+              <Icon name="sparkles" className="w-4 h-4 text-indigo-500 animate-pulse" />
+              <span>DeepSeek AI Study Companion</span>
+            </div>
+            <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold group-open:hidden bg-indigo-50">Show Summary</span>
+            <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold hidden group-open:inline bg-indigo-50">Hide Summary</span>
+          </summary>
+          <div className="px-4 pb-5 pt-3 border-t border-indigo-500/10 text-xs text-slate-700 space-y-4 leading-relaxed font-sans max-h-[500px] overflow-y-auto custom-scrollbar prose prose-indigo">
+            <div dangerouslySetInnerHTML={renderMarkdown(file.summary)} />
+          </div>
+        </details>
+      </div>
+    );
   };
 
   // Handle file uploads recursively for multiple files sequentially
@@ -1898,6 +2051,7 @@ function App() {
                             ></iframe>
                           ) : null}
                         </div>
+                        {renderPdfSummary(previewFile)}
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
@@ -2124,6 +2278,7 @@ function App() {
                             ></iframe>
                           ) : null}
                         </div>
+                        {renderPdfSummary(previewFile)}
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
@@ -2350,6 +2505,7 @@ function App() {
                             ></iframe>
                           ) : null}
                         </div>
+                        {renderPdfSummary(previewFile)}
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
@@ -2576,6 +2732,7 @@ function App() {
                             ></iframe>
                           ) : null}
                         </div>
+                        {renderPdfSummary(previewFile)}
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
@@ -2918,23 +3075,26 @@ function App() {
                         </div>
 
                         {(previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? (
-                          <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                            {previewLoading ? (
-                              <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                                <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                                <div className="text-center space-y-1">
-                                  <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
-                                  <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
+                          <>
+                            <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
+                              {previewLoading ? (
+                                <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
+                                  <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
+                                  <div className="text-center space-y-1">
+                                    <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
+                                    <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
+                                  </div>
                                 </div>
-                              </div>
-                            ) : previewUrl ? (
-                              <iframe 
-                                src={previewUrl}
-                                className="w-full h-full border-none"
-                                title="PDF Viewer Frame"
-                              ></iframe>
-                            ) : null}
-                          </div>
+                              ) : previewUrl ? (
+                                <iframe 
+                                  src={previewUrl}
+                                  className="w-full h-full border-none"
+                                  title="PDF Viewer Frame"
+                                ></iframe>
+                              ) : null}
+                            </div>
+                            {renderPdfSummary(previewFile)}
+                          </>
                         ) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? (
                           <div className="w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center" style={{ height: "550px" }}>
                             <video 
