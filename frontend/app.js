@@ -319,10 +319,22 @@ function App() {
       setPreviewLoading(false);
     }, 1000); // Elegant 1-second overlay spinner for smooth transitions
     
-    return () => {
-      clearTimeout(timer);
-    };
   }, [previewFile, activeCourse]);
+
+  // Trigger MathJax typesetting whenever the preview file or its summary changes
+  useEffect(() => {
+    if (window.MathJax && previewFile && previewFile.summary) {
+      // Allow the DOM to update first, then typeset
+      const timer = setTimeout(() => {
+        try {
+          window.MathJax.typesetPromise();
+        } catch (err) {
+          console.error("MathJax typesetting failed:", err);
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [previewFile, isSummarizing]);
 
   // Restore active course from safeStorage once courses list is loaded
   useEffect(() => {

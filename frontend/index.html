@@ -583,24 +583,27 @@
         /* Markdown Styling overrides for Dim Theme */
         .prose h1 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 700; color: #1E2538; margin-top: 1.5rem; margin-bottom: 0.8rem; border-bottom: 1px solid #CBD2E1; padding-bottom: 0.3rem;}
         .prose h2 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 600; color: #3A4454; margin-top: 1.2rem; margin-bottom: 0.6rem; }
-        .prose h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: #687289; margin-top: 1rem; margin-bottom: 0.4rem; }
-        .prose p { margin-bottom: 0.8rem; line-height: 1.6; color: #687289; }
+        .prose h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600; color: #3A4454; margin-top: 1rem; margin-bottom: 0.4rem; }
+        .prose p { margin-bottom: 0.8rem; line-height: 1.6; color: #1E2538 !important; }
         .prose ul, .prose ol { margin-left: 1.5rem; margin-bottom: 0.8rem; list-style-type: disc; }
-        .prose li { margin-bottom: 0.3rem; color: #687289; }
+        .prose li { margin-bottom: 0.3rem; color: #1E2538 !important; }
         .prose table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem; background: #EDEEF5; border-radius: 6px; overflow: hidden; border: 1px solid #CBD2E1; }
         .prose th { background: rgba(90, 141, 222, 0.1); padding: 0.6rem; font-family: 'Outfit', sans-serif; text-align: left; font-weight: 600; border: 1px solid #CBD2E1; color: #1E2538; }
-        .prose td { padding: 0.6rem; border: 1px solid #CBD2E1; color: #687289; }
+        .prose td { padding: 0.6rem; border: 1px solid #CBD2E1; color: #1E2538 !important; }
         .prose tr:nth-child(even) { background: rgba(255, 255, 255, 0.3); }
         .prose code { background: rgba(90, 141, 222, 0.1); color: #6F5294; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
         .prose pre { background: #EDEEF5; border: 1px solid #CBD2E1; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
         .prose pre code { background: transparent; color: #1E2538; padding: 0; }
-        .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #687289; }
-        .prose td { padding: 0.6rem; border: 1px solid #CBD2E1; color: #687289; }
-        .prose tr:nth-child(even) { background: rgba(255, 255, 255, 0.3); }
-        .prose code { background: rgba(90, 141, 222, 0.1); color: #6F5294; padding: 0.15rem 0.3rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
-        .prose pre { background: #EDEEF5; border: 1px solid #CBD2E1; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
-        .prose pre code { background: transparent; color: #1E2538; padding: 0; }
-        .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #687289; }
+        .prose blockquote { border-left: 4px solid #5A8DDE; padding-left: 1rem; margin-left: 0.5rem; margin-bottom: 1rem; font-style: italic; color: #1E2538 !important; }
+        
+        /* MathJax contrast fix: force math elements inside glass components to render as high-contrast dark text */
+        .glass-panel mjx-container, .glass-card mjx-container,
+        .glass-panel .MathJax, .glass-card .MathJax,
+        .glass-panel math, .glass-card math,
+        .glass-panel mjx-container *, .glass-card mjx-container * {
+            color: #1E2538 !important;
+            fill: #1E2538 !important;
+        }
 
         /* Premium highlighted black title style filled with solid light maroon box and maroon border (Image 2) */
         .glass-panel span.che-book-title,
