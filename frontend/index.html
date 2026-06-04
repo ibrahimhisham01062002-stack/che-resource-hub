@@ -443,27 +443,27 @@
             opacity: 1 !important;
         }
         
-        /* Brand text "ChE" in Header (high contrast off-white against sand-violet gradient) */
+        /* Brand text "ChE" in Header (high contrast pure white with subtle cyan halo) */
         header.glass-panel span.che-brand-text {
-            color: #EDEEF5 !important; /* Premium brand warm off-white */
+            color: #FFFFFF !important;
             font-weight: 800 !important;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 0 8px rgba(53, 21, 77, 0.25) !important; /* Subtle dark shadow backdrop for perfect contrast against sand background */
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.25), 0 2px 4px rgba(0, 0, 0, 0.6) !important;
         }
         
-        /* Vibrant gradient brand text StudySpace (highly eye-catching and vibrant neon gold to sunburst orange gradient) */
+        /* Vibrant gradient brand text StudySpace (luminous neon cyan to sky-blue to hot fuchsia/magenta gradient) */
         header.glass-panel span.gradient-text {
-            background: linear-gradient(135deg, #FFF176 0%, #FF9100 50%, #FF3D00 100%) !important; /* Luminous neon gold shifting into vibrant orange and glowing flame-red */
+            background: linear-gradient(135deg, #00F2FE 0%, #3B82F6 45%, #F02FC2 100%) !important;
             -webkit-background-clip: text !important;
             -webkit-text-fill-color: transparent !important;
             font-weight: 800 !important;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important; /* Strong dark drop shadow for perfect 3D depth against dark background */
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.35), 0 2px 5px rgba(0, 0, 0, 0.7) !important;
         }
 
-        /* Combined Maroon & Dark Violet background override specifically for the top section Navigation Header panel */
+        /* Combined Deep Cosmic Space Indigo & Midnight Violet background override specifically for the top section Navigation Header panel */
         header.glass-panel {
-            background: linear-gradient(135deg, #5C061C 0%, #2A0845 55%, #10001F 100%) !important; /* Elegant maroon shifting into dark violet and deep night-sky */
-            border-bottom: 1.5px solid rgba(139, 0, 0, 0.2) !important; /* Maroon translucent border outline */
-            box-shadow: 0 4px 25px -2px rgba(0, 0, 0, 0.4) !important;
+            background: linear-gradient(135deg, #06050F 0%, #0F0A2B 55%, #03020A 100%) !important;
+            border-bottom: 2px solid rgba(0, 242, 254, 0.35) !important; /* Glowing electric cyan bottom border */
+            box-shadow: 0 4px 30px rgba(0, 242, 254, 0.15) !important; /* Cyan ambient aura shadow */
         }
 
         /* High-contrast and bold typography for all Navigation Header elements */
@@ -484,10 +484,10 @@
             letter-spacing: 0.05em !important;
         }
         header.glass-panel p.text-slate-400 {
-            color: #FFFFFF !important; /* Elegant crisp white subtitle as requested */
-            letter-spacing: 0.12em !important;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important; /* Subtle sharp shadow backdrop for perfect contrast against sand background */
-            opacity: 1 !important;
+            color: #A5F3FC !important; /* Vibrant high-contrast ice-cyan subtitle */
+            letter-spacing: 0.15em !important;
+            text-shadow: 0 1px 3px rgba(0, 242, 254, 0.25) !important;
+            opacity: 0.9 !important;
         }
         header.glass-panel .text-white,
         header.glass-panel .text-accent-sky {
@@ -886,6 +886,6 @@
     <div id="root" class="flex-grow flex flex-col"></div>
     
     <!-- Modular JSX logic loaded below -->
-    <script type="text/babel" src="app.js?v=6.0"></script>
+    <script type="text/babel" src="app.js?v=6.1"></script>
 </body>
 </html>
