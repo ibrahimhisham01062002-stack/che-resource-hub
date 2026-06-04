@@ -21,8 +21,8 @@ load_dotenv()
 
 import pypdf
 
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
-DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
+HF_TOKEN = os.getenv("HF_TOKEN")
+HF_API_URL = "https://api-inference.huggingface.co/v1/chat/completions"
 
 def extract_text_from_pdf(pdf_bytes: bytes, max_chars: int = 40000) -> str:
     pdf_file = io.BytesIO(pdf_bytes)
@@ -39,12 +39,12 @@ def extract_text_from_pdf(pdf_bytes: bytes, max_chars: int = 40000) -> str:
             
     return "\n".join(extracted_text)[:max_chars]
 
-async def query_deepseek_summary(text: str, filename: str) -> str:
-    if not DEEPSEEK_API_KEY:
-        raise HTTPException(status_code=500, detail="DeepSeek API key is not configured in environment variables")
+async def query_qwen_summary(text: str, filename: str) -> str:
+    if not HF_TOKEN:
+        raise HTTPException(status_code=500, detail="Hugging Face API token (HF_TOKEN) is not configured in environment variables")
         
     headers = {
-        "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+        "Authorization": f"Bearer {HF_TOKEN}",
         "Content-Type": "application/json"
     }
     
@@ -65,7 +65,7 @@ async def query_deepseek_summary(text: str, filename: str) -> str:
     )
     
     payload = {
-        "model": "deepseek-chat",
+        "model": "Qwen/Qwen2.5-72B-Instruct",
         "messages": [
             {"role": "user", "content": prompt}
         ],
@@ -73,9 +73,9 @@ async def query_deepseek_summary(text: str, filename: str) -> str:
         "max_tokens": 2000
     }
     
-    resp = await http_client.post(DEEPSEEK_API_URL, headers=headers, json=payload, timeout=90.0)
+    resp = await http_client.post(HF_API_URL, headers=headers, json=payload, timeout=120.0)
     if resp.status_code != 200:
-        raise HTTPException(status_code=502, detail=f"DeepSeek API Error: {resp.text}")
+        raise HTTPException(status_code=502, detail=f"Hugging Face API Error: {resp.text}")
         
     result = resp.json()
     return result["choices"][0]["message"]["content"]
@@ -1339,8 +1339,8 @@ async def summarize_pdf_file(course_id: str, file_index: int):
         if not extracted_text.strip():
             raise HTTPException(status_code=400, detail="Could not extract any readable text from the PDF file")
             
-        # Generate summary using DeepSeek AI model
-        summary_text = await query_deepseek_summary(extracted_text, filename)
+        # Generate summary using Qwen AI model on Hugging Face Serverless Inference API
+        summary_text = await query_qwen_summary(extracted_text, filename)
     except HTTPException as he:
         raise he
     except Exception as e:

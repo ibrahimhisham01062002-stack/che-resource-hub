@@ -983,7 +983,7 @@ function App() {
         <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/5 space-y-3 animate-pulse">
           <div className="flex items-center space-x-3">
             <Icon name="loader" className="w-5 h-5 text-indigo-500 animate-spin" />
-            <span className="text-xs font-semibold text-indigo-400 font-display">DeepSeek is analyzing your document...</span>
+            <span className="text-xs font-semibold text-indigo-400 font-display">Qwen AI is analyzing your document...</span>
           </div>
           <p className="text-[10px] text-slate-500 leading-relaxed pl-8">
             Extracting text from PDF and compiling a structured study guide with topic outline, key concepts, formulas, and comparative tables. This may take 30-60 seconds depending on document size.
@@ -1017,7 +1017,7 @@ function App() {
             <Icon name="sparkles" className="w-5 h-5" />
           </div>
           <div className="space-y-1">
-            <h5 className="text-xs font-bold text-slate-700">DeepSeek AI PDF Summarizer</h5>
+            <h5 className="text-xs font-bold text-slate-700">Qwen AI PDF Summarizer</h5>
             <p className="text-[10px] text-slate-500 max-w-sm">
               Generate a comprehensive structured overview including key formulas, concepts, and comparison tables.
             </p>
@@ -1039,7 +1039,7 @@ function App() {
           <summary className="flex items-center justify-between p-4 cursor-pointer select-none font-display font-semibold text-xs text-indigo-700 hover:text-indigo-800">
             <div className="flex items-center space-x-2">
               <Icon name="sparkles" className="w-4 h-4 text-indigo-500 animate-pulse" />
-              <span>DeepSeek AI Study Companion</span>
+              <span>Qwen AI Study Companion</span>
             </div>
             <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold group-open:hidden bg-indigo-50">Show Summary</span>
             <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold hidden group-open:inline bg-indigo-50">Hide Summary</span>
