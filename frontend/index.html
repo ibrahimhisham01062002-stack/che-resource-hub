@@ -222,6 +222,8 @@
         /* EXCEPTIONS: We must protect buttons, solid tags, and active links that have background colors */
         .glass-card button, .glass-panel button,
         .glass-card button *, .glass-panel button *,
+        .glass-card [role="button"], .glass-panel [role="button"],
+        .glass-card [role="button"] *, .glass-panel [role="button"] *,
         .glass-card .bg-gradient-to-r, .glass-panel .bg-gradient-to-r,
         .glass-card .bg-gradient-to-r *, .glass-panel .bg-gradient-to-r *,
         .glass-card .bg-accent-sky, .glass-panel .bg-accent-sky,
@@ -230,6 +232,14 @@
         .glass-card .bg-sky-600 *, .glass-panel .bg-sky-600 * {
             color: #FFFFFF !important;
             text-shadow: none !important;
+        }
+
+        /* High-contrast Qwen AI PDF Summarizer button styling override to ensure white text & icons */
+        .che-summarize-btn,
+        .che-summarize-btn * {
+            color: #FFFFFF !important;
+            fill: #FFFFFF !important;
+            stroke: #FFFFFF !important;
         }
         
         /* High-contrast visibility override for all delete button icons */
@@ -977,6 +987,6 @@
     <div id="root" class="flex-grow flex flex-col"></div>
     
     <!-- Modular JSX logic loaded below -->
-    <script type="text/babel" src="app.js?v=7.0"></script>
+    <script type="text/babel" src="app.js?v=8.0"></script>
 </body>
 </html>

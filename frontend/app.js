@@ -143,6 +143,12 @@ const Icon = ({ name, className = "w-5 h-5", ...props }) => {
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
       </svg>
+    ),
+    eye: (
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+      </svg>
     )
   };
   return icons[name] || (
@@ -189,6 +195,14 @@ function App() {
   const [previewLoading, setPreviewLoading] = useState(false);
   const [isSummarizing, setIsSummarizing] = useState(false);
   const [summaryError, setSummaryError] = useState("");
+  const [showSummarizingModal, setShowSummarizingModal] = useState(false);
+  const [showPdfPreview, setShowPdfPreview] = useState(false);
+
+  // Reset preview states on file switch
+  useEffect(() => {
+    setShowPdfPreview(false);
+    setShowSummarizingModal(false);
+  }, [previewFile]);
   
   // Book upload states
   const [bookUploadFile, setBookUploadFile] = useState([]);
@@ -985,6 +999,8 @@ function App() {
     const courseId = activeCourse.id;
     setIsSummarizing(true);
     setSummaryError("");
+    setShowPdfPreview(true); // Trigger PDF loading in the background/behind the modal
+    setShowSummarizingModal(true); // Open premium generating modal overlay
     
     try {
       // Clear old summary in state to force visual reset
@@ -1056,6 +1072,7 @@ function App() {
       setSummaryError(err.message || "Failed to generate AI summary.");
     } finally {
       setIsSummarizing(false);
+      setShowSummarizingModal(false); // Close the generating modal on complete or failure
     }
   };
 
@@ -1105,7 +1122,7 @@ function App() {
                   handleSummarizePdf(file.index);
                 }
               }}
-              className="mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center cursor-pointer active:scale-95 transform select-none"
+              className="che-summarize-btn mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center cursor-pointer active:scale-95 transform select-none"
             >
               <span>Retry Generation</span>
             </div>
@@ -1141,7 +1158,7 @@ function App() {
                 if (!isSummarizing) handleSummarizePdf(file.index);
               }
             }}
-            className={`px-4 py-1.5 rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm cursor-pointer select-none ${
+            className={`che-summarize-btn px-4 py-1.5 rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm cursor-pointer select-none ${
               isSummarizing 
                 ? "bg-indigo-400 text-white cursor-not-allowed opacity-60" 
                 : "bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95 transform"
@@ -1194,6 +1211,69 @@ function App() {
             <div dangerouslySetInnerHTML={renderMarkdown(file.summary)} />
           </div>
         </details>
+      </div>
+    );
+  };
+
+  // Reusable PDF viewer or placeholder renderer
+  const renderPdfViewerOrPlaceholder = (file) => {
+    if (!file) return null;
+
+    if (showPdfPreview) {
+      if (previewLoading) {
+        return (
+          <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
+            <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
+            <div className="text-center space-y-1">
+              <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
+              <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
+            </div>
+          </div>
+        );
+      }
+      return (
+        <iframe 
+          src={previewUrl}
+          className="w-full h-full border-none animate-fade-in"
+          title="PDF Viewer Frame"
+        ></iframe>
+      );
+    }
+
+    // Otherwise, show the premium placeholder card
+    const hasSummary = !!file.summary;
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-950 p-6 text-center border border-white border-opacity-5 rounded-xl animate-fade-in">
+        <div className="w-12 h-12 rounded-full bg-[#5A8DDE]/10 flex items-center justify-center text-[#5A8DDE] border border-[#5A8DDE]/20 mb-2">
+          <Icon name="bookOpen" className="w-6 h-6 text-[#5A8DDE] stroke-[#5A8DDE] fill-none" />
+        </div>
+        <div className="space-y-1 max-w-sm">
+          <h4 className="font-display font-bold text-sm text-white">Document Preview Queued</h4>
+          <p className="text-[10px] text-slate-400 leading-relaxed">
+            To optimize page performance and save network bandwidth, the PDF viewer is paused.
+          </p>
+        </div>
+        {hasSummary ? (
+          <div 
+            role="button"
+            tabIndex={0}
+            onClick={() => setShowPdfPreview(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                setShowPdfPreview(true);
+              }
+            }}
+            className="mt-3 px-4 py-2 bg-[#2A0845] hover:bg-[#3F1360] text-white rounded-lg text-[10px] font-semibold transition-all hover:scale-[1.02] shadow-md flex items-center space-x-1.5 cursor-pointer active:scale-95"
+            style={{ color: "#FFFFFF !important" }}
+          >
+            <Icon name="eye" className="w-3.5 h-3.5 text-white" />
+            <span>Load PDF Preview</span>
+          </div>
+        ) : (
+          <p className="text-[10px] text-indigo-400 font-semibold mt-2">
+            Click "Summarize Document" below to generate study guide and load PDF.
+          </p>
+        )}
       </div>
     );
   };
@@ -1712,6 +1792,30 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Dynamic Generating PDF Summary Modal */}
+      {showSummarizingModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
+          <div className="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-[#6366F1]/30">
+            <div className="space-y-4 text-center">
+              <div className="flex items-center justify-center space-x-2 text-indigo-500">
+                <Icon name="loader" className="w-6 h-6 animate-spin text-[#6366F1]" />
+                <h3 className="font-display font-bold text-lg text-white">AI Study Assistant</h3>
+              </div>
+              
+              <div className="space-y-2">
+                <h4 className="font-display font-extrabold text-base text-white">Generating Study Guide...</h4>
+                <div className="indeterminate-bar">
+                  <div className="bar-fill"></div>
+                </div>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Qwen AI is currently parsing the PDF content and generating a structured summary with outline, key formulas, and comparison tables. Please wait...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Dynamic Course Editor Modal */}
       {editingCourse && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
@@ -2459,21 +2563,7 @@ function App() {
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                          {previewLoading ? (
-                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                              <div className="text-center space-y-1">
-                                <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
-                                <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
-                              </div>
-                            </div>
-                          ) : previewUrl ? (
-                            <iframe 
-                              src={previewUrl}
-                              className="w-full h-full border-none"
-                              title="PDF Viewer Frame"
-                            ></iframe>
-                          ) : null}
+                          {renderPdfViewerOrPlaceholder(previewFile)}
                         </div>
                         {renderPdfSummary(previewFile)}
                       </div>
@@ -2686,21 +2776,7 @@ function App() {
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                          {previewLoading ? (
-                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                              <div className="text-center space-y-1">
-                                <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
-                                <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
-                              </div>
-                            </div>
-                          ) : previewUrl ? (
-                            <iframe 
-                              src={previewUrl}
-                              className="w-full h-full border-none"
-                              title="PDF Viewer Frame"
-                            ></iframe>
-                          ) : null}
+                          {renderPdfViewerOrPlaceholder(previewFile)}
                         </div>
                         {renderPdfSummary(previewFile)}
                       </div>
@@ -2913,21 +2989,7 @@ function App() {
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                          {previewLoading ? (
-                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                              <div className="text-center space-y-1">
-                                <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
-                                <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
-                              </div>
-                            </div>
-                          ) : previewUrl ? (
-                            <iframe 
-                              src={previewUrl}
-                              className="w-full h-full border-none"
-                              title="PDF Viewer Frame"
-                            ></iframe>
-                          ) : null}
+                          {renderPdfViewerOrPlaceholder(previewFile)}
                         </div>
                         {renderPdfSummary(previewFile)}
                       </div>
@@ -3140,21 +3202,7 @@ function App() {
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                          {previewLoading ? (
-                            <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                              <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                              <div className="text-center space-y-1">
-                                <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
-                                <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
-                              </div>
-                            </div>
-                          ) : previewUrl ? (
-                            <iframe 
-                              src={previewUrl}
-                              className="w-full h-full border-none"
-                              title="PDF Viewer Frame"
-                            ></iframe>
-                          ) : null}
+                          {renderPdfViewerOrPlaceholder(previewFile)}
                         </div>
                         {renderPdfSummary(previewFile)}
                       </div>
@@ -3501,21 +3549,7 @@ function App() {
                         {(previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? (
                           <>
                             <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
-                              {previewLoading ? (
-                                <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-                                  <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-                                  <div className="text-center space-y-1">
-                                    <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
-                                    <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
-                                  </div>
-                                </div>
-                              ) : previewUrl ? (
-                                <iframe 
-                                  src={previewUrl}
-                                  className="w-full h-full border-none"
-                                  title="PDF Viewer Frame"
-                                ></iframe>
-                              ) : null}
+                              {renderPdfViewerOrPlaceholder(previewFile)}
                             </div>
                             {renderPdfSummary(previewFile)}
                           </>
