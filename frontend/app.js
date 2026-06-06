@@ -195,8 +195,6 @@ function App() {
   const [previewLoading, setPreviewLoading] = useState(false);
   const [isSummarizing, setIsSummarizing] = useState(false);
   const [summaryError, setSummaryError] = useState("");
-  const [showSummarizingModal, setShowSummarizingModal] = useState(false);
-  const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
   const [summaryProgress, setSummaryProgress] = useState(0);
 
@@ -210,8 +208,7 @@ function App() {
       }
     }
     prevPreviewFileRef.current = previewFile;
-    setShowPdfPreview(false);
-    setShowSummarizingModal(false);
+    setIsSummarizing(false);
     setShowSummary(false);
     setSummaryProgress(0);
   }, [previewFile]);
@@ -1011,8 +1008,6 @@ function App() {
     const courseId = activeCourse.id;
     setIsSummarizing(true);
     setSummaryError("");
-    setShowPdfPreview(true); // Trigger PDF loading in the background/behind the modal
-    setShowSummarizingModal(true); // Open premium generating modal overlay
     
     let mockProgressInterval = null;
     let isCachedProgressRunning = false;
@@ -1057,7 +1052,6 @@ function App() {
             setTimeout(() => {
               updateSummaryState(courseId, fileIndex, data.summary);
               setShowSummary(true);
-              setShowSummarizingModal(false);
               setIsSummarizing(false);
             }, 200);
           }
@@ -1121,13 +1115,11 @@ function App() {
       console.error("Summarization failed:", err);
       setSummaryError(err.message || "Failed to generate AI summary.");
       setSummaryProgress(0);
-      setShowSummarizingModal(false);
       setIsSummarizing(false);
     } finally {
       if (mockProgressInterval) clearInterval(mockProgressInterval);
       if (!isCachedProgressRunning) {
         setIsSummarizing(false);
-        setShowSummarizingModal(false);
       }
     }
   };
@@ -1141,20 +1133,20 @@ function App() {
     if (!showSummary) {
       if (isSummarizing) {
         return (
-          <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/5 space-y-3">
-            <div className="flex items-center space-x-3">
-              <Icon name="loader" className="w-5 h-5 text-indigo-500 animate-spin" />
-              <span className="text-xs font-semibold text-indigo-400 font-display">Generating... ({summaryProgress}%)</span>
+          <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/30 bg-[#6366F1]/5 space-y-3 che-summarizing-modal-content">
+            <div className="flex items-center space-x-3 text-indigo-500">
+              <Icon name="loader" className="w-5 h-5 animate-spin text-[#6366F1]" />
+              <h4 className="font-display font-extrabold text-sm text-white m-0">Generating Study Guide... {summaryProgress}%</h4>
             </div>
-            {/* Linear progress bar */}
-            <div className="w-full bg-slate-200/50 rounded-full h-1.5 overflow-hidden">
+            {/* Linear gradient progress bar */}
+            <div className="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden border border-white/5 shadow-inner">
               <div 
-                className="bg-indigo-600 h-1.5 rounded-full transition-all duration-300 ease-out"
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-300 ease-out"
                 style={{ width: `${summaryProgress}%` }}
               ></div>
             </div>
-            <p className="text-[10px] text-slate-500 leading-relaxed pl-8">
-              Extracting text from PDF and compiling a structured study guide with topic outline, key concepts, formulas, and comparative tables. This may take 30-60 seconds depending on document size.
+            <p className="text-[10px] text-slate-400 leading-relaxed pl-8 m-0">
+              Qwen AI is currently parsing the PDF content and compiling a structured summary with outline, key formulas, and comparison tables. Please wait...
             </p>
           </div>
         );
@@ -1280,62 +1272,23 @@ function App() {
   const renderPdfViewerOrPlaceholder = (file) => {
     if (!file) return null;
 
-    if (showPdfPreview) {
-      if (previewLoading) {
-        return (
-          <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-            <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-            <div className="text-center space-y-1">
-              <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
-              <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
-            </div>
-          </div>
-        );
-      }
+    if (previewLoading) {
       return (
-        <iframe 
-          src={previewUrl}
-          className="w-full h-full border-none animate-fade-in"
-          title="PDF Viewer Frame"
-        ></iframe>
+        <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
+          <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
+          <div className="text-center space-y-1">
+            <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
+            <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
+          </div>
+        </div>
       );
     }
-
-    // Otherwise, show the premium placeholder card
-    const hasSummary = !!file.summary;
     return (
-      <div className="che-pdf-placeholder w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-950 p-6 text-center border border-white border-opacity-5 rounded-xl animate-fade-in">
-        <div className="w-12 h-12 rounded-full bg-[#5A8DDE]/10 flex items-center justify-center text-[#5A8DDE] border border-[#5A8DDE]/20 mb-2">
-          <Icon name="bookOpen" className="w-6 h-6 text-[#5A8DDE] stroke-[#5A8DDE] fill-none" />
-        </div>
-        <div className="space-y-1 max-w-sm">
-          <h4 className="font-display font-bold text-sm text-white">Document Preview Queued</h4>
-          <p className="text-[10px] text-slate-400 leading-relaxed">
-            To optimize page performance and save network bandwidth, the PDF viewer is paused.
-          </p>
-        </div>
-        {hasSummary ? (
-          <div 
-            role="button"
-            tabIndex={0}
-            onClick={() => setShowPdfPreview(true)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                setShowPdfPreview(true);
-              }
-            }}
-            className="mt-3 px-4 py-2 bg-[#2A0845] hover:bg-[#3F1360] text-white rounded-lg text-[10px] font-semibold transition-all hover:scale-[1.02] shadow-md flex items-center space-x-1.5 cursor-pointer active:scale-95"
-            style={{ color: "#FFFFFF !important" }}
-          >
-            <Icon name="eye" className="w-3.5 h-3.5 text-white" />
-            <span>Load PDF Preview</span>
-          </div>
-        ) : (
-          <p className="text-[10px] text-indigo-400 font-semibold mt-2">
-            Click "Summarize Document" below to generate study guide and load PDF.
-          </p>
-        )}
-      </div>
+      <iframe 
+        src={previewUrl}
+        className="w-full h-full border-none animate-fade-in"
+        title="PDF Viewer Frame"
+      ></iframe>
     );
   };
 
@@ -1853,35 +1806,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Dynamic Generating PDF Summary Modal */}
-      {showSummarizingModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
-          <div className="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-[#6366F1]/30 che-summarizing-modal-content">
-            <div className="space-y-4 text-center">
-              <div className="flex items-center justify-center space-x-2 text-indigo-500">
-                <Icon name="loader" className="w-6 h-6 animate-spin text-[#6366F1]" />
-                <h3 className="font-display font-bold text-lg text-white">AI Study Assistant</h3>
-              </div>
-              
-              <div className="space-y-3">
-                <h4 className="font-display font-extrabold text-base text-white">Generating Study Guide... {summaryProgress}%</h4>
-                
-                {/* Linear percentage progress bar */}
-                <div className="w-full bg-slate-700/50 rounded-full h-2.5 overflow-hidden border border-white/5 shadow-inner">
-                  <div 
-                    className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2.5 rounded-full transition-all duration-300 ease-out"
-                    style={{ width: `${summaryProgress}%` }}
-                  ></div>
-                </div>
 
-                <p className="text-slate-400 text-xs leading-relaxed">
-                  Qwen AI is currently parsing the PDF content and compiling a structured summary with outline, key formulas, and comparison tables. Please wait...
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Dynamic Course Editor Modal */}
       {editingCourse && (
