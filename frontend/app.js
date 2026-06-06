@@ -1063,10 +1063,14 @@ function App() {
 
     if (isSummarizing && !file.summary) {
       return (
-        <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/5 space-y-3 animate-pulse">
+        <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/5 space-y-3">
           <div className="flex items-center space-x-3">
             <Icon name="loader" className="w-5 h-5 text-indigo-500 animate-spin" />
             <span className="text-xs font-semibold text-indigo-400 font-display">Generating...</span>
+          </div>
+          {/* Material design indeterminate loading bar */}
+          <div className="indeterminate-bar">
+            <div className="bar-fill"></div>
           </div>
           <p className="text-[10px] text-slate-500 leading-relaxed pl-8">
             Extracting text from PDF and compiling a structured study guide with topic outline, key concepts, formulas, and comparative tables. This may take 30-60 seconds depending on document size.
@@ -1083,7 +1087,12 @@ function App() {
             <h5 className="text-xs font-bold text-rose-700">Summarization Error</h5>
             <p className="text-[10px] text-slate-600">{summaryError}</p>
             <button 
-              onClick={() => handleSummarizePdf(file.index)}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleSummarizePdf(file.index);
+              }}
               className="mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center"
             >
               <span>Retry Generation</span>
@@ -1106,8 +1115,13 @@ function App() {
             </p>
           </div>
           <button
+            type="button"
             disabled={isSummarizing}
-            onClick={() => handleSummarizePdf(file.index)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleSummarizePdf(file.index);
+            }}
             className={`px-4 py-1.5 rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm ${
               isSummarizing 
                 ? "bg-indigo-400 text-white cursor-not-allowed" 

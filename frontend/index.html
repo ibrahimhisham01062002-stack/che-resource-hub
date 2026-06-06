@@ -893,6 +893,56 @@
             color: #000000 !important;
             stroke: #000000 !important;
         }
+
+        /* Premium indeterminate progress bar (Material Design) */
+        @keyframes loadingBarProgress {
+            0% {
+                left: -35%;
+                right: 100%;
+            }
+            60% {
+                left: 100%;
+                right: -90%;
+            }
+            100% {
+                left: 100%;
+                right: -90%;
+            }
+        }
+        .indeterminate-bar {
+            position: relative;
+            height: 4px;
+            display: block;
+            width: 100%;
+            background-color: rgba(99, 102, 241, 0.15);
+            border-radius: 2px;
+            margin: 0.75rem 0;
+            overflow: hidden;
+        }
+        .indeterminate-bar .bar-fill {
+            background-color: #6366F1;
+        }
+        .indeterminate-bar .bar-fill::before {
+            content: '';
+            position: absolute;
+            background-color: inherit;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            will-change: left, right;
+            animation: loadingBarProgress 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+        }
+        .indeterminate-bar .bar-fill::after {
+            content: '';
+            position: absolute;
+            background-color: inherit;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            will-change: left, right;
+            animation: loadingBarProgress 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+            animation-delay: 1.15s;
+        }
     </style>
     
     <!-- React 18 & ReactDOM 18 CDN (jsDelivr high-performance global network) -->
@@ -927,6 +977,6 @@
     <div id="root" class="flex-grow flex flex-col"></div>
     
     <!-- Modular JSX logic loaded below -->
-    <script type="text/babel" src="app.js?v=6.4"></script>
+    <script type="text/babel" src="app.js?v=6.5"></script>
 </body>
 </html>
