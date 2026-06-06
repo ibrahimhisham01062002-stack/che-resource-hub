@@ -197,11 +197,23 @@ function App() {
   const [summaryError, setSummaryError] = useState("");
   const [showSummarizingModal, setShowSummarizingModal] = useState(false);
   const [showPdfPreview, setShowPdfPreview] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
+  const [summaryProgress, setSummaryProgress] = useState(0);
+
+  const prevPreviewFileRef = useRef(null);
 
   // Reset preview states on file switch
   useEffect(() => {
+    if (previewFile) {
+      if (prevPreviewFileRef.current && prevPreviewFileRef.current.index === previewFile.index && prevPreviewFileRef.current.name === previewFile.name) {
+        return;
+      }
+    }
+    prevPreviewFileRef.current = previewFile;
     setShowPdfPreview(false);
     setShowSummarizingModal(false);
+    setShowSummary(false);
+    setSummaryProgress(0);
   }, [previewFile]);
   
   // Book upload states
@@ -1002,14 +1014,25 @@ function App() {
     setShowPdfPreview(true); // Trigger PDF loading in the background/behind the modal
     setShowSummarizingModal(true); // Open premium generating modal overlay
     
+    let mockProgressInterval = null;
+    let isCachedProgressRunning = false;
+
     try {
       // Clear old summary in state to force visual reset
       updateSummaryState(courseId, fileIndex, "");
+      setShowSummary(false);
     } catch (err) {
       console.error("Failed to reset summary state:", err);
     }
 
     try {
+      let progressVal = 10;
+      setSummaryProgress(10);
+      mockProgressInterval = setInterval(() => {
+        progressVal = Math.min(30, progressVal + 2);
+        setSummaryProgress(progressVal);
+      }, 400);
+
       const res = await fetch(`${API_BASE}/api/courses/${courseId}/files/${fileIndex}/summarize`, {
         method: "POST",
       });
@@ -1021,10 +1044,28 @@ function App() {
       const contentType = res.headers.get("content-type") || "";
       if (contentType.includes("application/json")) {
         // Fast path: cached summary loaded directly
+        isCachedProgressRunning = true;
+        if (mockProgressInterval) clearInterval(mockProgressInterval);
         const data = await res.json();
-        updateSummaryState(courseId, fileIndex, data.summary);
+        
+        let currentP = progressVal;
+        const fastProgressInterval = setInterval(() => {
+          currentP += 10;
+          if (currentP >= 100) {
+            currentP = 100;
+            clearInterval(fastProgressInterval);
+            setTimeout(() => {
+              updateSummaryState(courseId, fileIndex, data.summary);
+              setShowSummary(true);
+              setShowSummarizingModal(false);
+              setIsSummarizing(false);
+            }, 200);
+          }
+          setSummaryProgress(currentP);
+        }, 50);
       } else {
         // Stream path: consume Server-Sent Events line by line
+        if (mockProgressInterval) clearInterval(mockProgressInterval);
         if (!res.body) {
           throw new Error("Streaming is not supported by your browser or the response has no body.");
         }
@@ -1058,6 +1099,10 @@ function App() {
                 if (parsed.chunk) {
                   accumulatedSummary += parsed.chunk;
                   updateSummaryState(courseId, fileIndex, accumulatedSummary);
+                  
+                  // Scale progress dynamically from 30% to 95% based on characters streamed
+                  const streamProgress = Math.min(95, 30 + Math.floor(accumulatedSummary.length / 40));
+                  setSummaryProgress(streamProgress);
                 }
               } catch (e) {
                 console.error("Error decoding chunk:", e);
@@ -1066,13 +1111,24 @@ function App() {
             }
           }
         }
+
+        // Complete the stream progress
+        setSummaryProgress(100);
+        await new Promise(resolve => setTimeout(resolve, 300));
+        setShowSummary(true);
       }
     } catch (err) {
       console.error("Summarization failed:", err);
       setSummaryError(err.message || "Failed to generate AI summary.");
-    } finally {
+      setSummaryProgress(0);
+      setShowSummarizingModal(false);
       setIsSummarizing(false);
-      setShowSummarizingModal(false); // Close the generating modal on complete or failure
+    } finally {
+      if (mockProgressInterval) clearInterval(mockProgressInterval);
+      if (!isCachedProgressRunning) {
+        setIsSummarizing(false);
+        setShowSummarizingModal(false);
+      }
     }
   };
 
@@ -1082,56 +1138,60 @@ function App() {
     const isPdf = (file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf');
     if (!isPdf) return null;
 
-    if (isSummarizing && !file.summary) {
-      return (
-        <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/5 space-y-3">
-          <div className="flex items-center space-x-3">
-            <Icon name="loader" className="w-5 h-5 text-indigo-500 animate-spin" />
-            <span className="text-xs font-semibold text-indigo-400 font-display">Generating...</span>
+    if (!showSummary) {
+      if (isSummarizing) {
+        return (
+          <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/20 bg-[#6366F1]/5 space-y-3">
+            <div className="flex items-center space-x-3">
+              <Icon name="loader" className="w-5 h-5 text-indigo-500 animate-spin" />
+              <span className="text-xs font-semibold text-indigo-400 font-display">Generating... ({summaryProgress}%)</span>
+            </div>
+            {/* Linear progress bar */}
+            <div className="w-full bg-slate-200/50 rounded-full h-1.5 overflow-hidden">
+              <div 
+                className="bg-indigo-600 h-1.5 rounded-full transition-all duration-300 ease-out"
+                style={{ width: `${summaryProgress}%` }}
+              ></div>
+            </div>
+            <p className="text-[10px] text-slate-500 leading-relaxed pl-8">
+              Extracting text from PDF and compiling a structured study guide with topic outline, key concepts, formulas, and comparative tables. This may take 30-60 seconds depending on document size.
+            </p>
           </div>
-          {/* Material design indeterminate loading bar */}
-          <div className="indeterminate-bar">
-            <div className="bar-fill"></div>
-          </div>
-          <p className="text-[10px] text-slate-500 leading-relaxed pl-8">
-            Extracting text from PDF and compiling a structured study guide with topic outline, key concepts, formulas, and comparative tables. This may take 30-60 seconds depending on document size.
-          </p>
-        </div>
-      );
-    }
+        );
+      }
 
-    if (summaryError) {
-      return (
-        <div className="glass-panel p-4 mt-4 rounded-xl border border-rose-500/20 bg-rose-500/5 flex items-start space-x-3">
-          <Icon name="alertTriangle" className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-          <div className="space-y-1">
-            <h5 className="text-xs font-bold text-rose-700">Summarization Error</h5>
-            <p className="text-[10px] text-slate-600">{summaryError}</p>
-            <div 
-              role="button"
-              tabIndex={0}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleSummarizePdf(file.index);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+      if (summaryError) {
+        return (
+          <div className="glass-panel p-4 mt-4 rounded-xl border border-rose-500/20 bg-rose-500/5 flex items-start space-x-3">
+            <Icon name="alertTriangle" className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
+            <div className="space-y-1">
+              <h5 className="text-xs font-bold text-rose-700">Summarization Error</h5>
+              <p className="text-[10px] text-slate-600">{summaryError}</p>
+              <div 
+                role="button"
+                tabIndex={0}
+                onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   handleSummarizePdf(file.index);
-                }
-              }}
-              className="che-summarize-btn mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center cursor-pointer active:scale-95 transform select-none"
-            >
-              <span>Retry Generation</span>
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleSummarizePdf(file.index);
+                  }
+                }}
+                className="che-summarize-btn mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center cursor-pointer active:scale-95 transform select-none"
+              >
+                <span>Retry Generation</span>
+              </div>
             </div>
           </div>
-        </div>
-      );
-    }
+        );
+      }
 
-    if (!file.summary) {
+      // Render the summarization prompt card to delay loading the summary
       return (
         <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/15 bg-[#6366F1]/5 flex flex-col items-center justify-center text-center space-y-3">
           <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-600">
@@ -1171,6 +1231,7 @@ function App() {
       );
     }
 
+    // Only render the summary when showSummary is true
     return (
       <div className="mt-4">
         <details open className="group bg-[#6366F1]/5 border border-[#6366F1]/15 rounded-xl transition-all duration-300">
@@ -1198,7 +1259,7 @@ function App() {
                       handleDownloadSummary(file);
                     }
                   }}
-                  className="flex items-center space-x-1 text-[10px] text-indigo-600 hover:text-indigo-800 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold bg-indigo-50 hover:bg-indigo-100 transition-all active:scale-95 cursor-pointer select-none"
+                  className="che-download-summary-btn flex items-center space-x-1 text-[10px] border border-black px-2.5 py-0.5 rounded-full font-semibold bg-indigo-50 hover:bg-indigo-100 transition-all active:scale-95 cursor-pointer select-none"
                   title="Download Summary as Markdown File"
                 >
                   <Icon name="download" className="w-3 h-3 text-indigo-600" />
@@ -1243,7 +1304,7 @@ function App() {
     // Otherwise, show the premium placeholder card
     const hasSummary = !!file.summary;
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-950 p-6 text-center border border-white border-opacity-5 rounded-xl animate-fade-in">
+      <div className="che-pdf-placeholder w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-950 p-6 text-center border border-white border-opacity-5 rounded-xl animate-fade-in">
         <div className="w-12 h-12 rounded-full bg-[#5A8DDE]/10 flex items-center justify-center text-[#5A8DDE] border border-[#5A8DDE]/20 mb-2">
           <Icon name="bookOpen" className="w-6 h-6 text-[#5A8DDE] stroke-[#5A8DDE] fill-none" />
         </div>
@@ -1795,20 +1856,26 @@ function App() {
       {/* Dynamic Generating PDF Summary Modal */}
       {showSummarizingModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in">
-          <div className="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-[#6366F1]/30">
+          <div className="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-[#6366F1]/30 che-summarizing-modal-content">
             <div className="space-y-4 text-center">
               <div className="flex items-center justify-center space-x-2 text-indigo-500">
                 <Icon name="loader" className="w-6 h-6 animate-spin text-[#6366F1]" />
                 <h3 className="font-display font-bold text-lg text-white">AI Study Assistant</h3>
               </div>
               
-              <div className="space-y-2">
-                <h4 className="font-display font-extrabold text-base text-white">Generating Study Guide...</h4>
-                <div className="indeterminate-bar">
-                  <div className="bar-fill"></div>
+              <div className="space-y-3">
+                <h4 className="font-display font-extrabold text-base text-white">Generating Study Guide... {summaryProgress}%</h4>
+                
+                {/* Linear percentage progress bar */}
+                <div className="w-full bg-slate-700/50 rounded-full h-2.5 overflow-hidden border border-white/5 shadow-inner">
+                  <div 
+                    className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2.5 rounded-full transition-all duration-300 ease-out"
+                    style={{ width: `${summaryProgress}%` }}
+                  ></div>
                 </div>
+
                 <p className="text-slate-400 text-xs leading-relaxed">
-                  Qwen AI is currently parsing the PDF content and generating a structured summary with outline, key formulas, and comparison tables. Please wait...
+                  Qwen AI is currently parsing the PDF content and compiling a structured summary with outline, key formulas, and comparison tables. Please wait...
                 </p>
               </div>
             </div>

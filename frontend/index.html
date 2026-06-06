@@ -241,6 +241,42 @@
             fill: #FFFFFF !important;
             stroke: #FFFFFF !important;
         }
+
+        /* Overrides for PDF summary download button to make it black text/icon & black border on light lavender */
+        .che-download-summary-btn,
+        .che-download-summary-btn * {
+            color: #000000 !important;
+            stroke: #000000 !important;
+            border-color: #000000 !important;
+        }
+        .che-download-summary-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05) !important;
+        }
+
+        /* Overrides for PDF placeholder to make it readable in dark backgrounds */
+        .che-pdf-placeholder,
+        .che-pdf-placeholder * {
+            color: #FFFFFF !important;
+        }
+        .che-pdf-placeholder p,
+        .che-pdf-placeholder .text-slate-400 {
+            color: #CBD5E1 !important;
+        }
+        .che-pdf-placeholder .text-indigo-400 {
+            color: #818CF8 !important;
+        }
+
+        /* Overrides for Summarizing Modal to ensure text is white/light slate on dark overlay */
+        .che-summarizing-modal-content h3,
+        .che-summarizing-modal-content h4 {
+            color: #FFFFFF !important;
+            font-weight: 800 !important;
+        }
+        .che-summarizing-modal-content p,
+        .che-summarizing-modal-content span {
+            color: #E2E8F0 !important;
+            font-weight: 500 !important;
+        }
         
         /* High-contrast visibility override for all delete button icons */
         .glass-card button[title*="Delete"] *,
@@ -987,6 +1023,6 @@
     <div id="root" class="flex-grow flex flex-col"></div>
     
     <!-- Modular JSX logic loaded below -->
-    <script type="text/babel" src="app.js?v=8.0"></script>
+    <script type="text/babel" src="app.js?v=9.0"></script>
 </body>
 </html>
