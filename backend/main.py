@@ -1766,12 +1766,21 @@ def serve_frontend_or_spa(path: str):
     # If the request matches a file in the frontend folder, serve it
     file_path = os.path.join(FRONTEND_DIR, path)
     if os.path.exists(file_path) and os.path.isfile(file_path):
-        return FileResponse(file_path)
+        response = FileResponse(file_path)
+        # Prevent caching of frontend assets, especially app.js, to avoid stale code
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
     
     # Fallback to SPA shell index.html for all other non-API routes
     index_html = os.path.join(FRONTEND_DIR, "index.html")
     if os.path.exists(index_html):
-        return FileResponse(index_html)
+        response = FileResponse(index_html)
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
         
     return JSONResponse(
         status_code=404,

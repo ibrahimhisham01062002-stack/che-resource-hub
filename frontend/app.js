@@ -986,8 +986,12 @@ function App() {
     setIsSummarizing(true);
     setSummaryError("");
     
-    // Clear old summary in state to force visual reset
-    updateSummaryState(courseId, fileIndex, "");
+    try {
+      // Clear old summary in state to force visual reset
+      updateSummaryState(courseId, fileIndex, "");
+    } catch (err) {
+      console.error("Failed to reset summary state:", err);
+    }
 
     try {
       const res = await fetch(`${API_BASE}/api/courses/${courseId}/files/${fileIndex}/summarize`, {
@@ -1086,17 +1090,25 @@ function App() {
           <div className="space-y-1">
             <h5 className="text-xs font-bold text-rose-700">Summarization Error</h5>
             <p className="text-[10px] text-slate-600">{summaryError}</p>
-            <button 
-              type="button"
+            <div 
+              role="button"
+              tabIndex={0}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 handleSummarizePdf(file.index);
               }}
-              className="mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleSummarizePdf(file.index);
+                }
+              }}
+              className="mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center cursor-pointer active:scale-95 transform select-none"
             >
               <span>Retry Generation</span>
-            </button>
+            </div>
           </div>
         </div>
       );
@@ -1114,23 +1126,30 @@ function App() {
               Generate a comprehensive structured overview including key formulas, concepts, and comparison tables.
             </p>
           </div>
-          <button
-            type="button"
-            disabled={isSummarizing}
+          <div
+            role="button"
+            tabIndex={0}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              handleSummarizePdf(file.index);
+              if (!isSummarizing) handleSummarizePdf(file.index);
             }}
-            className={`px-4 py-1.5 rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm ${
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isSummarizing) handleSummarizePdf(file.index);
+              }
+            }}
+            className={`px-4 py-1.5 rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm cursor-pointer select-none ${
               isSummarizing 
-                ? "bg-indigo-400 text-white cursor-not-allowed" 
-                : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                ? "bg-indigo-400 text-white cursor-not-allowed opacity-60" 
+                : "bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95 transform"
             }`}
           >
             <Icon name={isSummarizing ? "loader" : "sparkles"} className={`w-3.5 h-3.5 ${isSummarizing ? "animate-spin" : ""}`} />
             <span>{isSummarizing ? "Generating..." : "Summarize Document"}</span>
-          </button>
+          </div>
         </div>
       );
     }
@@ -1147,17 +1166,27 @@ function App() {
               <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold group-open:hidden bg-indigo-50">Show Summary</span>
               <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold hidden group-open:inline bg-indigo-50">Hide Summary</span>
               {file.summary && (
-                <button
+                <div
+                  role="button"
+                  tabIndex={0}
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     handleDownloadSummary(file);
                   }}
-                  className="flex items-center space-x-1 text-[10px] text-indigo-600 hover:text-indigo-800 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold bg-indigo-50 hover:bg-indigo-100 transition-all active:scale-95"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleDownloadSummary(file);
+                    }
+                  }}
+                  className="flex items-center space-x-1 text-[10px] text-indigo-600 hover:text-indigo-800 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold bg-indigo-50 hover:bg-indigo-100 transition-all active:scale-95 cursor-pointer select-none"
                   title="Download Summary as Markdown File"
                 >
                   <Icon name="download" className="w-3 h-3 text-indigo-600" />
                   <span>Download</span>
-                </button>
+                </div>
               )}
             </div>
           </summary>
