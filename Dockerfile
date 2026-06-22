@@ -3,13 +3,16 @@ FROM python:3.10-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-WORKDIR /app
-
 # Create a non-root user with UID 1000
 RUN useradd -m -u 1000 user
 
-# Copy the application files and assign ownership to the non-root user
-COPY --chown=user:user . /app
+WORKDIR /app
+
+# Copy the application files
+COPY . /app
+
+# Ensure user 1000 owns the /app directory and all files recursively
+RUN chown -R user:user /app
 
 # Switch to the non-root user
 USER user
