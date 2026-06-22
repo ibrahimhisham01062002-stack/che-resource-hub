@@ -160,7 +160,7 @@ const Icon = ({ name, className = "w-5 h-5", ...props }) => {
 
 const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
   ? "" 
-  : "https://che-resource-hub-2.onrender.com"; // Render production API
+  : "https://ibrahim072-che-study-hub-backend.hf.space"; // Hugging Face Spaces production API
 
 function App() {
   const [courses, setCourses] = useState([]);
