@@ -15,5 +15,5 @@ jobs:
       - name: Send Ping Request
         run: |
           echo "Pinging Render backend to prevent sleep..."
-          curl -I -s -o /dev/null -w "HTTP Response Status: %{http_code}\n" https://che-resource-hub-2.onrender.com/api/courses
+          curl -I -s -o /dev/null -w "HTTP Response Status: %{http_code}\n" https://che-resource-hub-2.onrender.com/api/health
           echo "Ping completed successfully!"
