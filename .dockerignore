@@ -1,0 +1,25 @@
+.git
+.github
+.venv
+venv
+__pycache__
+*.py[cod]
+*$py.class
+.pytest_cache
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+node_modules
+
+# Local Course Material Directories (Stored in Telegram)
+309/
+ChE-304/
+ChE-305/
+ChE-401/
+ChE-429/
+HYSYS/
+Matlab/
+*.pdf
+*.bk0
+*.hsc
