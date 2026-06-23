@@ -1122,11 +1122,9 @@ function App() {
     }
   };
 
-  // Render PDF AI summary card
+  // Render PDF AI summary card (Disabled)
   const renderPdfSummary = (file) => {
-    if (!file) return null;
-    const isPdf = (file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf');
-    if (!isPdf) return null;
+    return null;
 
     if (!showSummary) {
       if (isSummarizing) {
