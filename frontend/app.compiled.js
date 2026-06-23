@@ -5,7 +5,6 @@ function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableTo
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -410,22 +409,6 @@ function App() {
     _useState30 = _slicedToArray(_useState29, 2),
     previewLoading = _useState30[0],
     setPreviewLoading = _useState30[1];
-  var _useState31 = useState(false),
-    _useState32 = _slicedToArray(_useState31, 2),
-    isSummarizing = _useState32[0],
-    setIsSummarizing = _useState32[1];
-  var _useState33 = useState(""),
-    _useState34 = _slicedToArray(_useState33, 2),
-    summaryError = _useState34[0],
-    setSummaryError = _useState34[1];
-  var _useState35 = useState(false),
-    _useState36 = _slicedToArray(_useState35, 2),
-    showSummary = _useState36[0],
-    setShowSummary = _useState36[1];
-  var _useState37 = useState(0),
-    _useState38 = _slicedToArray(_useState37, 2),
-    summaryProgress = _useState38[0],
-    setSummaryProgress = _useState38[1];
   var prevPreviewFileRef = useRef(null);
 
   // Reset preview states on file switch
@@ -436,241 +419,238 @@ function App() {
       }
     }
     prevPreviewFileRef.current = previewFile;
-    setIsSummarizing(false);
-    setShowSummary(false);
-    setSummaryProgress(0);
   }, [previewFile]);
 
   // Book upload states
+  var _useState31 = useState([]),
+    _useState32 = _slicedToArray(_useState31, 2),
+    bookUploadFile = _useState32[0],
+    setBookUploadFile = _useState32[1];
+  var _useState33 = useState(false),
+    _useState34 = _slicedToArray(_useState33, 2),
+    isBookUploading = _useState34[0],
+    setIsBookUploading = _useState34[1];
+  var _useState35 = useState(0),
+    _useState36 = _slicedToArray(_useState35, 2),
+    bookUploadProgress = _useState36[0],
+    setBookUploadProgress = _useState36[1];
+  var _useState37 = useState({
+      type: "",
+      message: ""
+    }),
+    _useState38 = _slicedToArray(_useState37, 2),
+    bookUploadStatus = _useState38[0],
+    setBookUploadStatus = _useState38[1];
+  var bookFileInputRef = useRef(null);
+
+  // Slide upload states
   var _useState39 = useState([]),
     _useState40 = _slicedToArray(_useState39, 2),
-    bookUploadFile = _useState40[0],
-    setBookUploadFile = _useState40[1];
+    slideUploadFile = _useState40[0],
+    setSlideUploadFile = _useState40[1];
   var _useState41 = useState(false),
     _useState42 = _slicedToArray(_useState41, 2),
-    isBookUploading = _useState42[0],
-    setIsBookUploading = _useState42[1];
+    isSlideUploading = _useState42[0],
+    setIsSlideUploading = _useState42[1];
   var _useState43 = useState(0),
     _useState44 = _slicedToArray(_useState43, 2),
-    bookUploadProgress = _useState44[0],
-    setBookUploadProgress = _useState44[1];
+    slideUploadProgress = _useState44[0],
+    setSlideUploadProgress = _useState44[1];
   var _useState45 = useState({
       type: "",
       message: ""
     }),
     _useState46 = _slicedToArray(_useState45, 2),
-    bookUploadStatus = _useState46[0],
-    setBookUploadStatus = _useState46[1];
-  var bookFileInputRef = useRef(null);
+    slideUploadStatus = _useState46[0],
+    setSlideUploadStatus = _useState46[1];
+  var slideFileInputRef = useRef(null);
 
-  // Slide upload states
+  // Term-Final Question upload states
   var _useState47 = useState([]),
     _useState48 = _slicedToArray(_useState47, 2),
-    slideUploadFile = _useState48[0],
-    setSlideUploadFile = _useState48[1];
+    questionUploadFile = _useState48[0],
+    setQuestionUploadFile = _useState48[1];
   var _useState49 = useState(false),
     _useState50 = _slicedToArray(_useState49, 2),
-    isSlideUploading = _useState50[0],
-    setIsSlideUploading = _useState50[1];
+    isQuestionUploading = _useState50[0],
+    setIsQuestionUploading = _useState50[1];
   var _useState51 = useState(0),
     _useState52 = _slicedToArray(_useState51, 2),
-    slideUploadProgress = _useState52[0],
-    setSlideUploadProgress = _useState52[1];
+    questionUploadProgress = _useState52[0],
+    setQuestionUploadProgress = _useState52[1];
   var _useState53 = useState({
       type: "",
       message: ""
     }),
     _useState54 = _slicedToArray(_useState53, 2),
-    slideUploadStatus = _useState54[0],
-    setSlideUploadStatus = _useState54[1];
-  var slideFileInputRef = useRef(null);
+    questionUploadStatus = _useState54[0],
+    setQuestionUploadStatus = _useState54[1];
+  var questionFileInputRef = useRef(null);
 
-  // Term-Final Question upload states
+  // Solution Manual upload states
   var _useState55 = useState([]),
     _useState56 = _slicedToArray(_useState55, 2),
-    questionUploadFile = _useState56[0],
-    setQuestionUploadFile = _useState56[1];
+    solutionUploadFile = _useState56[0],
+    setSolutionUploadFile = _useState56[1];
   var _useState57 = useState(false),
     _useState58 = _slicedToArray(_useState57, 2),
-    isQuestionUploading = _useState58[0],
-    setIsQuestionUploading = _useState58[1];
+    isSolutionUploading = _useState58[0],
+    setIsSolutionUploading = _useState58[1];
   var _useState59 = useState(0),
     _useState60 = _slicedToArray(_useState59, 2),
-    questionUploadProgress = _useState60[0],
-    setQuestionUploadProgress = _useState60[1];
+    solutionUploadProgress = _useState60[0],
+    setSolutionUploadProgress = _useState60[1];
   var _useState61 = useState({
       type: "",
       message: ""
     }),
     _useState62 = _slicedToArray(_useState61, 2),
-    questionUploadStatus = _useState62[0],
-    setQuestionUploadStatus = _useState62[1];
-  var questionFileInputRef = useRef(null);
+    solutionUploadStatus = _useState62[0],
+    setSolutionUploadStatus = _useState62[1];
+  var solutionFileInputRef = useRef(null);
 
-  // Solution Manual upload states
+  // Term-Final Solved upload states
   var _useState63 = useState([]),
     _useState64 = _slicedToArray(_useState63, 2),
-    solutionUploadFile = _useState64[0],
-    setSolutionUploadFile = _useState64[1];
+    solvedUploadFile = _useState64[0],
+    setSolvedUploadFile = _useState64[1];
   var _useState65 = useState(false),
     _useState66 = _slicedToArray(_useState65, 2),
-    isSolutionUploading = _useState66[0],
-    setIsSolutionUploading = _useState66[1];
+    isSolvedUploading = _useState66[0],
+    setIsSolvedUploading = _useState66[1];
   var _useState67 = useState(0),
     _useState68 = _slicedToArray(_useState67, 2),
-    solutionUploadProgress = _useState68[0],
-    setSolutionUploadProgress = _useState68[1];
+    solvedUploadProgress = _useState68[0],
+    setSolvedUploadProgress = _useState68[1];
   var _useState69 = useState({
       type: "",
       message: ""
     }),
     _useState70 = _slicedToArray(_useState69, 2),
-    solutionUploadStatus = _useState70[0],
-    setSolutionUploadStatus = _useState70[1];
-  var solutionFileInputRef = useRef(null);
-
-  // Term-Final Solved upload states
-  var _useState71 = useState([]),
-    _useState72 = _slicedToArray(_useState71, 2),
-    solvedUploadFile = _useState72[0],
-    setSolvedUploadFile = _useState72[1];
-  var _useState73 = useState(false),
-    _useState74 = _slicedToArray(_useState73, 2),
-    isSolvedUploading = _useState74[0],
-    setIsSolvedUploading = _useState74[1];
-  var _useState75 = useState(0),
-    _useState76 = _slicedToArray(_useState75, 2),
-    solvedUploadProgress = _useState76[0],
-    setSolvedUploadProgress = _useState76[1];
-  var _useState77 = useState({
-      type: "",
-      message: ""
-    }),
-    _useState78 = _slicedToArray(_useState77, 2),
-    solvedUploadStatus = _useState78[0],
-    setSolvedUploadStatus = _useState78[1];
+    solvedUploadStatus = _useState70[0],
+    setSolvedUploadStatus = _useState70[1];
   var solvedFileInputRef = useRef(null);
 
   // Current active folder in slides section
-  var _useState79 = useState("Root"),
-    _useState80 = _slicedToArray(_useState79, 2),
-    currentFolder = _useState80[0],
-    setCurrentFolder = _useState80[1];
+  var _useState71 = useState("Root"),
+    _useState72 = _slicedToArray(_useState71, 2),
+    currentFolder = _useState72[0],
+    setCurrentFolder = _useState72[1];
 
   // Current active folder in recorded class section
-  var _useState81 = useState("Root"),
-    _useState82 = _slicedToArray(_useState81, 2),
-    currentVideoFolder = _useState82[0],
-    setCurrentVideoFolder = _useState82[1];
-  var _useState83 = useState(""),
-    _useState84 = _slicedToArray(_useState83, 2),
-    videoSearchQuery = _useState84[0],
-    setVideoSearchQuery = _useState84[1];
+  var _useState73 = useState("Root"),
+    _useState74 = _slicedToArray(_useState73, 2),
+    currentVideoFolder = _useState74[0],
+    setCurrentVideoFolder = _useState74[1];
+  var _useState75 = useState(""),
+    _useState76 = _slicedToArray(_useState75, 2),
+    videoSearchQuery = _useState76[0],
+    setVideoSearchQuery = _useState76[1];
 
   // Recorded Class video upload states
-  var _useState85 = useState([]),
-    _useState86 = _slicedToArray(_useState85, 2),
-    videoUploadFile = _useState86[0],
-    setVideoUploadFile = _useState86[1];
-  var _useState87 = useState(false),
-    _useState88 = _slicedToArray(_useState87, 2),
-    isVideoUploading = _useState88[0],
-    setIsVideoUploading = _useState88[1];
-  var _useState89 = useState(0),
-    _useState90 = _slicedToArray(_useState89, 2),
-    videoUploadProgress = _useState90[0],
-    setVideoUploadProgress = _useState90[1];
-  var _useState91 = useState({
+  var _useState77 = useState([]),
+    _useState78 = _slicedToArray(_useState77, 2),
+    videoUploadFile = _useState78[0],
+    setVideoUploadFile = _useState78[1];
+  var _useState79 = useState(false),
+    _useState80 = _slicedToArray(_useState79, 2),
+    isVideoUploading = _useState80[0],
+    setIsVideoUploading = _useState80[1];
+  var _useState81 = useState(0),
+    _useState82 = _slicedToArray(_useState81, 2),
+    videoUploadProgress = _useState82[0],
+    setVideoUploadProgress = _useState82[1];
+  var _useState83 = useState({
       type: "",
       message: ""
     }),
-    _useState92 = _slicedToArray(_useState91, 2),
-    videoUploadStatus = _useState92[0],
-    setVideoUploadStatus = _useState92[1];
+    _useState84 = _slicedToArray(_useState83, 2),
+    videoUploadStatus = _useState84[0],
+    setVideoUploadStatus = _useState84[1];
   var videoFileInputRef = useRef(null);
 
   // Reference to track previous course ID to prevent tab resetting on same-course refresh
   var prevCourseIdRef = useRef(null);
 
   // Dynamic course creator states
+  var _useState85 = useState({
+      code: "",
+      title: "",
+      description: ""
+    }),
+    _useState86 = _slicedToArray(_useState85, 2),
+    newCourse = _useState86[0],
+    setNewCourse = _useState86[1];
+  var _useState87 = useState(false),
+    _useState88 = _slicedToArray(_useState87, 2),
+    isCreatingCourse = _useState88[0],
+    setIsCreatingCourse = _useState88[1];
+  var _useState89 = useState(""),
+    _useState90 = _slicedToArray(_useState89, 2),
+    courseError = _useState90[0],
+    setCourseError = _useState90[1];
+
+  // Dynamic course editor states
+  var _useState91 = useState(null),
+    _useState92 = _slicedToArray(_useState91, 2),
+    editingCourse = _useState92[0],
+    setEditingCourse = _useState92[1];
   var _useState93 = useState({
       code: "",
       title: "",
       description: ""
     }),
     _useState94 = _slicedToArray(_useState93, 2),
-    newCourse = _useState94[0],
-    setNewCourse = _useState94[1];
+    editCourseFields = _useState94[0],
+    setEditCourseFields = _useState94[1];
   var _useState95 = useState(false),
     _useState96 = _slicedToArray(_useState95, 2),
-    isCreatingCourse = _useState96[0],
-    setIsCreatingCourse = _useState96[1];
+    isSavingCourseEdit = _useState96[0],
+    setIsSavingCourseEdit = _useState96[1];
   var _useState97 = useState(""),
     _useState98 = _slicedToArray(_useState97, 2),
-    courseError = _useState98[0],
-    setCourseError = _useState98[1];
-
-  // Dynamic course editor states
-  var _useState99 = useState(null),
-    _useState100 = _slicedToArray(_useState99, 2),
-    editingCourse = _useState100[0],
-    setEditingCourse = _useState100[1];
-  var _useState101 = useState({
-      code: "",
-      title: "",
-      description: ""
-    }),
-    _useState102 = _slicedToArray(_useState101, 2),
-    editCourseFields = _useState102[0],
-    setEditCourseFields = _useState102[1];
-  var _useState103 = useState(false),
-    _useState104 = _slicedToArray(_useState103, 2),
-    isSavingCourseEdit = _useState104[0],
-    setIsSavingCourseEdit = _useState104[1];
-  var _useState105 = useState(""),
-    _useState106 = _slicedToArray(_useState105, 2),
-    editCourseError = _useState106[0],
-    setEditCourseError = _useState106[1];
+    editCourseError = _useState98[0],
+    setEditCourseError = _useState98[1];
 
   // Administrative Passcode System States
+  var _useState99 = useState(false),
+    _useState100 = _slicedToArray(_useState99, 2),
+    showAuthModal = _useState100[0],
+    setShowAuthModal = _useState100[1];
+  var _useState101 = useState(""),
+    _useState102 = _slicedToArray(_useState101, 2),
+    authPasswordInput = _useState102[0],
+    setAuthPasswordInput = _useState102[1];
+  var _useState103 = useState(""),
+    _useState104 = _slicedToArray(_useState103, 2),
+    authError = _useState104[0],
+    setAuthError = _useState104[1];
+  var _useState105 = useState(null),
+    _useState106 = _slicedToArray(_useState105, 2),
+    pendingAuthCallback = _useState106[0],
+    setPendingAuthCallback = _useState106[1];
   var _useState107 = useState(false),
     _useState108 = _slicedToArray(_useState107, 2),
-    showAuthModal = _useState108[0],
-    setShowAuthModal = _useState108[1];
-  var _useState109 = useState(""),
-    _useState110 = _slicedToArray(_useState109, 2),
-    authPasswordInput = _useState110[0],
-    setAuthPasswordInput = _useState110[1];
-  var _useState111 = useState(""),
-    _useState112 = _slicedToArray(_useState111, 2),
-    authError = _useState112[0],
-    setAuthError = _useState112[1];
-  var _useState113 = useState(null),
-    _useState114 = _slicedToArray(_useState113, 2),
-    pendingAuthCallback = _useState114[0],
-    setPendingAuthCallback = _useState114[1];
-  var _useState115 = useState(false),
-    _useState116 = _slicedToArray(_useState115, 2),
-    isAuthorizedState = _useState116[0],
-    setIsAuthorizedState = _useState116[1];
+    isAuthorizedState = _useState108[0],
+    setIsAuthorizedState = _useState108[1];
 
   // Secure Download Passcode System States
-  var _useState117 = useState(false),
-    _useState118 = _slicedToArray(_useState117, 2),
-    showDownloadAuthModal = _useState118[0],
-    setShowDownloadAuthModal = _useState118[1];
-  var _useState119 = useState(""),
-    _useState120 = _slicedToArray(_useState119, 2),
-    downloadPasswordInput = _useState120[0],
-    setDownloadPasswordInput = _useState120[1];
-  var _useState121 = useState(""),
-    _useState122 = _slicedToArray(_useState121, 2),
-    downloadAuthError = _useState122[0],
-    setDownloadAuthError = _useState122[1];
-  var _useState123 = useState(null),
-    _useState124 = _slicedToArray(_useState123, 2),
-    pendingDownloadCallback = _useState124[0],
-    setPendingDownloadCallback = _useState124[1];
+  var _useState109 = useState(false),
+    _useState110 = _slicedToArray(_useState109, 2),
+    showDownloadAuthModal = _useState110[0],
+    setShowDownloadAuthModal = _useState110[1];
+  var _useState111 = useState(""),
+    _useState112 = _slicedToArray(_useState111, 2),
+    downloadPasswordInput = _useState112[0],
+    setDownloadPasswordInput = _useState112[1];
+  var _useState113 = useState(""),
+    _useState114 = _slicedToArray(_useState113, 2),
+    downloadAuthError = _useState114[0],
+    setDownloadAuthError = _useState114[1];
+  var _useState115 = useState(null),
+    _useState116 = _slicedToArray(_useState115, 2),
+    pendingDownloadCallback = _useState116[0],
+    setPendingDownloadCallback = _useState116[1];
 
   // Fetch all courses on mount
   var fetchCourses = async function fetchCourses() {
@@ -698,8 +678,6 @@ function App() {
 
   // Load PDF directly using standard streaming proxy endpoint
   useEffect(function () {
-    setSummaryError("");
-    setIsSummarizing(false);
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
       setPreviewLoading(false);
@@ -722,7 +700,7 @@ function App() {
     }, 1000); // Elegant 1-second overlay spinner for smooth transitions
   }, [previewFile, activeCourse]);
 
-  // Trigger MathJax typesetting whenever the preview file or its summary changes
+  // Trigger MathJax typesetting whenever the preview file changes
   useEffect(function () {
     if (window.MathJax && previewFile && previewFile.summary) {
       // Allow the DOM to update first, then typeset
@@ -737,7 +715,7 @@ function App() {
         return clearTimeout(timer);
       };
     }
-  }, [previewFile, isSummarizing]);
+  }, [previewFile]);
 
   // Restore active course from safeStorage once courses list is loaded
   useEffect(function () {
@@ -1441,274 +1419,7 @@ function App() {
     });
   };
 
-  // Handle PDF Summarization with Qwen AI
-  var handleSummarizePdf = async function handleSummarizePdf(fileIndex) {
-    if (!activeCourse) return;
-    var courseId = activeCourse.id;
-    setIsSummarizing(true);
-    setSummaryError("");
-    var mockProgressInterval = null;
-    var isCachedProgressRunning = false;
-    try {
-      // Clear old summary in state to force visual reset
-      updateSummaryState(courseId, fileIndex, "");
-      setShowSummary(false);
-    } catch (err) {
-      console.error("Failed to reset summary state:", err);
-    }
-    try {
-      var progressVal = 10;
-      setSummaryProgress(10);
-      mockProgressInterval = setInterval(function () {
-        progressVal = Math.min(30, progressVal + 2);
-        setSummaryProgress(progressVal);
-      }, 400);
-      var res = await fetch("".concat(API_BASE, "/api/courses/").concat(courseId, "/files/").concat(fileIndex, "/summarize"), {
-        method: "POST"
-      });
-      if (!res.ok) {
-        var errorData = await res.json().catch(function () {
-          return {};
-        });
-        throw new Error(errorData.detail || "HTTP ".concat(res.status));
-      }
-      var contentType = res.headers.get("content-type") || "";
-      if (contentType.includes("application/json")) {
-        // Fast path: cached summary loaded directly
-        isCachedProgressRunning = true;
-        if (mockProgressInterval) clearInterval(mockProgressInterval);
-        var data = await res.json();
-        var currentP = progressVal;
-        var fastProgressInterval = setInterval(function () {
-          currentP += 10;
-          if (currentP >= 100) {
-            currentP = 100;
-            clearInterval(fastProgressInterval);
-            setTimeout(function () {
-              updateSummaryState(courseId, fileIndex, data.summary);
-              setShowSummary(true);
-              setIsSummarizing(false);
-            }, 200);
-          }
-          setSummaryProgress(currentP);
-        }, 50);
-      } else {
-        // Stream path: consume Server-Sent Events line by line
-        if (mockProgressInterval) clearInterval(mockProgressInterval);
-        if (!res.body) {
-          throw new Error("Streaming is not supported by your browser or the response has no body.");
-        }
-        var reader = res.body.getReader();
-        var decoder = new TextDecoder("utf-8");
-        var accumulatedSummary = "";
-        var buffer = "";
-        while (true) {
-          var _await$reader$read = await reader.read(),
-            value = _await$reader$read.value,
-            done = _await$reader$read.done;
-          if (done) break;
-          buffer += decoder.decode(value, {
-            stream: true
-          });
-          var lines = buffer.split("\n");
-          buffer = lines.pop() || "";
-          var _iterator = _createForOfIteratorHelper(lines),
-            _step;
-          try {
-            for (_iterator.s(); !(_step = _iterator.n()).done;) {
-              var line = _step.value;
-              var cleanLine = line.trim();
-              if (!cleanLine) continue;
-              if (cleanLine.startsWith("data: ")) {
-                var dataVal = cleanLine.substring(6).trim();
-                if (dataVal === "[DONE]") {
-                  break;
-                }
-                try {
-                  var parsed = JSON.parse(dataVal);
-                  if (parsed.error) {
-                    throw new Error(parsed.error);
-                  }
-                  if (parsed.chunk) {
-                    accumulatedSummary += parsed.chunk;
-                    updateSummaryState(courseId, fileIndex, accumulatedSummary);
-
-                    // Scale progress dynamically from 30% to 95% based on characters streamed
-                    var streamProgress = Math.min(95, 30 + Math.floor(accumulatedSummary.length / 40));
-                    setSummaryProgress(streamProgress);
-                  }
-                } catch (e) {
-                  console.error("Error decoding chunk:", e);
-                  throw e; // Propagate chunk decode/API errors to show error card
-                }
-              }
-            }
-          } catch (err) {
-            _iterator.e(err);
-          } finally {
-            _iterator.f();
-          }
-        }
-
-        // Complete the stream progress
-        setSummaryProgress(100);
-        await new Promise(function (resolve) {
-          return setTimeout(resolve, 300);
-        });
-        setShowSummary(true);
-      }
-    } catch (err) {
-      console.error("Summarization failed:", err);
-      setSummaryError(err.message || "Failed to generate AI summary.");
-      setSummaryProgress(0);
-      setIsSummarizing(false);
-    } finally {
-      if (mockProgressInterval) clearInterval(mockProgressInterval);
-      if (!isCachedProgressRunning) {
-        setIsSummarizing(false);
-      }
-    }
-  };
-
-  // Render PDF AI summary card (Disabled)
-  var renderPdfSummary = function renderPdfSummary(file) {
-    return null;
-    if (!showSummary) {
-      if (isSummarizing) {
-        return /*#__PURE__*/React.createElement("div", {
-          className: "glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/30 bg-[#6366F1]/5 space-y-3 che-summarizing-modal-content"
-        }, /*#__PURE__*/React.createElement("div", {
-          className: "flex items-center space-x-3 text-indigo-500"
-        }, /*#__PURE__*/React.createElement(Icon, {
-          name: "loader",
-          className: "w-5 h-5 animate-spin text-[#6366F1]"
-        }), /*#__PURE__*/React.createElement("h4", {
-          className: "font-display font-extrabold text-sm text-white m-0"
-        }, "Generating Study Guide... ", summaryProgress, "%")), /*#__PURE__*/React.createElement("div", {
-          className: "w-full bg-slate-700/50 rounded-full h-2 overflow-hidden border border-white/5 shadow-inner"
-        }, /*#__PURE__*/React.createElement("div", {
-          className: "bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-300 ease-out",
-          style: {
-            width: "".concat(summaryProgress, "%")
-          }
-        })), /*#__PURE__*/React.createElement("p", {
-          className: "text-[10px] text-slate-400 leading-relaxed pl-8 m-0"
-        }, "Qwen AI is currently parsing the PDF content and compiling a structured summary with outline, key formulas, and comparison tables. Please wait..."));
-      }
-      if (summaryError) {
-        return /*#__PURE__*/React.createElement("div", {
-          className: "glass-panel p-4 mt-4 rounded-xl border border-rose-500/20 bg-rose-500/5 flex items-start space-x-3"
-        }, /*#__PURE__*/React.createElement(Icon, {
-          name: "alertTriangle",
-          className: "w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0"
-        }), /*#__PURE__*/React.createElement("div", {
-          className: "space-y-1"
-        }, /*#__PURE__*/React.createElement("h5", {
-          className: "text-xs font-bold text-rose-700"
-        }, "Summarization Error"), /*#__PURE__*/React.createElement("p", {
-          className: "text-[10px] text-slate-600"
-        }, summaryError), /*#__PURE__*/React.createElement("div", {
-          role: "button",
-          tabIndex: 0,
-          onClick: function onClick(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            handleSummarizePdf(file.index);
-          },
-          onKeyDown: function onKeyDown(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              e.stopPropagation();
-              handleSummarizePdf(file.index);
-            }
-          },
-          className: "che-summarize-btn mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center cursor-pointer active:scale-95 transform select-none"
-        }, /*#__PURE__*/React.createElement("span", null, "Retry Generation"))));
-      }
-
-      // Render the summarization prompt card to delay loading the summary
-      return /*#__PURE__*/React.createElement("div", {
-        className: "glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/15 bg-[#6366F1]/5 flex flex-col items-center justify-center text-center space-y-3"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-600"
-      }, /*#__PURE__*/React.createElement(Icon, {
-        name: "sparkles",
-        className: "w-5 h-5"
-      })), /*#__PURE__*/React.createElement("div", {
-        className: "space-y-1"
-      }, /*#__PURE__*/React.createElement("h5", {
-        className: "text-xs font-bold text-slate-700"
-      }, "Qwen AI PDF Summarizer"), /*#__PURE__*/React.createElement("p", {
-        className: "text-[10px] text-slate-500 max-w-sm"
-      }, "Generate a comprehensive structured overview including key formulas, concepts, and comparison tables.")), /*#__PURE__*/React.createElement("div", {
-        role: "button",
-        tabIndex: 0,
-        onClick: function onClick(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (!isSummarizing) handleSummarizePdf(file.index);
-        },
-        onKeyDown: function onKeyDown(e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!isSummarizing) handleSummarizePdf(file.index);
-          }
-        },
-        className: "che-summarize-btn px-4 py-1.5 rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm cursor-pointer select-none ".concat(isSummarizing ? "bg-indigo-400 text-white cursor-not-allowed opacity-60" : "bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95 transform")
-      }, /*#__PURE__*/React.createElement(Icon, {
-        name: isSummarizing ? "loader" : "sparkles",
-        className: "w-3.5 h-3.5 ".concat(isSummarizing ? "animate-spin" : "")
-      }), /*#__PURE__*/React.createElement("span", null, isSummarizing ? "Generating..." : "Summarize Document")));
-    }
-
-    // Only render the summary when showSummary is true
-    return /*#__PURE__*/React.createElement("div", {
-      className: "mt-4"
-    }, /*#__PURE__*/React.createElement("details", {
-      open: true,
-      className: "group bg-[#6366F1]/5 border border-[#6366F1]/15 rounded-xl transition-all duration-300"
-    }, /*#__PURE__*/React.createElement("summary", {
-      className: "flex items-center justify-between p-4 cursor-pointer select-none font-display font-semibold text-xs text-indigo-700 hover:text-indigo-800"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "flex items-center space-x-2"
-    }, /*#__PURE__*/React.createElement(Icon, {
-      name: "sparkles",
-      className: "w-4 h-4 text-indigo-500 ".concat(isSummarizing ? "animate-pulse" : "")
-    }), /*#__PURE__*/React.createElement("span", null, "Qwen AI Study Companion ", isSummarizing && /*#__PURE__*/React.createElement("span", {
-      className: "text-[10px] text-indigo-500 font-medium animate-pulse"
-    }, "(Generating...)"))), /*#__PURE__*/React.createElement("div", {
-      className: "flex items-center space-x-2"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold group-open:hidden bg-indigo-50"
-    }, "Show Summary"), /*#__PURE__*/React.createElement("span", {
-      className: "text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold hidden group-open:inline bg-indigo-50"
-    }, "Hide Summary"), file.summary && /*#__PURE__*/React.createElement("div", {
-      role: "button",
-      tabIndex: 0,
-      onClick: function onClick(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        handleDownloadSummary(file);
-      },
-      onKeyDown: function onKeyDown(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          e.stopPropagation();
-          handleDownloadSummary(file);
-        }
-      },
-      className: "che-download-summary-btn flex items-center space-x-1 text-[10px] border border-black px-2.5 py-0.5 rounded-full font-semibold bg-indigo-50 hover:bg-indigo-100 transition-all active:scale-95 cursor-pointer select-none",
-      title: "Download Summary as Markdown File"
-    }, /*#__PURE__*/React.createElement(Icon, {
-      name: "download",
-      className: "w-3 h-3 text-indigo-600"
-    }), /*#__PURE__*/React.createElement("span", null, "Download")))), /*#__PURE__*/React.createElement("div", {
-      className: "px-4 pb-5 pt-3 border-t border-indigo-500/10 text-xs text-slate-700 space-y-4 leading-relaxed font-sans max-h-[500px] overflow-y-auto custom-scrollbar prose prose-indigo"
-    }, /*#__PURE__*/React.createElement("div", {
-      dangerouslySetInnerHTML: renderMarkdown(file.summary)
-    }))));
-  };
+  // PDF AI Summary Card disabled as requested
 
   // Reusable PDF viewer or placeholder renderer
   var renderPdfViewerOrPlaceholder = function renderPdfViewerOrPlaceholder(file) {
@@ -3020,7 +2731,7 @@ function App() {
     style: {
       height: "550px"
     }
-  }, renderPdfViewerOrPlaceholder(previewFile)), renderPdfSummary(previewFile)) : /*#__PURE__*/React.createElement("div", {
+  }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
     className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
     style: {
       height: "500px"
@@ -3223,7 +2934,7 @@ function App() {
     style: {
       height: "550px"
     }
-  }, renderPdfViewerOrPlaceholder(previewFile)), renderPdfSummary(previewFile)) : /*#__PURE__*/React.createElement("div", {
+  }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
     className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
     style: {
       height: "500px"
@@ -3426,7 +3137,7 @@ function App() {
     style: {
       height: "550px"
     }
-  }, renderPdfViewerOrPlaceholder(previewFile)), renderPdfSummary(previewFile)) : /*#__PURE__*/React.createElement("div", {
+  }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
     className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
     style: {
       height: "500px"
@@ -3631,7 +3342,7 @@ function App() {
     style: {
       height: "550px"
     }
-  }, renderPdfViewerOrPlaceholder(previewFile)), renderPdfSummary(previewFile)) : /*#__PURE__*/React.createElement("div", {
+  }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
     className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
     style: {
       height: "500px"
@@ -3970,7 +3681,7 @@ function App() {
     style: {
       height: "550px"
     }
-  }, renderPdfViewerOrPlaceholder(previewFile)), renderPdfSummary(previewFile)) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? /*#__PURE__*/React.createElement("div", {
+  }, renderPdfViewerOrPlaceholder(previewFile))) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? /*#__PURE__*/React.createElement("div", {
     className: "w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center",
     style: {
       height: "550px"

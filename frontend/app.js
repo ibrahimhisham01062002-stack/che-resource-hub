@@ -191,25 +191,17 @@ function App() {
   const [previewFile, setPreviewFile] = useState(null); // {name, path, size, type}
   const [previewUrl, setPreviewUrl] = useState("");
   const [previewLoading, setPreviewLoading] = useState(false);
-  const [isSummarizing, setIsSummarizing] = useState(false);
-  const [summaryError, setSummaryError] = useState("");
-  const [showSummary, setShowSummary] = useState(false);
-  const [summaryProgress, setSummaryProgress] = useState(0);
-
-  const prevPreviewFileRef = useRef(null);
-
-  // Reset preview states on file switch
-  useEffect(() => {
-    if (previewFile) {
-      if (prevPreviewFileRef.current && prevPreviewFileRef.current.index === previewFile.index && prevPreviewFileRef.current.name === previewFile.name) {
-        return;
-      }
-    }
-    prevPreviewFileRef.current = previewFile;
-    setIsSummarizing(false);
-    setShowSummary(false);
-    setSummaryProgress(0);
-  }, [previewFile]);
+   const prevPreviewFileRef = useRef(null);
+ 
+   // Reset preview states on file switch
+   useEffect(() => {
+     if (previewFile) {
+       if (prevPreviewFileRef.current && prevPreviewFileRef.current.index === previewFile.index && prevPreviewFileRef.current.name === previewFile.name) {
+         return;
+       }
+     }
+     prevPreviewFileRef.current = previewFile;
+   }, [previewFile]);
   
   // Book upload states
   const [bookUploadFile, setBookUploadFile] = useState([]);
@@ -314,8 +306,6 @@ function App() {
 
   // Load PDF directly using standard streaming proxy endpoint
   useEffect(() => {
-    setSummaryError("");
-    setIsSummarizing(false);
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
       setPreviewLoading(false);
@@ -342,7 +332,7 @@ function App() {
     
   }, [previewFile, activeCourse]);
 
-  // Trigger MathJax typesetting whenever the preview file or its summary changes
+  // Trigger MathJax typesetting whenever the preview file changes
   useEffect(() => {
     if (window.MathJax && previewFile && previewFile.summary) {
       // Allow the DOM to update first, then typeset
@@ -355,7 +345,7 @@ function App() {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [previewFile, isSummarizing]);
+  }, [previewFile]);
 
   // Restore active course from safeStorage once courses list is loaded
   useEffect(() => {
@@ -1000,269 +990,9 @@ function App() {
     });
   };
 
-  // Handle PDF Summarization with Qwen AI
-  const handleSummarizePdf = async (fileIndex) => {
-    if (!activeCourse) return;
-    const courseId = activeCourse.id;
-    setIsSummarizing(true);
-    setSummaryError("");
-    
-    let mockProgressInterval = null;
-    let isCachedProgressRunning = false;
 
-    try {
-      // Clear old summary in state to force visual reset
-      updateSummaryState(courseId, fileIndex, "");
-      setShowSummary(false);
-    } catch (err) {
-      console.error("Failed to reset summary state:", err);
-    }
 
-    try {
-      let progressVal = 10;
-      setSummaryProgress(10);
-      mockProgressInterval = setInterval(() => {
-        progressVal = Math.min(30, progressVal + 2);
-        setSummaryProgress(progressVal);
-      }, 400);
-
-      const res = await fetch(`${API_BASE}/api/courses/${courseId}/files/${fileIndex}/summarize`, {
-        method: "POST",
-      });
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.detail || `HTTP ${res.status}`);
-      }
-      
-      const contentType = res.headers.get("content-type") || "";
-      if (contentType.includes("application/json")) {
-        // Fast path: cached summary loaded directly
-        isCachedProgressRunning = true;
-        if (mockProgressInterval) clearInterval(mockProgressInterval);
-        const data = await res.json();
-        
-        let currentP = progressVal;
-        const fastProgressInterval = setInterval(() => {
-          currentP += 10;
-          if (currentP >= 100) {
-            currentP = 100;
-            clearInterval(fastProgressInterval);
-            setTimeout(() => {
-              updateSummaryState(courseId, fileIndex, data.summary);
-              setShowSummary(true);
-              setIsSummarizing(false);
-            }, 200);
-          }
-          setSummaryProgress(currentP);
-        }, 50);
-      } else {
-        // Stream path: consume Server-Sent Events line by line
-        if (mockProgressInterval) clearInterval(mockProgressInterval);
-        if (!res.body) {
-          throw new Error("Streaming is not supported by your browser or the response has no body.");
-        }
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder("utf-8");
-        let accumulatedSummary = "";
-        let buffer = "";
-        
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-          
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split("\n");
-          buffer = lines.pop() || "";
-          
-          for (const line of lines) {
-            const cleanLine = line.trim();
-            if (!cleanLine) continue;
-            
-            if (cleanLine.startsWith("data: ")) {
-              const dataVal = cleanLine.substring(6).trim();
-              if (dataVal === "[DONE]") {
-                break;
-              }
-              try {
-                const parsed = JSON.parse(dataVal);
-                if (parsed.error) {
-                  throw new Error(parsed.error);
-                }
-                if (parsed.chunk) {
-                  accumulatedSummary += parsed.chunk;
-                  updateSummaryState(courseId, fileIndex, accumulatedSummary);
-                  
-                  // Scale progress dynamically from 30% to 95% based on characters streamed
-                  const streamProgress = Math.min(95, 30 + Math.floor(accumulatedSummary.length / 40));
-                  setSummaryProgress(streamProgress);
-                }
-              } catch (e) {
-                console.error("Error decoding chunk:", e);
-                throw e; // Propagate chunk decode/API errors to show error card
-              }
-            }
-          }
-        }
-
-        // Complete the stream progress
-        setSummaryProgress(100);
-        await new Promise(resolve => setTimeout(resolve, 300));
-        setShowSummary(true);
-      }
-    } catch (err) {
-      console.error("Summarization failed:", err);
-      setSummaryError(err.message || "Failed to generate AI summary.");
-      setSummaryProgress(0);
-      setIsSummarizing(false);
-    } finally {
-      if (mockProgressInterval) clearInterval(mockProgressInterval);
-      if (!isCachedProgressRunning) {
-        setIsSummarizing(false);
-      }
-    }
-  };
-
-  // Render PDF AI summary card (Disabled)
-  const renderPdfSummary = (file) => {
-    return null;
-
-    if (!showSummary) {
-      if (isSummarizing) {
-        return (
-          <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/30 bg-[#6366F1]/5 space-y-3 che-summarizing-modal-content">
-            <div className="flex items-center space-x-3 text-indigo-500">
-              <Icon name="loader" className="w-5 h-5 animate-spin text-[#6366F1]" />
-              <h4 className="font-display font-extrabold text-sm text-white m-0">Generating Study Guide... {summaryProgress}%</h4>
-            </div>
-            {/* Linear gradient progress bar */}
-            <div className="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden border border-white/5 shadow-inner">
-              <div 
-                className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-300 ease-out"
-                style={{ width: `${summaryProgress}%` }}
-              ></div>
-            </div>
-            <p className="text-[10px] text-slate-400 leading-relaxed pl-8 m-0">
-              Qwen AI is currently parsing the PDF content and compiling a structured summary with outline, key formulas, and comparison tables. Please wait...
-            </p>
-          </div>
-        );
-      }
-
-      if (summaryError) {
-        return (
-          <div className="glass-panel p-4 mt-4 rounded-xl border border-rose-500/20 bg-rose-500/5 flex items-start space-x-3">
-            <Icon name="alertTriangle" className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-            <div className="space-y-1">
-              <h5 className="text-xs font-bold text-rose-700">Summarization Error</h5>
-              <p className="text-[10px] text-slate-600">{summaryError}</p>
-              <div 
-                role="button"
-                tabIndex={0}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleSummarizePdf(file.index);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleSummarizePdf(file.index);
-                  }
-                }}
-                className="che-summarize-btn mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[10px] font-semibold transition-colors shadow-sm flex items-center cursor-pointer active:scale-95 transform select-none"
-              >
-                <span>Retry Generation</span>
-              </div>
-            </div>
-          </div>
-        );
-      }
-
-      // Render the summarization prompt card to delay loading the summary
-      return (
-        <div className="glass-panel p-5 mt-4 rounded-xl border border-[#6366F1]/15 bg-[#6366F1]/5 flex flex-col items-center justify-center text-center space-y-3">
-          <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-600">
-            <Icon name="sparkles" className="w-5 h-5" />
-          </div>
-          <div className="space-y-1">
-            <h5 className="text-xs font-bold text-slate-700">Qwen AI PDF Summarizer</h5>
-            <p className="text-[10px] text-slate-500 max-w-sm">
-              Generate a comprehensive structured overview including key formulas, concepts, and comparison tables.
-            </p>
-          </div>
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (!isSummarizing) handleSummarizePdf(file.index);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!isSummarizing) handleSummarizePdf(file.index);
-              }
-            }}
-            className={`che-summarize-btn px-4 py-1.5 rounded-lg text-[10px] font-semibold flex items-center space-x-1.5 transition-colors shadow-sm cursor-pointer select-none ${
-              isSummarizing 
-                ? "bg-indigo-400 text-white cursor-not-allowed opacity-60" 
-                : "bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95 transform"
-            }`}
-          >
-            <Icon name={isSummarizing ? "loader" : "sparkles"} className={`w-3.5 h-3.5 ${isSummarizing ? "animate-spin" : ""}`} />
-            <span>{isSummarizing ? "Generating..." : "Summarize Document"}</span>
-          </div>
-        </div>
-      );
-    }
-
-    // Only render the summary when showSummary is true
-    return (
-      <div className="mt-4">
-        <details open className="group bg-[#6366F1]/5 border border-[#6366F1]/15 rounded-xl transition-all duration-300">
-          <summary className="flex items-center justify-between p-4 cursor-pointer select-none font-display font-semibold text-xs text-indigo-700 hover:text-indigo-800">
-            <div className="flex items-center space-x-2">
-              <Icon name="sparkles" className={`w-4 h-4 text-indigo-500 ${isSummarizing ? "animate-pulse" : ""}`} />
-              <span>Qwen AI Study Companion {isSummarizing && <span className="text-[10px] text-indigo-500 font-medium animate-pulse">(Generating...)</span>}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold group-open:hidden bg-indigo-50">Show Summary</span>
-              <span className="text-[10px] text-indigo-600/70 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold hidden group-open:inline bg-indigo-50">Hide Summary</span>
-              {file.summary && (
-                <div
-                  role="button"
-                  tabIndex={0}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleDownloadSummary(file);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleDownloadSummary(file);
-                    }
-                  }}
-                  className="che-download-summary-btn flex items-center space-x-1 text-[10px] border border-black px-2.5 py-0.5 rounded-full font-semibold bg-indigo-50 hover:bg-indigo-100 transition-all active:scale-95 cursor-pointer select-none"
-                  title="Download Summary as Markdown File"
-                >
-                  <Icon name="download" className="w-3 h-3 text-indigo-600" />
-                  <span>Download</span>
-                </div>
-              )}
-            </div>
-          </summary>
-          <div className="px-4 pb-5 pt-3 border-t border-indigo-500/10 text-xs text-slate-700 space-y-4 leading-relaxed font-sans max-h-[500px] overflow-y-auto custom-scrollbar prose prose-indigo">
-            <div dangerouslySetInnerHTML={renderMarkdown(file.summary)} />
-          </div>
-        </details>
-      </div>
-    );
-  };
+  // PDF AI Summary Card disabled as requested
 
   // Reusable PDF viewer or placeholder renderer
   const renderPdfViewerOrPlaceholder = (file) => {
@@ -2553,7 +2283,6 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {renderPdfViewerOrPlaceholder(previewFile)}
                         </div>
-                        {renderPdfSummary(previewFile)}
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
@@ -2766,7 +2495,6 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {renderPdfViewerOrPlaceholder(previewFile)}
                         </div>
-                        {renderPdfSummary(previewFile)}
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
@@ -2979,7 +2707,6 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {renderPdfViewerOrPlaceholder(previewFile)}
                         </div>
-                        {renderPdfSummary(previewFile)}
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
@@ -3192,7 +2919,6 @@ function App() {
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                           {renderPdfViewerOrPlaceholder(previewFile)}
                         </div>
-                        {renderPdfSummary(previewFile)}
                       </div>
                     ) : (
                       <div className="glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3" style={{ height: "500px" }}>
@@ -3539,7 +3265,6 @@ function App() {
                             <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
                               {renderPdfViewerOrPlaceholder(previewFile)}
                             </div>
-                            {renderPdfSummary(previewFile)}
                           </>
                         ) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? (
                           <div className="w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center" style={{ height: "550px" }}>

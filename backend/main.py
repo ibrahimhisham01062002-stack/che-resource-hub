@@ -218,24 +218,69 @@ async def delete_from_gdrive(file_id: str):
     await run_in_threadpool(sync_delete_from_gdrive, file_id)
 
 async def stream_gdrive_file(file_id: str):
+    global http_client
+    if http_client is None:
+        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+        
     service = await run_in_threadpool(get_gdrive_service)
-    if not service:
-        raise ValueError("Google Drive credentials are not configured.")
-    
-    request = service.files().get_media(fileId=file_id)
-    file_io = io.BytesIO()
-    downloader = MediaIoBaseDownload(file_io, request, chunksize=1024*1024)
-    done = False
-    last_position = 0
-    
-    while not done:
-        status, done = await run_in_threadpool(downloader.next_chunk)
-        current_position = file_io.tell()
-        file_io.seek(last_position)
-        chunk = file_io.read(current_position - last_position)
-        file_io.seek(current_position)
-        last_position = current_position
-        yield chunk
+    if service:
+        try:
+            request = service.files().get_media(fileId=file_id)
+            file_io = io.BytesIO()
+            downloader = MediaIoBaseDownload(file_io, request, chunksize=1024*1024)
+            done = False
+            last_position = 0
+            
+            while not done:
+                status, done = await run_in_threadpool(downloader.next_chunk)
+                current_position = file_io.tell()
+                file_io.seek(last_position)
+                chunk = file_io.read(current_position - last_position)
+                file_io.seek(current_position)
+                last_position = current_position
+                yield chunk
+            return
+        except Exception as e:
+            print(f"Service account GDrive stream failed, falling back to public: {e}")
+            
+    # Fallback to public streaming via HTTP request
+    gdrive_direct_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    try:
+        resp = await http_client.get(gdrive_direct_url, follow_redirects=False)
+        confirm_token = None
+        if "confirm=" in str(resp.url) or "confirm=" in resp.text:
+            import re
+            match = re.search(r'confirm=([A-Za-z0-9_]+)', resp.text)
+            if match:
+                confirm_token = match.group(1)
+            else:
+                for cookie_name, cookie_val in resp.cookies.items():
+                    if cookie_name.startswith("download_warning"):
+                        confirm_token = cookie_val
+                        break
+                        
+        final_url = gdrive_direct_url
+        if confirm_token:
+            final_url += f"&confirm={confirm_token}"
+            
+        async with http_client.stream("GET", final_url, follow_redirects=True) as r:
+            if r.status_code != 200:
+                fallback_url = f"https://drive.google.com/uc?id={file_id}&export=download&confirm=t"
+                async with http_client.stream("GET", fallback_url, follow_redirects=True) as r2:
+                    if r2.status_code == 200:
+                        async for chunk in r2.aiter_bytes():
+                            yield chunk
+                        return
+                raise ValueError(f"Google Drive public stream failed with status {r.status_code}")
+            async for chunk in r.aiter_bytes():
+                yield chunk
+    except Exception as e:
+        print(f"GDrive public stream failed: {e}")
+        # Simplest fallback
+        async with http_client.stream("GET", gdrive_direct_url, follow_redirects=True) as r:
+            async for chunk in r.aiter_bytes():
+                yield chunk
 
 
 http_client = None
@@ -809,10 +854,74 @@ async def get_file_id_from_message_id(message_id: int) -> str:
     if not file_id:
         raise HTTPException(status_code=400, detail="No downloadable file or document found in the Telegram message")
         
-    return file_id
+async def cache_telegram_file_to_catbox(course_id: str, file_index: int, file_item: dict, storage_type: str):
+    try:
+        file_name = file_item["name"]
+        print(f"Background task: Caching {file_name} to Catbox...")
+        if storage_type == "telegram_chunks":
+            file_ids = file_item.get("telegram_file_ids", [])
+            if not file_ids and file_item.get("telegram_file_id"):
+                file_ids = [file_item.get("telegram_file_id")]
+            merged_bytes = b""
+            async for chunk in stream_telegram_chunks(file_ids):
+                merged_bytes += chunk
+            catbox_url = await upload_to_catbox(merged_bytes, file_name)
+        else:
+            file_id = file_item.get("telegram_file_id")
+            message_id = file_item.get("telegram_message_id")
+            if not file_id and message_id is not None:
+                file_id = await get_file_id_from_message_id(int(message_id))
+            if not file_id:
+                print(f"Background task failed: No Telegram file_id found for {file_name}")
+                return
+            get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+            resp = await safe_telegram_request("GET", get_file_url)
+            if resp.status_code != 200:
+                print(f"Background task failed to get file details from Telegram: {resp.text}")
+                return
+            result = resp.json()
+            if not result.get("ok"):
+                print(f"Background task failed: Telegram API returned error: {result}")
+                return
+            file_path = result["result"]["file_path"]
+            download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+            catbox_url = await upload_url_to_catbox(download_url)
+            
+        print(f"Background task: Successfully cached {file_name} at {catbox_url}")
+        config = load_courses_config()
+        resolved_course_id = find_course_key(course_id, config["courses"])
+        if resolved_course_id:
+            files_list = config["courses"][resolved_course_id].get("files", [])
+            if 0 <= file_index < len(files_list):
+                files_list[file_index]["catbox_url"] = catbox_url
+                save_courses_config(config)
+                await async_sync_database_to_telegram()
+                print(f"Background task: Saved and synced database for {file_name}")
+    except Exception as e:
+        print(f"Background task failed for caching {file_item.get('name')}: {str(e)}")
+
+async def cache_gdrive_file_to_catbox(course_id: str, file_index: int, file_item: dict):
+    try:
+        file_name = file_item["name"]
+        gdrive_file_id = file_item.get("gdrive_file_id")
+        gdrive_direct_url = f"https://drive.google.com/uc?export=download&id={gdrive_file_id}"
+        print(f"Background task: Caching Google Drive {file_name} to Catbox...")
+        catbox_url = await upload_url_to_catbox(gdrive_direct_url)
+        print(f"Background task: Successfully cached Google Drive {file_name} at {catbox_url}")
+        config = load_courses_config()
+        resolved_course_id = find_course_key(course_id, config["courses"])
+        if resolved_course_id:
+            files_list = config["courses"][resolved_course_id].get("files", [])
+            if 0 <= file_index < len(files_list):
+                files_list[file_index]["catbox_url"] = catbox_url
+                save_courses_config(config)
+                await async_sync_database_to_telegram()
+                print(f"Background task: Saved and synced database for Google Drive {file_name}")
+    except Exception as e:
+        print(f"Background task failed for caching Google Drive {file_item.get('name')}: {str(e)}")
 
 @app.get("/api/download/{course_id}/{file_index}")
-async def download_file(course_id: str, file_index: int, request: Request, preview: Optional[bool] = None):
+async def download_file(course_id: str, file_index: int, request: Request, background_tasks: BackgroundTasks, preview: Optional[bool] = None):
     config = load_courses_config()
     resolved_course_id = find_course_key(course_id, config["courses"])
     if not resolved_course_id:
@@ -878,114 +987,99 @@ async def download_file(course_id: str, file_index: int, request: Request, previ
     if storage_type == "telegram_chunks" or file_ids:
         if not file_ids and file_id:
             file_ids = [file_id]
+        
+        # Trigger background caching task
+        background_tasks.add_task(cache_telegram_file_to_catbox, course_id, file_index, file_item, "telegram_chunks")
+        
         try:
-            print(f"Merging and uploading chunked Telegram file {file_name} to Catbox...")
-            merged_bytes = b""
-            async for chunk in stream_telegram_chunks(file_ids):
-                merged_bytes += chunk
+            raw_bytes = file_item.get("bytes")
+            if not raw_bytes:
+                # If total bytes is missing, sum up from getFile sizes of all chunks (rare/fallback)
+                raw_bytes = 0
+                for fid in file_ids:
+                    get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={fid}"
+                    resp = await safe_telegram_request("GET", get_file_url)
+                    if resp.status_code == 200:
+                        res_json = resp.json()
+                        if res_json.get("ok"):
+                            raw_bytes += res_json["result"].get("file_size", 0)
             
-            catbox_url = await upload_to_catbox(merged_bytes, file_name)
-            file_item["catbox_url"] = catbox_url
-            save_courses_config(config)
-            await async_sync_database_to_telegram()
-            return RedirectResponse(url=catbox_url, status_code=302)
-        except Exception as e:
-            print(f"Failed to merge and upload chunked Telegram file to Catbox: {str(e)}")
-            try:
-                raw_bytes = file_item.get("bytes")
-                if not raw_bytes:
-                    # If total bytes is missing, sum up from getFile sizes of all chunks (rare/fallback)
-                    raw_bytes = 0
-                    for fid in file_ids:
-                        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={fid}"
-                        resp = await safe_telegram_request("GET", get_file_url)
-                        if resp.status_code == 200:
-                            res_json = resp.json()
-                            if res_json.get("ok"):
-                                raw_bytes += res_json["result"].get("file_size", 0)
+            # Check for range request
+            if range_header and range_header.startswith("bytes="):
+                # Parse Range header
+                start = 0
+                end = None
+                parts = range_header.replace("bytes=", "").split("-")
+                if len(parts) == 2:
+                    if parts[0].strip():
+                        start = int(parts[0].strip())
+                    if parts[1].strip():
+                        end = int(parts[1].strip())
                 
-                # Check for range request
-                if range_header and range_header.startswith("bytes="):
-                    # Parse Range header
-                    start = 0
-                    end = None
-                    parts = range_header.replace("bytes=", "").split("-")
-                    if len(parts) == 2:
-                        if parts[0].strip():
-                            start = int(parts[0].strip())
-                        if parts[1].strip():
-                            end = int(parts[1].strip())
-                    
-                    if end is None or end >= raw_bytes:
-                        end = raw_bytes - 1
-                    
-                    headers = {
-                        "Content-Range": f"bytes {start}-{end}/{raw_bytes}",
-                        "Accept-Ranges": "bytes",
-                        "Content-Length": str(end - start + 1),
-                        "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
-                        "Content-Type": content_type,
-                        "X-Frame-Options": "ALLOWALL",
-                        "Content-Security-Policy": "frame-ancestors *"
-                    }
-                    return StreamingResponse(
-                        stream_telegram_chunks_range(file_ids, start, end, raw_bytes, CHUNK_SIZE_LIMIT),
-                        status_code=206,
-                        media_type=content_type,
-                        headers=headers
-                    )
+                if end is None or end >= raw_bytes:
+                    end = raw_bytes - 1
                 
-                # Standard sequential download
                 headers = {
+                    "Content-Range": f"bytes {start}-{end}/{raw_bytes}",
                     "Accept-Ranges": "bytes",
+                    "Content-Length": str(end - start + 1),
                     "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
                     "Content-Type": content_type,
                     "X-Frame-Options": "ALLOWALL",
                     "Content-Security-Policy": "frame-ancestors *"
                 }
-                if raw_bytes:
-                    headers["Content-Length"] = str(raw_bytes)
-                    
                 return StreamingResponse(
-                    stream_telegram_chunks(file_ids),
+                    stream_telegram_chunks_range(file_ids, start, end, raw_bytes, CHUNK_SIZE_LIMIT),
+                    status_code=206,
                     media_type=content_type,
                     headers=headers
                 )
-            except Exception as ex:
-                raise HTTPException(status_code=502, detail=f"Telegram chunked streaming failed: {str(ex)}")
+            
+            # Standard sequential download
+            headers = {
+                "Accept-Ranges": "bytes",
+                "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                "Content-Type": content_type,
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *"
+            }
+            if raw_bytes:
+                headers["Content-Length"] = str(raw_bytes)
+                
+            return StreamingResponse(
+                stream_telegram_chunks(file_ids),
+                media_type=content_type,
+                headers=headers
+            )
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Telegram chunked streaming failed: {str(e)}")
             
     # Case B: Google Drive Storage
     if storage_type == "gdrive":
         gdrive_direct_url = f"https://drive.google.com/uc?export=download&id={gdrive_file_id}"
+        # Trigger background caching
+        background_tasks.add_task(cache_gdrive_file_to_catbox, course_id, file_index, file_item)
+        
         if not preview:
             return RedirectResponse(url=gdrive_direct_url, status_code=302)
         try:
-            print(f"Uploading Google Drive file {file_name} to Catbox for preview...")
-            catbox_url = await upload_url_to_catbox(gdrive_direct_url)
-            file_item["catbox_url"] = catbox_url
-            save_courses_config(config)
-            await async_sync_database_to_telegram()
-            return RedirectResponse(url=catbox_url, status_code=302)
+            headers = {
+                "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                "Content-Type": content_type,
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *"
+            }
+            raw_bytes = file_item.get("bytes")
+            if raw_bytes:
+                headers["Content-Length"] = str(raw_bytes)
+                
+            return StreamingResponse(
+                stream_gdrive_file(gdrive_file_id),
+                media_type=content_type,
+                headers=headers
+            )
         except Exception as e:
-            print(f"Failed to upload Google Drive file to Catbox, falling back to streaming: {str(e)}")
-            try:
-                headers = {
-                    "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
-                    "Content-Type": content_type,
-                    "X-Frame-Options": "ALLOWALL",
-                    "Content-Security-Policy": "frame-ancestors *"
-                }
-                raw_bytes = file_item.get("bytes")
-                if raw_bytes:
-                    headers["Content-Length"] = str(raw_bytes)
-                    
-                return StreamingResponse(
-                    stream_gdrive_file(gdrive_file_id),
-                    media_type=content_type,
-                    headers=headers
-                )
-            except Exception as ex:
-                raise HTTPException(status_code=502, detail=f"Google Drive streaming failed: {str(ex)}")
+            raise HTTPException(status_code=502, detail=f"Google Drive streaming failed: {str(e)}")
             
     # Case C: Local Storage Fallback
     if storage_type == "local" or (not file_id and message_id is None and not gdrive_file_id and not file_ids):
@@ -1015,6 +1109,9 @@ async def download_file(course_id: str, file_index: int, request: Request, previ
         if not file_id:
             raise HTTPException(status_code=400, detail="No Telegram file_id or message_id mapped")
             
+        # Trigger background caching task
+        background_tasks.add_task(cache_telegram_file_to_catbox, course_id, file_index, file_item, "telegram")
+            
         # Fetch file path from Telegram
         get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
         resp = await safe_telegram_request("GET", get_file_url)
@@ -1036,17 +1133,6 @@ async def download_file(course_id: str, file_index: int, request: Request, previ
         # Securely stream the binary file back to the browser
         download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
         
-        # Try uploading to Catbox
-        try:
-            print(f"Uploading Telegram file {file_name} to Catbox...")
-            catbox_url = await upload_url_to_catbox(download_url)
-            file_item["catbox_url"] = catbox_url
-            save_courses_config(config)
-            await async_sync_database_to_telegram()
-            return RedirectResponse(url=catbox_url, status_code=302)
-        except Exception as e:
-            print(f"Failed to upload Telegram file to Catbox: {str(e)}")
-            
         # Check for range request
         if range_header and range_header.startswith("bytes=") and total_size:
             # Parse Range header
@@ -1068,8 +1154,24 @@ async def download_file(course_id: str, file_index: int, request: Request, previ
                     if r.status_code not in (200, 206):
                         yield b"Error streaming range from Telegram servers"
                         return
-                    async for chunk in r.aiter_bytes():
-                        yield chunk
+                    if r.status_code == 206:
+                        async for chunk in r.aiter_bytes():
+                            yield chunk
+                    else:
+                        bytes_to_skip = start
+                        bytes_to_send = end - start + 1
+                        async for chunk in r.aiter_bytes():
+                            if bytes_to_send <= 0:
+                                break
+                            chunk_len = len(chunk)
+                            if bytes_to_skip >= chunk_len:
+                                bytes_to_skip -= chunk_len
+                                continue
+                            start_idx = bytes_to_skip
+                            bytes_to_skip = 0
+                            send_len = min(chunk_len - start_idx, bytes_to_send)
+                            yield chunk[start_idx:start_idx + send_len]
+                            bytes_to_send -= send_len
             
             headers = {
                 "Content-Range": f"bytes {start}-{end}/{total_size}",
@@ -1327,8 +1429,25 @@ async def stream_telegram_chunks_range(
                 if r.status_code not in (200, 206):
                     print(f"Telegram download failed for chunk {i} range {rel_start}-{rel_end}: status {r.status_code}")
                     return
-                async for chunk in r.aiter_bytes():
-                    yield chunk
+                if r.status_code == 206:
+                    async for chunk in r.aiter_bytes():
+                        yield chunk
+                else:
+                    # Manually slice the stream (status 200)
+                    bytes_to_skip = rel_start
+                    bytes_to_send = rel_end - rel_start + 1
+                    async for chunk in r.aiter_bytes():
+                        if bytes_to_send <= 0:
+                            break
+                        chunk_len = len(chunk)
+                        if bytes_to_skip >= chunk_len:
+                            bytes_to_skip -= chunk_len
+                            continue
+                        start_idx = bytes_to_skip
+                        bytes_to_skip = 0
+                        send_len = min(chunk_len - start_idx, bytes_to_send)
+                        yield chunk[start_idx:start_idx + send_len]
+                        bytes_to_send -= send_len
 
 
 # Handle file upload (proxies to Telegram storage)
