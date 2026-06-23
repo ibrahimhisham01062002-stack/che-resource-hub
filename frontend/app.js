@@ -158,9 +158,7 @@ const Icon = ({ name, className = "w-5 h-5", ...props }) => {
   );
 };
 
-const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-  ? "" 
-  : "https://ibrahim072-che-study-hub-backend.hf.space"; // Hugging Face Spaces production API
+const API_BASE = ""; // Relative path routing for Vercel unified frontend/backend domain
 
 function App() {
   const [courses, setCourses] = useState([]);

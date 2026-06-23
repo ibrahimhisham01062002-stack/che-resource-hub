@@ -1,0 +1,2486 @@
+{
+  "courses": {
+    "ChE-401": {
+      "id": "ChE-401",
+      "code": "ChE 401",
+      "title": "Chemical Reaction Engineering",
+      "folder": "ChE-401",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Kinetics of homogeneous and heterogeneous reactions, reactor design (PFR, CSTR, Batch), and reaction mechanisms.",
+      "syllabus": [
+        "Rate laws & stoichiometry",
+        "Isothermal reactor design",
+        "Collection & analysis of rate data",
+        "Multiple reactions",
+        "Non-isothermal reactor design",
+        "Catalysis & heterogeneous reactions"
+      ],
+      "default_notes": "# ChE 401: Chemical Reaction Engineering - Core Formulas & Cheatsheet\n\n## 1. Rate Laws and Reaction Order\nFor a general reaction:\n\n$$aA + bB \\rightarrow cC + dD$$\n\nThe rate of disappearance of reactant $A$, $-r_A$, is expressed as:\n\n$$-r_A = k C_A^\\alpha C_B^\\beta$$\n\nWhere:\n- $k$ is the reaction rate constant: $k = A e^{-E_a / R T}$ (Arrhenius Equation)\n- $C_A, C_B$ are concentrations of species $A$ and $B$\n- $\\alpha, \\beta$ are the reaction orders with respect to $A$ and $B$\n\n## 2. Design Equations for Ideal Reactors\n\n| Reactor Type | Differential Form | Algebraic / Integral Form | Space Time ($\\tau$) |\n| :--- | :--- | :--- | :--- |\n| **Batch** | $N_A \\frac{dX}{dt} = -r_A V$ | $t = N_{A0} \\int_0^X \\frac{dX}{-r_A V}$ | N/A |\n| **CSTR** | N/A | $V = \\frac{F_{A0} X}{-r_A}$ | $\\tau = \\frac{V}{v_0} = \\frac{C_{A0} X}{-r_A}$ |\n| **PFR** | $F_{A0} \\frac{dX}{dV} = -r_A$ | $V = F_{A0} \\int_0^X \\frac{dX}{-r_A}$ | $\\tau = C_{A0} \\int_0^X \\frac{dX}{-r_A}$ |\n| **PBR (Packed Bed)**| $F_{A0} \\frac{dX}{dW} = -r_A'$ | $W = F_{A0} \\int_0^X \\frac{dX}{-r_A'}$ | N/A |\n\n## 3. Multiple Reactions\n- **Selectivity** ($S_{D/U}$): Ratio of flow rate of desired product $D$ to undesired product $U$:\n\n  $$S_{D/U} = \\frac{F_D}{F_U} = \\frac{r_D}{r_U}$$\n\n- **Yield** ($Y_D$): Ratio of moles of product $D$ formed to moles of key reactant consumed:\n\n  $$Y_D = \\frac{F_D}{F_{A0} - F_A}$$\n\n## 4. Temperature Effects (Non-isothermal)\nEnergy balance for a steady-state CSTR:\n\n$$\\sum F_i C_{Pi} (T - T_0) + [\\Delta H_{Rx}(T)] F_{A0} X = Q - W_s$$",
+      "default_logs": [
+        {
+          "id": "log-1",
+          "lecture": "Lecture 1",
+          "date": "2026-05-11",
+          "topics": "Overview of reaction kinetics, stoichiometry table, and Arrhenius dependencies.",
+          "formulas": "-r_A = k * C_A^n"
+        },
+        {
+          "id": "log-2",
+          "lecture": "Lecture 2",
+          "date": "2026-05-18",
+          "topics": "Derivation of CSTR and PFR design equations; sizing reactors using Levenspiel plots.",
+          "formulas": "V = F_A0 * X / (-r_A)"
+        }
+      ],
+      "default_links": [
+        {
+          "id": "link-1",
+          "title": "Introduction to Chemical Reaction Engineering",
+          "url": "https://www.youtube.com/watch?v=5c2Bw4zH6tQ",
+          "category": "YouTube"
+        },
+        {
+          "id": "link-2",
+          "title": "Fogler CRE Interactive Website Lectures",
+          "url": "https://umich.edu/~elements/5e/index.html",
+          "category": "Reference Website"
+        }
+      ],
+      "files": [
+        {
+          "name": "Hill 2nd Edition.pdf",
+          "size": "8.85 MB",
+          "bytes": 9279083,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAO_ahtfg_r8z6gNOBwSNfKgzw5m-Z0AAmUhAALFINlUVLwVFUi-Sbg7BA"
+          ]
+        },
+        {
+          "name": "Fogler ED5.pdf",
+          "size": "44.78 MB",
+          "bytes": 46957409,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPCahtgs6GR6oUX1zIelJ_a2N4FA64AAmchAALFINlUW8glwFbYCnA7BA",
+            "BQACAgUAAyEGAATqgTaTAAPDahtgtdqC3kKReEpjeb_ztjocJpwAAmghAALFINlUwVLrrmODXTM7BA",
+            "BQACAgUAAyEGAATqgTaTAAPEahtgtnifG_9iQ5k2XEj85GnkJ3MAAmkhAALFINlUTN_4soOYVe47BA"
+          ]
+        },
+        {
+          "name": "Levenspiel  CRE SOLUTION  ( PDFDrive )_2.pdf",
+          "size": "21.24 MB",
+          "bytes": 22272247,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPHahtlrynJXO2ExiWa0Ow_m4wuVxgAAmshAALFINlUXiO18eYhkUc7BA",
+            "BQACAgUAAyEGAATqgTaTAAPIahtlsOUBzGtN7Ajpfbuv-MGLtXEAAmwhAALFINlUaEEBTWjzLAY7BA"
+          ]
+        },
+        {
+          "name": "ChE 401_Lecture 3 & 4_July 25-MRD.pdf",
+          "size": "725.89 KB",
+          "bytes": 743308,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB-WoekK2l-4xLjH9DusqIRlsuY791AAJbIgAC9u7wVAsX-cgYc62DOwQ"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Lecture 03: Chemical Reaction Thermodynamics\n\n1. **Introduction to Chemical Reaction Thermodynamics**\n   - **Chemical Kinetics vs. Thermodynamics**: \n     - Chemical kinetics deals with the rates of chemical reactions and the energy and mass fluxes associated with them.\n     - Thermodynamics focuses on equilibrium systems, where no net change occurs over time.\n   - **Equilibrium Conversion**:\n     - Provides a standard to compare the actual performance of a reactor.\n\n2. **Terminology Recap**\n   - **Activity**: A measure of the effective concentration of a species in a solution.\n   - **Fugacity**: A measure of the tendency of a species to escape from a phase.\n   - **Chemical Potential**: The change in Gibbs free energy when one mole of a substance is added to a system.\n   - **Standard State**: A reference state for a substance, chosen for convenience and reproducibility.\n   - **Temperature of Standard State**: Same as the system under investigation.\n   - **Hypothetical Standard States**: Sometimes used for reproducibility, even if not achievable experimentally.\n\n3. **Standard Enthalpy Change and Gibbs Free Energy Change**\n   - **Standard Enthalpy Change**: The change in enthalpy for a reaction at standard conditions.\n   - **Gibbs Free Energy Change**: The maximum non-expansion work that can be done by a system at constant temperature and pressure.\n\n4. **Equilibrium Constant**\n   - **Effect of Temperature**: \n     - The equilibrium constant \\( K \\) changes with temperature according to the Van't Hoff equation.\n   - **Effect of Pressure**:\n     - For reactions involving gases, the equilibrium constant \\( K \\) can be affected by changes in pressure.\n   - **Equilibrium Composition Determination**:\n     - Methods to determine the equilibrium composition of a system.\n\n5. **Effects of Reaction Conditions on Equilibrium Yields**\n   - **Temperature Change**: \n     - Increasing temperature favors endothermic reactions, while decreasing temperature favors exothermic reactions.\n   - **Pressure Change**:\n     - Increasing pressure favors reactions that decrease the number of gas molecules.\n   - **Presence of Inert Species**:\n     - Inert species do not participate in the reaction but can affect the equilibrium by changing the total pressure.\n   - **Catalyst**:\n     - Catalysts do not affect the equilibrium position but can speed up the rate at which equilibrium is reached.\n   - **Excess Reactants**:\n     - Adding excess reactants can shift the equilibrium to produce more products.\n\n6. **Heterogeneous Reactions**\n   - **Standard States for Solids and Liquids**:\n     - Activities of pure species at equilibrium are taken as unity at moderate pressures.\n   - **High Pressure Effects**:\n     - Poynting correction factor is used to account for the effect of high pressure on the activity of condensed phases.\n\n### 2. Key Concepts & Explanations\n\n1. **Chemical Kinetics vs. Thermodynamics**\n   - **Chemical Kinetics**: Focuses on the rates of reactions and the mechanisms by which they occur.\n   - **Thermodynamics**: Focuses on the equilibrium state and the energy changes associated with reactions.\n\n2. **Equilibrium Conversion**\n   - **Definition**: The extent to which a reaction proceeds to completion under equilibrium conditions.\n   - **Significance**: Provides a benchmark for comparing the performance of different reactors.\n\n3. **Activity and Fugacity**\n   - **Activity**: A measure of the effective concentration of a species in a solution, accounting for interactions between molecules.\n   - **Fugacity**: A measure of the tendency of a species to escape from a phase, similar to partial pressure but more accurate for non-ideal gases.\n\n4. **Chemical Potential**\n   - **Definition**: The change in Gibbs free energy when one mole of a substance is added to a system at constant temperature and pressure.\n   - **Significance**: Determines the direction of spontaneous processes.\n\n5. **Standard State**\n   - **Definition**: A reference state for a substance, chosen for convenience and reproducibility.\n   - **Temperature**: The same as the system under investigation.\n   - **Hypothetical States**: Sometimes used for reproducibility, even if not achievable experimentally.\n\n6. **Standard Enthalpy Change and Gibbs Free Energy Change**\n   - **Standard Enthalpy Change**: The change in enthalpy for a reaction at standard conditions (298 K and 1 bar).\n   - **Gibbs Free Energy Change**: The maximum non-expansion work that can be done by a system at constant temperature and pressure.\n\n7. **Equilibrium Constant**\n   - **Definition**: A measure of the extent to which a reaction proceeds to completion at equilibrium.\n   - **Temperature Dependence**: Described by the Van't Hoff equation.\n   - **Pressure Dependence**: For gas-phase reactions, the equilibrium constant can be affected by changes in pressure.\n\n8. **Effects of Reaction Conditions on Equilibrium Yields**\n   - **Temperature**: Increasing temperature favors endothermic reactions, while decreasing temperature favors exothermic reactions.\n   - **Pressure**: Increasing pressure favors reactions that decrease the number of gas molecules.\n   - **Inert Species**: Do not participate in the reaction but can affect the equilibrium by changing the total pressure.\n   - **Catalyst**: Speeds up the rate at which equilibrium is reached but does not affect the equilibrium position.\n   - **Excess Reactants**: Adding excess reactants can shift the equilibrium to produce more products.\n\n9. **Heterogeneous Reactions**\n   - **Standard States for Solids and Liquids**: Activities of pure species at equilibrium are taken as unity at moderate pressures.\n   - **High Pressure Effects**: Poynting correction factor accounts for the effect of high pressure on the activity of condensed phases.\n\n### 3. Formulas & Notations Dictated\n\n1. **Van't Hoff Equation**\n   \\[\n   \\frac{d \\ln K}{d T} = \\frac{\\Delta H^\\circ}{R T^2}\n   \\]\n   - \\( K \\): Equilibrium constant\n   - \\( \\Delta H^\\circ \\): Standard enthalpy change\n   - \\( R \\): Gas constant\n   - \\( T \\): Temperature\n\n2. **Gibbs Free Energy Change**\n   \\[\n   \\Delta G^\\circ = \\Delta H^\\circ - T \\Delta S^\\circ\n   \\]\n   - \\( \\Delta G^\\circ \\): Standard Gibbs free energy change\n   - \\( \\Delta H^\\circ \\): Standard enthalpy change\n   - \\( \\Delta S^\\circ \\): Standard entropy change\n   - \\( T \\): Temperature\n\n3. **Equilibrium Constant for Gas-Phase Reactions**\n   \\[\n   K_p = \\frac{(P_C)^c (P_D)^d}{(P_A)^a (P_B)^b}\n   \\]\n   - \\( K_p \\): Equilibrium constant in terms of partial pressures\n   - \\( P_A, P_B, P_C, P_D \\): Partial pressures of reactants and products\n   - \\( a, b, c, d \\): Stoichiometric coefficients\n\n4. **Poynting Correction Factor**\n   \\[\n   f = \\exp\\left(\\frac{V (P - P^\\circ)}{RT}\\right)\n   \\]\n   - \\( f \\): Activity ratio\n   - \\( V \\): Molar volume at the condensed phase\n   - \\( P \\): Pressure\n   - \\( P^\\circ \\): Standard pressure (1 bar)\n   - \\( R \\): Gas constant\n   - \\( T \\): Temperature\n\n### 4. Comparative Analysis Table\n\n| Method/Process | Assumptions | Parameters | Advantages | Limitations |\n|----------------|-------------|------------|------------|-------------|\n| **Van't Hoff Equation** | - Ideal gas behavior<br>- Constant enthalpy change | \\( K \\), \\( \\Delta H^\\circ \\), \\( R \\), \\( T \\) | Predicts the effect of temperature on equilibrium constant | Assumes constant enthalpy change, which may not hold for all reactions |\n| **Gibbs Free Energy Change** | - Standard conditions (298 K, 1 bar)<br>- Ideal behavior | \\( \\Delta G^\\circ \\), \\( \\Delta H^\\circ \\), \\( \\Delta S^\\circ \\), \\( T \\) | Provides a comprehensive measure of reaction spontaneity | Assumes standard conditions, which may not always be applicable |\n| **Equilibrium Constant for Gas-Phase Reactions** | - Ideal gas behavior<br>- Constant temperature and pressure | \\( K_p \\), \\( P_A, P_B, P_C, P_D \\), \\( a, b, c, d \\) | Describes the equilibrium composition of gas-phase reactions | Assumes ideal gas behavior, which may not hold at high pressures |\n| **Poynting Correction Factor** | - High pressure<br>- Condensed phase | \\( f \\), \\( V \\), \\( P \\), \\( P^\\circ \\), \\( R \\), \\( T \\) | Accounts for the effect of high pressure on activity | Applicable only to high-pressure systems, may not be accurate for all condensed phases |\n\nThis structured summary should help you understand and review the key concepts, equations, and methodologies discussed in the lectures."
+        },
+        {
+          "name": "diagnostic_test.txt",
+          "size": "29 B",
+          "bytes": 29,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICBWoemZHAqixtvE-Xj0eY2XkKSotzAAJ2IgAC9u7wVLDlXGH_HDQuOwQ"
+          ]
+        },
+        {
+          "name": "ChE 401_Lecture 5 -10_July 25-MRD.pdf",
+          "size": "1.68 MB",
+          "bytes": 1757268,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICCGoemkE_FU1eAjw6J3itXljlwDB3AAJ5IgAC9u7wVK43OfiCOocBOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "ChE 401_Lecture 11-18(Catalysis I)_July 25-MRD.pdf",
+          "size": "2.23 MB",
+          "bytes": 2336047,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICEGoemwpDoJkSnGpDxqhayw0WgiZIAAKBIgAC9u7wVEzZcvR6aTI4OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "opt_test.txt",
+          "size": "41 B",
+          "bytes": 41,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICE2oemzvivhYIAXfiICG5qblo5YVsAAKDIgAC9u7wVA4JziOnj4CJOwQ"
+          ]
+        },
+        {
+          "name": "ChE 401_Lecture 19-25(Catalysis II)_July 25-MRD.pdf",
+          "size": "1.10 MB",
+          "bytes": 1155477,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICFmoem5vi3WazQeuG6-Y8zOxwUD-oAAKGIgAC9u7wVANvlfpTI-DCOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Reactor Design for Heterogeneous Catalysis.pdf",
+          "size": "756.51 KB",
+          "bytes": 774669,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICGWoeqCGLdLMsfTdQP08RD_1us5a1AAKpIgAC9u7wVIZ668ggaA7ROwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Anondo sir merged.pdf",
+          "size": "8.63 MB",
+          "bytes": 9049696,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICHGoeqDLF3CzjG89dILYJnRoHUHj_AAKrIgAC9u7wVLzSK3bFqQp-OwQ"
+          ],
+          "folder": "Root"
+        }
+      ],
+      "folders": [
+        "Root"
+      ]
+    },
+    "ChE-305": {
+      "id": "ChE-305",
+      "code": "ChE 305",
+      "title": "Mass Transfer II",
+      "folder": "ChE-305",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Principles of molecular diffusion in fluids, convective mass transfer, interphase mass transfer, and design of absorption and distillation columns.",
+      "syllabus": [
+        "Fick's laws of molecular diffusion",
+        "Convective mass transfer coefficients",
+        "Interphase mass transfer and two-film theory",
+        "Gas absorption & stripping column design",
+        "Packed bed columns & HETP calculations"
+      ],
+      "default_notes": "# ChE 305: Mass Transfer I - Diffusion & Column Design\n\n## 1. Fick's First Law of Diffusion\nFor molecular diffusion in binary mixture $A$ and $B$, the molar flux of $A$ relative to stationary coordinates is:\n\n$$J_A = -D_{AB} \\frac{dC_A}{dz}$$\n\nIf bulk flow is present, the total flux $N_A$ is:\n\n$$N_A = -D_{AB} \\frac{dC_A}{dz} + y_A (N_A + N_B)$$\n\nWhere:\n- $y_A$ is the mole fraction of $A$\n- $N_A + N_B$ represents the bulk convective flux\n\n## 2. Diffusion of A through Stagnant B ($N_B = 0$)\nIntegrating Fick's law across a film of thickness $z_2 - z_1 = \\delta$ yields:\n\n$$N_A = \\frac{D_{AB} P}{R T \\delta p_{BM}} (p_{A1} - p_{A2})$$\n\nWhere $p_{BM}$ is the log-mean partial pressure of stagnant gas $B$:\n\n$$p_{BM} = \\frac{p_{B2} - p_{B1}}{\\ln(p_{B2} / p_{B1})}$$\n\n## 3. Equimolar Counterdiffusion (EMD, $N_A = -N_B$)\n\n$$N_A = \\frac{D_{AB}}{R T \\delta} (p_{A1} - p_{A2})$$\n\n## 4. Gas Absorption Tower Design\nThe height of a packed column ($Z$) can be calculated using the Transfer Unit method:\n\n$$Z = HTU \\times NTU$$\n\n$$Z = H_{OG} \\times N_{OG} = \\left(\\frac{G}{K_y a S}\\right) \\int_{y_2}^{y_1} \\frac{dy}{y - y^*}$$",
+      "default_logs": [
+        {
+          "id": "log-1",
+          "lecture": "Lecture 1",
+          "date": "2026-05-12",
+          "topics": "Fick's first law, gaseous diffusion coefficients estimation using Fuller's equation.",
+          "formulas": "N_A = -D_AB * dC/dz + y_A * (N_A + N_B)"
+        },
+        {
+          "id": "log-2",
+          "lecture": "Lecture 2",
+          "date": "2026-05-19",
+          "topics": "Absorption column design, operating line vs equilibrium line, and minimum solvent rate calculation.",
+          "formulas": "L/G = (y1 - y2)/(x1 - x2)"
+        }
+      ],
+      "default_links": [
+        {
+          "id": "link-1",
+          "title": "Mass Transfer Lecture Series (NPTEL)",
+          "url": "https://www.youtube.com/watch?v=f7Bq0fK2GzE",
+          "category": "YouTube"
+        },
+        {
+          "id": "link-2",
+          "title": "Separation Process Principles (Seader & Henley) Notes",
+          "url": "https://www.separationprocesses.com",
+          "category": "Reference Website"
+        }
+      ],
+      "files": []
+    },
+    "309": {
+      "id": "309",
+      "code": "ChE 309",
+      "title": "Particle Technology",
+      "folder": "309",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Characterization of solid particles, fluid flow through packed and fluidized beds, sedimentation, coagulation, filtration, and unit operations.",
+      "syllabus": [
+        "Particle size & shape characterization",
+        "Flow of fluids through packed beds (Ergun Equation)",
+        "Fluidization mechanics",
+        "Sedimentation and gravity thickening",
+        "Cake filtration theory (continuous & batch)"
+      ],
+      "default_notes": "# ChE 309: Particle Technology & Unit Operations\n\n## 1. Particle Size Characterization\n- **Sphericity** ($\\phi_s$): Measure of how closely a particle resembles a sphere:\n\n  $$\\phi_s = \\frac{6 / D_p}{s_p / v_p} = \\frac{6 v_p}{D_p s_p}$$\n\n  For a perfect sphere, $\\phi_s = 1$.\n- **Mean Diameter**: Sauter Mean Diameter ($D_{32}$) represents volume-to-surface area average:\n\n  $$D_{32} = \\frac{1}{\\sum (x_i / D_{pi})}$$\n\n## 2. Flow Through Packed Beds (Ergun Equation)\nTo estimate the pressure drop ($\\Delta P$) across a packed column of height $L$ and voidage $\\epsilon$:\n\n$$\\frac{\\Delta P}{L} = \\frac{150 \\mu u_0 (1-\\epsilon)^2}{\\phi_s^2 D_p^2 \\epsilon^3} + \\frac{1.75 \\rho u_0^2 (1-\\epsilon)}{\\phi_s D_p \\epsilon^3}$$\n\nWhere:\n- First term: Viscous energy loss (Blake-Kozeny equation, laminar flow)\n- Second term: Inertial energy loss (Burke-Plummer equation, turbulent flow)\n- $u_0$ is the superficial fluid velocity\n\n## 3. Fluidization Mechanics\nAt minimum fluidization velocity ($u_{mf}$), the drag force of upward flowing fluid equals the buoyant weight of solids:\n\n$$\\Delta P = L (1-\\epsilon) (\\rho_p - \\rho) g$$\n\n## 4. Cake Filtration Theory\nThe filtration fundamental equation relates filtrate volume ($V$) to filtration time ($t$):\n\n$$\\frac{dt}{dV} = K_c V + \\frac{1}{q_0}$$\n\nIntegrating under constant pressure drop gives:\n\n$$t = \\frac{K_c}{2} V^2 + \\frac{V}{q_0}$$",
+      "default_logs": [
+        {
+          "id": "log-1",
+          "lecture": "Lecture 1",
+          "date": "2026-05-13",
+          "topics": "Particle sizing, Sauter mean diameter derivation, and dry sieve screening parameters.",
+          "formulas": "D_32 = 1 / sum(x_i / d_i)"
+        },
+        {
+          "id": "log-2",
+          "lecture": "Lecture 2",
+          "date": "2026-05-20",
+          "topics": "Derivation of the Ergun equation and determination of void fractions in beds.",
+          "formulas": "dP/L = Blake-Kozeny + Burke-Plummer"
+        }
+      ],
+      "default_links": [
+        {
+          "id": "link-1",
+          "title": "Fluidization and Particle technology introduction",
+          "url": "https://www.youtube.com/watch?v=F3xO2oN5N3M",
+          "category": "YouTube"
+        }
+      ],
+      "files": []
+    },
+    "ChE-304": {
+      "id": "ChE-304",
+      "code": "ChE 304",
+      "title": "Chemical Engineering Lab II",
+      "folder": "ChE-304",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Practical application and experimental verification of mass transfer, heat transfer, and particle technology operations.",
+      "syllabus": [
+        "Packed tower distillation lab",
+        "Double pipe heat exchanger calibration",
+        "Solid-liquid mixing and power consumption",
+        "Rotary vacuum drum filtration kinetics",
+        "Fluidization bed experimental validation"
+      ],
+      "default_notes": "# ChE 304: Chemical Engineering Laboratory II\n\n## 1. Experimental Lab Overview\nThis lab complements the lecture material in Mass Transfer, Heat Transfer, and Particle Technology. It offers hands-on experience in operation, control, calibration, and analysis of pilot plants and industrial scale machinery.\n\n## 2. Standard Experimental Worksheets\n- **Experiment 1**: Gas Absorption in a Packed Tower (estimating $K_G a$)\n- **Experiment 2**: Solid Particle Size Analysis & Fluid Flow through Packed Column\n- **Experiment 3**: Shell and Tube Heat Exchanger calibration\n- **Experiment 4**: Fluidization parameters ($u_{mf}$ calculation vs experimental value)\n- **Experiment 5**: Filtration kinetics using Plate and Frame Filter Press\n\n## 3. Data Processing and Reporting Guidelines\n- Report all measurements in standard SI units.\n- Perform comprehensive error propagation analysis for all computed variables.\n- Include comparative graphs (e.g. Experimental vs Theoretical pressure drops in fluidization).",
+      "default_logs": [
+        {
+          "id": "log-1",
+          "lecture": "Experiment 1",
+          "date": "2026-05-14",
+          "topics": "Introduction to column calibration, priming pumps, and measuring gas absorption rates.",
+          "formulas": "K_Ga calculation"
+        },
+        {
+          "id": "log-2",
+          "lecture": "Experiment 2",
+          "date": "2026-05-21",
+          "topics": "Fluidized bed runs, reading manometers, and noting the transition velocity from packed to fluidized.",
+          "formulas": "Re_p vs C_d"
+        }
+      ],
+      "default_links": [
+        {
+          "id": "link-1",
+          "title": "How a Plate and Frame Filter Press Works",
+          "url": "https://www.youtube.com/watch?v=Qy9P45h6F-M",
+          "category": "YouTube"
+        }
+      ],
+      "files": []
+    },
+    "ChE-429": {
+      "id": "ChE-429",
+      "code": "ChE 429",
+      "title": "Sustainable Process Engineering",
+      "folder": "ChE-429",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Green engineering principles, carbon footprint reduction, Life Cycle Assessment (LCA), renewable biofuels, and municipal solid waste recycling.",
+      "syllabus": [
+        "Principles of Green Chemistry",
+        "Life Cycle Assessment (LCA) methodologies",
+        "Carbon capture and storage (CCS) designs",
+        "Renewable energy and biofuels (biodiesel, ethanol)",
+        "Circular economy & plastic recycling"
+      ],
+      "default_notes": "# ChE 429: Sustainable Process Engineering - Essential Notes\n\n## 1. Green Engineering Principles\n- **Prevention**: Prevent waste rather than treat it after creation.\n- **Atom Economy**: Maximize incorporating all materials into the final product:\n\n  $$\\text{Atom Economy} = \\frac{\\text{MW of Desired Product}}{\\sum \\text{MW of all Reactants}} \\times 100\\%$$\n\n- **E-Factor**: Ratio of waste mass to product mass:\n\n  $$\\text{E-Factor} = \\frac{\\text{Total Waste (kg)}}{\\text{Target Product (kg)}}$$\n\n## 2. Life Cycle Assessment (LCA) Phases\nAccording to ISO 14040, LCA consists of four iterative phases:\n1. **Goal and Scope Definition**: Setting functional units and boundaries.\n2. **Inventory Analysis (LCI)**: Quantitative catalog of inputs (energy, resources) and outputs (emissions, waste).\n3. **Impact Assessment (LCIA)**: Evaluating environmental damage indicators (Global Warming Potential, Eutrophication, Acidification).\n4. **Interpretation**: Analyzing opportunities for footprint minimization.\n\n## 3. Biofuels & Carbon Balances\n- **Anhydrous Ethanol**: Distillation coupled with molecular sieve adsorption for breaking the water-ethanol azeotrope.\n- **LCA of Biodiesel**: Comparing transesterification footprints of virgin vegetable oil vs waste cooking oil.",
+      "default_logs": [
+        {
+          "id": "log-1",
+          "lecture": "Lecture 1",
+          "date": "2026-05-15",
+          "topics": "Principles of Green Chemistry and quantitative assessment metrics (E-factor, Atom economy).",
+          "formulas": "Atom Economy = MW_Product / MW_Reactants"
+        },
+        {
+          "id": "log-2",
+          "lecture": "Lecture 2",
+          "date": "2026-05-22",
+          "topics": "LCA framework (ISO 14040), functional unit sizing, and boundary selection.",
+          "formulas": "LCA boundaries: Cradle-to-Grave"
+        }
+      ],
+      "default_links": [
+        {
+          "id": "link-1",
+          "title": "Life Cycle Assessment (LCA) Explained",
+          "url": "https://www.youtube.com/watch?v=t5JvD90vNyo",
+          "category": "YouTube"
+        }
+      ],
+      "files": []
+    },
+    "HYSYS": {
+      "id": "HYSYS",
+      "code": "ChE 306",
+      "title": "Process Simulation Lab (HYSYS)",
+      "folder": "HYSYS",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "State-of-the-art flowsheeting, component selection, thermodynamic package calibration (Peng-Robinson, NRTL), and simulation of multi-stage separators.",
+      "syllabus": [
+        "HYSYS interface & fluid packages",
+        "Valve, pump, and heat exchanger unit operations",
+        "Sash and distillation column simulations",
+        "Recycle loop convergence algorithms",
+        "Sensitivity analysis & plant optimizations"
+      ],
+      "default_notes": "# ChE 312: Process Simulation Lab (HYSYS) - Cheatsheet\n\n## 1. Thermodynamic Fluid Package Selection\nSelecting the correct fluid package is the single most critical step in process flowsheeting:\n- **Peng-Robinson (PR)**: Excellent for oil, gas, and petrochemical applications. Handles hydrocarbon mixtures, light gases, and high-pressure setups.\n- **SRK (Soave-Redlich-Kwong)**: Similar to PR, widely used in gas processing plants.\n- **NRTL / UNIQUAC**: Crucial for highly non-ideal chemical mixtures (polar systems, low pressures, azeotropic systems like ethanol-water distillation).\n- **Steam Tables (ASME)**: Best for water/steam cycles and power plants.\n\n## 2. Recycle Loop Convergence\nRecycle loops require iterative solutions. To converge successfully:\n- Place a **Recycle block** immediately before the inlet node where recycling occurs.\n- Initialize loop variables with logical guess values.\n- Adjust convergence sensitivities (tolerance) and damping factors in the recycle parameters.\n- **Fenske**: Calculates the minimum number of equilibrium stages ($N_{min}$):\n\n  $$N_{min} = \\frac{\\ln[\\frac{x_{LK,D}}{x_{HK,D}} \\times \\frac{x_{HK,B}}{x_{LK,B}}]}{\\ln \\alpha_{avg}}$$\n\n- **Underwood**: Calculates the minimum reflux ratio ($R_{min}$).\n- **Gilliland**: Computes the actual stages ($N$) for a given operating reflux ratio ($R$).",
+      "default_logs": [
+        {
+          "id": "log-1",
+          "lecture": "Lab 1",
+          "date": "2026-05-16",
+          "topics": "Interface introduction, component lists, fluid package comparison (PR vs NRTL), and flash separator setup.",
+          "formulas": "K_i = y_i / x_i"
+        },
+        {
+          "id": "log-2",
+          "lecture": "Lab 2",
+          "date": "2026-05-23",
+          "topics": "Modeling a complete distillation tower, feed stage optimization, and reflux ratio impact study.",
+          "formulas": "FUG Equations"
+        }
+      ],
+      "default_links": [
+        {
+          "id": "link-1",
+          "title": "Aspen HYSYS Lecture: Distillation Column Sizing",
+          "url": "https://www.youtube.com/watch?v=AcrUq_t7VdI",
+          "category": "YouTube"
+        }
+      ],
+      "files": []
+    },
+    "Matlab": {
+      "id": "Matlab",
+      "code": "ChE 310",
+      "title": "Chemical Engineering Computation (MATLAB)",
+      "folder": "Matlab",
+      "level": "Level-3",
+      "term": "Term-2",
+      "description": "Numerical methods for chemical engineering, root finding, linear systems, ODE integration (ode45), and regression analysis.",
+      "syllabus": [
+        "Root finding (Newton-Raphson, Bisection)",
+        "Linear equations (Gaussian elimination, Jacobi)",
+        "Curve fitting & nonlinear regression",
+        "Ordinary Differential Equations (Runge-Kutta, stiff solvers)",
+        "Partial Differential Equations in transport phenomena"
+      ],
+      "default_notes": "# ChE 310: Chemical Engineering Computation - MATLAB Reference\n\n## 1. Root Finding (Newton-Raphson Method)\nUsed to solve $f(x) = 0$ iteratively:\n\n$$x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}$$\n\n**MATLAB implementation:**\n```matlab\n% Root finding using fzero\nf = @(x) x^3 - 5*x + 1;\nx_root = fzero(f, 2);\n```\n\n## 2. Solving Systems of Linear Equations ($A x = b$)\nTo solve for concentration profile in multiple series reactors:\n```matlab\nA = [4, -1, 0; -1, 4, -1; 0, -1, 3];\nb = [10; 12; 8];\nx = A\\b;  % Efficient backslash operator\n```\n\n## 3. Ordinary Differential Equations (ODEs)\nFor transient reactor profiles: $\\frac{dC_A}{dt} = -k C_A^2$\n```matlab\n% Define the ODE derivative function\nodefun = @(t, Ca) -0.5 * Ca^2;\ntspan = [0 10];\nCa0 = 2.0; % Initial concentration\n\n% Solve using ode45 (explicit Runge-Kutta 4th/5th order)\n[t, Ca] = ode45(odefun, tspan, Ca0);\nplot(t, Ca, '-o');\nxlabel('Time (s)'); ylabel('C_A (mol/L)');\n```\n\n## 4. Stiff ODEs (Stiff Solvers)\nFor chemical systems with widely varying reaction rate constants (fast vs slow reactions), use **ode15s** instead of ode45 to prevent numerical instability.",
+      "default_logs": [
+        {
+          "id": "log-1",
+          "lecture": "Lab 1",
+          "date": "2026-05-17",
+          "topics": "Root finding algorithms, writing bisection scripts, and solving equation of state roots.",
+          "formulas": "x = x - f(x)/df(x)"
+        },
+        {
+          "id": "log-2",
+          "lecture": "Lab 2",
+          "date": "2026-05-24",
+          "topics": "Solving systems of ODEs for transient tank heights using ode45.",
+          "formulas": "dy/dt = f(t,y)"
+        }
+      ],
+      "default_links": [
+        {
+          "id": "link-1",
+          "title": "MATLAB ODE Solvers (ode45) Tutorial",
+          "url": "https://www.youtube.com/watch?v=yYJ4S7Bv7d8",
+          "category": "YouTube"
+        },
+        {
+          "id": "link-2",
+          "title": "Numerical Methods for Engineers (Chopra) Companion",
+          "url": "https://www.mathworks.com/matlabcentral/",
+          "category": "Reference Website"
+        }
+      ],
+      "files": []
+    },
+    "ChE-311": {
+      "id": "ChE-311",
+      "code": "ChE 311",
+      "title": "Unit Operation",
+      "description": "Study materials for ChE 311",
+      "folder": "ChE-311",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Parrticle Technology and Separations .pdf",
+          "size": "13.35 MB",
+          "bytes": 13996173,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOLahsnrq0CxGOYJaVl95W5R6xTTc0AAgwhAALFINlUjTZj_KcVPZ87BA"
+          ],
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Chapter 1: Particulate Solids\n- **Introduction**: Overview of particulate solids and their importance in chemical engineering.\n- **Particle Characterisation**: Techniques for characterizing particle size, shape, and distribution.\n- **Particulate Solids in Bulk**: Behavior of particulate solids in bulk, including packing, density, and flow properties.\n- **Blending of Solid Particles**: Methods and principles of blending solid particles to achieve uniform mixtures.\n- **Classification of Solid Particles**: Techniques for classifying particles based on size, shape, and composition.\n- **Separation of Suspended Solid Particles from Fluids**: Methods for separating solid particles from fluids, including sedimentation, filtration, and centrifugation.\n\n#### Chapter 2: Particle Size Reduction and Enlargement\n- **Introduction**: Overview of particle size reduction and enlargement processes.\n- **Size Reduction of Solids**: Mechanisms and equipment for reducing particle size, including crushing, grinding, and milling.\n- **Types of Crushing Equipment**: Description and comparison of different types of crushing equipment.\n- **Size Enlargement of Particles**: Methods for increasing particle size, such as agglomeration and granulation.\n\n#### Chapter 3: Motion of Particles in a Fluid\n- **Introduction**: Overview of particle motion in fluids.\n- **Flow Past a Cylinder and a Sphere**: Analysis of fluid flow around cylindrical and spherical particles.\n- **Drag Force on a Spherical Particle**: Calculation of drag forces on spherical particles.\n- **Non-Spherical Particles**: Behavior of non-spherical particles in fluid flow.\n- **Motion of Bubbles and Drops**: Dynamics of bubbles and drops in fluids.\n- **Drag Forces and Settling Velocities for Particles in Non-Newtonian Fluids**: Analysis of drag forces and settling velocities in non-Newtonian fluids.\n- **Accelerating Motion of a Particle in the Gravitational Field**: Dynamics of particle motion under gravity.\n- **Motion of Particles in a Centrifugal Field**: Analysis of particle motion in centrifugal fields.\n\n#### Chapter 4: Flow of Fluids through Granular Beds and Packed Columns\n- **Introduction**: Overview of fluid flow through granular beds and packed columns.\n- **Flow of a Single Fluid through a Granular Bed**: Analysis of single-phase flow through granular beds.\n- **Dispersion**: Phenomenon of dispersion in packed beds.\n- **Heat Transfer in Packed Beds**: Heat transfer mechanisms in packed beds.\n- **Packed Columns**: Design and operation of packed columns.\n\n#### Chapter 5: Sedimentation\n- **Introduction**: Overview of sedimentation processes.\n- **Sedimentation of Fine Particles**: Mechanisms and theories for the sedimentation of fine particles.\n- **Sedimentation of Coarse Particles**: Mechanisms and theories for the sedimentation of coarse particles.\n\n#### Chapter 6: Fluidisation\n- **Characteristics of Fluidised Systems**: Properties and behavior of fluidised systems.\n- **Liquid-Solids Systems**: Fluidisation of liquid-solids systems.\n- **Gas-Solids Systems**: Fluidisation of gas-solids systems.\n- **Gas-Liquid Solids Fluidised Beds**: Fluidisation of gas-liquid-solids systems.\n- **Heat Transfer to a Boundary Surface**: Heat transfer mechanisms in fluidised beds.\n- **Mass and Heat Transfer Between Fluid and Particles**: Mass and heat transfer phenomena in fluidised beds.\n- **Summary of the Properties of Fluidised Beds**: Overview of the key properties of fluidised beds.\n- **Applications of the Fluidised Solids Technique**: Industrial applications of fluidised bed technology.\n\n#### Chapter 7: Liquid Filtration\n- **Introduction**: Overview of liquid filtration processes.\n- **Filtration Theory**: Theoretical aspects of filtration, including cake formation and resistance.\n- **Filtration Practice**: Practical aspects of filtration, including equipment and operation.\n- **Filtration Equipment**: Description and comparison of different types of filtration equipment.\n\n#### Chapter 8: Membrane Separation Processes\n- **Introduction**: Overview of membrane separation processes.\n- **Classification of Membrane Processes**: Different types of membrane separation processes, including microfiltration, ultrafiltration, and reverse osmosis.\n- **The Nature of Synthetic Membranes**: Properties and characteristics of synthetic membranes.\n- **General Membrane Equation**: Mathematical description of membrane processes.\n- **Cross-Flow Microfiltration**: Operation and design of cross-flow microfiltration systems.\n- **Ultrafiltration**: Operation and design of ultrafiltration systems.\n- **Reverse Osmosis**: Operation and design of reverse osmosis systems.\n- **Membrane Modules and Plant Configuration**: Design and configuration of membrane modules and plants.\n- **Membrane Fouling**: Causes and prevention of membrane fouling.\n- **Electrodialysis**: Operation and design of electrodialysis systems.\n- **Reverse Osmosis Water Treatment Plant**: Design and operation of reverse osmosis water treatment plants.\n- **Pervaporation**: Operation and design of pervaporation systems.\n- **Liquid Membranes**: Properties and applications of liquid membranes.\n- **Gas Separations**: Operation and design of gas separation systems using membranes.\n\n#### Chapter 9: Centrifugal Separations\n- **Introduction**: Overview of centrifugal separation processes.\n- **Shape of the Free Surface of the Liquid**: Analysis of the free surface shape in centrifugal fields.\n- **Centrifugal Pressure**: Calculation of centrifugal pressure.\n- **Separation of Immiscible Liquids of Different Densities**: Mechanisms for separating immiscible liquids using centrifugal fields.\n- **Sedimentation in a Centrifugal Field**: Analysis of sedimentation in centrifugal fields.\n- **Filtration in a Centrifuge**: Operation and design of centrifugal filtration systems.\n- **Mechanical Design**: Design considerations for centrifugal equipment.\n- **Centrifugal Equipment**: Description and comparison of different types of centrifugal equipment.\n\n#### Chapter 10: Leaching\n- **Introduction**: Overview of leaching processes.\n- **Mass Transfer in Leaching Operations**: Mass transfer mechanisms in leaching.\n- **Equipment for Leaching**: Description and comparison of different types of leaching equipment.\n- **Countercurrent Washing of Solids**: Operation and design of countercurrent washing systems.\n- **Calculation of the Number of Stages**: Methods for calculating the number of stages in leaching processes.\n- **Number of Stages for Countercurrent Washing by Graphical Methods**: Graphical methods for determining the number of stages in countercurrent washing.\n\n#### Chapter 11: Distillation\n- **Introduction**: Overview of distillation processes.\n- **Vapour-Liquid Equilibrium**: Theoretical aspects of vapour-liquid equilibrium.\n- **Methods of Distillation - Two Component Mixtures**: Distillation methods for two-component mixtures.\n- **The Fractionating Column**: Design and operation of fractionating columns.\n- **Conditions for Varying Overflow in Non-Ideal Binary Systems**: Conditions for varying overflow in non-ideal binary systems.\n- **Batch Distillation**: Operation and design of batch distillation systems.\n- **Multicomponent Mixtures**: Distillation of multicomponent mixtures.\n- **Azeotropic and Extractive Distillation**: Azeotropic and extractive distillation methods.\n- **Steam Distillation**: Operation and design of steam distillation systems.\n- **Plate Columns**: Design and operation of plate columns.\n- **Packed Columns for Distillation**: Design and operation of packed columns for distillation.\n\n#### Chapter 12: Absorption of Gases\n- **Introduction**: Overview of gas absorption processes.\n- **Conditions of Equilibrium Between Liquid and Gas**: Equilibrium conditions between liquid and gas phases.\n- **The Mechanism of Absorption**: Mechanisms of gas absorption.\n- **Determination of Transfer Coefficients**: Methods for determining mass transfer coefficients.\n- **Absorption Associated with Chemical Reaction**: Absorption processes involving chemical reactions.\n- **Absorption Accompanied by the Liberation of Heat**: Absorption processes involving heat release.\n- **Packed Towers for Gas Absorption**: Design and operation of packed towers for gas absorption.\n- **Plate Towers for Gas Absorption**: Design and operation of plate towers for gas absorption.\n- **Other Equipment for Gas Absorption**: Description and comparison of other types of gas absorption equipment.\n\n#### Chapter 13: Liquid-Liquid Extraction\n- **Introduction**: Overview of liquid-liquid extraction processes.\n- **Extraction Processes**: Description and comparison of different extraction processes.\n- **Equilibrium Data**: Equilibrium data for liquid-liquid extraction.\n- **Calculation of the Number of Theoretical Stages**: Methods for calculating the number of theoretical stages in extraction processes.\n- **Classification of Extraction Equipment**: Classification of different types of extraction equipment.\n- **Stage-Wise Equipment for Extraction**: Design and operation of stage-wise extraction equipment.\n- **Differential Contact Equipment for Extraction**: Design and operation of differential contact extraction equipment.\n- **Use of Specialised Fluids**: Use of specialised fluids in extraction processes.\n\n#### Chapter 14: Evaporation\n- **Introduction**: Overview of evaporation processes.\n- **Heat Transfer in Evaporators**: Heat transfer mechanisms in evaporators.\n- **Single-Effect Evaporators**: Design and operation of single-effect evaporators.\n- **Multiple-Effect Evaporators**: Design and operation of multiple-effect evaporators.\n- **Improved Efficiency in Evaporation**: Methods for improving the efficiency of evaporation processes.\n- **Evaporator Operation**: Operation and control of evaporators.\n- **Equipment for Evaporation**: Description and comparison of different types of evaporation equipment.\n\n####"
+        },
+        {
+          "name": "Ludwig_Volume 1.pdf",
+          "size": "28.87 MB",
+          "bytes": 30272710,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOlahtOwfzc5Qz_ePIMcEdYSEdoNpkAAjQhAALFINlUPHIewE56lAg7BA",
+            "BQACAgUAAyEGAATqgTaTAAOmahtOw50gxHFQYOn_x51yqCYO_7QAAjUhAALFINlUMMRx4I3U-L07BA"
+          ]
+        },
+        {
+          "name": "1) Mech.sep_1_January 2025.pptx",
+          "size": "3.03 MB",
+          "bytes": 3179588,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICH2oe6fhrPkh12q04PF0TGAiiZ3RNAALuJgAC9u74VI3AIrHCYHGoOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "2) Mech.sep_2_1_January 2025.pptx",
+          "size": "2.30 MB",
+          "bytes": 2415150,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICImoe6fvbKxzH8SqGFc4HVR79K78iAALwJgAC9u74VESBwmJRXqn4OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "3) Mech.sep_2_2_January 2025.pptx",
+          "size": "2.15 MB",
+          "bytes": 2254234,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICJGoe6f7jxWDI5letSkTa4klUUL7NAALyJgAC9u74VDOjjoytgWhgOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "4) Mech.sep_2_3_January 25.pptx",
+          "size": "1.43 MB",
+          "bytes": 1502378,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICJ2oe6gGfA3EPq-wm6bl8OmSxwo6rAAL0JgAC9u74VE8b0y2MaQhsOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "5)_Mixing and Agitation_ZT_Jan 25.pptx",
+          "size": "8.14 MB",
+          "bytes": 8532095,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICK2oe6gWfhDH54lDGEpB6OFNzbmACAAL2JgAC9u74VBg_jw7N195EOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "6) Crystallization_ZT_January_25.pptx",
+          "size": "1.02 MB",
+          "bytes": 1070421,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICLmoe6hamI8jc0sFaSgY9OzLi8mOeAAL4JgAC9u74VOu21RS1ZT8wOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "7) Size Reduction_jan25.pdf",
+          "size": "2.43 MB",
+          "bytes": 2552128,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICMWoe6hlzHAN-dHYmZXVLFDie6c_tAAL6JgAC9u74VD_5gN2Zq6klOwQ"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Introduction\n- **Purpose of Size Reduction**: Materials are often too coarse and need to be reduced in size to meet specific requirements. The process involves multiple stages, each using different machines based on the material properties and desired particle size.\n- **Types of Size Reduction Operations**:\n  - **Crushing**: Reduces coarse lumps to sizes no smaller than 13-19 mm.\n  - **Grinding**: Reduces small particles to sizes as small as several microns.\n  - **Crushing is usually dry**, while grinding can be wet or dry.\n\n#### Purposes of Size Reduction\n- **Reaction**: Increases the surface area, enhancing reaction rates.\n- **Leaching**: Increases extraction rates and reduces solvent penetration distance.\n- **Drying**: Enhances drying efficiency by increasing surface area and reducing moisture travel distance.\n- **Protective Coating**: Increases coverage per unit area.\n\n#### Mechanism of Size Reduction\n- **Energy Utilization**: Size reduction is inefficient, with only 0.1 to 2.0% of the energy supplied resulting in increased surface area.\n- **Crack Propagation**: Material contains cracks that propagate under sufficient force, leading to size reduction.\n- **Force Types**:\n  - **Impact**: Particle concussion by a single rigid force.\n  - **Compression**: Particle disintegration by two rigid forces.\n  - **Shear**: Produced by particle-particle interaction.\n  - **Attrition**: Arising from particles scraping against each other or a rigid surface.\n\n#### Laws on Energy for Size Reduction\n- **Rittinger’s Law**: Energy required is proportional to the increase in surface area.\n  - \\[ E = K_R \\left( \\frac{1}{L_2} - \\frac{1}{L_1} \\right) \\]\n- **Kick’s Law**: Energy required is proportional to the reduction ratio.\n  - \\[ E = K_k \\ln \\left( \\frac{L_1}{L_2} \\right) \\]\n- **Bond’s Law**: Intermediate between Rittinger’s and Kick’s laws.\n  - \\[ E = K_B \\left( \\frac{1}{\\sqrt{L_2}} - \\frac{1}{\\sqrt{L_1}} \\right) \\]\n\n#### Methods of Operating Crushers\n- **Free Crushing**: Material fed at a low rate, short residence time, and minimal undersize material.\n- **Choke Feeding**: Machine kept full, longer residence time, higher degree of crushing, reduced capacity, and high energy consumption.\n\n#### Dry and Wet Grinding\n- **Advantages of Wet Grinding**:\n  - Reduced power consumption.\n  - Increased plant capacity.\n  - Facilitated product removal.\n  - Reduced fines.\n  - Eliminated dust formation.\n  - Easier handling of solids.\n- **Disadvantages**:\n  - Increased wear on grinding medium.\n  - Possible need for drying the product.\n\n#### Factors Affecting Size Reduction\n- **Hardness**: Affects power consumption and wear on the machine.\n- **Structure**: Different materials require different forces (e.g., fibrous materials need tearing).\n- **Moisture Content**: Affects material flow and caking.\n- **Crushing Strength**: Proportional to the power required.\n- **Friability**: Tendency to fracture during handling.\n- **Stickiness**: Can clog equipment.\n- **Soapiness**: Measure of friction.\n- **Explosiveness**: Requires wet grinding or inert atmosphere.\n- **Dustiness**: Health concerns.\n- **Bulk Density**: Affects machine capacity.\n- **Ratio of Feed and Product Size**: Multiple stages may be necessary.\n- **Softening Temperature**: Important for waxy substances.\n- **Abrasiveness**: Limits machinery type.\n- **Toughness**: More important than hardness for some materials.\n\n#### Classification of Size Reduction Equipment\n- **Based on Feed and Product Size**:\n  - **Crushers**: Coarse particles, compression.\n  - **Grinders**: Intermediate and fine particles, impact, attrition, sometimes combined with compression.\n  - **Ultrafine Grinders**: Very fine particles, attrition.\n- **Based on Applied Force**:\n  - **Compression**: Jaw crushers, gyratory crushers, smooth roll crushers.\n  - **Impact**: Hammer mills, impactors.\n  - **Attrition**: Attrition mills, tumbling mills, pin mills, fluid energy mills.\n\n#### Detailed Equipment Descriptions\n- **Jaw Crushers**: Blake jaw crusher, operates by compression, suitable for large, hard materials.\n- **Gyratory Crushers**: Similar to jaw crushers but with a circular jaw, continuous discharge, lower maintenance.\n- **Smooth Roll Crushers**: Two smooth-faced metal rolls, compression only, suitable for secondary crushing.\n- **Toothed Roll Crushers**: Equipped with corrugations, breaker bars, or teeth, handles softer materials.\n- **Hammer Mills**: High-speed rotor, impact and rubbing, suitable for intermediate duties.\n- **Rolling Mills**: Bowl mills, roller mills, suitable for coal and other materials.\n- **Attrition Mills**: Soft solids rubbed between grooved disks, suitable for fine particles.\n- **Tumbling Mills**: Cylindrical shell, grinding medium, suitable for abrasive materials.\n- **Ball Mills**: Rotating hollow cylinder, steel or flint balls, suitable for a wide range of materials.\n- **Pin Mills**: Two disks, one rotating and one static, suitable for very fine particles.\n- **Fluid Energy Mills**: Particles collide in a turbulent stream of air or gas, suitable for ultrafine grinding.\n\n### 2. Key Concepts & Explanations\n\n- **Size Reduction**: The process of reducing the particle size of materials to meet specific requirements, often involving multiple stages.\n- **Crushing**: Reducing coarse lumps to sizes no smaller than 13-19 mm, typically dry.\n- **Grinding**: Reducing small particles to sizes as small as several microns, can be wet or dry.\n- **Energy Utilization**: Size reduction is inefficient, with only a small fraction of the energy supplied resulting in increased surface area.\n- **Crack Propagation**: Material contains pre-existing cracks that propagate under sufficient force, leading to size reduction.\n- **Force Types**:\n  - **Impact**: Single rigid force causing particle concussion.\n  - **Compression**: Two rigid forces causing particle disintegration.\n  - **Shear**: Particle-particle interaction.\n  - **Attrition**: Particles scraping against each other or a rigid surface.\n- **Laws on Energy for Size Reduction**:\n  - **Rittinger’s Law**: Energy required is proportional to the increase in surface area.\n  - **Kick’s Law**: Energy required is proportional to the reduction ratio.\n  - **Bond’s Law**: Intermediate between Rittinger’s and Kick’s laws.\n- **Methods of Operating Crushers**:\n  - **Free Crushing**: Low feed rate, short residence time.\n  - **Choke Feeding**: Machine kept full, longer residence time, higher energy consumption.\n- **Dry and Wet Grinding**:\n  - **Advantages of Wet Grinding**: Reduced power consumption, increased plant capacity, facilitated product removal, reduced fines, eliminated dust formation, easier handling of solids.\n  - **Disadvantages**: Increased wear on grinding medium, possible need for drying the product.\n- **Factors Affecting Size Reduction**:\n  - **Hardness**: Affects power consumption and wear on the machine.\n  - **Structure**: Different materials require different forces.\n  - **Moisture Content**: Affects material flow and caking.\n  - **Crushing Strength**: Proportional to the power required.\n  - **Friability**: Tendency to fracture during handling.\n  - **Stickiness**: Can clog equipment.\n  - **Soapiness**: Measure of friction.\n  - **Explosiveness**: Requires wet grinding or inert atmosphere.\n  - **Dustiness**: Health concerns.\n  - **Bulk Density**: Affects machine capacity.\n  - **Ratio of Feed and Product Size**: Multiple stages may be necessary.\n  - **Softening Temperature**: Important for waxy substances.\n  - **Abrasiveness**: Limits machinery type.\n  - **Toughness**: More important than hardness for some materials.\n- **Classification of Size Reduction Equipment**:\n  - **Based on Feed and Product Size**: Crushers, grinders, ultrafine grinders.\n  - **Based on Applied Force**: Compression, impact, attrition.\n- **Detailed Equipment Descriptions**:\n  - **Jaw Crushers**: Blake jaw crusher, compression, suitable for large, hard materials.\n  - **Gyratory Crushers**: Continuous discharge, lower maintenance.\n  - **Smooth Roll Crushers**: Compression only, suitable for secondary crushing.\n  - **Toothed Roll Crushers**: Handles softer materials.\n  - **Hammer Mills**: Impact and rubbing, suitable for intermediate duties.\n  - **Rolling Mills**: Bowl mills, roller mills, suitable for coal and other materials.\n  - **Attrition Mills**: Soft solids rubbed between grooved disks, suitable for fine particles.\n  - **Tumbling Mills**: Grinding medium, suitable for abrasive materials.\n  - **Ball Mills**: Steel or flint balls, suitable for a wide range of materials.\n  - **Pin Mills**: Suitable for very fine particles.\n  - **Fluid Energy Mills**: Ultrafine grinding using a turbulent stream of air or gas.\n\n### 3. Formulas & Notations Dictated\n\n- **Rittinger’s Law**:\n  - \\[ E = K_R \\left( \\frac{1}{L_2} - \\frac{1}{"
+        },
+        {
+          "name": "7)_Size Reduction_jan25.pptx",
+          "size": "3.64 MB",
+          "bytes": 3820789,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICNGoe6jUrmvFJQ_0k9_JKVJIAAS1COAAC_CYAAvbu-FTJUaYMpflDOjsE"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "8)_ChE-311-Solid_Handling_Machinery_2025.pptx",
+          "size": "1.95 MB",
+          "bytes": 2040896,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICN2oe6jikfGquG8JSJCm_uOiKbhNLAAL-JgAC9u74VEmhMV2OJinlOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "1) Relief system.pdf",
+          "size": "4.54 MB",
+          "bytes": 4761934,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICOmoe6qqnCfVv_Cs4td2qoWsCC4qYAAMnAAL27vhU9fQaaWYfDN47BA"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "1)__Safety slide example.pdf",
+          "size": "433.53 KB",
+          "bytes": 443939,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICPWoe6q2BZQhiLifeLpiPkPbor2MmAAICJwAC9u74VA6YMqTmzkwnOwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "1)_Chapter 9 relief sizing.pdf",
+          "size": "1.24 MB",
+          "bytes": 1297294,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICP2oe6q-bb42TgokwaZVpnYGWIh8DAAIEJwAC9u74VHTj2c48JSE4OwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "2) Ejector 2023.pdf",
+          "size": "4.72 MB",
+          "bytes": 4952916,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICQ2oe6rMDPSu6pZb_NYX9z0gagIfKAAIGJwAC9u74VLKo7c_ePu6KOwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "2)__eJECTOR dIAGRAM.pdf",
+          "size": "62.18 KB",
+          "bytes": 63671,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICRWoe6rUKXGjX5t8sNVsjcCEBo0kOAAIIJwAC9u74VIcuvyZgIpkBOwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "2)_Ejector Ludwig Chapter 6.pdf",
+          "size": "2.73 MB",
+          "bytes": 2867117,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICSWoe6ruVquV2w0XB_D10ktQZaQn-AAIKJwAC9u74VGCI3UDqFQvXOwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "3) 2025_Evaporator_Presentation.pdf",
+          "size": "2.77 MB",
+          "bytes": 2909007,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICTGoe6r6h1MUEYbExoz_UAzksQnGEAAIMJwAC9u74VBENFWzBg2eWOwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "3)__Evaporator 2023 1.pdf",
+          "size": "9.64 MB",
+          "bytes": 10106980,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICT2oe62LOZZm5QC-ZqDlNKv0iOJLIAAIPJwAC9u74VI0YaV_kUER7OwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "3)_Condensed_Evaporator_Presentation.pptx",
+          "size": "5.03 MB",
+          "bytes": 5274688,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICUmoe62b-5YDUgQWycqe2EcVMk4EeAAIRJwAC9u74VAZATxNiGJ3BOwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "4) Dryer ChE 311 Dr Sowgath 2020.pdf",
+          "size": "24.76 MB",
+          "bytes": 25963645,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICVmoe63OZ_E3pyPFBqtG3vVb48DPKAAIUJwAC9u74VI3AZei3DOt7OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICVWoe63JaRfiAQMMYgMUQuUU_qgjGAAITJwAC9u74VL4orIWBHU0jOwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "4)_Dryer 2025 condensed version.pdf",
+          "size": "2.40 MB",
+          "bytes": 2512270,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICWWoe63bf1DCoLt0baHIVpPwuEo68AAIWJwAC9u74VOciBryTDFwSOwQ"
+          ],
+          "folder": "Tanvir Sowgath Sir"
+        },
+        {
+          "name": "Chemical Process Safety_ 2nd ed_ Daniel A. Crowl_Joseph F. L - Chapter 8 Chapter 9...FOR 22 BATCH.pdf",
+          "size": "42.26 MB",
+          "bytes": 44314830,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICXGoe6_1OzjtqaAi9OjIKo5IRyLETAAIYJwAC9u74VJ4W_q-CJy0hOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICX2oe6_9QGmU2iqUgOLS37dcfPwmrAAIbJwAC9u74VMga4VKSxZ0fOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICYGoe6_8V2X8FyVnJhq0MqE9uPcHLAAIcJwAC9u74VCmafhYdThjUOwQ"
+          ]
+        },
+        {
+          "name": "Foust_Principles_of_Unit_Operations.......FOR 22 BATCH.pdf",
+          "size": "69.93 MB",
+          "bytes": 73325804,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICZGoe7Bd0v9eGsRf1I3NeX_7Lo0HkAAIeJwAC9u74VERsk3iq1ZWLOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICZWoe7Bg7Ur1XFivcxonhzDq8m1uJAAIfJwAC9u74VPIWS49q3Xb2OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICZmoe7Bn9xBy8OwmxOaxU6Wh-6lD1AAIgJwAC9u74VKuPUplS7oWtOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICZ2oe7BqPBJ1U-ZHvTn6FdYw_V4A7AAIhJwAC9u74VEOt9Mjjm5xgOwQ"
+          ]
+        },
+        {
+          "name": "Foust_Principles_of_Unit_Operations.pdf",
+          "size": "70.18 MB",
+          "bytes": 73587759,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICa2oe7DM1sh_R46jpfq8JQ-adNt8FAAIkJwAC9u74VPnPMtLysETpOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICamoe7DIn78A5rmIrblcBYKsdgWvPAAIjJwAC9u74VK_ECd2gdnrMOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICbGoe7DVin4uRz4gKIipJBSG6FVwuAAIlJwAC9u74VFjJb1kg_Bs7OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICbWoe7DYQGLH7auyros9-rTAi1VHBAAImJwAC9u74VO8nuqw5kORKOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root",
+        "Tanvir Sowgath Sir"
+      ],
+      "default_notes": "# ChE 311: Unit Operation\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-301": {
+      "id": "ChE-301",
+      "code": "ChE 301",
+      "title": "Heat Transfer",
+      "description": "Study materials for ChE 301",
+      "folder": "ChE-301",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "[Jack_P._Holman]_Heat_Transfer,_Tenth_Edition.pdf",
+          "size": "18.72 MB",
+          "bytes": 19630246,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAANxahpkfavG4fg3NRV65teI5Vfb6OoAAiAgAALFINFUW6lZcDpA_3Y7BA"
+          ]
+        },
+        {
+          "name": "heat-transfer-a-practical-approach-by-y-a-cengel.pdf",
+          "size": "11.76 MB",
+          "bytes": 12335485,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAN3ahplTWInuW3-ID0V0l8mN3sbyeIAAiUgAALFINFUpYOq5ZoRPq87BA"
+          ]
+        },
+        {
+          "name": "Process_Heat_Transfer_Kern,_Donald_Quentin_Tate_McGraw_Hill_ed,.pdf",
+          "size": "38.39 MB",
+          "bytes": 40257159,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAN6ahplZqslPLz2lWIwOj-ie7kcdawAAicgAALFINFUOKqfUqxHfpw7BA"
+          ]
+        },
+        {
+          "name": "Heat Transfer 10th Edition Solution Manual.pdf",
+          "size": "19.35 MB",
+          "bytes": 20286137,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAN9ahplguCw_v76tpv5wotuL2bKN9AAAikgAALFINFUQXTS9l4vJLA7BA"
+          ]
+        },
+        {
+          "name": "CENGEL SOLUTION MANUAL.pdf",
+          "size": "8.32 MB",
+          "bytes": 8727471,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOAahpll-wzKVd7c1R6CYexoS7IpPYAAisgAALFINFU4waC5iZ1-J47BA"
+          ]
+        },
+        {
+          "name": "APPENDIX_Heat Transfer by Çengel.pdf",
+          "size": "34.12 MB",
+          "bytes": 35772506,
+          "type": "Term-Final Solved",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAODahply3bnTlm5ZkwQshieVCokM8wAAi4gAALFINFUCd9L7VaBLmk7BA"
+          ]
+        },
+        {
+          "name": "3.mp4",
+          "size": "147.42 MB",
+          "bytes": 154579079,
+          "type": "Recorded Class",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOpahtQpNNuGNYmZnKCb2whamg_mUsAAkAhAALFINlUJxtvO6s6w-A7BA",
+            "BQACAgUAAyEGAATqgTaTAAOqahtQpwzaAAF2UVZPUZWuonB8z3baAAJCIQACxSDZVEpUlNri9T42OwQ",
+            "BQACAgUAAyEGAATqgTaTAAOrahtQqZ3eQoEXQIK2lnHEhjIkAawAAkMhAALFINlUffxW6-mpA2w7BA",
+            "BQACAgUAAyEGAATqgTaTAAOsahtQq8YSvPLD8fQj3KWxk1lMA0sAAkQhAALFINlUaRGedoKmvtI7BA",
+            "BQACAgUAAyEGAATqgTaTAAOtahtQrUZxGdFdLXDigTqws-1p77MAAkUhAALFINlUOmfC1Xx6vZk7BA",
+            "BQACAgUAAyEGAATqgTaTAAOuahtQr0yjddjE6DHZojkSGJDPGbsAAkYhAALFINlUPl7O1LfiZLs7BA",
+            "BQACAgUAAyEGAATqgTaTAAOvahtQsTbhZK-JXNOje4RODE8Q-ngAAkchAALFINlUuz5yAAGCGsMqOwQ",
+            "BQACAgUAAyEGAATqgTaTAAOwahtQsxqHnQQQur5_fT4WzQvXmgwAAkghAALFINlUVjocriO0-PM7BA"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "1) ChE_301_Introduction.pdf",
+          "size": "7.64 MB",
+          "bytes": 8015352,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB22oekEtjyq5Tt1CdWTUTp6U0UqbgAAJGIgAC9u7wVPYzg26arIaaOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "2) ChE_301_Conduction_p1.pdf",
+          "size": "2.13 MB",
+          "bytes": 2232991,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB3moekFd4HdWquf21hAP0RboqwTbkAAJJIgAC9u7wVG9-urRBziJsOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "3) CHE 301 02_Conduction_p2.pdf",
+          "size": "2.56 MB",
+          "bytes": 2686314,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB4WoekFltCQpa0Umyo4jYSlu4a4fvAAJLIgAC9u7wVAABtIRE4yUObDsE"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "4) CHE 301 05_Covection.pdf",
+          "size": "7.06 MB",
+          "bytes": 7399312,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB5GoekF1KtiElm4rcCt__TDuJlomAAAJNIgAC9u7wVKsPo4so6vo1OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "5) CHE 301 06_F_Covection.pdf",
+          "size": "5.49 MB",
+          "bytes": 5759432,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB52oekGxEtx9ZAlYJdU2bi1-To2bOAAJPIgAC9u7wVKJlVHjixYceOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "6) CHE 301 07_N_Covection.pdf",
+          "size": "5.13 MB",
+          "bytes": 5384214,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB6moekG9ZuqRDm8y5Vju4yjK7IMhYAAJRIgAC9u7wVFBWE74deb9pOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "7) CHE 301 09_Condensation.pdf",
+          "size": "2.76 MB",
+          "bytes": 2890113,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB7GoekHECkv2sZE119dhHy_r50XyKAAJTIgAC9u7wVIAxLEumzEe0OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "8) CHE 301 09_Condensation_Boiling.pdf",
+          "size": "7.06 MB",
+          "bytes": 7401888,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB72oekIiEXpSCbdLSJg3oBiY5sdhkAAJVIgAC9u7wVHnL_2O96WVMOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "9) CHE 301 Heat_Exchanger_p1.pdf",
+          "size": "6.27 MB",
+          "bytes": 6579752,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB82oekJpBtwuc9ToK0toGhRPJaNaeAAJXIgAC9u7wVOtjHR5hzvm1OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "10) CHE 301 Heat_Exchanger_p2.pdf",
+          "size": "11.52 MB",
+          "bytes": 12075981,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB9moekKDgZEQ4uyT9ZZIZxoKsCtObAAJZIgAC9u7wVDZIB4NH5QAB0jsE"
+          ],
+          "folder": "Root"
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 301: Heat Transfer\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-313": {
+      "id": "ChE-313",
+      "code": "ChE 313",
+      "title": "Solution Thermodynamics ",
+      "description": "Study materials for ChE 313",
+      "folder": "ChE-313",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Themodynamics_8 th ed (2018).pdf",
+          "size": "17.76 MB",
+          "bytes": 18622772,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOGahpmDo5mAuP3yKsVyTyCmnzcQgEAAjEgAALFINFUy-hV5_oTICk7BA"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 313: Solution Thermodynamics \n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-303": {
+      "id": "ChE-303",
+      "code": "ChE 303",
+      "title": "Mass Transfer I",
+      "description": "Study materials for ChE 303",
+      "folder": "ChE-303",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Wankat_separation_process_engineering.pdf",
+          "size": "26.41 MB",
+          "bytes": 27692296,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAOzahtdRWYC1Sj7pU5W6xCOlHsNwuoAAl0hAALFINlUwwXpqR0hFMY7BA",
+            "BQACAgUAAyEGAATqgTaTAAO0ahtdRpMYqyyeDLZI0JsztjHPZt4AAl4hAALFINlUynxdO_kw8KQ7BA"
+          ]
+        },
+        {
+          "name": "wankat_solution_manual_separation_process_engineering_3rd_ed_compress.pdf",
+          "size": "29.85 MB",
+          "bytes": 31295036,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAO3ahtdnBNFcijq0mpdyI11bFoRC6YAAmAhAALFINlUKfkYwXgR15E7BA",
+            "BQACAgUAAyEGAATqgTaTAAO4ahtdnX2ocp-jLAniFWwPrgab6kgAAmEhAALFINlUxkiOHQmFdrs7BA"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 303: Mass Transfer I\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-101": {
+      "id": "ChE-101",
+      "code": "ChE 101",
+      "title": "Material & Energy Balance",
+      "description": "Study materials for ChE 101",
+      "folder": "ChE-101",
+      "level": "Level-1",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "6_Elementary Principles of Chemical Processes by Richard M. Felder, Ronald W. Rousseau, Lisa G. Bullard-1.pdf",
+          "size": "21.36 MB",
+          "bytes": 22395291,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICtGopUSLM6pPvy3Tdj_dbkchm0WfhAALNHQACES5QVcBbnHVRc6_8OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICs2opUSKolHK1idrpSHq7uwVybA5ZAALMHQACES5QVUj4BQV_oJk7OwQ"
+          ]
+        },
+        {
+          "name": "4th Edition Solution Elementary Principles of Chemical Processes [Solutions Manual].pdf",
+          "size": "249.79 MB",
+          "bytes": 261923280,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICt2opUUgwDRmdK1nM6oKzX0x48LFBAALQHQACES5QVWCtB1FDaPewOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICuGopUUlAn4zqgmsZPHlj5L9MMDacAALRHQACES5QVWGRsvFw22U9OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICuWopUUsU_zjKd6dQPiJyAumRQvIQAALSHQACES5QVdyq985JZblVOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICumopUUwkErVmA7bCLVB5QsLZN9DSAALTHQACES5QVagXZft8vAjVOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICu2opUU6GhFaKJdR9bKhCO1YFYjWqAALUHQACES5QVTae_vKXEVk7OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICvGopUU8m81D-AWlItFFt6gm0vL2YAALVHQACES5QVejwuJibGcOHOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICvWopUVGP4TBrI6htK5xykoufMn5YAALWHQACES5QVVPQA-gZM-ljOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICvmopUVLpe_GP9u8BuNns2xpn4tiYAALXHQACES5QVS11rgo3bQLYOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICv2opUVP0H7QSGW0FGM4R2JFsyXTVAALYHQACES5QVf-EVh3m-Gd_OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICwGopUVU7GFToPSzZxCAqqI4OVUJVAALZHQACES5QVUtiIW9OIaQyOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICwWopUVat3Y9bIH7Pn9JYUUIoDImtAALaHQACES5QVSpoWT31ILn4OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICwmopUVi6owPjFWNHo5OVRK8ZjdPVAALbHQACES5QVYjDugRHIP3jOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICxGopUVlwFWROKN2gZIIQD97dxdp7AALdHQACES5QVYVWKMoxwmhTOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICw2opUVkmS3Fb0zx9pwbHxE9MG-Q9AALcHQACES5QVRG16MyTOHVeOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 101: Material & Energy Balance\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-403": {
+      "id": "ChE-403",
+      "code": "ChE 403",
+      "title": "Process Control",
+      "description": "Study materials for ChE 403",
+      "folder": "ChE-403",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Process Dynamics and Control 4th Edition.pdf",
+          "size": "4.87 MB",
+          "bytes": 5106870,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPLahvGz7H9cmKuhm8LhczsLJz0VlUAAtIcAALik-FUTWBjkk2Ni8Y7BA"
+          ]
+        },
+        {
+          "name": "Solution Manual Process Dynamics and Control 4th Edition.pdf",
+          "size": "12.59 MB",
+          "bytes": 13204837,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPSahvL3oZEjWnRVKmhOKbjlf3a0wsAAtkcAALik-FUJLtQe1850SU7BA"
+          ]
+        },
+        {
+          "name": "Chapter_1m.pdf",
+          "size": "1.10 MB",
+          "bytes": 1155057,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPcahvMmkSrGnvxKCDivZESjNAAAZZDAALgHAAC4pPhVAABQYP423ZbFTsE"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1.1 Introduction to Process Control\n- **Incentives for Process Control**: Importance of process control in maintaining stable and efficient operations, ensuring safety, and maximizing profitability.\n- **Design Aspects**: Overview of the design considerations for process control systems, including hardware elements and control strategies.\n- **Course Outline**: Overview of the course structure, including topics such as modeling for control, dynamic and static behavior of processes, feedback control systems, frequency response analysis, and advanced control systems.\n\n#### 1.2 Course Information\n- **Instructor**: Dr. M. A. A. Shoukat Choudhury\n- **Textbook**: \"Process Dynamics and Control\" by Seborg, Edgar, and Mellichamp (2004)\n- **Reference Books**: Additional resources by Karim, Riggs, Marlin, and Stephanopoulos.\n- **Course Website**: Access to course materials and resources.\n\n#### 1.3 Career in Process Control\n- **Professional Benefits**: Career longevity, significant savings for companies, professional visibility, and high pay.\n- **Global Demand**: Shortage of experienced process control engineers worldwide.\n\n#### 1.4 What is a Process?\n- **Definition**: Examples of processes include heat exchangers, reactors, separators, tanks, human body, cars, and computer drives.\n- **Example Processes**: Detailed examples of various processes and their control.\n\n#### 1.5 Process Control\n- **Definition**: Maintaining process variables at desired operating conditions.\n- **Objectives**: Stable operation, safety, disturbance rejection, set-point tracking, tight specifications, and profitability.\n- **Process Dynamics**: Steady-state vs. unsteady-state behavior, continuous vs. batch processes, and examples of transient behavior.\n\n#### 1.6 Control Variables\n- **Controlled Variables (CV or PV)**: Variables to be controlled.\n- **Manipulated Variables (MV, CO, OP)**: Variables adjusted to maintain CVs.\n- **Disturbance Variables (DV)**: Variables affecting CVs but not controllable.\n\n#### 1.7 Illustrative Example: Blending System\n- **Notation**: Mass flow rates and mass fractions.\n- **Assumptions**: Constant flow rates and perfect mixing.\n- **Control Objective**: Maintain desired concentration despite variations in inlet concentration.\n- **Design Equation**: Equation for determining the required flow rate.\n- **Control Strategies**: Feedback control, feedforward control, combined control, and design changes.\n\n#### 1.8 Classification of Control Strategies\n- **Feedback Control (FB)**: Measures the controlled variable and adjusts the manipulated variable.\n- **Feedforward Control (FF)**: Measures the disturbance variable and adjusts the manipulated variable.\n- **Combined Control (FF/FB)**: Uses both feedback and feedforward control.\n- **Design Change**: Modifying the process design to improve control.\n\n#### 1.9 Hierarchy of Process Control Activities\n- **Measurement and Actuation**: Real-time monitoring and control.\n- **Safety, Environment, and Equipment Protection**: Ensuring safe and environmentally friendly operations.\n- **Regulatory Control**: Maintaining process variables within specified limits.\n- **Real-Time Optimization**: Optimizing process performance.\n- **Planning and Scheduling**: Long-term planning and scheduling.\n\n#### 1.10 Control System Development\n- **Key Steps**: Identifying control objectives, designing control strategies, and implementing control systems.\n- **Feedback Loop Exercises**: Practical exercises to understand feedback loops and their principles.\n\n### 2. Key Concepts & Explanations\n\n#### 2.1 Process Control\n- **Definition**: The application of control theory to chemical processes to maintain desired operating conditions.\n- **Objectives**:\n  - **Stable Operation**: Ensuring the process operates smoothly without significant fluctuations.\n  - **Safety**: Preventing hazardous conditions and ensuring the process is safe.\n  - **Disturbance Rejection**: Minimizing the impact of disturbances on the process.\n  - **Set-Point Tracking**: Ensuring the process variables reach and maintain desired set points.\n  - **Tight Specifications**: Operating within tight tolerances to meet product quality requirements.\n  - **Profitability**: Maximizing the economic benefits of the process.\n\n#### 2.2 Process Dynamics\n- **Steady-State Behavior**: Conditions where process variables do not change with time.\n- **Unsteady-State Behavior**: Conditions where process variables change with time, such as during start-up, shutdown, grade changes, and disturbances.\n- **Continuous Processes**: Processes that operate continuously, often with a large number of measured variables.\n- **Batch Processes**: Processes that operate in discrete batches, inherently unsteady-state.\n\n#### 2.3 Control Variables\n- **Controlled Variables (CV or PV)**: Variables that need to be controlled, such as temperature, pressure, or concentration.\n- **Manipulated Variables (MV, CO, OP)**: Variables that can be adjusted to control the CVs, such as flow rates or valve positions.\n- **Disturbance Variables (DV)**: Variables that affect the CVs but cannot be controlled, such as feed composition or ambient temperature.\n\n#### 2.4 Control Strategies\n- **Feedback Control (FB)**: Measures the CV and adjusts the MV to maintain the set point.\n  - **Advantages**: Corrective action regardless of disturbance source, reduced sensitivity to disturbances.\n  - **Disadvantages**: Delayed response, potential for oscillatory behavior.\n- **Feedforward Control (FF)**: Measures the DV and adjusts the MV to prevent disturbances from affecting the CV.\n  - **Advantages**: Proactive correction, reduced impact of disturbances.\n  - **Disadvantages**: Requires measurement of DV, no correction for unmeasured disturbances.\n- **Combined Control (FF/FB)**: Combines both feedback and feedforward control for improved performance.\n- **Design Change**: Modifying the process design to improve control, such as using a larger tank.\n\n### 3. Formulas & Notations Dictated\n\n#### 3.1 Blending System Equations\n- **Overall Mass Balance**:\n  \\[\n  \\overline{w}_1 + \\overline{w}_2 = \\overline{w}\n  \\]\n- **Component A Balance**:\n  \\[\n  \\overline{w}_1 \\overline{x}_1 + \\overline{w}_2 \\overline{x}_2 = \\overline{w} \\overline{x}\n  \\]\n- **Design Equation**:\n  \\[\n  \\overline{w}_2 = \\frac{\\overline{x}_{SP} - \\overline{x}_1}{1 - \\overline{x}_{SP}}\n  \\]\n  - **Variables**:\n    - \\(\\overline{w}_1\\): Nominal mass flow rate of stream 1\n    - \\(\\overline{w}_2\\): Nominal mass flow rate of stream 2\n    - \\(\\overline{w}\\): Total mass flow rate\n    - \\(\\overline{x}_1\\): Mass fraction of component A in stream 1\n    - \\(\\overline{x}_2\\): Mass fraction of component A in stream 2 (pure A, \\(\\overline{x}_2 = 1\\))\n    - \\(\\overline{x}_{SP}\\): Desired mass fraction of component A in the blend\n\n#### 3.2 Control Law\n- **Proportional Feedback Control Law**:\n  \\[\n  w_2(t) = w_{2,0} + K_c (x_{SP} - x(t))\n  \\]\n  - **Variables**:\n    - \\(w_2(t)\\): Manipulated variable (flow rate of stream 2) at time \\(t\\)\n    - \\(w_{2,0}\\): Nominal flow rate of stream 2\n    - \\(K_c\\): Controller gain\n    - \\(x_{SP}\\): Set point for the mass fraction of component A\n    - \\(x(t)\\): Measured mass fraction of component A at time \\(t\\)\n\n### 4. Comparative Analysis Table\n\n| Method | Measured Variable | Manipulated Variable | Category | Advantages | Disadvantages |\n|--------|-------------------|----------------------|----------|------------|---------------|\n| 1      | \\(x\\)             | \\(w_2\\)              | FB       | Corrective action regardless of disturbance source, reduced sensitivity to disturbances | Delayed response, potential for oscillatory behavior |\n| 2      | \\(x_1\\)           | \\(w_2\\)              | FF       | Proactive correction, reduced impact of disturbances | Requires measurement of \\(x_1\\), no correction for unmeasured disturbances |\n| 3      | \\(x_1\\) and \\(x\\) | \\(w_2\\)              | FF/FB    | Combines advantages of both FB and FF, improved performance | More complex, requires measurement of both \\(x_1\\) and \\(x\\) |\n| 4      | -                 | -                    | Design   | Improved control through process design changes | Increased capital cost, may not be feasible in all cases |\n\nThis structured summary provides a comprehensive overview of the key topics, concepts, formulas, and comparative analysis from the document \"Chapter_1m.pdf\" on chemical process control."
+        },
+        {
+          "name": "Chapter_2m.pdf",
+          "size": "778.87 KB",
+          "bytes": 797560,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPkahvNMbufEjDAYCvSKJToGkycojMAAuUcAALik-FUN3eMxX2ct087BA"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1.1 Introduction to Theoretical Models of Chemical Processes\n- **Rationale for Dynamic Models**: \n  - Improve understanding of the process.\n  - Train plant operating personnel.\n  - Develop control strategies for new plants.\n  - Optimize process operating conditions.\n- **Types of Models**:\n  - **Theoretical Models**: Developed using principles of chemistry, physics, and biology. Applicable over wide ranges but can be expensive and time-consuming.\n  - **Empirical Models**: Obtained by fitting experimental data. Limited to the range of the data and do not extrapolate well.\n  - **Semi-empirical Models**: Combination of theoretical and empirical models, overcoming some limitations and requiring less developmental effort.\n\n#### 1.2 General Modeling Principles\n- Models are approximations of real processes.\n- Modeling involves a trade-off between accuracy and complexity.\n- Dynamic models consist of ODEs and/or PDEs, plus algebraic equations.\n- Process modeling is both an art and a science, requiring creativity in making simplifying assumptions.\n\n#### 1.3 Systematic Approach for Developing Dynamic Models\n1. **State the modeling objectives and end use**.\n2. **Draw a schematic diagram and label all process variables**.\n3. **List all assumptions**.\n4. **Determine the importance of spatial variations**.\n5. **Write appropriate conservation equations**.\n6. **Introduce equilibrium relations and other algebraic equations**.\n7. **Perform a degrees of freedom analysis**.\n8. **Simplify the model**.\n9. **Classify inputs as disturbance variables or manipulated variables**.\n\n#### 1.4 Illustrative Example: Blending Process\n- **Objective**: Blend two inlet streams to produce an outlet stream with a desired composition of component A.\n- **Assumptions**:\n  - Constant mass flow rate for Stream 1.\n  - Stream 2 is pure A.\n  - Perfect mixing.\n  - No reaction.\n  - Constant density of the liquid holdup.\n- **Conservation Equations**:\n  - Mass balance.\n  - Component balance.\n- **Degrees of Freedom Analysis**:\n  - 2 parameters: V, ρ.\n  - 4 variables: x, x1, w1, w2.\n  - 1 equation: Eq. 2-3.\n  - Degrees of freedom: NF = 4 - 1 = 3.\n  - Output: x.\n  - Inputs: x1, w1, w2.\n\n#### 1.5 Conservation Laws\n- **Conservation of Mass**:\n  - Rate of mass accumulation = Rate of mass in - Rate of mass out.\n- **Conservation of Component i**:\n  - Rate of component i accumulation = Rate of component i in - Rate of component i out + Rate of component i produced.\n- **Conservation of Energy**:\n  - Rate of energy accumulation = Rate of energy in - Rate of energy out + Net rate of heat addition - Net rate of work.\n  - Simplified for processes with negligible potential and kinetic energy changes and negligible work.\n\n#### 1.6 Stirred-Tank Heating Process\n- **Assumptions**:\n  - Perfect mixing.\n  - Constant holdup.\n  - Constant density and heat capacity.\n  - Negligible heat losses.\n- **Model Development**:\n  - Internal energy and enthalpy relationships.\n  - Energy balance equation.\n- **Degrees of Freedom Analysis**:\n  - 3 parameters: V, ρ, C.\n  - 4 variables: T, Ti, w, Q.\n  - 1 equation: Eq. 2-36.\n  - Degrees of freedom: NF = 4 - 1 = 3.\n  - Output: T.\n  - Inputs: Ti, w, Q.\n\n#### 1.7 Continuous Stirred Tank Reactor (CSTR)\n- **Assumptions**:\n  - Single, irreversible reaction.\n  - Perfect mixing.\n  - Constant liquid volume.\n  - Constant mass densities.\n  - Negligible heat losses.\n  - Reaction rate given by \\( r = k c_A \\).\n  - Arrhenius temperature dependence of the rate constant.\n- **Model Development**:\n  - Unsteady-state component balance.\n  - Unsteady-state mass balance.\n  - Unsteady-state energy balance.\n- **Extensions**:\n  - Multiple reactions.\n  - Different kinetics.\n  - Significant thermal capacity of coolant.\n  - Variable liquid volume.\n  - Non-negligible heat losses.\n  - Non-perfect mixing.\n\n#### 1.8 Simulation Software\n- **Matlab**: www.mathworks.com\n- **Mathematica**: www.wolfram.com\n- **HYSYS**: www.aspentech.com\n- **Modelica**: www.modelica.org\n- **gPROMS**: www.psenterprise.com\n- **Aspen Custom Modeller**: www.aspentech.com\n- **Global Cape Open**: www.global-cape-open.org\n\n#### 1.9 Importance of Dynamics in Process Safety\n- **Cooling Water Pump Failure**: Time to reactor runaway.\n- **Bartek Maleic Anhydride Process**: Controlling critical variables.\n- **Feed Material Delivery**: Tank volume for continuous feed.\n- **Distillation**: Controlling distillate composition.\n\n### 2. Key Concepts & Explanations\n\n#### 2.1 Dynamic Models\n- **Definition**: Models that describe the behavior of a system over time.\n- **Purpose**: To understand, predict, and control the behavior of chemical processes.\n- **Types**:\n  - **Theoretical Models**: Based on fundamental principles.\n  - **Empirical Models**: Based on experimental data.\n  - **Semi-empirical Models**: Combination of theoretical and empirical approaches.\n\n#### 2.2 Conservation Laws\n- **Mass Balance**: Describes the conservation of mass in a system.\n  - \\[ \\frac{dM}{dt} = \\text{Rate of mass in} - \\text{Rate of mass out} \\]\n- **Component Balance**: Describes the conservation of a specific component in a system.\n  - \\[ \\frac{dM_i}{dt} = \\text{Rate of component i in} - \\text{Rate of component i out} + \\text{Rate of component i produced} \\]\n- **Energy Balance**: Describes the conservation of energy in a system.\n  - \\[ \\frac{dU_{\\text{int}}}{dt} = \\text{Rate of energy in} - \\text{Rate of energy out} + \\text{Net rate of heat addition} - \\text{Net rate of work} \\]\n\n#### 2.3 Degrees of Freedom Analysis\n- **Definition**: Determines the number of independent variables that need to be specified to solve a system of equations.\n- **Steps**:\n  1. List known constants and parameters.\n  2. Count the number of equations and process variables.\n  3. Calculate degrees of freedom: \\( \\text{NF} = \\text{NV} - \\text{NE} \\).\n  4. Identify output variables.\n  5. Identify input variables (disturbance and manipulated).\n\n#### 2.4 Stirred-Tank Heating Process\n- **Assumptions**: Perfect mixing, constant holdup, constant density and heat capacity, negligible heat losses.\n- **Energy Balance Equation**:\n  - \\[ \\rho V C \\frac{dT}{dt} = w C (T_i - T) + Q \\]\n- **Degrees of Freedom**: 3 (Ti, w, Q).\n\n#### 2.5 Continuous Stirred Tank Reactor (CSTR)\n- **Assumptions**: Single irreversible reaction, perfect mixing, constant volume, constant densities, negligible heat losses.\n- **Component Balance**:\n  - \\[ V \\frac{dc_A}{dt} = w (c_{A0} - c_A) - V r \\]\n- **Energy Balance**:\n  - \\[ \\rho V C \\frac{dT}{dt} = w C (T_i - T) + \\Delta H_r r V + Q \\]\n- **Rate Constant**:\n  - \\[ k = k_0 \\exp\\left(-\\frac{E_a}{RT}\\right) \\]\n\n### 3. Formulas & Notations Dictated\n\n#### 3.1 Mass Balance\n- \\[ \\frac{dM}{dt} = \\text{Rate of mass in} - \\text{Rate of mass out} \\]\n- \\[ \\frac{dM}{dt} = w_1 + w_2 - w \\]\n\n#### 3.2 Component Balance\n- \\[ \\frac{dM_i}{dt} = \\text{Rate of component i in} - \\text{Rate of component i out} + \\text{Rate of component i produced} \\]\n- \\[ \\frac{d(M_A)}{dt} = w_1 x_1 + w_2 x_2 - w x \\]\n\n#### 3.3 Energy Balance\n- \\[ \\frac{dU_{\\text{int}}}{dt} = \\text{Rate of energy in} - \\text{Rate of energy out} + \\text{Net rate of heat addition} - \\text{Net rate of work} \\]\n- \\[ \\rho V C \\frac{dT}{dt} = w C (T_i - T) + Q \\]\n\n#### 3.4 CSTR Component Balance\n-"
+        },
+        {
+          "name": "Chapter_3m.pdf",
+          "size": "605.51 KB",
+          "bytes": 620043,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPsahvNneq5fw2fVWMyydK40BlosX8AAuocAALik-FUthOdWEpbqpo7BA"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1. Introduction to Laplace Transforms\n- **Historical Context**: Pierre-Simon Laplace (1749-1827) is introduced as the founder of Laplace transforms.\n- **Importance**: Laplace transforms are crucial for solving linear ordinary differential equations (ODEs) and are widely used in process control, transfer functions, frequency response, control system design, and stability analysis.\n\n#### 2. Definition of Laplace Transform\n- **Definition**: The Laplace transform of a function \\( f(t) \\) is defined as:\n  \\[\n  F(s) = \\mathcal{L}\\{f(t)\\} = \\int_0^\\infty f(t) e^{-st} \\, dt\n  \\]\n  where \\( F(s) \\) is the Laplace transform, \\( \\mathcal{L} \\) is the Laplace transform operator, and \\( s \\) is a complex variable \\( s = a + bj \\) with \\( j = \\sqrt{-1} \\).\n\n#### 3. Inverse Laplace Transform\n- **Definition**: The inverse Laplace transform converts an \\( s \\)-domain function back to the time domain:\n  \\[\n  f(t) = \\mathcal{L}^{-1}\\{F(s)\\}\n  \\]\n- **Linearity**: Both \\( \\mathcal{L} \\) and \\( \\mathcal{L}^{-1} \\) are linear operators:\n  \\[\n  \\mathcal{L}\\{ax(t) + by(t)\\} = aX(s) + bY(s)\n  \\]\n  \\[\n  \\mathcal{L}^{-1}\\{aX(s) + bY(s)\\} = ax(t) + by(t)\n  \\]\n\n#### 4. Laplace Transforms of Common Functions\n- **Constant Function**: \\( f(t) = a \\)\n  \\[\n  \\mathcal{L}\\{a\\} = \\frac{a}{s}\n  \\]\n- **Step Function**: \\( u(t) \\)\n  \\[\n  \\mathcal{L}\\{u(t)\\} = \\frac{1}{s}\n  \\]\n- **Derivatives**: \n  \\[\n  \\mathcal{L}\\left\\{\\frac{df(t)}{dt}\\right\\} = sF(s) - f(0)\n  \\]\n  For higher-order derivatives:\n  \\[\n  \\mathcal{L}\\left\\{\\frac{d^n f(t)}{dt^n}\\right\\} = s^n F(s) - s^{n-1} f(0) - s^{n-2} f'(0) - \\cdots - f^{(n-1)}(0)\n  \\]\n- **Exponential Function**: \\( f(t) = e^{-bt} \\)\n  \\[\n  \\mathcal{L}\\{e^{-bt}\\} = \\frac{1}{s + b}\n  \\]\n- **Rectangular Pulse Function**: \\( f(t) \\) defined as:\n  \\[\n  f(t) = \\begin{cases} \n  0 & \\text{for } t < 0 \\\\\n  h & \\text{for } 0 \\leq t < w \\\\\n  0 & \\text{for } t \\geq w \n  \\end{cases}\n  \\]\n  \\[\n  \\mathcal{L}\\{f(t)\\} = \\frac{h(1 - e^{-sw})}{s}\n  \\]\n- **Impulse Function (Dirac Delta Function)**: \\( \\delta(t) \\)\n  \\[\n  \\mathcal{L}\\{\\delta(t)\\} = 1\n  \\]\n\n#### 5. Solution of ODEs by Laplace Transforms\n- **Procedure**:\n  1. Take the Laplace transform of both sides of the ODE.\n  2. Rearrange the resulting algebraic equation to solve for \\( Y(s) \\).\n  3. Perform a partial fraction expansion.\n  4. Use the inverse Laplace transform to find \\( y(t) \\).\n\n#### 6. Partial Fraction Expansions\n- **Basic Idea**: Expand a complex expression for \\( Y(s) \\) into simpler terms that appear in the Laplace transform table.\n- **Example**:\n  \\[\n  Y(s) = \\frac{5}{(s+1)(s+4)}\n  \\]\n  Perform a partial fraction expansion:\n  \\[\n  Y(s) = \\frac{\\alpha_1}{s+1} + \\frac{\\alpha_2}{s+4}\n  \\]\n  Solve for coefficients \\( \\alpha_1 \\) and \\( \\alpha_2 \\).\n\n#### 7. Important Properties of Laplace Transforms\n- **Final Value Theorem**:\n  \\[\n  \\lim_{t \\to \\infty} y(t) = \\lim_{s \\to 0} sY(s)\n  \\]\n  provided the limit exists.\n- **Time Delay**:\n  \\[\n  \\mathcal{L}\\{y(t - \\theta)\\} = e^{-s\\theta} Y(s)\n  \\]\n- **Initial Value Theorem**:\n  \\[\n  \\lim_{t \\to 0} y(t) = \\lim_{s \\to \\infty} sY(s)\n  \\]\n\n### 2. Key Concepts & Explanations\n\n#### 1. Laplace Transform\n- **Definition**: A mathematical tool that transforms a function of time into a function of a complex variable \\( s \\).\n- **Purpose**: Simplifies the solution of linear ODEs by converting them into algebraic equations.\n\n#### 2. Inverse Laplace Transform\n- **Definition**: Converts a function in the \\( s \\)-domain back to the time domain.\n- **Linearity**: Both the Laplace transform and its inverse are linear operators, allowing the transformation of linear combinations of functions.\n\n#### 3. Common Laplace Transforms\n- **Constant Function**: The Laplace transform of a constant \\( a \\) is \\( \\frac{a}{s} \\).\n- **Step Function**: The Laplace transform of the unit step function \\( u(t) \\) is \\( \\frac{1}{s} \\).\n- **Derivatives**: The Laplace transform of the \\( n \\)-th derivative of \\( f(t) \\) is \\( s^n F(s) - s^{n-1} f(0) - \\cdots - f^{(n-1)}(0) \\).\n- **Exponential Function**: The Laplace transform of \\( e^{-bt} \\) is \\( \\frac{1}{s + b} \\).\n- **Rectangular Pulse Function**: The Laplace transform of a rectangular pulse is \\( \\frac{h(1 - e^{-sw})}{s} \\).\n- **Impulse Function**: The Laplace transform of the Dirac delta function \\( \\delta(t) \\) is 1.\n\n#### 4. Solution of ODEs\n- **Procedure**: The Laplace transform method involves transforming the ODE, solving the resulting algebraic equation, and then using the inverse Laplace transform to find the solution in the time domain.\n\n#### 5. Partial Fraction Expansions\n- **Purpose**: Simplifies the expression for \\( Y(s) \\) into terms that can be easily inverted using the Laplace transform table.\n- **Example**: For \\( Y(s) = \\frac{5}{(s+1)(s+4)} \\), the partial fraction expansion is \\( \\frac{\\alpha_1}{s+1} + \\frac{\\alpha_2}{s+4} \\).\n\n#### 6. Important Properties\n- **Final Value Theorem**: Provides the steady-state value of a system.\n- **Time Delay**: Represents a delay in the system.\n- **Initial Value Theorem**: Provides the initial value of a system.\n\n### 3. Formulas & Notations Dictated\n\n#### 1. Definition of Laplace Transform\n\\[\nF(s) = \\mathcal{L}\\{f(t)\\} = \\int_0^\\infty f(t) e^{-st} \\, dt\n\\]\n- \\( F(s) \\): Laplace transform of \\( f(t) \\)\n- \\( \\mathcal{L} \\): Laplace transform operator\n- \\( f(t) \\): Function of time\n- \\( s \\): Complex variable \\( s = a + bj \\) where \\( j = \\sqrt{-1} \\)\n\n#### 2. Inverse Laplace Transform\n\\[\nf(t) = \\mathcal{L}^{-1}\\{F(s)\\}\n\\]\n\n#### 3. Common Laplace Transforms\n- **Constant Function**:\n  \\[\n  \\mathcal{L}\\{a\\} = \\frac{a}{s}\n  \\]\n- **Step Function**:\n  \\[\n  \\mathcal{L}\\{u(t)\\} = \\frac{1}{s}\n  \\]\n- **Derivatives**:\n  \\[\n  \\mathcal{L}\\left\\{\\frac{df(t)}{dt}\\right\\} = sF(s) - f(0)\n  \\]\n  \\[\n  \\mathcal{L}\\left\\{\\frac{d^n f(t)}{dt^n}\\right\\} = s^n F(s) - s^{n"
+        },
+        {
+          "name": "Chapter_4m.pdf",
+          "size": "648.96 KB",
+          "bytes": 664530,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPvahvNx6G4GFk6byPvpG_3NFxGX3YAAu0cAALik-FUyAtS83nJIRA7BA"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Introduction to Transfer Function Models\n- **Dynamic Models and ODEs**: Previously, dynamic models were represented using ordinary differential equations (ODEs). Laplace transforms (LT) were used to determine transient responses from these ODE models.\n- **Disadvantages of ODE Models**: Any change in initial conditions or forcing functions required rederiving the complete solution.\n- **Transfer Function Models**: Introduced as an alternative model form based on Laplace transforms. These models characterize the dynamic relationship between input and output variables.\n\n#### Definition and Properties of Transfer Functions\n- **Convenient Representation**: Transfer functions (TFs) provide a convenient representation of linear, dynamic models.\n- **Input-Output Relationship**: A TF relates one input and one output, where the input is the forcing function and the output is the response.\n- **Mathematical Definition**: The TF \\( G(s) \\) is defined as the ratio of the Laplace transform of the output \\( Y(s) \\) to the Laplace transform of the input \\( X(s) \\):\n  \\[\n  G(s) = \\frac{Y(s)}{X(s)}\n  \\]\n\n#### Development of Transfer Functions\n- **Stirred Tank Heating System**: An example of a stirred tank heating system is used to illustrate the development of transfer functions.\n- **Dynamic Model**: The dynamic model for the system is given by:\n  \\[\n  \\rho V \\frac{dT}{dt} = wC_p (T_i - T) + Q\n  \\]\n- **Steady-State Conditions**: At steady state, the equation simplifies to:\n  \\[\n  wC_p (T_i - T) + Q = 0\n  \\]\n- **Deviation Variables**: Introducing deviation variables \\( T' = T - T_s \\), \\( T_i' = T_i - T_{is} \\), and \\( Q' = Q - Q_s \\), the dynamic model becomes:\n  \\[\n  \\rho V \\frac{dT'}{dt} = wC_p (T_i' - T') + Q'\n  \\]\n- **Laplace Transform**: Taking the Laplace transform of the deviation model:\n  \\[\n  \\rho V \\left[ sT'(s) - T'(0) \\right] = wC_p \\left[ T_i'(s) - T'(s) \\right] + Q'(s)\n  \\]\n- **Initial Conditions**: Assuming zero initial conditions, the equation simplifies to:\n  \\[\n  \\rho V sT'(s) = wC_p \\left[ T_i'(s) - T'(s) \\right] + Q'(s)\n  \\]\n- **Transfer Function**: Solving for \\( T'(s) \\):\n  \\[\n  T'(s) = \\frac{K}{\\tau s + 1} Q'(s) + \\frac{K}{\\tau s + 1} T_i'(s)\n  \\]\n  where \\( K = \\frac{1}{\\rho V} \\) and \\( \\tau = \\frac{\\rho V}{wC_p} \\).\n\n#### Properties of Transfer Function Models\n- **Steady-State Gain**: The steady-state gain \\( K \\) of a TF can be used to calculate the steady-state change in the output due to a steady-state change in the input:\n  \\[\n  K = \\lim_{s \\to 0} G(s)\n  \\]\n- **Order of a TF**: The order of a TF is defined as the order of the denominator polynomial, which is equal to the order of the ODE.\n- **Additive Property**: For a system influenced by multiple inputs, the response to changes in both inputs can be written as:\n  \\[\n  Y(s) = G_1(s) U_1(s) + G_2(s) U_2(s)\n  \\]\n- **Multiplicative Property**: For a system with multiple transfer functions in series:\n  \\[\n  Y(s) = G_1(s) G_2(s) U(s)\n  \\]\n\n#### Linearization of Nonlinear Models\n- **Taylor Series Expansion**: Nonlinear models can be linearized using a Taylor series expansion about a specified operating point.\n- **Example**: For a nonlinear model \\( \\frac{dy}{dt} = f(y, u) \\), the linearized model is:\n  \\[\n  \\frac{dy'}{dt} = \\frac{\\partial f}{\\partial y} y' + \\frac{\\partial f}{\\partial u} u'\n  \\]\n\n#### State-Space Models\n- **General Form**: State-space models are a general class of ODE models:\n  \\[\n  \\frac{dx}{dt} = A x + B u + E d\n  \\]\n  \\[\n  y = C x + D u\n  \\]\n- **Two Tank System**: Examples of interacting and noninteracting systems are provided, with mass balance and valve relations for each.\n\n#### Example: CSTR Model\n- **Nonlinear Model**: The nonlinear CSTR model is given by:\n  \\[\n  \\frac{dc_A}{dt} = \\frac{q}{V} (c_{A_i} - c_A) - k_0 e^{-\\frac{E}{RT}} c_A\n  \\]\n  \\[\n  \\frac{dT}{dt} = \\frac{q}{V} (T_i - T) + \\frac{1}{\\rho C_p} \\left( -k_0 e^{-\\frac{E}{RT}} \\Delta H_r c_A + \\frac{U A}{V} (T_c - T) \\right)\n  \\]\n- **Linearized Model**: The linearized model is:\n  \\[\n  \\frac{dc_A'}{dt} = a_{11} c_A' + a_{12} T' + b_1 T_c'\n  \\]\n  \\[\n  \\frac{dT'}{dt} = a_{21} c_A' + a_{22} T' + b_2 T_c'\n  \\]\n- **State-Space Form**: The linearized model can be written in state-space form:\n  \\[\n  \\begin{bmatrix}\n  \\frac{dc_A'}{dt} \\\\\n  \\frac{dT'}{dt}\n  \\end{bmatrix}\n  =\n  \\begin{bmatrix}\n  a_{11} & a_{12} \\\\\n  a_{21} & a_{22}\n  \\end{bmatrix}\n  \\begin{bmatrix}\n  c_A' \\\\\n  T'\n  \\end{bmatrix}\n  +\n  \\begin{bmatrix}\n  b_1 \\\\\n  b_2\n  \\end{bmatrix}\n  T_c'\n  \\]\n\n### 2. Key Concepts & Explanations\n\n- **Transfer Functions**: Mathematical representations that describe the relationship between the input and output of a system in the Laplace domain. They are particularly useful for linear, time-invariant systems.\n- **Steady-State Gain**: The ratio of the steady-state change in the output to the steady-state change in the input. It is obtained by evaluating the transfer function as \\( s \\to 0 \\).\n- **Order of a Transfer Function**: The order of the transfer function is the highest power of \\( s \\) in the denominator polynomial, which corresponds to the order of the ODE.\n- **Additive Property**: For systems influenced by multiple inputs, the output is the sum of the responses to each input.\n- **Multiplicative Property**: For systems with multiple transfer functions in series, the overall transfer function is the product of the individual transfer functions.\n- **Linearization**: The process of approximating a nonlinear model with a linear model around a specified operating point using a Taylor series expansion.\n- **State-Space Models**: A general form of dynamic models that describe the behavior of a system using state variables, control variables, and disturbance variables. They are particularly useful for systems with multiple inputs and outputs.\n\n### 3. Formulas & Notations Dictated\n\n- **Transfer Function Definition**:\n  \\[\n  G(s) = \\frac{Y(s)}{X(s)}\n  \\]\n  where \\( Y(s) \\) is the Laplace transform of the output \\( y(t) \\) and \\( X(s) \\) is the Laplace transform of the input \\( x(t) \\).\n\n- **Stirred Tank Heating System**:\n  \\[\n  \\rho V \\frac{dT}{dt} = wC_p (T_i - T) + Q\n  \\]\n  \\[\n  \\rho V \\frac{dT'}{dt} = wC_p (T_i' - T') + Q'\n  \\]\n  \\[\n  T'(s) = \\frac{K}{\\tau s + 1} Q'(s) + \\frac{K}{\\tau s + 1} T_i'(s)\n  \\]\n  where \\( K = \\frac{1}{\\rho V} \\) and \\( \\tau = \\frac{\\rho V}{wC_p} \\).\n\n- **Steady-State Gain**:\n  \\[\n  K = \\lim_{s \\to 0} G(s)\n  \\]\n\n- **Order of a Transfer Function**:\n  \\[\n  \\text{Order} = \\text{Order of the denominator polynomial}\n  \\]\n\n- **Additive"
+        },
+        {
+          "name": "Chapter_5m.pdf",
+          "size": "1.15 MB",
+          "bytes": 1202565,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAPyahvN0QYWjFRvS_zRSCD21c5x540AAu8cAALik-FUM3uGh6eA_LM7BA"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1. Dynamic Behavior\n- **Introduction**: Understanding how processes respond to changes in inputs is crucial for process dynamic and control systems.\n- **Standard Input Changes**: These are used because they are representative of real-world changes and are mathematically easy to analyze.\n\n#### 2. Step Input\n- **Definition**: A sudden change in a process variable.\n- **Special Case**: A unit step change where the magnitude \\( M = 1 \\).\n- **Example**: Switching reactor feedstock causing sudden changes in feed concentration and flow.\n- **Mathematical Representation**: \n  \\[\n  U_s(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  M & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_s(s) = \\frac{M}{s}\n  \\]\n\n#### 3. Ramp Input\n- **Definition**: Represents slow, drifting disturbances with a constant rate of change.\n- **Examples**: Air temperature and humidity changes in a cooling tower, feed composition changes, heat exchanger fouling.\n- **Mathematical Representation**: \n  \\[\n  U_R(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  at & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_R(s) = \\frac{a}{s^2}\n  \\]\n\n#### 4. Rectangular Pulse Input\n- **Definition**: Represents a brief, sudden change in a process variable.\n- **Examples**: Reactor feed shut off for a period, fuel gas supply interruption.\n- **Mathematical Representation**: \n  \\[\n  U_{RP}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  h & 0 \\leq t < t_w \\\\\n  0 & t \\geq t_w \n  \\end{cases}\n  \\]\n  \\[\n  U_{RP}(s) = \\frac{h}{s} (1 - e^{-t_w s})\n  \\]\n\n#### 5. Sinusoidal Input\n- **Definition**: Represents periodic disturbances.\n- **Examples**: Electrical noise spikes, concentrated dye injection.\n- **Mathematical Representation**: \n  \\[\n  U_{sin}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  A \\sin(\\omega t) & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_{sin}(s) = \\frac{A \\omega}{s^2 + \\omega^2}\n  \\]\n\n#### 6. Impulse Input\n- **Definition**: Represents a short, transient disturbance.\n- **Mathematical Representation**: \n  \\[\n  U_I(t) = \\delta(t)\n  \\]\n  \\[\n  U_I(s) = 1\n  \\]\n\n#### 7. First-Order System\n- **Transfer Function**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K}{\\tau s + 1}\n  \\]\n- **Step Response**: \n  \\[\n  Y(s) = \\frac{KM}{s(\\tau s + 1)}\n  \\]\n  \\[\n  y(t) = KM (1 - e^{-t/\\tau})\n  \\]\n- **Steady-State Value**: \n  \\[\n  y_{\\infty} = KM\n  \\]\n- **Time Constants**: \n  \\[\n  \\begin{array}{c|c}\n  t & \\frac{y(t)}{y_{\\infty}} \\\\\n  \\hline\n  0 & 0 \\\\\n  \\tau & 0.632 \\\\\n  2\\tau & 0.865 \\\\\n  3\\tau & 0.950 \\\\\n  4\\tau & 0.982 \\\\\n  5\\tau & 0.993 \\\\\n  \\end{array}\n  \\]\n\n#### 8. Integrating Process\n- **Transfer Function**: \n  \\[\n  Y(s) = \\frac{K M}{s^2}\n  \\]\n- **Response**: \n  \\[\n  y(t) = K M t\n  \\]\n- **Characteristics**: Unbounded response, no steady-state value.\n\n#### 9. Second-Order System\n- **Transfer Function**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K}{\\tau^2 s^2 + 2 \\zeta \\tau s + 1}\n  \\]\n- **Standard Form**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K}{\\left(\\frac{s}{\\omega_n}\\right)^2 + 2 \\zeta \\left(\\frac{s}{\\omega_n}\\right) + 1}\n  \\]\n- **Damping Coefficient**: \n  \\[\n  \\zeta\n  \\]\n- **Types of Responses**:\n  - **Overdamped**: Real and distinct roots.\n  - **Critically Damped**: Real and equal roots.\n  - **Underdamped**: Complex conjugate roots.\n- **Characteristics**:\n  - **Rise Time**: Time to reach the new steady-state value.\n  - **Time to First Peak**: Time to reach the first maximum value.\n  - **Settling Time**: Time to reach and remain within ±5% of the total change.\n  - **Overshoot**: Percentage overshoot.\n  - **Decay Ratio**: Ratio of the height of the second peak to the first peak.\n  - **Period of Oscillation**: Time between two successive peaks or valleys.\n\n### 2. Key Concepts & Explanations\n\n#### 1. Dynamic Behavior\n- **Process Dynamics**: Study of how process variables change over time in response to input changes.\n- **Control Systems**: Systems designed to manage and regulate process variables to maintain desired performance.\n\n#### 2. Input Types\n- **Step Input**: Sudden change in a process variable.\n- **Ramp Input**: Gradual, linear change over time.\n- **Rectangular Pulse Input**: Brief, sudden change followed by a return to the original state.\n- **Sinusoidal Input**: Periodic, oscillatory changes.\n- **Impulse Input**: Short, transient disturbance.\n\n#### 3. First-Order System\n- **Transfer Function**: Describes the relationship between input and output in the Laplace domain.\n- **Step Response**: How the system responds to a step input.\n- **Time Constants**: Characterize the speed of the system's response.\n- **Steady-State Value**: The value the system approaches as time goes to infinity.\n\n#### 4. Integrating Process\n- **Transfer Function**: Describes a system with no steady-state gain.\n- **Response**: Unbounded, linear increase over time.\n\n#### 5. Second-Order System\n- **Transfer Function**: Describes systems with more complex dynamics.\n- **Damping Coefficient**: Determines the type of response (overdamped, critically damped, underdamped).\n- **Response Characteristics**: Rise time, time to first peak, settling time, overshoot, decay ratio, period of oscillation.\n\n### 3. Formulas & Notations Dictated\n\n#### 1. Step Input\n- **Mathematical Representation**: \n  \\[\n  U_s(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  M & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_s(s) = \\frac{M}{s}\n  \\]\n\n#### 2. Ramp Input\n- **Mathematical Representation**: \n  \\[\n  U_R(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  at & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_R(s) = \\frac{a}{s^2}\n  \\]\n\n#### 3. Rectangular Pulse Input\n- **Mathematical Representation**: \n  \\[\n  U_{RP}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  h & 0 \\leq t < t_w \\\\\n  0 & t \\geq t_w \n  \\end{cases}\n  \\]\n  \\[\n  U_{RP}(s) = \\frac{h}{s} (1 - e^{-t_w s})\n  \\]\n\n#### 4. Sinusoidal Input\n- **Mathematical Representation**: \n  \\[\n  U_{sin}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  A \\sin(\\omega t) & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_{sin}(s) = \\frac{A \\omega}{s^2 + \\omega^2}\n  \\]\n\n#### 5. Impulse Input\n- **Mathematical Representation**: \n  \\[\n  U_I(t) = \\delta(t)\n  \\]\n  \\[\n  U_I(s) = 1\n  \\]\n\n#### 6. First-Order System\n- **Transfer Function**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K"
+        },
+        {
+          "name": "Chapter_6.pdf",
+          "size": "1.80 MB",
+          "bytes": 1885112,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAP1ahvOkiAPzhiTolbpGKZrgxcSQUAAAvEcAALik-FULZhHtrcIkyA7BA"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1.1 Poles and Zeros and their Effect on Process Response\n- **Poles and Zeros**: The dynamic behavior of a transfer function is characterized by the numerical values of its poles and zeros.\n- **Poles**: Roots of the denominator polynomial (characteristic polynomial). They determine the system's stability and response modes.\n  - **Right Half Plane (RHP) Pole**: Indicates an unstable system.\n  - **Complex Pole**: Results in oscillatory responses.\n  - **Pole at the Origin**: Indicates an integrating process.\n- **Zeros**: Roots of the numerator polynomial. They do not affect system stability but can influence the response.\n  - **RHP Zero**: Results in an inverse response.\n  - **Left Half Plane Zero**: May result in overshoot during a step response.\n\n#### 1.2 Time Delay and Its Approximation\n- **Time Delay**: Occurs due to fluid flow, transport of solid material, and chemical analysis.\n- **Mathematical Description**: Time delay between input \\( u \\) and output \\( y \\) is represented as:\n  \\[\n  y(t) = \\begin{cases} \n  0 & \\text{for } t < \\theta \\\\\n  u(t - \\theta) & \\text{for } t \\geq \\theta \n  \\end{cases}\n  \\]\n- **Polynomial Approximations**:\n  - **Taylor Series Expansion**:\n    \\[\n    e^{-\\theta s} \\approx 1 - \\theta s + \\frac{\\theta^2 s^2}{2!} - \\frac{\\theta^3 s^3}{3!} + \\cdots\n    \\]\n  - **Padé Approximations**:\n    \\[\n    e^{-\\theta s} \\approx \\frac{1 - \\frac{\\theta s}{2}}{1 + \\frac{\\theta s}{2}}\n    \\]\n\n#### 1.3 Dynamic Behavior Analysis of Interacting and Noninteracting Processes\n- **Noninteracting Systems**: Changes in downstream units do not affect upstream units.\n  - **Example**: Two surge tanks in series.\n  - **Transfer Function**: Derived using mass balance and valve relations.\n- **Interacting Systems**: Downstream units affect upstream units and vice versa.\n  - **Example**: Two tanks in series with interacting liquid levels.\n  - **Transfer Function**: More complex, involving additional terms to account for interactions.\n\n#### 1.4 State-Space and Transfer Function Matrix Models\n- **State-Space Models**: Represented by:\n  \\[\n  \\dot{x} = A x + B u + E d\n  \\]\n  \\[\n  y = C x\n  \\]\n  - \\( x \\): State vector\n  - \\( u \\): Control vector\n  - \\( d \\): Disturbance vector\n  - \\( y \\): Output vector\n- **Stability Criterion**: The system is stable if all eigenvalues of \\( A \\) have negative real parts.\n- **MIMO Processes**: Multiple-input, multiple-output systems. Modeling is conceptually similar to SISO systems but involves more variables and interactions.\n\n### 2. Key Concepts & Explanations\n\n#### 2.1 Poles and Zeros\n- **Poles**: Determine the stability and response modes of a system. Poles in the right half plane indicate instability, complex poles result in oscillatory responses, and poles at the origin indicate integrating processes.\n- **Zeros**: Influence the response but do not affect stability. RHP zeros can cause inverse responses, and LHP zeros can cause overshoot.\n\n#### 2.2 Time Delay\n- **Time Delay**: Represents a delay in the system's response to an input. Commonly occurs in fluid flow, material transport, and chemical analysis.\n- **Approximations**: Polynomial approximations (Taylor series and Padé) are used to simplify the analysis of systems with time delays.\n\n#### 2.3 Interacting vs. Noninteracting Systems\n- **Noninteracting Systems**: Changes in downstream units do not affect upstream units. Transfer functions are simpler and easier to analyze.\n- **Interacting Systems**: Changes in downstream units affect upstream units, leading to more complex transfer functions and dynamic behavior.\n\n#### 2.4 State-Space Models\n- **State-Space Representation**: A general form of dynamic models derived from physical principles. Involves state variables, control variables, disturbance variables, and output variables.\n- **Stability**: Determined by the eigenvalues of the system matrix \\( A \\). All eigenvalues must have negative real parts for the system to be stable.\n\n#### 2.5 MIMO Processes\n- **MIMO Systems**: Involve multiple input and output variables. Common in industrial process control. Conceptually similar to SISO systems but more complex due to multiple interactions.\n\n### 3. Formulas & Notations Dictated\n\n#### 3.1 Transfer Function and Poles/Zeros\n- **General Transfer Function**:\n  \\[\n  G(s) = \\frac{\\sum_{i=0}^{m} b_i s^i}{\\sum_{i=0}^{n} a_i s^i}\n  \\]\n  - \\( \\{z_i\\} \\): Zeros\n  - \\( \\{p_i\\} \\): Poles\n- **Poles and Zeros**:\n  - Poles: Roots of the denominator polynomial.\n  - Zeros: Roots of the numerator polynomial.\n- **Stability**: A system is stable if all poles have negative real parts.\n\n#### 3.2 Time Delay\n- **Mathematical Description**:\n  \\[\n  y(t) = \\begin{cases} \n  0 & \\text{for } t < \\theta \\\\\n  u(t - \\theta) & \\text{for } t \\geq \\theta \n  \\end{cases}\n  \\]\n- **Taylor Series Approximation**:\n  \\[\n  e^{-\\theta s} \\approx 1 - \\theta s + \\frac{\\theta^2 s^2}{2!} - \\frac{\\theta^3 s^3}{3!} + \\cdots\n  \\]\n- **Padé Approximation**:\n  \\[\n  e^{-\\theta s} \\approx \\frac{1 - \\frac{\\theta s}{2}}{1 + \\frac{\\theta s}{2}}\n  \\]\n\n#### 3.3 Transfer Functions for Noninteracting and Interacting Systems\n- **Noninteracting System**:\n  \\[\n  G(s) = \\frac{K_1 K_2}{(1 + \\tau_1 s)(1 + \\tau_2 s)}\n  \\]\n- **Interacting System**:\n  \\[\n  G(s) = \\frac{K_1 K_2}{\\tau_1^2 s^2 + 2 \\zeta \\tau_1 s + 1}\n  \\]\n  - \\( \\zeta > 1 \\): Overdamped, second-order system with a negative zero.\n\n#### 3.4 State-Space Models\n- **State-Space Equations**:\n  \\[\n  \\dot{x} = A x + B u + E d\n  \\]\n  \\[\n  y = C x\n  \\]\n- **Stability Criterion**:\n  \\[\n  \\text{All eigenvalues of } A \\text{ must have negative real parts.}\n  \\]\n\n### 4. Comparative Analysis Table\n\n| **Parameter** | **Noninteracting System** | **Interacting System** |\n|---------------|--------------------------|------------------------|\n| **Transfer Function** | \\( G(s) = \\frac{K_1 K_2}{(1 + \\tau_1 s)(1 + \\tau_2 s)} \\) | \\( G(s) = \\frac{K_1 K_2}{\\tau_1^2 s^2 + 2 \\zeta \\tau_1 s + 1} \\) |\n| **Stability** | Stable if all poles have negative real parts. | Stable if all poles have negative real parts. |\n| **Response** | Faster response due to simpler dynamics. | Slower response due to more complex dynamics. |\n| **Interactions** | No interactions between units. | Interactions between units. |\n| **Complexity** | Simpler transfer function and easier to analyze. | More complex transfer function and harder to analyze. |\n| **Example** | Two surge tanks in series. | Two tanks in series with interacting liquid levels. |\n\nThis structured summary should provide a comprehensive overview of the key topics, concepts, formulas, and comparative analysis from Chapter 6 of the document."
+        },
+        {
+          "name": "Chapter_7.pdf",
+          "size": "1.29 MB",
+          "bytes": 1349609,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAP4ahvOm4765uC8ReXN6tkcMlYS_S0AAvMcAALik-FUs4ldNpo1zr87BA"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1. Introduction to Empirical Models\n- **Purpose**: Develop empirical dynamic models from input-output data when theoretical models are not feasible.\n- **Reasons**: Lack of information, model complexity, and engineering effort.\n- **Advantages**: Less effort required.\n- **Disadvantages**: Models are valid only for the range of data used in their development and do not extrapolate well.\n\n#### 2. Simple Linear Regression: Steady-State Model\n- **Model Form**: $y = \\beta_1 + \\beta_2 u + \\epsilon$\n- **Parameters**: $\\beta_1$ and $\\beta_2$ are unknown model parameters, and $\\epsilon$ is a random error.\n- **Prediction**: $\\hat{y} = \\hat{\\beta}_1 + \\hat{\\beta}_2 u$\n- **Least Squares Method**: Minimize the sum of the squares of the errors, $S = \\sum_{i=1}^{N} (Y_i - \\hat{y}_i)^2$.\n\n#### 3. The Least Squares Approach\n- **Sum of Squares Function**: $S = \\sum_{i=1}^{N} (Y_i - \\beta_1 - \\beta_2 u_i)^2$\n- **Residuals**: $e_i = Y_i - \\hat{y}_i$\n- **Solution**: $\\hat{\\beta}_1 = \\bar{y} - \\hat{\\beta}_2 \\bar{u}$ and $\\hat{\\beta}_2 = \\frac{\\sum_{i=1}^{N} (u_i - \\bar{u})(Y_i - \\bar{y})}{\\sum_{i=1}^{N} (u_i - \\bar{u})^2}$\n\n#### 4. Extensions of the Least Squares Approach\n- **General Models**: More than one input or output variable, and functionals of input variables.\n- **Nonlinear Models**: Linear in parameters, $y = \\sum_{j=1}^{p} \\beta_j X_j + \\epsilon$\n- **Sum of Squares Function**: $S = \\sum_{i=1}^{N} \\left( Y_i - \\sum_{j=1}^{p} \\beta_j X_{ij} \\right)^2$\n- **Matrix Form**: $S = (Y - X\\beta)^T (Y - X\\beta)$\n- **Least Squares Estimates**: $\\hat{\\beta} = (X^T X)^{-1} X^T Y$\n\n#### 5. Fitting First and Second-Order Models Using Step Tests\n- **First-Order Model**: $Y(s)/U(s) = \\frac{K}{\\tau s + 1}$\n- **Step Response**: $y(t) = K M (1 - e^{-t/\\tau})$\n- **Initial Slope**: $\\left. \\frac{dy}{dt} \\right|_{t=0} = \\frac{K M}{\\tau}$\n- **Gain**: $K = \\frac{\\Delta y}{\\Delta u}$\n- **Time Constant**: $\\tau = \\frac{t}{5}$ (settling time)\n- **First-Order Plus Time Delay Model**: $G(s) = \\frac{K e^{-\\theta s}}{\\tau s + 1}$\n- **Graphical Methods**: Slope-intercept method and Sundaresan and Krishnaswamy’s method.\n\n#### 6. Estimating Second-Order Model Parameters Using Graphical Analysis\n- **Second-Order Model**: $G(s) = \\frac{K}{\\tau_1 s + 1} \\frac{1}{\\tau_2 s + 1}$\n- **Step Response**: Various shapes depending on $\\tau_1$ and $\\tau_2$\n- **Dominant Time Constant**: $\\tau_1$ (larger time constant)\n- **Smith’s Method**: Determine $t_{20}$ and $t_{60}$ from the step response, find $\\zeta$ and $\\tau$ from Fig. 7.7.\n\n#### 7. Fitting an Integrator Model to Step Response Data\n- **First-Order Process**: $y(t) = K M (1 - e^{-t/\\tau})$\n- **Approximation for Short Times**: $y(t) \\approx K M \\left(1 - \\frac{t}{\\tau}\\right)$\n- **Integrator Model**: $G(s) = \\frac{K}{s}$\n- **Step Response**: $y(t) = K M t$\n- **Parameter Matching**: $\\tau = \\frac{K}{K_{\\text{int}}}$\n\n### 2. Key Concepts & Explanations\n\n- **Empirical Models**: Models developed from input-output data, useful when theoretical models are complex or lack information.\n- **Simple Linear Regression**: A method to estimate the relationship between an output variable and one or more input variables.\n- **Least Squares Method**: A technique to minimize the sum of the squares of the errors between observed and predicted values.\n- **First-Order Model**: Describes processes with a single time constant, $\\tau$, and gain, $K$.\n- **First-Order Plus Time Delay Model**: Extends the first-order model to include a time delay, $\\theta$.\n- **Second-Order Model**: Describes processes with two time constants, $\\tau_1$ and $\\tau_2$, and gain, $K$.\n- **Integrator Model**: Describes processes that integrate the input over time, with a step response that is a linear ramp.\n\n### 3. Formulas & Notations Dictated\n\n- **Simple Linear Regression**:\n  - Model: $y = \\beta_1 + \\beta_2 u + \\epsilon$\n  - Prediction: $\\hat{y} = \\hat{\\beta}_1 + \\hat{\\beta}_2 u$\n  - Sum of Squares: $S = \\sum_{i=1}^{N} (Y_i - \\hat{y}_i)^2$\n  - Residuals: $e_i = Y_i - \\hat{y}_i$\n  - Least Squares Estimates: $\\hat{\\beta}_1 = \\bar{y} - \\hat{\\beta}_2 \\bar{u}$ and $\\hat{\\beta}_2 = \\frac{\\sum_{i=1}^{N} (u_i - \\bar{u})(Y_i - \\bar{y})}{\\sum_{i=1}^{N} (u_i - \\bar{u})^2}$\n\n- **General Nonlinear Model**:\n  - Model: $y = \\sum_{j=1}^{p} \\beta_j X_j + \\epsilon$\n  - Sum of Squares: $S = \\sum_{i=1}^{N} \\left( Y_i - \\sum_{j=1}^{p} \\beta_j X_{ij} \\right)^2$\n  - Matrix Form: $S = (Y - X\\beta)^T (Y - X\\beta)$\n  - Least Squares Estimates: $\\hat{\\beta} = (X^T X)^{-1} X^T Y$\n\n- **First-Order Model**:\n  - Transfer Function: $G(s) = \\frac{K}{\\tau s + 1}$\n  - Step Response: $y(t) = K M (1 - e^{-t/\\tau})$\n  - Initial Slope: $\\left. \\frac{dy}{dt} \\right|_{t=0} = \\frac{K M}{\\tau}$\n  - Gain: $K = \\frac{\\Delta y}{\\Delta u}$\n  - Time Constant: $\\tau = \\frac{t}{5}$ (settling time)\n\n- **First-Order Plus Time Delay Model**:\n  - Transfer Function: $G(s) = \\frac{K e^{-\\theta s}}{\\tau s + 1}$\n  - Graphical Methods: Slope-intercept method and Sundaresan and Krishnaswamy’s method\n\n- **Second-Order Model**:\n  - Transfer Function: $G(s) = \\frac{K}{\\tau_1 s + 1} \\frac{1}{\\tau_2 s + 1}$\n  - Step Response: Various shapes depending on $\\tau_1$ and $\\tau_2$\n  - Dominant Time Constant: $\\tau_1$ (larger time constant)\n  - Smith’s Method: Determine $t_{20}$ and $t_{60}$ from the step response, find $\\zeta$ and $\\tau$ from Fig. 7.7\n\n- **Integrator Model**:\n  - Transfer Function: $G(s) = \\frac{K}{s}$\n  - Step Response: $y(t) = K M t$\n  - Parameter Matching: $\\tau = \\frac{K}{K_{\\text{int}}}$\n\n### 4. Comparative Analysis Table\n\n| Method/Model | Assumptions | Parameters | Advantages | Limitations |\n|--------------|-------------|------------|------------|-------------|\n| **Simple Linear Regression** | Linear relationship between input and output | $\\beta_1$, $\\beta_2$ | Simple, widely applicable | Limited to linear relationships |\n| **Least Squares Method** | Minimizes"
+        },
+        {
+          "name": "Chapter_8m_June2021.pdf",
+          "size": "5.08 MB",
+          "bytes": 5327963,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAP7ahvOplI7SxoIpIxDpN5ygbQpxXsAAvUcAALik-FURczPEu8VrBs7BA"
+          ],
+          "folder": "Root",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Chapter 8: Feedback Controllers\n\n1. **Introduction to Feedback Controllers**\n   - **On-Off Controllers**\n     - Simple and cheap.\n     - Used in residential heating and domestic refrigerators.\n     - Limited use in process control due to continuous cycling of the controlled variable, leading to excessive wear on control valves.\n     - Synonyms: \"two-position\" or \"bang-bang\" controllers.\n     - Controller output has two possible values.\n     - Practical case: dead band to reduce cycling.\n\n2. **Basic Control Modes**\n   - **Proportional Control**\n     - Objective: reduce the error signal to zero.\n     - Error signal: $e(t) = y_{sp}(t) - y(t)$.\n     - Controller output: $p(t) = K_c e(t) + b$.\n     - Key concepts:\n       - Controller gain ($K_c$) can be adjusted to make the controller output changes sensitive to deviations.\n       - Bias ($b$) can be adjusted, referred to as manual reset.\n       - Proportional band ($PB$) defined as $PB = \\frac{100\\%}{K_c}$.\n     - Transfer function: $P(s) = K_c E(s)$.\n     - Disadvantage: steady-state error occurs after a set-point change or sustained disturbance.\n\n   - **Integral Control**\n     - Controller output depends on the integral of the error signal over time.\n     - Equation: $p(t) = \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$.\n     - Integral time ($\\tau_I$) is an adjustable parameter.\n     - Integral control eliminates steady-state error (offset).\n     - Transfer function: $P(s) = \\frac{K_c}{\\tau_I s} E(s)$.\n     - Disadvantage: reset windup (controller output saturates due to sustained error).\n\n   - **Proportional-Integral (PI) Control**\n     - Combines proportional and integral control.\n     - Equation: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$.\n     - Transfer function: $P(s) = K_c \\left(1 + \\frac{1}{\\tau_I s}\\right) E(s)$.\n     - Eliminates steady-state error and provides better performance than proportional control alone.\n\n   - **Derivative Control**\n     - Anticipates future behavior of the error signal by considering its rate of change.\n     - Equation: $p(t) = \\tau_D \\frac{de(t)}{dt} + b$.\n     - Derivative time ($\\tau_D$) has units of time.\n     - Transfer function: $P(s) = K_c (1 + \\tau_D s) E(s)$.\n     - Provides anticipatory control action, stabilizing the process.\n     - Ideal derivative action is physically unrealizable; approximations are used in practice.\n\n   - **Proportional-Integral-Derivative (PID) Control**\n     - Combines proportional, integral, and derivative control.\n     - Common forms: parallel, series, and expanded.\n     - Parallel form: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + \\tau_D \\frac{de(t)}{dt} + b$.\n     - Transfer function: $P(s) = K_c \\left(1 + \\frac{1}{\\tau_I s} + \\tau_D s\\right) E(s)$.\n     - Series form: $P(s) = K_c \\left(\\frac{\\tau_I s + 1}{\\tau_I s}\\right) \\left(\\tau_D s + 1\\right) E(s)$.\n     - Expanded form: $p(t) = K_c e(t) + K_I \\int_0^t e(t^*) dt^* + K_D \\frac{de(t)}{dt} + b$.\n     - Digital PID control: position and velocity algorithms.\n     - Position form: $p_k = p_{k-1} + K_c e_k + \\frac{K_I}{t_s} \\sum_{j=1}^k e_j t_s + K_D \\frac{e_k - e_{k-1}}{t_s}$.\n     - Velocity form: $\\Delta p_k = K_c (e_k - e_{k-1}) + \\frac{K_I}{t_s} e_k t_s + K_D \\frac{e_k - 2e_{k-1} + e_{k-2}}{t_s}$.\n\n3. **Features of PID Controllers**\n   - **Elimination of Derivative and Proportional Kick**\n     - Derivative kick: sudden change in set point causes a large derivative term.\n     - Solution: base derivative action on the measurement ($y_m$) rather than the error signal ($e$).\n     - Equation: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* - \\tau_D \\frac{dy_m(t)}{dt} + b$.\n   - **Reverse and Direct-Acting Controllers**\n     - Reverse-acting: $K_c > 0$, controller output decreases as input increases.\n     - Direct-acting: $K_c < 0$, controller output increases as input increases.\n   - **Automatic and Manual Control Modes**\n     - Automatic mode: controller output depends on error, controller constants, and type of controller.\n     - Manual mode: controller output adjusted manually.\n     - Manual mode is useful during plant start-up, shut-down, and emergencies.\n\n4. **Typical Response of Feedback Control Systems**\n   - **Step Input in Set Point**\n     - Effect of $K_c$: increasing $K_c$ reduces the rise time and overshoot.\n     - Effect of $\\tau_I$: increasing $\\tau_I$ reduces the integral action, leading to a slower response.\n   - **Step Input in Disturbance**\n     - Effect of $K_c$: increasing $K_c$ reduces the rise time and overshoot.\n     - Effect of $\\tau_I$: increasing $\\tau_I$ reduces the integral action, leading to a slower response.\n     - Effect of $\\tau_D$: increasing $\\tau_D$ improves the stability and reduces overshoot.\n\n### 2. Key Concepts & Explanations\n\n1. **Feedback Controllers**\n   - **On-Off Controllers**: Simple, cheap, and used in residential applications. Limited in process control due to continuous cycling.\n   - **Proportional Control**: Reduces error by adjusting the controller output proportional to the error. Key parameters: controller gain ($K_c$) and bias ($b$).\n   - **Integral Control**: Eliminates steady-state error by integrating the error over time. Key parameter: integral time ($\\tau_I$).\n   - **Proportional-Integral (PI) Control**: Combines proportional and integral control to eliminate steady-state error and improve performance.\n   - **Derivative Control**: Anticipates future behavior by considering the rate of change of the error. Key parameter: derivative time ($\\tau_D$).\n   - **Proportional-Integral-Derivative (PID) Control**: Combines all three control modes to provide robust control. Common forms: parallel, series, and expanded.\n\n2. **Controller Modes**\n   - **Automatic Mode**: Controller output is automatically adjusted based on the error and controller settings.\n   - **Manual Mode**: Controller output is manually adjusted, useful during start-up, shut-down, and emergencies.\n\n3. **Controller Types**\n   - **Reverse-Acting Controllers**: $K_c > 0$, output decreases as input increases.\n   - **Direct-Acting Controllers**: $K_c < 0$, output increases as input increases.\n\n4. **Digital PID Control**\n   - **Position Form**: Calculates the actual value of the controller output.\n   - **Velocity Form**: Calculates the change in controller output.\n\n### 3. Formulas & Notations Dictated\n\n1. **Proportional Control**\n   - Error signal: $e(t) = y_{sp}(t) - y(t)$\n   - Controller output: $p(t) = K_c e(t) + b$\n   - Proportional band: $PB = \\frac{100\\%}{K_c}$\n   - Transfer function: $P(s) = K_c E(s)$\n\n2. **Integral Control**\n   - Controller output: $p(t) = \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$\n   - Transfer function: $P(s) = \\frac{K_c}{\\tau_I s} E(s)$\n\n3. **Proportional-Integral (PI) Control**\n   - Controller output: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$\n   - Transfer function: $P(s) = K_c \\left(1 + \\frac{1}{\\tau_I s}\\right) E(s)$\n\n4. **Derivative Control**\n   - Controller output: $p(t) = \\tau_D \\frac{de(t)}{dt}"
+        },
+        {
+          "name": "Chapter_9.pdf",
+          "size": "1.82 MB",
+          "bytes": 1909242,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAP-ahvOsU_0cBGvDdx0fuLwohonWLQAAvccAALik-FUXcqyUGIbziI7BA"
+          ],
+          "folder": "Root"
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 403: Process Control\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-453": {
+      "id": "ChE-453",
+      "code": "ChE 453",
+      "title": "Transport Phenomena ",
+      "description": "Study materials for ChE 453",
+      "folder": "ChE-453",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "IAK_ChE453 Chapter 1.pdf",
+          "size": "2.78 MB",
+          "bytes": 2916380,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBAWob0ttt5xQrtQc51anEcOEnaKpvAAMdAALik-FU9lUgzSyBoYI7BA"
+          ],
+          "folder": "IAK Sir"
+        },
+        {
+          "name": "IAK_ChE453 Chapter 2.pdf",
+          "size": "5.32 MB",
+          "bytes": 5574974,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBBGob0uY8xXIKLLbrv1RRM1FkQO1vAAICHQAC4pPhVOAWAQ111wtQOwQ"
+          ],
+          "folder": "IAK Sir"
+        },
+        {
+          "name": "Introductory Transport Phenomena.pdf",
+          "size": "8.10 MB",
+          "bytes": 8494437,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBCGob2Wd11BMCXyG19ZvbxpbcTIwmAAIPHQAC4pPhVF-_sqWIDMMvOwQ"
+          ]
+        },
+        {
+          "name": "Transport Phenomena 2nd Edition.pdf",
+          "size": "7.90 MB",
+          "bytes": 8284516,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBC2ob2nFnWUaU2au6x1cUbSC7Gdz2AAIRHQAC4pPhVBCzgBAEvVucOwQ"
+          ]
+        },
+        {
+          "name": "Tf transport soln.pdf",
+          "size": "13.01 MB",
+          "bytes": 13646879,
+          "type": "Term-Final Solved",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBpmoeVKN1z9HhGPtaKsrxhMfpg3jqAAJDIQAC9u7wVAT8lRZ-K0hkOwQ"
+          ]
+        },
+        {
+          "name": "TF Transport Solve by Srabon.pdf",
+          "size": "33.52 MB",
+          "bytes": 35144686,
+          "type": "Term-Final Solved",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBqmoeVLRy6gPKPkL_OIUWiLzykLBuAAJGIQAC9u7wVPGdzSv5AAGsbjsE",
+            "BQACAgUAAyEGAATqgTaTAAIBqWoeVLPkVuitMU3Njc-pUsLMzEYmAAJFIQAC9u7wVMOStK5GGRbDOwQ"
+          ]
+        },
+        {
+          "name": "Handwritten SOLUTION Transport Phenomena 2nd Edition.pdf",
+          "size": "11.64 MB",
+          "bytes": 12206598,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBrWoeVMsR4VCOxqmCAhsZ3TkW6_svAAJIIQAC9u7wVHEzk0ha_EdoOwQ"
+          ]
+        },
+        {
+          "name": "SOLUTION Transport Phenomena 2nd Edition.pdf",
+          "size": "37.10 MB",
+          "bytes": 38904675,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBsGoeVNTX5GuZ2D0IgZtdC7oOscU3AAJKIQAC9u7wVE6TcYJPnJasOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBsWoeVNW3D5kM_pSIndtoY-YqZlp7AAJLIQAC9u7wVJeefBguIFGyOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root",
+        "IAK Sir"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 453: Transport Phenomena \n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-402": {
+      "id": "ChE-402",
+      "code": "ChE 402",
+      "title": "Chemical Engineering Laboratory IV",
+      "description": "Study materials for ChE 402",
+      "folder": "ChE-402",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [],
+      "folders": [
+        "Root",
+        "EXP-1"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 402: Chemical Engineering Laboratory IV\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-475": {
+      "id": "ChE-475",
+      "code": "ChE 475",
+      "title": "Biochemical Engineering II",
+      "description": "Study materials for ChE 475",
+      "folder": "ChE-475",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "CHE_475_CT1_Lecture_1-6.pdf",
+          "size": "5.94 MB",
+          "bytes": 6231391,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBDmob3SC3JrZf_BC9Dvl9e3YHD6igAAIaHQAC4pPhVNeCOuhhNkGnOwQ"
+          ],
+          "folder": "OH Mam",
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Introduction to Biochemical Engineering II\n- **Course Overview**: Advanced bioreactor design, transport phenomena, downstream processing, bioprocess scale-up, and applications in human and plant disease detection.\n- **Instructor Background**: Dr. Oindrila Hossain, with expertise in chemical engineering and a focus on field-deployable sensors for plant health monitoring.\n\n#### Biological Catalysis and Microorganisms\n- **Biological Catalysis**: Introduction to enzymes and their role in biological reactions.\n- **Microorganisms**: Classification, importance, and industrially important microorganisms.\n- **Biomolecules**: Amino acids, proteins, metabolic stoichiometry, and molecular genetics.\n\n#### Enzyme Kinetics\n- **Michaelis-Menten Equation**: Steady-state kinetics, rapid equilibrium, and the significance of the Michaelis-Menten equation.\n- **Immobilized Enzyme Technology**: Immobilization methods and kinetics.\n- **Enzyme-Linked Immunosorbent Assay (ELISA)**: Principles and applications.\n\n#### Microbial Growth Kinetics\n- **Growth Phases**: Lag, exponential, stationary, and death phases.\n- **Monod Growth Kinetics**: Mathematical relationship between specific growth rate and substrate concentration.\n- **Historical Background**: Development of Monod's equation and its applications in bioprocess engineering.\n\n#### Continuous Processes and Bioreactors\n- **Continuous Fermenter (CSTR)**: Steady-state conditions, washout, and aeration tanks in environmental treatment.\n- **Bioreactor vs. Fermenter**: Definitions, design considerations, and applications.\n\n#### Biorefinery and Biomass Conversion\n- **Biorefinery Overview**: Integrated facility for converting biomass into fuels, energy, and chemicals.\n- **Biomass Conversion Processes**: Gasification, liquefaction, pyrolysis, direct combustion, and anaerobic digestion.\n- **Bioethanol and Biodiesel Production**: Feedstocks, processes, and environmental considerations.\n\n#### Applications and Case Studies\n- **Antibodies, Citric Acid, and Lactic Acid Production**: Bioreactor design and optimization.\n- **Algae-Based Biofuel**: Advantages, challenges, and sustainability.\n\n### 2. Key Concepts & Explanations\n\n#### Biological Catalysis\n- **Enzymes**: Highly specific biological catalysts that lower the activation energy of chemical reactions.\n- **Types of Enzymes**: Oxidoreductases, transferases, hydrolases, lyases, isomerases, and ligases.\n\n#### Microorganisms\n- **Classification**: Eukaryotes (with a nucleus) and prokaryotes (without a nucleus).\n- **Industrially Important Microorganisms**: Bacteria, yeast, and fungi used in fermentation processes.\n\n#### Biomolecules\n- **Amino Acids and Proteins**: Building blocks of proteins, involved in various biological processes.\n- **Nucleic Acids**: DNA and RNA, essential for genetic information storage and transfer.\n- **Carbohydrates and Fats**: Energy sources and structural components in cells.\n\n#### Enzyme Kinetics\n- **Michaelis-Menten Equation**: Describes the relationship between the rate of an enzymatic reaction and the substrate concentration.\n  \\[\n  v = \\frac{V_{\\text{max}} [S]}{K_m + [S]}\n  \\]\n  - \\( v \\): Reaction rate\n  - \\( V_{\\text{max}} \\): Maximum reaction rate\n  - \\( [S] \\): Substrate concentration\n  - \\( K_m \\): Michaelis constant\n\n#### Microbial Growth Kinetics\n- **Monod Equation**: Relates specific growth rate to substrate concentration.\n  \\[\n  \\mu = \\frac{\\mu_{\\text{max}} [S]}{K_s + [S]}\n  \\]\n  - \\( \\mu \\): Specific growth rate\n  - \\( \\mu_{\\text{max}} \\): Maximum specific growth rate\n  - \\( [S] \\): Substrate concentration\n  - \\( K_s \\): Half-saturation constant\n\n#### Continuous Processes\n- **Continuous Stirred Tank Reactor (CSTR)**: Maintains a constant volume by continuously adding fresh medium and removing culture liquid.\n- **Washout Condition**: Occurs when the dilution rate exceeds the maximum specific growth rate, leading to biomass depletion.\n\n#### Biorefinery\n- **Gasification**: High-temperature partial oxidation of biomass to produce syngas.\n- **Liquefaction (HTL)**: Conversion of biomass to bio-oil in hot, pressurized water.\n- **Pyrolysis**: Thermal decomposition of biomass without oxygen to produce bio-oil, charcoal, and syngas.\n- **Direct Combustion**: Complete combustion of biomass to produce heat and ash.\n- **Anaerobic Digestion**: Biological breakdown of organic material in the absence of oxygen to produce biogas.\n\n### 3. Formulas & Notations Dictated\n\n#### Michaelis-Menten Equation\n\\[\nv = \\frac{V_{\\text{max}} [S]}{K_m + [S]}\n\\]\n- \\( v \\): Reaction rate\n- \\( V_{\\text{max}} \\): Maximum reaction rate\n- \\( [S] \\): Substrate concentration\n- \\( K_m \\): Michaelis constant (substrate concentration at half-maximal reaction rate)\n\n#### Monod Equation\n\\[\n\\mu = \\frac{\\mu_{\\text{max}} [S]}{K_s + [S]}\n\\]\n- \\( \\mu \\): Specific growth rate\n- \\( \\mu_{\\text{max}} \\): Maximum specific growth rate\n- \\( [S] \\): Substrate concentration\n- \\( K_s \\): Half-saturation constant (substrate concentration at half-maximal growth rate)\n\n#### Biomass Growth Equations\n- **Exponential Phase**:\n  \\[\n  x = x_0 e^{\\mu t}\n  \\]\n- **Stationary Phase**:\n  \\[\n  x = x_0 + S_0 Y_{x/s}\n  \\]\n- **Death Phase**:\n  \\[\n  x = x_0 e^{(\\mu - k_d)t}\n  \\]\n  - \\( x \\): Number of viable cells\n  - \\( x_0 \\): Initial number of viable cells\n  - \\( \\mu \\): Specific growth rate\n  - \\( k_d \\): Specific death rate constant\n  - \\( S_0 \\): Initial substrate concentration\n  - \\( Y_{x/s} \\): Yield coefficient (biomass produced per unit substrate consumed)\n\n### 4. Comparative Analysis Table\n\n| Method/Process | Definition | Parameters | Advantages | Limitations |\n|----------------|------------|------------|------------|-------------|\n| **Gasification** | High-temperature partial oxidation of biomass | Temperature: 700-1000°C, Atmosphere: Limited O2 | Cleaner process, no dioxin formation, flexible syngas use | High temperature, requires particulate removal |\n| **Liquefaction (HTL)** | Biomass to bio-oil in hot, pressurized water | Temperature: 250-350°C, Pressure: 10-25 MPa | Processes wet biomass, reduces drying needs | High energy demand, equipment corrosion, high-pressure maintenance |\n| **Pyrolysis** | Thermal decomposition without oxygen | Temperature: 350-600°C | Uses larger biomass particles, lower pre-treatment costs | Energy-intensive, acidic bio-oil, costly storage and handling |\n| **Direct Combustion** | Complete combustion of biomass in the presence of oxygen | Temperature: 800-1000°C | Immediate energy generation, volume reduction | Produces air pollutants, not suitable for wet biomass |\n| **Anaerobic Digestion** | Biological breakdown of organic material in the absence of oxygen | Temperature: 30-60°C, pH: 6.5-8, Retention: 20-40 days | Produces biogas, digestate for fertilizer | Requires strict environmental control, slow process |\n| **Bioethanol Production** | Fermentation of sugars from various feedstocks | Feedstocks: Sugarcane, corn, wheat | Renewable, reduces greenhouse gas emissions | Competes with food crops, requires significant water and energy |\n| **Biodiesel Production** | Transesterification of vegetable oils or animal fats | Pre-treatment, transesterification, separation, purification | Reduces dependence on fossil fuels, lower emissions | Requires pre-treatment, catalysts, and purification steps |\n\nThis structured summary provides a comprehensive overview of the key topics, concepts, formulas, and comparative analysis of the methods and processes covered in the \"CHE_475_CT1_Lecture_1-6.pdf\" document."
+        },
+        {
+          "name": "CHE_475_CT2_Lecture_7-25.pdf",
+          "size": "3.98 MB",
+          "bytes": 4171795,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBEWob3Sn_mPImAfl2QwjfQBsSAeRwAAIdHQAC4pPhVN20CkvqGzE5OwQ"
+          ],
+          "folder": "OH Mam"
+        },
+        {
+          "name": "CHE_475_CT3_Lecture_16-26.pdf",
+          "size": "6.76 MB",
+          "bytes": 7088603,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBFGob3TQBDHzIlU_FSAu2ZsR7EklUAAIfHQAC4pPhVHcED93WMOdTOwQ"
+          ],
+          "folder": "OH Mam"
+        },
+        {
+          "name": "CHE_475_CT4_Lecture_27-33.pdf",
+          "size": "6.05 MB",
+          "bytes": 6340807,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBHGob3WaYMJFeNYl4DkLKHiK-nUE0AAInHQAC4pPhVPhFthK-Q3I1OwQ"
+          ],
+          "folder": "OH Mam"
+        },
+        {
+          "name": "CHE_475_Oindrila_Hossain_Lecture_34_July_26_2025.pdf",
+          "size": "846.40 KB",
+          "bytes": 866711,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBH2ob4HQmHn_cqc2t2CFMU9goNrR1AAItHQAC4pPhVAVlT3ytaj34OwQ"
+          ],
+          "folder": "OH Mam"
+        },
+        {
+          "name": "Bioreactor.pdf",
+          "size": "14.77 MB",
+          "bytes": 15485331,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBU2ocGAvvDjXCmRjAZjFUhdRMXX-hAAKxHQAC4pPhVCmNstUHYMWJOwQ"
+          ],
+          "folder": "Nafisa Mam"
+        },
+        {
+          "name": "Bioreactor 2.pdf",
+          "size": "3.16 MB",
+          "bytes": 3309666,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBVmocGBXdcL7cl8kHD4xrKJz7byqHAAKzHQAC4pPhVDLFzYmcj2lbOwQ"
+          ],
+          "folder": "Nafisa Mam"
+        },
+        {
+          "name": "Bioproduct.pdf",
+          "size": "1.26 MB",
+          "bytes": 1318721,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBWWocGCgG6qIpHreaZVsRhHK2OpGEAAK1HQAC4pPhVMKqmwjUecNjOwQ"
+          ],
+          "folder": "Nafisa Mam"
+        },
+        {
+          "name": "Biosensor.pdf",
+          "size": "2.10 MB",
+          "bytes": 2205951,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBXGocGECAscu6nbl_-t5ATlRHy9FhAAK3HQAC4pPhVF_5HS4ovLkiOwQ"
+          ],
+          "folder": "Nafisa Mam"
+        }
+      ],
+      "folders": [
+        "OH Mam",
+        "Nafisa Mam"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 475: Biochemical Engineering II\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-417": {
+      "id": "ChE-417",
+      "code": "ChE 417",
+      "title": "Fundamental of Process Safety ",
+      "description": "Study materials for ChE 417",
+      "folder": "ChE-417",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Chemical Process Safety 3rd Edition.pdf",
+          "size": "35.66 MB",
+          "bytes": 37387253,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBImob4oKZDrM9KjJNlht-_zBFBJFdAAIxHQAC4pPhVDSO61xbyscUOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBI2ob4oNqRbgf2TYKWpoQm00xPFS_AAIyHQAC4pPhVLTYLNsW7CgZOwQ"
+          ]
+        },
+        {
+          "name": "loss-prevention-in-the-process-industries-chapter-1.pdf",
+          "size": "148.86 KB",
+          "bytes": 152430,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBJmob4pGlFOe96KVLEI4zQiNMsuqYAAI0HQAC4pPhVHzwEKM2QmOBOwQ"
+          ]
+        },
+        {
+          "name": "loss-prevention-in-the-process-industries-chapter-8.pdf",
+          "size": "705.44 KB",
+          "bytes": 722370,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBKWob4pt5wkzG_tsF1g5jY8QDi06JAAI2HQAC4pPhVNOBaz6jDh7kOwQ"
+          ]
+        },
+        {
+          "name": "pdfcoffee.com_loss-prevention-in-the-process-industries-volume-1-pdf-free.pdf",
+          "size": "8.40 MB",
+          "bytes": 8807067,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBLGob4qYGoZqM0CLvDrswV4nCkaq4AAI4HQAC4pPhVF9ftlJ0GCOZOwQ"
+          ]
+        },
+        {
+          "name": "Guidelines for Chemical Process Quantitative Risk Analysis_ CCPS_Guidelines (2010, John Wiley & Sons, Inc.) [10.1002_9780470935422] - libgen.li.pdf",
+          "size": "22.52 MB",
+          "bytes": 23609919,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBL2ob4rWhWjfPyNDHbjRyVCtYFUUfAAI6HQAC4pPhVLAKD7xydu-JOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBOGob46osbo5IPoHyedSxNtsHOBTMAAJFHQAC4pPhVK7rQSAjHKdkOwQ"
+          ]
+        },
+        {
+          "name": "L1 FPS 2025.pdf",
+          "size": "3.40 MB",
+          "bytes": 3560573,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBO2ob6tCvXGpmL_NtTXOtiS9RdbFpAAJiHQAC4pPhVCcMantx1Ie-OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L2 FPS Toxicology.pdf",
+          "size": "2.52 MB",
+          "bytes": 2643047,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBPmob6tqD6aoqedGFqVeoqbCFPRPXAAJkHQAC4pPhVHVZTfvrN7hdOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L3 FPS Industrial Hygiene.pdf",
+          "size": "2.57 MB",
+          "bytes": 2696555,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBQWob6uiucBawgvAzgb8cd9jbtGhCAAJmHQAC4pPhVHXWojQ0zeIjOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L4 FPS Source Models.pdf",
+          "size": "5.08 MB",
+          "bytes": 5327132,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBRGob6vSFCuQzMNrZmMq_cNRO0eXPAAJoHQAC4pPhVLr6wXxCyJHhOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L5 FPS Dispersion Modelling.pdf",
+          "size": "3.84 MB",
+          "bytes": 4023461,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBR2ob6wiqELLcj37qynv7Rrn1usNKAAJqHQAC4pPhVCbcV6hifQABZzsE"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L6 FPS  Fire and Explosion.pdf",
+          "size": "4.89 MB",
+          "bytes": 5130513,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBSmob69WvQDwV_PLK8djmL69dSYM2AAJsHQAC4pPhVNVq0ip632AnOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "L7 FPS  How to prevent Fire and Explosion.pdf",
+          "size": "5.78 MB",
+          "bytes": 6059341,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBUGob7NUsbnJxZh5tusr690a4_71OAAJwHQAC4pPhVOpFJqnM2kFhOwQ"
+          ],
+          "folder": "Root"
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 417: Fundamental of Process Safety \n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-413": {
+      "id": "ChE-413",
+      "code": "ChE 413",
+      "title": "Process Design",
+      "description": "Study materials for ChE 413",
+      "folder": "ChE-413",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "ChE 413 Lecture 1 Introduction - Copy.pdf",
+          "size": "2.41 MB",
+          "bytes": 2524310,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBX2ocGrBNXpfCEw0oUSN_wlDgbj8kAAK6HQAC4pPhVHNy1i05DYq1OwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 3 Process flow sheet development 1.pdf",
+          "size": "6.17 MB",
+          "bytes": 6468854,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBYmocGsw1gA4VWs76u0z6WIO53jeaAAK8HQAC4pPhVO1YzGZGC6ncOwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 4 Cost estimation.pdf",
+          "size": "5.73 MB",
+          "bytes": 6004123,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBZWocGuEPq-BrsN0j1spGMztQDxcZAAK-HQAC4pPhVKTRoD9NvyIYOwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 5 Optimum design_feb 2024 [Compatibility Mode].pdf",
+          "size": "1.77 MB",
+          "bytes": 1857005,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBaGocGvEAAVi4x5eQHiI3yv_i9oHLRgACwB0AAuKT4VTYWeLGsi7vCDsE"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 6 Energy Integration_Pinch analysis.pdf",
+          "size": "1.79 MB",
+          "bytes": 1877499,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBbGocHd7v0IGLaBiNNXsuRSRjolfyAALDHQAC4pPhVFilh1VALHuQOwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 7.pdf",
+          "size": "1.87 MB",
+          "bytes": 1957708,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBb2ocHeFOd4hnNT1iWU2ujNbMjfSvAALFHQAC4pPhVPiS6dM20ob5OwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "ChE 413 Lecture 8.pdf",
+          "size": "3.13 MB",
+          "bytes": 3281999,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBd2ocHl1-m32uqBzeXA5HIoa-yJI8AALKHQAC4pPhVHP-27ISQ5jnOwQ"
+          ],
+          "folder": "MR Sir"
+        },
+        {
+          "name": "Chap_10_Materials.pdf",
+          "size": "5.12 MB",
+          "bytes": 5364920,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBemocHvooEWgVw_LzYGo7roTBiG00AALMHQAC4pPhVP0EN18RfFahOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_12_Pressure Vessel.pdf",
+          "size": "3.19 MB",
+          "bytes": 3342897,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBfWocHv08R61Onl90PL6ucSwefz7_AALOHQAC4pPhVFZ80JuEdyP6OwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_12_Pump.pdf",
+          "size": "1.93 MB",
+          "bytes": 2024893,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBgGocH0Y1FgeCvfHXaXtbM9SqahiyAALQHQAC4pPhVKeoaDEmUNcwOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_14_Double-Pipe.pdf",
+          "size": "948.33 KB",
+          "bytes": 971086,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBg2ocH2c4guGa6yVJRwSCn17avB6oAALTHQAC4pPhVK8sIf_oChEoOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_14_Heat-Exhanger.pdf",
+          "size": "8.78 MB",
+          "bytes": 9208822,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBhmocH69rzTfiHznGyYLvjIoOpz1kAALVHQAC4pPhVIb0mYauwkySOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Chap_15_Separation-Eqipment.pdf",
+          "size": "4.25 MB",
+          "bytes": 4452708,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBiWocH7MGJQzn1g85Vcbplk0ZDSwJAALXHQAC4pPhVA3pZT7_AwXMOwQ"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Pump _ Separation.pdf",
+          "size": "3.25 MB",
+          "bytes": 3405212,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBi2ocH7Y1oo4AATemNmQapQXBduvcmwAC2R0AAuKT4VSfhK68SWCcGjsE"
+          ],
+          "folder": "SI Sir"
+        },
+        {
+          "name": "Max Peters, Klaus Timmerhaus, Ronald West, Max Peters - Plant Design and Economics for Chemical Engineers (2002, McGraw-Hill Education).pdf",
+          "size": "24.62 MB",
+          "bytes": 25813890,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBj2ocINZNSqnFSMSpfG3ILZJSSJ2yAALcHQAC4pPhVJ8YJiWyrl0rOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBkGocIU0TXYxg4k4h5iiOgAPzsEFFAALdHQAC4pPhVPX3copfsMbMOwQ"
+          ]
+        },
+        {
+          "name": "pdfcoffee.com_208468464-product-and-process-design-principles-synthesis-analysis-and-design-third-edition-1-pdf-free.pdf",
+          "size": "10.83 MB",
+          "bytes": 11357829,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBk2ocIVGNN9Jl0ziNgxgiGyX-K2jsAALfHQAC4pPhVB04m0XqNHicOwQ"
+          ]
+        },
+        {
+          "name": "Towler, Gavin_ Sinnott, Ray K.-Chemical Engineering Design - Principles, Practice and Economics of Plant and Process Design-Elsevier (2013).pdf",
+          "size": "19.61 MB",
+          "bytes": 20564430,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBl2ocIkq8ZGlai4UvASj_dGYN3-lSAALiHQAC4pPhVHiAngmC2rqBOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBlWocIVVFY8_y_Hrwpg0muobXwydgAALhHQAC4pPhVKikaGF8zVoqOwQ"
+          ]
+        },
+        {
+          "name": "Plant Design and Economics for Chemical Engineers 5th edition.pdf",
+          "size": "25.55 MB",
+          "bytes": 26790795,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBmmocIr1MncUkptIAAdhnPtCzDPVRCwAC6R0AAuKT4VRPbniUvQQn6TsE",
+            "BQACAgUAAyEGAATqgTaTAAIBn2ocIzWSVbpVtQYi-uYOv1nMLIRiAALvHQAC4pPhVAhwe8B_Cr15OwQ"
+          ]
+        },
+        {
+          "name": "Solutions Manual Plant Design and Economics for Chemical Engineers 5th edition.pdf",
+          "size": "24.77 MB",
+          "bytes": 25976890,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBo2ocI4Rcd-xQMyNJ8d82IbR2we0CAALyHQAC4pPhVKLhhRjUJLK-OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBomocI4NLo8ia-0zYah7zbbUKbredAALxHQAC4pPhVLobQqug11gEOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root",
+        "MR Sir",
+        "SI Sir"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 413: Process Design\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "CHE-208": {
+      "id": "CHE-208",
+      "code": "CHE 308",
+      "title": "Chemical Process Analysis Sessional",
+      "description": "Study materials for CHE 208",
+      "folder": "CHE-208",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Shreves Chemical Process Industries, 5th Edition ( PDFDrive ).pdf",
+          "size": "44.61 MB",
+          "bytes": 46772664,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBtWoejNIvmNG4EIH42KJyFHkbaq_-AAInIgAC9u7wVMa1x9i7w80sOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBvGoejUrqXjV1wRJlBvGhMy1XuCicAAIsIgAC9u7wVGj1pzBOdyN5OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIBtGoejNGCpLTaKYnAs86dPQABO0IPnwACJiIAAvbu8FQ7JZNkGWwBwTsE"
+          ]
+        },
+        {
+          "name": "DESIGN OF SULFURIC ACID MANUFACTURING PLANT FROM SULFUR.pdf",
+          "size": "2.17 MB",
+          "bytes": 2275788,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBwmoejXb9Ed_hTLOxV9z6ZgxYulp0AAIxIgAC9u7wVPyglGLkZZtEOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "ChE 308 Hydrogen Peroxide.pptx",
+          "size": "712.65 KB",
+          "bytes": 729751,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBxWoeja9YvJZfqeswPcfbwji1fuK4AAIzIgAC9u7wVGDp77Vw-sWwOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "ChE 308 Introduction.pptx",
+          "size": "1.02 MB",
+          "bytes": 1068347,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIByGoejbEyoMkBw1hCJTK1AXgSRT2KAAI1IgAC9u7wVNbNoyjO2G6yOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Online lecture on Ammonia.pdf",
+          "size": "3.41 MB",
+          "bytes": 3574890,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBy2oejb57cNCHTeBo4JLCugZovSgcAAI3IgAC9u7wVDgXfs-66JOFOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Ammonia Production.pdf",
+          "size": "271.08 KB",
+          "bytes": 277587,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIBzmoejdXW-9flkyL_NPlvh_19dyNwAAI5IgAC9u7wVGf67Ng0b_1SOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "chapter8_Part 3_Jul23.pdf",
+          "size": "2.20 MB",
+          "bytes": 2303792,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB0Woejdi1_P2C42Q7-4x395kLNmmTAAI7IgAC9u7wVP4vts0FwktZOwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Methanol Production.pdf",
+          "size": "74.69 KB",
+          "bytes": 76480,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB1WoejdxJFMZLqX0ZPGqn8AtcGnV_AAI-IgAC9u7wVFpH8BAlK6iGOwQ"
+          ],
+          "folder": "Root"
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# CHE 208: Chemical Process Analysis Sessional\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "CHE-471": {
+      "id": "CHE-471",
+      "code": "CHE 471",
+      "title": "Biochemistry",
+      "description": "This is an elective course.",
+      "folder": "CHE-471",
+      "level": "Level-3",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Lehninger 4e Chapter 3a Amino acids and peptides.pdf",
+          "size": "22.69 MB",
+          "bytes": 23796373,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIB_WoekgbGEwfpPWsHDvR27ISkUV14AAJhIgAC9u7wVDnsIww1y1ixOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIB_GoekgUMbwTxQZiITerDyOXmI6uTAAJgIgAC9u7wVFPxu0qLnjmnOwQ"
+          ]
+        },
+        {
+          "name": "Lehninger Principles of Biochemistry, Fourth Edition Chapter 2.pdf",
+          "size": "46.33 MB",
+          "bytes": 48578741,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICAWoelmaKSPY_S0P5--77Aaq4NBEKAAJxIgAC9u7wVIDy83acLXjcOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICAAFqHpZl7_XRYnp2sCJxK18pT4aNqQACcCIAAvbu8FQyV2RhVe9hITsE",
+            "BQACAgUAAyEGAATqgTaTAAICAmoelty3CQigMZ7jR8Cnufv_uwqAAAJyIgAC9u7wVEc8nbvA3KcAATsE"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# CHE 471: Biochemistry\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "EEE-267": {
+      "id": "EEE-267",
+      "code": "EEE 267",
+      "title": "Electrical and Electronics Technology ",
+      "description": "Study materials for EEE 267",
+      "folder": "EEE-267",
+      "level": "Level-2",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "EEE Note.pdf",
+          "size": "168.29 MB",
+          "bytes": 176466342,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICcWohM-H8R1pbwo3lzrtmbX5xx1kQAAJEHgACv-AIVfyuU3phPKqpOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICcGohM-BYT6p3yPdIbJwRaR2Pym-nAAJDHgACv-AIVYBQIxqDeYK2OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICcmohM-NL5CNbRh1H2hJotUU3YTPYAAJFHgACv-AIVfWTG1ml3Z4NOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICc2ohM-QVAAHZdC1sZdDGxMB8HZdOogACRh4AAr_gCFXmilJOqx4VYjsE",
+            "BQACAgUAAyEGAATqgTaTAAICdGohM-bGJV5vgJvT-Kh_tY1kvl49AAJHHgACv-AIVQgSLRxtnWkBOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICdWohM-eDa3NMgauwwS87wN96mjqZAAJIHgACv-AIVTHYVMOFLaaZOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICdmohM-h8PIDJFuOzNQ-ukAHfS4XXAAJJHgACv-AIVcoKnzV71F4uOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICd2ohM-m0DlGjvM4fbEElJ3vzsRb8AAJKHgACv-AIVZ12thCY0xX9OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICeGohM-vggwbtiK4ZRqqldVLphrX1AAJLHgACv-AIVTzz1KuXu1mkOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# EEE 267: Electrical and Electronics Technology \n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "L-3-T-2": {
+      "id": "L-3-T-2",
+      "code": "L-3 T-2",
+      "title": "Industrial Attachment",
+      "description": "Industrial Training of  L-3 T-2",
+      "folder": "L-3-T-2",
+      "level": "Level-4",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "ERL_Report_Conference_room.docx",
+          "size": "10.67 MB",
+          "bytes": 11185582,
+          "type": "Word Document",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICpWokXbkuzB4wcJqZbgSbwLZO6HeyAALNIQACPKUhVaniuNHomR-8OwQ"
+          ],
+          "folder": "Sample Reports"
+        },
+        {
+          "name": "Process Description.pptx",
+          "size": "2.63 MB",
+          "bytes": 2755193,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICqGokXb9xk_hGBMr4mwqGtjMuXWbpAALPIQACPKUhVX9FuOTMvm_WOwQ"
+          ],
+          "folder": "Sample Reports"
+        },
+        {
+          "name": "ERL_Report_Conference_room.pdf",
+          "size": "2.41 MB",
+          "bytes": 2527493,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICq2okXcTYaR7guyd89XGfozK2rzZ1AALRIQACPKUhVayECL10syaGOwQ"
+          ],
+          "folder": "Sample Reports"
+        }
+      ],
+      "folders": [
+        "Sample Reports"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# L-3 T-2: Industrial Attachment \n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "Chem-111": {
+      "id": "Chem-111",
+      "code": "Chem 111",
+      "title": "Inorganic Chemistry",
+      "description": "Study materials for Chem 111",
+      "folder": "Chem-111",
+      "level": "Level-1",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Chemistry_10th_Edition_Raymond_Chang.pdf",
+          "size": "88.59 MB",
+          "bytes": 92891947,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICyGopUr-tWBRTLiQFyyt7Zl7Ez6poAALkHQACES5QVWUMYMLsSEK3OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICx2opUr8PLCecI20zrahpjYfGY8ZPAALjHQACES5QVaGlbz5XHfujOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICyWopUsK1WdhBbdAhlj7eN0qIGeCpAALlHQACES5QVTpVBIevfktdOwQ",
+            "BQACAgUAAyEGAATqgTaTAAICymopUsNo8oq9Oybacoqa1lXJ2uubAALmHQACES5QVdj0IDo_nLU1OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICy2opUsTH_3cOy8YkeINBqnK60rVuAALnHQACES5QVTYDVtAS_oomOwQ"
+          ]
+        },
+        {
+          "name": "CHEM_111[1].pptx",
+          "size": "42.75 MB",
+          "bytes": 44826709,
+          "type": "Powerpoint Presentation",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAICz2opUxRNKPpxWHfrjVTwWvfYcHM_AALsHQACES5QVe10_18D3M43OwQ",
+            "BQACAgUAAyEGAATqgTaTAAICzmopUxOI4tkMUa_jnMG9JGTErkIjAALrHQACES5QVQ8-g5kyyw1iOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC0GopUxUHXTQrHUSxuXRdU-58UdjxAALtHQACES5QVf5z9gb2U_03OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "General Chemistry 9th - Ebbing, Gammon.pdf",
+          "size": "63.29 MB",
+          "bytes": 66365218,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC1GopUziK7Oe6ug1pPgVHLI8tETr3AALwHQACES5QVcB2S2YklA3eOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC02opUzeRNcEDMJf5PZDxBW_w5GABAALvHQACES5QVSHaS5-TioXvOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC1WopUzpeW5dYgGYNwEUED8UrYGnWAALxHQACES5QVXjeKklM1sjvOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC1mopUzo0u3MMEtxLq6rLu6H43GowAALyHQACES5QVaLgBN934sMJOwQ"
+          ]
+        },
+        {
+          "name": "inorganic-chemistry-g-l-miessler-2014.pdf",
+          "size": "22.91 MB",
+          "bytes": 24019490,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC2mopU2tfEz1oezDAVCLddh1JPsmeAAL1HQACES5QVearoWhIZqh7OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC2WopU2pgmwgg6BV0amjVZnknmguWAAL0HQACES5QVQ9RXHLFOyVpOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# Chem 111: Inorganic Analysis-1\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "Math125": {
+      "id": "Math125",
+      "code": "Math125",
+      "title": "Calculus",
+      "description": "Study materials for Math125",
+      "folder": "Math125",
+      "level": "Level-1",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Calculus Early Transcendentals, 10th Edition, ANTON.PDF",
+          "size": "21.49 MB",
+          "bytes": 22529895,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC3mopU_sNui5waqtNAaZF5slGA6wxAAL4HQACES5QVXvc8kiZqHoSOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC3WopU_rIM6cJtCxZ-VyTB0xOo_nsAAL3HQACES5QVbKIUUWmy8t1OwQ"
+          ]
+        },
+        {
+          "name": "Math 125 TF SOLVE final.pdf",
+          "size": "69.03 MB",
+          "bytes": 72380224,
+          "type": "Term-Final Solved",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC4WopVBeQT3wf02X33B91jCLsp4ysAAL6HQACES5QVd8CApweUTKxOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC4mopVBi_tt5pPuS_qyn4DkG1V6e7AAL7HQACES5QVYUaDBj0OWcQOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC42opVBnG7GZyTLTxKuRd8fQONdmWAAL8HQACES5QVX5-EjHAWSWAOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC5GopVBrHhmWQLVnwRhhN21jtSmUIAAL9HQACES5QVWQ9htsxUoYsOwQ"
+          ]
+        },
+        {
+          "name": "Pragati Integral Calculus with Applications by Hazra.pdf",
+          "size": "37.50 MB",
+          "bytes": 39320021,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC6GopVF6-SyV8WHSs0-RcddluKqz0AAMeAAIRLlBVb8vvfXPNwWc7BA",
+            "BQACAgUAAyEGAATqgTaTAAIC52opVF3btoD8cjpbTKveMHo9ATCHAAL_HQACES5QVZD2qWQzMhuxOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# Math125: Calculus\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "eee155": {
+      "id": "eee155",
+      "code": "eee155",
+      "title": "Electrical Engineering Fundamentals",
+      "description": "Study materials for eee155",
+      "folder": "eee155",
+      "level": "Level-1",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "_Charles Alexander, Matthew Sadiku-Fundamentals of Electric Circuits-McGraw-Hill Science_Engineering_Math (2012).pdf",
+          "size": "23.98 MB",
+          "bytes": 25147026,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC7GopVOWiej5Z9TuanskgYhzKchgxAAIDHgACES5QVY4CrkSuw24SOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC62opVOQSdcoVCwRshAAB79gDGwzNxAACAh4AAhEuUFWvbyg-7LWBOjsE"
+          ]
+        },
+        {
+          "name": "solutions-manual-of-fundamentals-of-electric-circuits-4ed-by-alexander-m-sadiku-www-eeeuniversity-com.pdf",
+          "size": "16.61 MB",
+          "bytes": 17413519,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC72opVQ81MODwPvwg-jihtLTsKDxzAAIGHgACES5QVerQ_zC-aZ-yOwQ"
+          ]
+        },
+        {
+          "name": "boylestead.pdf",
+          "size": "3.29 MB",
+          "bytes": 3447736,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC8mopVR6eWImJRiImIao8368uUX1OAAIIHgACES5QVekjehXXPlzOOwQ"
+          ]
+        },
+        {
+          "name": "Assignment EEE.pdf",
+          "size": "47.31 MB",
+          "bytes": 49611651,
+          "type": "Term-Final Solved",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC9WopVdEBZyMXqHLFQGGaDiIVpqniAAIMHgACES5QVfzjP74Hmn7COwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC9mopVdI97Km878gd-eeD2fJ_uSW4AAINHgACES5QVV82KfXlJiHCOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC92opVdNbDZh0F2E6u2ujZkX35wSSAAIOHgACES5QVVdRpV-OMpFSOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# eee155: Electrical Engineering Fundamentals\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "phy127": {
+      "id": "phy127",
+      "code": "phy127",
+      "title": "Physical Optics, Waves & Oscillations and Modern Physics",
+      "description": "Study materials for phy127",
+      "folder": "phy127",
+      "level": "Level-1",
+      "term": "Term-1",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "N Subrahmanyam Brijlal-A Textbook of Optics-S Chand (2022).pdf",
+          "size": "34.69 MB",
+          "bytes": 36373266,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC-mopVjox8cfw8o0m0MFa8ft1MOpIAAIQHgACES5QVWAuuZMGdam1OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIC-2opVjttePHtvWZcPba2vXPbl6EtAAIRHgACES5QVbGk-McN8easOwQ"
+          ]
+        },
+        {
+          "name": "Sound_Lec_1.pdf",
+          "size": "1.01 MB",
+          "bytes": 1063777,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIC_mopVsOouQd_vKoBSx4tBOUIgX7AAAIUHgACES5QVcGIbp4vslO9OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "Sound_Lec_2.pdf",
+          "size": "852.70 KB",
+          "bytes": 873162,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDAWopVtWBOtFudP10nLipBAaxN3h0AAIWHgACES5QVX2-mAg7gvZ0OwQ"
+          ],
+          "folder": "Root"
+        },
+        {
+          "name": "WO-Lecture-2,3,4.pdf",
+          "size": "990.16 KB",
+          "bytes": 1013924,
+          "type": "PDF",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDBGopVvDcYEUNlYIDISXto9E-N31VAAIYHgACES5QVQw4pdLfm0lhOwQ"
+          ],
+          "folder": "Root"
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# phy127: Physical Optics, Waves & Oscillations and Modern Physics\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "ChE-103": {
+      "id": "ChE-103",
+      "code": "ChE 103",
+      "title": "Engineering Thermodynamics-1",
+      "description": "Study materials for ChE 103",
+      "folder": "ChE-103",
+      "level": "Level-1",
+      "term": "Term-2",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "introduction-to-chemical-engineering-thermodynamics-eighth-edition_compress.pdf",
+          "size": "56.57 MB",
+          "bytes": 59320839,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDCGopWoX8AU50bJTCPayiZA-NdVHRAAIgHgACES5QVSw0CspjIPLsOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDB2opWoSWdOOOPLexZQ_JCRkblUiEAAIfHgACES5QVefkntz8ucGfOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDCWopWoYfht0aE7RxmdmQ7VjUWZ2BAAIhHgACES5QVXNLXPYSK2f8OwQ"
+          ]
+        },
+        {
+          "name": "Thermodynamics an Engineering Approach 8th Edition by Cengel and Boles.pdf",
+          "size": "58.20 MB",
+          "bytes": 61028632,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDDGopWqAkfFfD5A1nYydxCKbUfGnNAAIjHgACES5QVQ3qM76Gt9sWOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDDWopWqFvq9tJOsGIQKKJJXE-jLGzAAIkHgACES5QVWDZ0MgPvzaUOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDD2opWqNM74oXGSE2uv2gzVOxIhJhAAImHgACES5QVfr4WyG0ZYc8OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDDmopWqPDeHwtqHGPQza_srDuWi-jAAIlHgACES5QVYpj8arrF5gYOwQ"
+          ]
+        },
+        {
+          "name": "Introduction to Chemical Engineering Thermodynamics 8th Edition by Smith, Van Ness, Abbott and Swihart Solution.pdf",
+          "size": "13.58 MB",
+          "bytes": 14235645,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDEmopWugQFZZSLBfFUvOVs-wK8ZQqAAIqHgACES5QVeS_-v2d5XbAOwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# ChE 103: Engineering Thermodynamics-1\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    },
+    "Chem131": {
+      "id": "Chem131",
+      "code": "Chem131",
+      "title": "Physical Chemistry-1",
+      "description": "Study materials for Chem131",
+      "folder": "Chem131",
+      "level": "Level-1",
+      "term": "Term-2",
+      "syllabus": [],
+      "files": [
+        {
+          "name": "Physical Chemistry-HM.pdf",
+          "size": "183.38 MB",
+          "bytes": 192282923,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDFWopW3frg4QmHQhhkdobMaN7C1-aAAI3HgACES5QVTsqv-ntGeC9OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDFmopW3eGkhNe7QHhuV-tF-A56aMwAAI4HgACES5QVc9qdJCoWanjOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDF2opW3kBY8RZjEo4l-zf3vp_bohiAAI5HgACES5QVU1cDHMB697iOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDGGopW3pZIb6aP6_xlUlGCGHhcciRAAI6HgACES5QVV0whU-rBzdvOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDGWopW3wMbSlISvsHYFctro0zuEx5AAI7HgACES5QVQ6FjNKCkBovOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDGmopW30-CUAvFsuCpeBXyjSMJcPAAAI8HgACES5QVVe4cBFCnqh0OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDG2opW39MoZvLtlkCDwOymeBKCcF6AAI9HgACES5QVQpp-f6XYMOHOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDHGopW4BqTAuAVHWzEvVrA4nY-pGcAAI-HgACES5QVQJqUaavU9ABOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDHWopW4PCJBWNH6wDO5WPmRicuT0KAAI_HgACES5QVaA3Uy3qFFpnOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDHmopW4TVwQapdODBtVcyfZehHLYQAAJAHgACES5QVe61esbqsNA0OwQ"
+          ]
+        },
+        {
+          "name": "Principles of Physical Chemistry 4th Edition by Maron and Prutton.pdf",
+          "size": "75.53 MB",
+          "bytes": 79194525,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDIWopW9uWDOZGO5lPieG0tIN6EtC0AAJCHgACES5QVUmkocylT1UvOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDImopW9ycgOW4CuYSzToemUksfE4WAAJDHgACES5QVS_xu4rZ44DaOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDI2opW97rRSg_a0Eoyszkxomi6xnOAAJEHgACES5QVaD71IJ8h6oMOwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDJGopW9888qSG1lcIZHLk0HBg1xZ_AAJFHgACES5QVce_l6XmxVuwOwQ"
+          ]
+        },
+        {
+          "name": "Thermodynamics CN.pdf",
+          "size": "20.50 MB",
+          "bytes": 21495607,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDKGopXDLrVxWaJx3o58CuwUIP2o8ZAAJJHgACES5QVYHFNeYpuA6-OwQ",
+            "BQACAgUAAyEGAATqgTaTAAIDJ2opXDBC_h86AAG1l6-uT4mteXIvNwACSB4AAhEuUFW-jWRCyDHuIDsE"
+          ]
+        },
+        {
+          "name": "2202069.pdf",
+          "size": "16.26 MB",
+          "bytes": 17054733,
+          "type": "Solution Manual",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDK2opXIs9zAUpgT4p01xh6N-6EoRyAAJMHgACES5QVXeTBYUnnwc_OwQ"
+          ]
+        }
+      ],
+      "folders": [
+        "Root"
+      ],
+      "video_folders": [
+        "Root"
+      ],
+      "default_notes": "# Chem131: Physical Chemistry-1\n\nStart writing notes...",
+      "default_logs": [],
+      "default_links": []
+    }
+  }
+}
