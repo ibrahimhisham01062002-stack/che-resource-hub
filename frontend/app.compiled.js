@@ -330,8 +330,8 @@ var Icon = function Icon(_ref) {
     d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
   }));
 };
-var API_BASE = ""; // Relative path routing for Vercel unified frontend/backend domain
-var RENDER_BACKEND_URL = "https://che-resource-hub-2.onrender.com";
+var RENDER_BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? "http://127.0.0.1:8000" : "https://che-resource-hub-2.onrender.com";
+var API_BASE = RENDER_BACKEND_URL;
 function App() {
   var _useState = useState([]),
     _useState2 = _slicedToArray(_useState, 2),

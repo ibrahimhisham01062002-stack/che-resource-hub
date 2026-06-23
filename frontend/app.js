@@ -158,8 +158,10 @@ const Icon = ({ name, className = "w-5 h-5", ...props }) => {
   );
 };
 
-const API_BASE = ""; // Relative path routing for Vercel unified frontend/backend domain
-const RENDER_BACKEND_URL = "https://che-resource-hub-2.onrender.com";
+const RENDER_BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+  ? "http://127.0.0.1:8000"
+  : "https://che-resource-hub-2.onrender.com";
+const API_BASE = RENDER_BACKEND_URL;
 
 function App() {
   const [courses, setCourses] = useState([]);
