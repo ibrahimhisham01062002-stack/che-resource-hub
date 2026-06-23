@@ -1586,6 +1586,17 @@ async def upload_complete(
         # Get file size
         bytes_size = os.path.getsize(merged_filepath)
         
+        # Upload/Cache to Catbox (to bypass Render bandwidth limits during download/preview redirects)
+        catbox_url = None
+        try:
+            with open(merged_filepath, "rb") as f:
+                merged_bytes = f.read()
+            catbox_url = await upload_to_catbox(merged_bytes, filename)
+            print(f"Successfully cached merged file to Catbox: {catbox_url}")
+            del merged_bytes
+        except Exception as ce:
+            print(f"Failed to cache merged file to Catbox (will fallback to direct Telegram streaming): {str(ce)}")
+        
         # Upload to Telegram in chunks
         with open(merged_filepath, "rb") as f:
             telegram_file_ids = await upload_file_in_chunks_to_telegram(f, filename, bytes_size)
@@ -1624,6 +1635,9 @@ async def upload_complete(
         "storage_type": "telegram_chunks",
         "telegram_file_ids": telegram_file_ids
     }
+    
+    if catbox_url:
+        new_file_item["catbox_url"] = catbox_url
         
     if folder:
         new_file_item["folder"] = folder
