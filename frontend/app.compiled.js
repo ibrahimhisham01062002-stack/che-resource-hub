@@ -331,7 +331,7 @@ var Icon = function Icon(_ref) {
   }));
 };
 var API_BASE = ""; // Relative path routing for Vercel unified frontend/backend domain
-
+var RENDER_BACKEND_URL = "https://che-resource-hub-2.onrender.com";
 function App() {
   var _useState = useState([]),
     _useState2 = _slicedToArray(_useState, 2),
@@ -1443,7 +1443,6 @@ function App() {
       title: "PDF Viewer Frame"
     });
   };
-
   // Handle file uploads recursively for multiple files sequentially
   var handleFileUpload = async function handleFileUpload(e, filesInput, category, setters) {
     if (e) e.preventDefault();
@@ -1491,76 +1490,30 @@ function App() {
         });
         try {
           await new Promise(function (resolve) {
-            var formData = new FormData();
-            formData.append("file", file);
-            formData.append("category", category);
-            if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
-              formData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
-            }
-            var xhr = new XMLHttpRequest();
-            xhr.upload.addEventListener("progress", function (event) {
-              if (event.lengthComputable) {
-                var percentage = Math.round(event.loaded / event.total * 90);
+            var isLargeFile = file.size > 4 * 1024 * 1024; // 4 MB threshold
 
-                // Update specific file progress and batch overall progress
-                setUploadProgress(Math.round((i * 100 + percentage) / files.length));
-                setUploadStatus(function (prev) {
-                  var queue = prev.queue ? prev.queue : initialQueueStatus;
-                  var newQueue = _toConsumableArray(queue);
-                  if (newQueue[i]) {
-                    newQueue[i].progress = percentage;
-                  }
-                  return {
-                    type: "batch",
-                    queue: newQueue
-                  };
-                });
-              }
-            });
-            xhr.addEventListener("load", function () {
-              if (xhr.status >= 200 && xhr.status < 300) {
-                setUploadStatus(function (prev) {
-                  var queue = prev.queue ? prev.queue : initialQueueStatus;
-                  var newQueue = _toConsumableArray(queue);
-                  if (newQueue[i]) {
-                    newQueue[i].status = "success";
-                    newQueue[i].progress = 100;
-                  }
-                  return {
-                    type: "batch",
-                    queue: newQueue
-                  };
-                });
-                resolve();
-              } else {
-                var err = "Upload failed";
-                try {
-                  var data = JSON.parse(xhr.responseText);
-                  err = data.detail || err;
-                } catch (e) {}
-                setUploadStatus(function (prev) {
-                  var queue = prev.queue ? prev.queue : initialQueueStatus;
-                  var newQueue = _toConsumableArray(queue);
-                  if (newQueue[i]) {
-                    newQueue[i].status = "error";
-                    newQueue[i].error = err;
-                  }
-                  return {
-                    type: "batch",
-                    queue: newQueue
-                  };
-                });
-                // Continue queue even if a specific file fails
-                resolve();
-              }
-            });
-            xhr.addEventListener("error", function () {
+            var updateProgress = function updateProgress(loaded, total) {
+              var percentage = Math.round(loaded / total * 90);
+              setUploadProgress(Math.round((i * 100 + percentage) / files.length));
               setUploadStatus(function (prev) {
                 var queue = prev.queue ? prev.queue : initialQueueStatus;
                 var newQueue = _toConsumableArray(queue);
                 if (newQueue[i]) {
-                  newQueue[i].status = "error";
-                  newQueue[i].error = "Network timeout";
+                  newQueue[i].progress = percentage;
+                }
+                return {
+                  type: "batch",
+                  queue: newQueue
+                };
+              });
+            };
+            var markSuccess = function markSuccess() {
+              setUploadStatus(function (prev) {
+                var queue = prev.queue ? prev.queue : initialQueueStatus;
+                var newQueue = _toConsumableArray(queue);
+                if (newQueue[i]) {
+                  newQueue[i].status = "success";
+                  newQueue[i].progress = 100;
                 }
                 return {
                   type: "batch",
@@ -1568,9 +1521,152 @@ function App() {
                 };
               });
               resolve();
-            });
-            xhr.open("POST", "".concat(API_BASE, "/api/upload/").concat(activeCourse.id));
-            xhr.send(formData);
+            };
+            var markError = function markError(err) {
+              setUploadStatus(function (prev) {
+                var queue = prev.queue ? prev.queue : initialQueueStatus;
+                var newQueue = _toConsumableArray(queue);
+                if (newQueue[i]) {
+                  newQueue[i].status = "error";
+                  newQueue[i].error = err;
+                }
+                return {
+                  type: "batch",
+                  queue: newQueue
+                };
+              });
+              resolve();
+            };
+            if (isLargeFile) {
+              var chunkSize = 2 * 1024 * 1024; // 2 MB chunks
+              var totalChunks = Math.ceil(file.size / chunkSize);
+              var sessionId = Date.now() + "_" + Math.random().toString(36).substring(2, 10);
+              var uploadChunk = function uploadChunk(chunkIndex) {
+                return new Promise(function (resolveChunk, rejectChunk) {
+                  var start = chunkIndex * chunkSize;
+                  var end = Math.min(start + chunkSize, file.size);
+                  var chunk = file.slice(start, end);
+                  var chunkFormData = new FormData();
+                  chunkFormData.append("file_chunk", chunk, file.name);
+                  chunkFormData.append("session_id", sessionId);
+                  chunkFormData.append("chunk_index", chunkIndex);
+                  chunkFormData.append("total_chunks", totalChunks);
+                  chunkFormData.append("filename", file.name);
+                  var xhr = new XMLHttpRequest();
+                  xhr.upload.addEventListener("progress", function (event) {
+                    if (event.lengthComputable) {
+                      var chunkProgress = event.loaded / event.total;
+                      var overallLoaded = chunkIndex * chunkSize + chunkProgress * (end - start);
+                      var percentage = Math.round(overallLoaded / file.size * 80); // max 80% for upload phase
+
+                      setUploadProgress(Math.round((i * 100 + percentage) / files.length));
+                      setUploadStatus(function (prev) {
+                        var queue = prev.queue ? prev.queue : initialQueueStatus;
+                        var newQueue = _toConsumableArray(queue);
+                        if (newQueue[i]) {
+                          newQueue[i].progress = percentage;
+                        }
+                        return {
+                          type: "batch",
+                          queue: newQueue
+                        };
+                      });
+                    }
+                  });
+                  xhr.addEventListener("load", function () {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                      resolveChunk();
+                    } else {
+                      rejectChunk("Chunk ".concat(chunkIndex, " upload failed: ").concat(xhr.statusText));
+                    }
+                  });
+                  xhr.addEventListener("error", function () {
+                    rejectChunk("Chunk ".concat(chunkIndex, " network error"));
+                  });
+                  xhr.open("POST", "".concat(RENDER_BACKEND_URL, "/api/upload/chunk"));
+                  xhr.send(chunkFormData);
+                });
+              };
+              (async function () {
+                try {
+                  for (var c = 0; c < totalChunks; c++) {
+                    await uploadChunk(c);
+                  }
+
+                  // Complete the upload
+                  setUploadStatus(function (prev) {
+                    var queue = prev.queue ? prev.queue : initialQueueStatus;
+                    var newQueue = _toConsumableArray(queue);
+                    if (newQueue[i]) {
+                      newQueue[i].progress = 85;
+                    }
+                    return {
+                      type: "batch",
+                      queue: newQueue
+                    };
+                  });
+                  var completeFormData = new FormData();
+                  completeFormData.append("session_id", sessionId);
+                  completeFormData.append("filename", file.name);
+                  completeFormData.append("total_chunks", totalChunks);
+                  completeFormData.append("category", category);
+                  if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
+                    completeFormData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
+                  }
+                  var completeXhr = new XMLHttpRequest();
+                  completeXhr.addEventListener("load", function () {
+                    if (completeXhr.status >= 200 && completeXhr.status < 300) {
+                      markSuccess();
+                    } else {
+                      var err = "Assembly failed";
+                      try {
+                        var data = JSON.parse(completeXhr.responseText);
+                        err = data.detail || err;
+                      } catch (e) {}
+                      markError(err);
+                    }
+                  });
+                  completeXhr.addEventListener("error", function () {
+                    markError("Assembly connection error");
+                  });
+                  completeXhr.open("POST", "".concat(RENDER_BACKEND_URL, "/api/upload/complete/").concat(activeCourse.id));
+                  completeXhr.send(completeFormData);
+                } catch (chunkErr) {
+                  markError(chunkErr);
+                }
+              })();
+            } else {
+              // Direct upload for smaller files
+              var xhr = new XMLHttpRequest();
+              xhr.upload.addEventListener("progress", function (event) {
+                if (event.lengthComputable) {
+                  updateProgress(event.loaded, event.total);
+                }
+              });
+              xhr.addEventListener("load", function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                  markSuccess();
+                } else {
+                  var err = "Upload failed";
+                  try {
+                    var data = JSON.parse(xhr.responseText);
+                    err = data.detail || err;
+                  } catch (e) {}
+                  markError(err);
+                }
+              });
+              xhr.addEventListener("error", function () {
+                markError("Network timeout");
+              });
+              var formData = new FormData();
+              formData.append("file", file);
+              formData.append("category", category);
+              if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
+                formData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
+              }
+              xhr.open("POST", "".concat(API_BASE, "/api/upload/").concat(activeCourse.id));
+              xhr.send(formData);
+            }
           });
         } catch (err) {
           console.error("Queue execution error:", err);
@@ -1593,8 +1689,6 @@ function App() {
         return c.id === activeCourse.id;
       });
       if (found) setActiveCourse(found);
-
-      // Dismiss batch uploader dialog after a brief delay
       setTimeout(function () {
         setIsUploading(false);
         setUploadProgress(0);

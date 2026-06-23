@@ -171,6 +171,26 @@
             "BQACAgUAAyEGAATqgTaTAAIDPGo6V_QBenO00qOY5msyKKpmOdITAAKSHQACBJjYVZuESmHTDv6DPAQ",
             "BQACAgUAAyEGAATqgTaTAAIDO2o6V_PmyucL4ubHMmbKDx8ogMdYAAKRHQACBJjYVXQGRZYOmbnvPAQ"
           ]
+        },
+        {
+          "name": "test_chunked_file.pdf",
+          "size": "5.00 MB",
+          "bytes": 5242880,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDUGo6u996wuiaKR0LVk5JVa6sfjTOAAI_HwACBJjYVZLH6hhRX13-PAQ"
+          ]
+        },
+        {
+          "name": "test_chunked_file.pdf",
+          "size": "5.00 MB",
+          "bytes": 5242880,
+          "type": "Reference Book",
+          "storage_type": "telegram_chunks",
+          "telegram_file_ids": [
+            "BQACAgUAAyEGAATqgTaTAAIDU2o6vICsiBwuLwWF2R19YcnM3Z7dAAJDHwACBJjYVcKXTY9xufI1PAQ"
+          ]
         }
       ],
       "folders": [

@@ -932,6 +932,64 @@ async def cache_gdrive_file_to_catbox(course_id: str, file_index: int, file_item
     except Exception as e:
         print(f"Background task failed for caching Google Drive {file_item.get('name')}: {str(e)}")
 
+async def backup_catbox_file_to_telegram(course_id: str, file_index: int, filename: str, catbox_url: str):
+    import tempfile
+    import gc
+    global http_client
+    if http_client is None:
+        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+        
+    print(f"Background task: backing up Catbox file {filename} ({catbox_url}) to Telegram...")
+    try:
+        # Create a temporary file on disk to save the download stream and avoid high RAM consumption
+        with tempfile.TemporaryFile() as tmp:
+            async with http_client.stream("GET", catbox_url) as resp:
+                if resp.status_code != 200:
+                    print(f"Background backup failed: Catbox URL {catbox_url} returned status {resp.status_code}")
+                    return
+                # Write response chunks to the temporary file
+                async for chunk in resp.aiter_bytes():
+                    tmp.write(chunk)
+            
+            # Get size of the downloaded file
+            tmp.seek(0, 2)
+            bytes_size = tmp.tell()
+            tmp.seek(0)
+            
+            # Upload chunks to Telegram
+            telegram_file_ids = await upload_file_in_chunks_to_telegram(tmp, filename, bytes_size)
+            
+        print(f"Background task: successfully backed up Catbox file {filename} to Telegram chunks.")
+        
+        # Load config and save metadata
+        config = load_courses_config()
+        resolved_course_id = find_course_key(course_id, config["courses"])
+        if resolved_course_id:
+            files_list = config["courses"][resolved_course_id].get("files", [])
+            target_idx = -1
+            for idx, item in enumerate(files_list):
+                if item.get("catbox_url") == catbox_url:
+                    target_idx = idx
+                    break
+            
+            if target_idx == -1 and 0 <= file_index < len(files_list):
+                if files_list[file_index].get("name") == filename:
+                    target_idx = file_index
+                    
+            if target_idx != -1:
+                files_list[target_idx]["telegram_file_ids"] = telegram_file_ids
+                files_list[target_idx]["storage_type"] = "telegram_chunks"
+                save_courses_config(config)
+                await async_sync_database_to_telegram()
+                print(f"Background task: updated database with Telegram file ids for {filename}")
+            else:
+                print(f"Background task warning: could not find catalog item for {filename} to save backup info")
+    except Exception as e:
+        print(f"Background backup task failed for {filename}: {str(e)}")
+    finally:
+        gc.collect()
+
 @app.get("/api/download/{course_id}/{file_index}")
 async def download_file(course_id: str, file_index: int, request: Request, background_tasks: BackgroundTasks, preview: Optional[bool] = None):
     config = load_courses_config()
@@ -1462,46 +1520,86 @@ async def stream_telegram_chunks_range(
                         bytes_to_send -= send_len
 
 
-# Handle file upload (proxies to Telegram storage)
-@app.post("/api/upload/{course_id}")
-async def upload_file(
-    course_id: str, 
-    file: UploadFile = File(...), 
+import tempfile
+UPLOAD_TEMP_DIR = os.path.join(tempfile.gettempdir(), "che_hub_temp_uploads")
+os.makedirs(UPLOAD_TEMP_DIR, exist_ok=True)
+
+@app.post("/api/upload/chunk")
+async def upload_chunk(
+    file_chunk: UploadFile = File(...),
+    session_id: str = Form(...),
+    chunk_index: int = Form(...),
+    total_chunks: int = Form(...),
+    filename: str = Form(...)
+):
+    try:
+        session_dir = os.path.join(UPLOAD_TEMP_DIR, session_id)
+        os.makedirs(session_dir, exist_ok=True)
+        
+        chunk_path = os.path.join(session_dir, str(chunk_index))
+        with open(chunk_path, "wb") as f:
+            f.write(await file_chunk.read())
+            
+        return {"status": "success", "message": f"Chunk {chunk_index} of {total_chunks} received"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save chunk: {str(e)}")
+
+@app.post("/api/upload/complete/{course_id}")
+async def upload_complete(
+    course_id: str,
+    session_id: str = Form(...),
+    filename: str = Form(...),
+    total_chunks: int = Form(...),
     category: Optional[str] = Form(None),
     folder: Optional[str] = Form(None)
 ):
     import gc
+    import shutil
+    
     config = load_courses_config()
     resolved_course_id = find_course_key(course_id, config["courses"])
     if not resolved_course_id:
         raise HTTPException(status_code=404, detail="Course not found")
     course_id = resolved_course_id
-        
     course = config["courses"][course_id]
-    filename = os.path.basename(file.filename)
+    
+    session_dir = os.path.join(UPLOAD_TEMP_DIR, session_id)
+    if not os.path.exists(session_dir):
+        raise HTTPException(status_code=400, detail="Upload session not found")
+        
+    merged_filepath = os.path.join(session_dir, "merged_" + filename)
     
     try:
-        # Seek metadata directly on the underlying spooled file to get size without loading into RAM
-        file.file.seek(0, 2)
-        bytes_size = file.file.tell()
-        file.file.seek(0)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Failed to read upload file payload metadata: {str(e)}")
+        # Verify all chunks exist
+        for i in range(total_chunks):
+            chunk_path = os.path.join(session_dir, str(i))
+            if not os.path.exists(chunk_path):
+                raise HTTPException(status_code=400, detail=f"Missing chunk {i}")
+                
+        # Merge chunks
+        with open(merged_filepath, "wb") as outfile:
+            for i in range(total_chunks):
+                chunk_path = os.path.join(session_dir, str(i))
+                with open(chunk_path, "rb") as infile:
+                    outfile.write(infile.read())
+                    
+        # Get file size
+        bytes_size = os.path.getsize(merged_filepath)
         
-    # Exclusively direct-to-Telegram chunked upload using disk-spooled stream piping
-    try:
-        telegram_file_ids = await upload_file_in_chunks_to_telegram(file.file, filename, bytes_size)
+        # Upload to Telegram in chunks
+        with open(merged_filepath, "rb") as f:
+            telegram_file_ids = await upload_file_in_chunks_to_telegram(f, filename, bytes_size)
+            
     except HTTPException as he:
         raise he
-    except Exception as te:
-        err_msg = str(te) or repr(te)
-        raise HTTPException(
-            status_code=502, 
-            detail=f"Telegram upload failed: {err_msg}. Please verify that your bot is added to your Telegram channel as an Administrator with document posting permissions."
-        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Merge or upload failed: {str(e)}")
     finally:
-        # Clean up descriptors and force garbage collection
-        await file.close()
+        # Cleanup session directory
+        try:
+            shutil.rmtree(session_dir)
+        except Exception:
+            pass
         gc.collect()
         
     # Construct file catalog item
@@ -1540,8 +1638,144 @@ async def upload_file(
         "status": "success", 
         "filename": filename, 
         "storage_type": "telegram_chunks",
-        "message": "File uploaded successfully to Telegram channel!"
+        "message": "File uploaded and merged successfully!"
     }
+
+# Handle file upload (proxies to Telegram storage)
+@app.post("/api/upload/{course_id}")
+async def upload_file(
+    course_id: str, 
+    background_tasks: BackgroundTasks,
+    file: Optional[UploadFile] = File(None), 
+    category: Optional[str] = Form(None),
+    folder: Optional[str] = Form(None),
+    catbox_url: Optional[str] = Form(None),
+    filename: Optional[str] = Form(None),
+    file_size: Optional[int] = Form(None)
+):
+    import gc
+    config = load_courses_config()
+    resolved_course_id = find_course_key(course_id, config["courses"])
+    if not resolved_course_id:
+        raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
+        
+    course = config["courses"][course_id]
+    
+    if "files" not in course:
+        course["files"] = []
+
+    if catbox_url:
+        # Direct Catbox upload registration flow
+        if not filename:
+            raise HTTPException(status_code=400, detail="filename is required when catbox_url is provided")
+        
+        bytes_size = file_size or 0
+        
+        if category == "book":
+            file_type = "Reference Book"
+        elif category == "question":
+            file_type = "Term-Final Question"
+        elif category == "solution" or category == "manual":
+            file_type = "Solution Manual"
+        elif category == "solved":
+            file_type = "Term-Final Solved"
+        elif category == "video" or category == "recorded_class":
+            file_type = "Recorded Class"
+        else:
+            file_type = get_file_type(filename)
+            
+        new_file_item = {
+            "name": filename,
+            "size": format_size(bytes_size),
+            "bytes": bytes_size,
+            "type": file_type,
+            "storage_type": "catbox",
+            "catbox_url": catbox_url
+        }
+        
+        if folder:
+            new_file_item["folder"] = folder
+            
+        course["files"].append(new_file_item)
+        file_index = len(course["files"]) - 1
+        save_courses_config(config)
+        
+        # Async backup to Telegram in background
+        background_tasks.add_task(backup_catbox_file_to_telegram, course_id, file_index, filename, catbox_url)
+        
+        return {
+            "status": "success", 
+            "filename": filename, 
+            "storage_type": "catbox",
+            "message": "File metadata registered successfully. Backup to Telegram scheduled in background."
+        }
+    else:
+        # Standard file upload to backend
+        if not file:
+            raise HTTPException(status_code=400, detail="No file or catbox_url provided")
+            
+        filename = os.path.basename(file.filename)
+        
+        try:
+            # Seek metadata directly on the underlying spooled file to get size without loading into RAM
+            file.file.seek(0, 2)
+            bytes_size = file.file.tell()
+            file.file.seek(0)
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"Failed to read upload file payload metadata: {str(e)}")
+            
+        # Exclusively direct-to-Telegram chunked upload using disk-spooled stream piping
+        try:
+            telegram_file_ids = await upload_file_in_chunks_to_telegram(file.file, filename, bytes_size)
+        except HTTPException as he:
+            raise he
+        except Exception as te:
+            err_msg = str(te) or repr(te)
+            raise HTTPException(
+                status_code=502, 
+                detail=f"Telegram upload failed: {err_msg}. Please verify that your bot is added to your Telegram channel as an Administrator with document posting permissions."
+            )
+        finally:
+            # Clean up descriptors and force garbage collection
+            await file.close()
+            gc.collect()
+            
+        # Construct file catalog item
+        if category == "book":
+            file_type = "Reference Book"
+        elif category == "question":
+            file_type = "Term-Final Question"
+        elif category == "solution" or category == "manual":
+            file_type = "Solution Manual"
+        elif category == "solved":
+            file_type = "Term-Final Solved"
+        elif category == "video" or category == "recorded_class":
+            file_type = "Recorded Class"
+        else:
+            file_type = get_file_type(filename)
+            
+        new_file_item = {
+            "name": filename,
+            "size": format_size(bytes_size),
+            "bytes": bytes_size,
+            "type": file_type,
+            "storage_type": "telegram_chunks",
+            "telegram_file_ids": telegram_file_ids
+        }
+            
+        if folder:
+            new_file_item["folder"] = folder
+            
+        course["files"].append(new_file_item)
+        save_courses_config(config)
+        
+        return {
+            "status": "success", 
+            "filename": filename, 
+            "storage_type": "telegram_chunks",
+            "message": "File uploaded successfully to Telegram channel!"
+        }
 
 # Handle PDF Summarization with DeepSeek
 @app.post("/api/courses/{course_id}/files/{file_index}/summarize")
