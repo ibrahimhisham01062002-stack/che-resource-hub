@@ -1138,17 +1138,21 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         # We will directly stream/proxy the file below.
             
         # If caching failed, fall back to direct streaming proxy
-        if catbox_url:
+        if False and catbox_url:
             async def stream_catbox_file(url: str, request_headers: dict):
-                global http_client
-                if http_client is None:
-                    limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-                    http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-                async with http_client.stream("GET", url, headers=request_headers) as r:
-                    if r.status_code not in (200, 206):
-                        raise Exception(f"Catbox download returned status {r.status_code}")
-                    async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
-                        yield chunk
+                try:
+                    global http_client
+                    if http_client is None:
+                        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                    async with http_client.stream("GET", url, headers=request_headers) as r:
+                        if r.status_code not in (200, 206):
+                            print(f"Catbox download returned status {r.status_code}")
+                            return
+                        async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
+                            yield chunk
+                except Exception as e:
+                    print(f"Catbox streaming exception: {e}")
             headers = {
                 "Accept-Ranges": "bytes",
                 "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
@@ -1390,11 +1394,11 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
         resp = await safe_telegram_request("GET", get_file_url)
         if resp.status_code != 200:
-            raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
+            print("Failed to retrieve file details"); return
             
         result = resp.json()
         if not result.get("ok"):
-            raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
+            print("Telegram API returned error"); return
             
         file_path = result["result"]["file_path"]
         telegram_file_size = result["result"].get("file_size")
@@ -1423,34 +1427,39 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                 end = total_size - 1
             
             async def stream_range_generator():
-                global http_client
-                if http_client is None:
-                    limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-                    http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-                tg_headers = {"Range": f"bytes={start}-{end}"}
-                async with http_client.stream("GET", download_url, headers=tg_headers) as r:
-                    if r.status_code not in (200, 206):
-                        yield b"Error streaming range from Telegram servers"
-                        return
-                    if r.status_code == 206:
-                        async for chunk in r.aiter_bytes():
-                            yield chunk
-                    else:
-                        bytes_to_skip = start
-                        bytes_to_send = end - start + 1
-                        async for chunk in r.aiter_bytes():
-                            if bytes_to_send <= 0:
-                                break
-                            chunk_len = len(chunk)
-                            if bytes_to_skip >= chunk_len:
-                                bytes_to_skip -= chunk_len
-                                continue
-                            start_idx = bytes_to_skip
-                            bytes_to_skip = 0
-                            send_len = min(chunk_len - start_idx, bytes_to_send)
-                            yield chunk[start_idx:start_idx + send_len]
-                            bytes_to_send -= send_len
+
+                try:
+                    global http_client
+                    if http_client is None:
+                        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                    tg_headers = {"Range": f"bytes={start}-{end}"}
+                    async with http_client.stream("GET", download_url, headers=tg_headers) as r:
+                        if r.status_code not in (200, 206):
+                            yield b"Error streaming range from Telegram servers"
+                            return
+                        if r.status_code == 206:
+                            async for chunk in r.aiter_bytes():
+                                yield chunk
+                        else:
+                            bytes_to_skip = start
+                            bytes_to_send = end - start + 1
+                            async for chunk in r.aiter_bytes():
+                                if bytes_to_send <= 0:
+                                    break
+                                chunk_len = len(chunk)
+                                if bytes_to_skip >= chunk_len:
+                                    bytes_to_skip -= chunk_len
+                                    continue
+                                start_idx = bytes_to_skip
+                                bytes_to_skip = 0
+                                send_len = min(chunk_len - start_idx, bytes_to_send)
+                                yield chunk[start_idx:start_idx + send_len]
+                                bytes_to_send -= send_len
             
+                except Exception as e:
+                    print(f"Stream exception: {e}")
+
             headers = {
                 "Content-Range": f"bytes {start}-{end}/{total_size}",
                 "Accept-Ranges": "bytes",
@@ -1469,17 +1478,22 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
             
         # Standard sequential download
         async def stream_generator():
-            global http_client
-            if http_client is None:
-                limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-                http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-            async with http_client.stream("GET", download_url) as r:
-                if r.status_code != 200:
-                    yield b"Error streaming from Telegram servers"
-                    return
-                async for chunk in r.aiter_bytes():
-                    yield chunk
+
+            try:
+                global http_client
+                if http_client is None:
+                    limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                    http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                async with http_client.stream("GET", download_url) as r:
+                    if r.status_code != 200:
+                        yield b"Error streaming from Telegram servers"
+                        return
+                    async for chunk in r.aiter_bytes():
+                        yield chunk
                     
+            except Exception as e:
+                print(f"Stream exception: {e}")
+
         headers = {
             "Accept-Ranges": "bytes",
             "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
@@ -1653,29 +1667,34 @@ async def upload_file_in_chunks_to_telegram(file_obj, filename: str, total_bytes
     return file_ids
 
 async def stream_telegram_chunks(file_ids: List[str]):
-    global http_client
-    if http_client is None:
-        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-    for file_id in file_ids:
-        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-        resp = await safe_telegram_request("GET", get_file_url)
-        if resp.status_code != 200:
-            raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
-            
-        result = resp.json()
-        if not result.get("ok"):
-            raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
-            
-        file_path = result["result"]["file_path"]
-        download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
-        
-        async with http_client.stream("GET", download_url) as r:
-            if r.status_code != 200:
-                return
-            async for chunk in r.aiter_bytes():
-                yield chunk
 
+    try:
+        global http_client
+        if http_client is None:
+            limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+            http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+        for file_id in file_ids:
+            get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+            resp = await safe_telegram_request("GET", get_file_url)
+            if resp.status_code != 200:
+                print("Failed to retrieve file details"); return
+            
+            result = resp.json()
+            if not result.get("ok"):
+                print("Telegram API returned error"); return
+            
+            file_path = result["result"]["file_path"]
+            download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+        
+            async with http_client.stream("GET", download_url) as r:
+                if r.status_code != 200:
+                    return
+                async for chunk in r.aiter_bytes():
+                    yield chunk
+
+
+    except Exception as e:
+        print(f"Stream exception: {e}")
 
 async def stream_telegram_chunks_range(
     file_ids: List[str],
@@ -1684,60 +1703,65 @@ async def stream_telegram_chunks_range(
     total_size: int,
     chunk_size_limit: int
 ):
-    global http_client
-    if http_client is None:
-        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-    for i, file_id in enumerate(file_ids):
-        chunk_start = i * chunk_size_limit
-        chunk_end = min((i + 1) * chunk_size_limit - 1, total_size - 1)
+
+    try:
+        global http_client
+        if http_client is None:
+            limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+            http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+        for i, file_id in enumerate(file_ids):
+            chunk_start = i * chunk_size_limit
+            chunk_end = min((i + 1) * chunk_size_limit - 1, total_size - 1)
         
-        # Check if the requested range overlaps with this chunk
-        if start <= chunk_end and end >= chunk_start:
-            overlap_start = max(start, chunk_start)
-            overlap_end = min(end, chunk_end)
+            # Check if the requested range overlaps with this chunk
+            if start <= chunk_end and end >= chunk_start:
+                overlap_start = max(start, chunk_start)
+                overlap_end = min(end, chunk_end)
             
-            rel_start = overlap_start - chunk_start
-            rel_end = overlap_end - chunk_start
+                rel_start = overlap_start - chunk_start
+                rel_end = overlap_end - chunk_start
             
-            # Fetch file path from Telegram
-            get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-            resp = await safe_telegram_request("GET", get_file_url)
-            if resp.status_code != 200:
-                print(f"Failed to getFile details for chunk {i}: {resp.text}")
-                return
-            result = resp.json()
-            if not result.get("ok"):
-                print(f"Telegram Bot API error for chunk {i}")
-                return
-                
-            file_path = result["result"]["file_path"]
-            download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
-            
-            headers = {"Range": f"bytes={rel_start}-{rel_end}"}
-            async with http_client.stream("GET", download_url, headers=headers) as r:
-                if r.status_code not in (200, 206):
-                    print(f"Telegram download failed for chunk {i} range {rel_start}-{rel_end}: status {r.status_code}")
+                # Fetch file path from Telegram
+                get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+                resp = await safe_telegram_request("GET", get_file_url)
+                if resp.status_code != 200:
+                    print(f"Failed to getFile details for chunk {i}: {resp.text}")
                     return
-                if r.status_code == 206:
-                    async for chunk in r.aiter_bytes():
-                        yield chunk
-                else:
-                    # Manually slice the stream (status 200)
-                    bytes_to_skip = rel_start
-                    bytes_to_send = rel_end - rel_start + 1
-                    async for chunk in r.aiter_bytes():
-                        if bytes_to_send <= 0:
-                            break
-                        chunk_len = len(chunk)
-                        if bytes_to_skip >= chunk_len:
-                            bytes_to_skip -= chunk_len
-                            continue
-                        start_idx = bytes_to_skip
-                        bytes_to_skip = 0
-                        send_len = min(chunk_len - start_idx, bytes_to_send)
-                        yield chunk[start_idx:start_idx + send_len]
-                        bytes_to_send -= send_len
+                result = resp.json()
+                if not result.get("ok"):
+                    print(f"Telegram Bot API error for chunk {i}")
+                    return
+                
+                file_path = result["result"]["file_path"]
+                download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+            
+                headers = {"Range": f"bytes={rel_start}-{rel_end}"}
+                async with http_client.stream("GET", download_url, headers=headers) as r:
+                    if r.status_code not in (200, 206):
+                        print(f"Telegram download failed for chunk {i} range {rel_start}-{rel_end}: status {r.status_code}")
+                        return
+                    if r.status_code == 206:
+                        async for chunk in r.aiter_bytes():
+                            yield chunk
+                    else:
+                        # Manually slice the stream (status 200)
+                        bytes_to_skip = rel_start
+                        bytes_to_send = rel_end - rel_start + 1
+                        async for chunk in r.aiter_bytes():
+                            if bytes_to_send <= 0:
+                                break
+                            chunk_len = len(chunk)
+                            if bytes_to_skip >= chunk_len:
+                                bytes_to_skip -= chunk_len
+                                continue
+                            start_idx = bytes_to_skip
+                            bytes_to_skip = 0
+                            send_len = min(chunk_len - start_idx, bytes_to_send)
+                            yield chunk[start_idx:start_idx + send_len]
+                            bytes_to_send -= send_len
+    except Exception as e:
+        print(f"Stream exception: {e}")
+
 import tempfile
 UPLOAD_TEMP_DIR = os.path.join(tempfile.gettempdir(), "che_hub_temp_uploads")
 os.makedirs(UPLOAD_TEMP_DIR, exist_ok=True)
@@ -2050,7 +2074,7 @@ async def summarize_pdf_file(course_id: str, file_index: int):
         get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
         resp = await safe_telegram_request("GET", get_file_url)
         if resp.status_code != 200:
-            raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
+            print("Failed to retrieve file details"); return
             
         result = resp.json()
         if not result.get("ok"):
