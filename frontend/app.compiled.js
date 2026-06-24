@@ -1330,9 +1330,13 @@ function App() {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async function () {
       var file = activeCourse.files[fileIndex];
-      // Bypass fetch and use direct backend URL to prevent UI freezing and avoid ISP Catbox blocks
+      // Bypass fetch and use direct backend URL to trigger a native download popup in the current window (no new tab!)
       var url = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex);
-      window.open(url, "_blank");
+      var link = document.createElement("a");
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     });
   };
 
