@@ -695,9 +695,13 @@ function App() {
     // This lets the browser natively stream and render the PDF (supporting range requests and fast page-by-page loading).
     var directUrl = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(previewFile.index, "?preview=true");
     setPreviewUrl(directUrl);
-    var timer = setTimeout(function () {
+    var safetyTimer = setTimeout(function () {
       setPreviewLoading(false);
-    }, 1000); // Elegant 1-second overlay spinner for smooth transitions
+    }, 15000); // 15-second safety fallback to hide spinner on errors
+
+    return function () {
+      return clearTimeout(safetyTimer);
+    };
   }, [previewFile, activeCourse]);
 
   // Trigger MathJax typesetting whenever the preview file changes
@@ -1412,24 +1416,26 @@ function App() {
   // Reusable PDF viewer or placeholder renderer
   var renderPdfViewerOrPlaceholder = function renderPdfViewerOrPlaceholder(file) {
     if (!file) return null;
-    if (previewLoading) {
-      return /*#__PURE__*/React.createElement("div", {
-        className: "w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"
-      }), /*#__PURE__*/React.createElement("div", {
-        className: "text-center space-y-1"
-      }, /*#__PURE__*/React.createElement("p", {
-        className: "text-xs font-bold text-slate-300"
-      }, "Streaming PDF securely from Telegram cloud..."), /*#__PURE__*/React.createElement("p", {
-        className: "text-[10px] text-slate-500"
-      }, "This may take a moment if the server is waking up.")));
-    }
-    return /*#__PURE__*/React.createElement("iframe", {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "w-full h-full relative bg-dark-900"
+    }, previewLoading && /*#__PURE__*/React.createElement("div", {
+      className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "text-center space-y-1"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs font-bold text-slate-300"
+    }, "Streaming PDF securely from Telegram cloud..."), /*#__PURE__*/React.createElement("p", {
+      className: "text-[10px] text-slate-500"
+    }, "This may take a moment if the server is waking up."))), previewUrl && /*#__PURE__*/React.createElement("iframe", {
       src: previewUrl,
-      className: "w-full h-full border-none animate-fade-in",
+      onLoad: function onLoad() {
+        return setPreviewLoading(false);
+      },
+      className: "w-full h-full border-none transition-opacity duration-300 ".concat(previewLoading ? 'opacity-0' : 'opacity-100'),
       title: "PDF Viewer Frame"
-    });
+    }));
   };
   // Handle file uploads recursively for multiple files sequentially
   var handleFileUpload = async function handleFileUpload(e, filesInput, category, setters) {

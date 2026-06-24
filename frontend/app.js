@@ -329,9 +329,11 @@ function App() {
     const directUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
     setPreviewUrl(directUrl);
     
-    const timer = setTimeout(() => {
+    const safetyTimer = setTimeout(() => {
       setPreviewLoading(false);
-    }, 1000); // Elegant 1-second overlay spinner for smooth transitions
+    }, 15000); // 15-second safety fallback to hide spinner on errors
+    
+    return () => clearTimeout(safetyTimer);
     
   }, [previewFile, activeCourse]);
 
@@ -991,23 +993,26 @@ function App() {
   const renderPdfViewerOrPlaceholder = (file) => {
     if (!file) return null;
 
-    if (previewLoading) {
-      return (
-        <div className="w-full h-full flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-          <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-          <div className="text-center space-y-1">
-            <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
-            <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
-          </div>
-        </div>
-      );
-    }
     return (
-      <iframe 
-        src={previewUrl}
-        className="w-full h-full border-none animate-fade-in"
-        title="PDF Viewer Frame"
-      ></iframe>
+      <div className="w-full h-full relative bg-dark-900">
+        {previewLoading && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
+            <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
+            <div className="text-center space-y-1">
+              <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
+              <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
+            </div>
+          </div>
+        )}
+        {previewUrl && (
+          <iframe 
+            src={previewUrl}
+            onLoad={() => setPreviewLoading(false)}
+            className={`w-full h-full border-none transition-opacity duration-300 ${previewLoading ? 'opacity-0' : 'opacity-100'}`}
+            title="PDF Viewer Frame"
+          ></iframe>
+        )}
+      </div>
     );
   };
   // Handle file uploads recursively for multiple files sequentially

@@ -371,6 +371,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Accept-Ranges", "Content-Range", "Content-Length", "Content-Disposition"],
 )
 
 @app.on_event("startup")
@@ -977,6 +978,91 @@ async def backup_catbox_file_to_telegram(course_id: str, file_index: int, filena
         print(f"Background backup task failed for {filename}: {str(e)}")
     finally:
         gc.collect()
+import hashlib
+import tempfile
+
+DISK_CACHE_DIR = os.path.join(tempfile.gettempdir(), "che_hub_disk_cache")
+os.makedirs(DISK_CACHE_DIR, exist_ok=True)
+cache_locks = {}
+
+def get_cache_filename(file_item: dict) -> str:
+    ident = ""
+    if file_item.get("catbox_url"):
+        ident = file_item["catbox_url"]
+    elif file_item.get("telegram_file_ids"):
+        ident = "".join(file_item["telegram_file_ids"])
+    elif file_item.get("telegram_file_id"):
+        ident = file_item["telegram_file_id"]
+    
+    if not ident:
+        ident = file_item["name"]
+        
+    h = hashlib.sha256(ident.encode("utf-8")).hexdigest()
+    ext = os.path.splitext(file_item["name"])[1]
+    return f"{h}{ext}"
+
+async def download_file_to_cache(file_item: dict, cache_path: str, course_id: str, file_index: int):
+    global http_client
+    if http_client is None:
+        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+        
+    temp_cache_path = cache_path + ".tmp"
+    try:
+        catbox_url = file_item.get("catbox_url")
+        gdrive_file_id = file_item.get("gdrive_file_id")
+        file_ids = file_item.get("telegram_file_ids")
+        file_id = file_item.get("telegram_file_id")
+        message_id = file_item.get("telegram_message_id")
+        
+        if catbox_url:
+            async with http_client.stream("GET", catbox_url) as r:
+                if r.status_code != 200:
+                    raise Exception(f"Catbox download returned status {r.status_code}")
+                with open(temp_cache_path, "wb") as f:
+                    async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
+                        f.write(chunk)
+        elif file_ids:
+            with open(temp_cache_path, "wb") as f:
+                async for chunk in stream_telegram_chunks(file_ids):
+                    f.write(chunk)
+        elif gdrive_file_id:
+            with open(temp_cache_path, "wb") as f:
+                async for chunk in stream_gdrive_file(gdrive_file_id):
+                    f.write(chunk)
+        elif file_id or message_id is not None:
+            if not file_id and message_id is not None:
+                file_id = await get_file_id_from_message_id(int(message_id))
+            if not file_id:
+                raise Exception("No Telegram file_id found")
+                
+            get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+            resp = await safe_telegram_request("GET", get_file_url)
+            if resp.status_code != 200:
+                raise Exception(f"Telegram getFile details request failed: {resp.text}")
+            result = resp.json()
+            if not result.get("ok"):
+                raise Exception(f"Telegram API response error: {result}")
+            file_path = result["result"]["file_path"]
+            download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+            
+            async with http_client.stream("GET", download_url) as r:
+                if r.status_code != 200:
+                    raise Exception(f"Telegram download returned status {r.status_code}")
+                with open(temp_cache_path, "wb") as f:
+                    async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
+                        f.write(chunk)
+        else:
+            raise Exception("No remote storage mapped")
+            
+        os.replace(temp_cache_path, cache_path)
+    except Exception as e:
+        if os.path.exists(temp_cache_path):
+            try:
+                os.remove(temp_cache_path)
+            except:
+                pass
+        raise e
 
 @app.get("/api/download/{course_id}/{file_index}")
 async def download_file(course_id: str, file_index: int, request: Request, background_tasks: BackgroundTasks, preview: Optional[bool] = None):
@@ -994,19 +1080,170 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
     file_item = files[file_index]
     file_name = file_item["name"]
     
-    # 0. Check for pre-cached redirect/Catbox URL to bypass Render bandwidth limits entirely
-    catbox_url = file_item.get("catbox_url")
-    if catbox_url:
-        return RedirectResponse(url=catbox_url, status_code=302)
+    # Determine Content-Type
+    content_type = "application/octet-stream"
+    if file_name.lower().endswith(".pdf"):
+        content_type = "application/pdf"
+    elif file_name.lower().endswith(".zip"):
+        content_type = "application/zip"
+    elif file_name.lower().endswith((".png", ".jpg", ".jpeg")):
+        content_type = "image/png" if file_name.lower().endswith(".png") else "image/jpeg"
+    elif file_name.lower().endswith((".mp4", ".m4v")):
+        content_type = "video/mp4"
+    elif file_name.lower().endswith(".webm"):
+        content_type = "video/webm"
+    elif file_name.lower().endswith(".ogg"):
+        content_type = "video/ogg"
+    elif file_name.lower().endswith(".mov"):
+        content_type = "video/quicktime"
+    elif file_name.lower().endswith(".avi"):
+        content_type = "video/x-msvideo"
+    elif file_name.lower().endswith(".mkv"):
+        content_type = "video/x-matroska"
+        
+    disposition_type = "inline" if preview else "attachment"
+    range_header = request.headers.get("range")
     
+    catbox_url = file_item.get("catbox_url")
+    gdrive_file_id = file_item.get("gdrive_file_id")
+    file_ids = file_item.get("telegram_file_ids")
+    file_id = file_item.get("telegram_file_id")
+    message_id = file_item.get("telegram_message_id")
+    
+    is_remote = catbox_url or gdrive_file_id or file_ids or file_id or message_id is not None
+    
+    if is_remote:
+        cache_name = get_cache_filename(file_item)
+        cache_path = os.path.join(DISK_CACHE_DIR, cache_name)
+        
+        # If already cached, serve instantly from the local disk cache
+        if os.path.exists(cache_path):
+            headers = {
+                "Accept-Ranges": "bytes",
+                "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                "Content-Type": content_type,
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *"
+            }
+            return FileResponse(
+                cache_path,
+                media_type=content_type,
+                filename=file_name,
+                content_disposition_type=disposition_type,
+                headers=headers
+            )
+            
+        # If not cached yet:
+        # Trigger caching in background, but don't wait for it.
+        # This allows immediate proxying for fast previews and instant downloads.
+        if cache_name not in cache_locks:
+            cache_locks[cache_name] = asyncio.Lock()
+            
+        async def background_cache_task():
+            async with cache_locks[cache_name]:
+                if not os.path.exists(cache_path):
+                    try:
+                        print(f"Background caching started for: {file_name}")
+                        await download_file_to_cache(file_item, cache_path, course_id, file_index)
+                        print(f"Background caching completed: {file_name}")
+                    except Exception as e:
+                        print(f"Background caching failed for {file_name}: {str(e)}")
+                        temp_cache_path = cache_path + ".tmp"
+                        if os.path.exists(temp_cache_path):
+                            try:
+                                os.remove(temp_cache_path)
+                            except:
+                                pass
+
+        # Fire and forget the caching task
+        background_tasks.add_task(background_cache_task)
+            
+        # If caching failed, fall back to direct streaming proxy
+        if catbox_url:
+            async def stream_catbox_file(url: str, request_headers: dict):
+                global http_client
+                if http_client is None:
+                    limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                    http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                async with http_client.stream("GET", url, headers=request_headers) as r:
+                    if r.status_code not in (200, 206):
+                        raise Exception(f"Catbox download returned status {r.status_code}")
+                    async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
+                        yield chunk
+            headers = {
+                "Accept-Ranges": "bytes",
+                "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                "Content-Type": content_type,
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *"
+            }
+            if range_header and range_header.startswith("bytes="):
+                req_headers = {"Range": range_header}
+                try:
+                    async with http_client.stream("GET", catbox_url, headers=req_headers) as r:
+                        if r.status_code == 206:
+                            headers["Content-Range"] = r.headers.get("Content-Range", "")
+                            headers["Content-Length"] = r.headers.get("Content-Length", "")
+                            return StreamingResponse(
+                                stream_catbox_file(catbox_url, req_headers),
+                                status_code=206,
+                                media_type=content_type,
+                                headers=headers
+                            )
+                except Exception as e:
+                    print(f"Catbox range streaming error: {str(e)}")
+            raw_bytes = file_item.get("bytes")
+            if raw_bytes:
+                headers["Content-Length"] = str(raw_bytes)
+            return StreamingResponse(
+                stream_catbox_file(catbox_url, {}),
+                media_type=content_type,
+                headers=headers
+            )
+        elif file_ids:
+            try:
+                headers = {
+                    "Accept-Ranges": "bytes",
+                    "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                    "Content-Type": content_type,
+                    "X-Frame-Options": "ALLOWALL",
+                    "Content-Security-Policy": "frame-ancestors *"
+                }
+                raw_bytes = file_item.get("bytes")
+                if range_header and range_header.startswith("bytes=") and raw_bytes:
+                    start = 0
+                    end = None
+                    parts = range_header.replace("bytes=", "").split("-")
+                    if len(parts) == 2:
+                        if parts[0].strip():
+                            start = int(parts[0].strip())
+                        if parts[1].strip():
+                            end = int(parts[1].strip())
+                    if end is None or end >= raw_bytes:
+                        end = raw_bytes - 1
+                    headers["Content-Range"] = f"bytes {start}-{end}/{raw_bytes}"
+                    headers["Content-Length"] = str(end - start + 1)
+                    return StreamingResponse(
+                        stream_telegram_chunks_range(file_ids, start, end, raw_bytes, CHUNK_SIZE_LIMIT),
+                        status_code=206,
+                        media_type=content_type,
+                        headers=headers
+                    )
+                if raw_bytes:
+                    headers["Content-Length"] = str(raw_bytes)
+                return StreamingResponse(
+                    stream_telegram_chunks(file_ids),
+                    media_type=content_type,
+                    headers=headers
+                )
+            except Exception as e:
+                print(f"Telegram chunks streaming error: {str(e)}")
+                
     storage_type = file_item.get("storage_type")
     gdrive_file_id = file_item.get("gdrive_file_id")
     file_id = file_item.get("telegram_file_id")
     file_ids = file_item.get("telegram_file_ids")
     message_id = file_item.get("telegram_message_id")
-    
-    # Determine disposition: inline for active previewer iframe, attachment for direct download click
-    disposition_type = "inline" if preview else "attachment"
     
     # 1. Determine storage type if not explicitly set
     if not storage_type:

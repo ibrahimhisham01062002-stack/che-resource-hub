@@ -371,6 +371,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Accept-Ranges", "Content-Range", "Content-Length", "Content-Disposition"],
 )
 
 async def keep_awake():
@@ -1195,32 +1196,31 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
             )
             
         # If not cached yet:
-        # 1. Trigger background caching download so subsequent range requests/downloads are instant
+        # Trigger caching in background, but don't wait for it.
+        # This allows immediate proxying for fast previews and instant downloads.
         if cache_name not in cache_locks:
             cache_locks[cache_name] = asyncio.Lock()
             
-        async def background_cache_download():
+        async def background_cache_task():
             async with cache_locks[cache_name]:
                 if not os.path.exists(cache_path):
                     try:
                         print(f"Background caching started for: {file_name}")
                         await download_file_to_cache(file_item, cache_path, course_id, file_index)
-                        print(f"Background caching completed for: {file_name}")
+                        print(f"Background caching completed: {file_name}")
                     except Exception as e:
                         print(f"Background caching failed for {file_name}: {str(e)}")
-                        
-        background_tasks.add_task(background_cache_download)
-        
-        # 2. Immediately proxy/stream the requested range (or full file) directly from the remote source
-        # This allows page-by-page loading instantly on the first preview click.
-        headers = {
-            "Accept-Ranges": "bytes",
-            "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
-            "Content-Type": content_type,
-            "X-Frame-Options": "ALLOWALL",
-            "Content-Security-Policy": "frame-ancestors *"
-        }
-        
+                        temp_cache_path = cache_path + ".tmp"
+                        if os.path.exists(temp_cache_path):
+                            try:
+                                os.remove(temp_cache_path)
+                            except:
+                                pass
+
+        # Fire and forget the caching task
+        background_tasks.add_task(background_cache_task)
+            
+        # If caching failed, fall back to direct streaming proxy
         if catbox_url:
             async def stream_catbox_file(url: str, request_headers: dict):
                 global http_client
@@ -1232,13 +1232,15 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                         raise Exception(f"Catbox download returned status {r.status_code}")
                     async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
                         yield chunk
-                        
+            headers = {
+                "Accept-Ranges": "bytes",
+                "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                "Content-Type": content_type,
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *"
+            }
             if range_header and range_header.startswith("bytes="):
                 req_headers = {"Range": range_header}
-                global http_client
-                if http_client is None:
-                    limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-                    http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
                 try:
                     async with http_client.stream("GET", catbox_url, headers=req_headers) as r:
                         if r.status_code == 206:
@@ -1252,7 +1254,6 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                             )
                 except Exception as e:
                     print(f"Catbox range streaming error: {str(e)}")
-                    
             raw_bytes = file_item.get("bytes")
             if raw_bytes:
                 headers["Content-Length"] = str(raw_bytes)
@@ -1261,9 +1262,15 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                 media_type=content_type,
                 headers=headers
             )
-            
         elif file_ids:
             try:
+                headers = {
+                    "Accept-Ranges": "bytes",
+                    "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                    "Content-Type": content_type,
+                    "X-Frame-Options": "ALLOWALL",
+                    "Content-Security-Policy": "frame-ancestors *"
+                }
                 raw_bytes = file_item.get("bytes")
                 if range_header and range_header.startswith("bytes=") and raw_bytes:
                     start = 0
@@ -1276,7 +1283,6 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                             end = int(parts[1].strip())
                     if end is None or end >= raw_bytes:
                         end = raw_bytes - 1
-                        
                     headers["Content-Range"] = f"bytes {start}-{end}/{raw_bytes}"
                     headers["Content-Length"] = str(end - start + 1)
                     return StreamingResponse(
