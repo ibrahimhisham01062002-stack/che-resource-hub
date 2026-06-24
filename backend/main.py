@@ -1133,30 +1133,9 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                 headers=headers
             )
             
-        # If not cached yet:
-        # Trigger caching in background, but don't wait for it.
-        # This allows immediate proxying for fast previews and instant downloads.
-        if cache_name not in cache_locks:
-            cache_locks[cache_name] = asyncio.Lock()
-            
-        async def background_cache_task():
-            async with cache_locks[cache_name]:
-                if not os.path.exists(cache_path):
-                    try:
-                        print(f"Background caching started for: {file_name}")
-                        await download_file_to_cache(file_item, cache_path, course_id, file_index)
-                        print(f"Background caching completed: {file_name}")
-                    except Exception as e:
-                        print(f"Background caching failed for {file_name}: {str(e)}")
-                        temp_cache_path = cache_path + ".tmp"
-                        if os.path.exists(temp_cache_path):
-                            try:
-                                os.remove(temp_cache_path)
-                            except:
-                                pass
-
-        # Fire and forget the caching task
-        background_tasks.add_task(background_cache_task)
+        # If not cached locally, we will NOT trigger a background local disk cache.
+        # Concurrent downloads of the same file from Telegram cause the connection to drop (502 error).
+        # We will directly stream/proxy the file below.
             
         # If caching failed, fall back to direct streaming proxy
         if catbox_url:
