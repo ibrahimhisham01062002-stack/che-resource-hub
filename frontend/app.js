@@ -1086,36 +1086,20 @@ function App() {
             };
 
             if (isLargeFile) {
-              // Direct upload to Catbox.moe via CORS
-              const xhr = new XMLHttpRequest();
+              // Chunked upload to our backend API
+              const chunkSize = 2 * 1024 * 1024; // 2MB chunks
+              const totalChunks = Math.ceil(file.size / chunkSize);
+              const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
               
-              xhr.upload.addEventListener("progress", (event) => {
-                if (event.lengthComputable) {
-                  // Catbox upload represents 0-90% of the total progress
-                  const loaded = event.loaded;
-                  const total = event.total;
-                  const percentage = Math.round((loaded / total) * 90);
-                  setUploadProgress(Math.round(((i * 100) + percentage) / files.length));
-                  setUploadStatus(prev => {
-                    const queue = prev.queue ? prev.queue : initialQueueStatus;
-                    const newQueue = [...queue];
-                    if (newQueue[i]) {
-                      newQueue[i].progress = percentage;
-                    }
-                    return { type: "batch", queue: newQueue };
-                  });
-                }
-              });
-
-              xhr.addEventListener("load", () => {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                  const catboxUrl = xhr.responseText.trim();
-                  
-                  // Now register with our backend
+              let currentChunk = 0;
+              
+              const uploadNextChunk = () => {
+                if (currentChunk >= totalChunks) {
+                  // All chunks uploaded, call complete endpoint
                   const completeFormData = new FormData();
-                  completeFormData.append("catbox_url", catboxUrl);
+                  completeFormData.append("session_id", sessionId);
                   completeFormData.append("filename", file.name);
-                  completeFormData.append("file_size", file.size);
+                  completeFormData.append("total_chunks", totalChunks);
                   completeFormData.append("category", category);
                   if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
                     completeFormData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
@@ -1126,7 +1110,7 @@ function App() {
                     if (completeXhr.status >= 200 && completeXhr.status < 300) {
                       markSuccess();
                     } else {
-                      let err = "Registration failed";
+                      let err = "Merge and upload failed";
                       try {
                         const data = JSON.parse(completeXhr.responseText);
                         err = data.detail || err;
@@ -1135,27 +1119,68 @@ function App() {
                     }
                   });
                   completeXhr.addEventListener("error", () => {
-                    markError("Backend connection error");
+                    markError("Backend completion connection error");
                   });
                   
-                  completeXhr.open("POST", `${API_BASE}/api/upload/${activeCourse.id}`);
+                  completeXhr.open("POST", `${API_BASE}/api/upload/complete/${activeCourse.id}`);
                   completeXhr.send(completeFormData);
-                  
-                } else {
-                  markError(`Catbox upload failed: ${xhr.statusText}`);
+                  return;
                 }
-              });
-
-              xhr.addEventListener("error", () => {
-                markError("Catbox network error");
-              });
-
-              const formData = new FormData();
-              formData.append("reqtype", "fileupload");
-              formData.append("fileToUpload", file);
+                
+                const start = currentChunk * chunkSize;
+                const end = Math.min(start + chunkSize, file.size);
+                const chunk = file.slice(start, end);
+                
+                const chunkFormData = new FormData();
+                chunkFormData.append("file_chunk", chunk, file.name);
+                chunkFormData.append("session_id", sessionId);
+                chunkFormData.append("chunk_index", currentChunk);
+                chunkFormData.append("total_chunks", totalChunks);
+                chunkFormData.append("filename", file.name);
+                
+                const chunkXhr = new XMLHttpRequest();
+                
+                chunkXhr.upload.addEventListener("progress", (event) => {
+                  if (event.lengthComputable) {
+                    const chunkLoaded = event.loaded;
+                    const chunkTotal = event.total;
+                    const totalLoaded = start + (chunkLoaded / chunkTotal) * (end - start);
+                    const percentage = Math.round((totalLoaded / file.size) * 90);
+                    setUploadProgress(Math.round(((i * 100) + percentage) / files.length));
+                    setUploadStatus(prev => {
+                      const queue = prev.queue ? prev.queue : initialQueueStatus;
+                      const newQueue = [...queue];
+                      if (newQueue[i]) {
+                        newQueue[i].progress = percentage;
+                      }
+                      return { type: "batch", queue: newQueue };
+                    });
+                  }
+                });
+                
+                chunkXhr.addEventListener("load", () => {
+                  if (chunkXhr.status >= 200 && chunkXhr.status < 300) {
+                    currentChunk++;
+                    uploadNextChunk();
+                  } else {
+                    let err = `Chunk ${currentChunk + 1} upload failed`;
+                    try {
+                      const data = JSON.parse(chunkXhr.responseText);
+                      err = data.detail || err;
+                    } catch (e) {}
+                    markError(err);
+                  }
+                });
+                
+                chunkXhr.addEventListener("error", () => {
+                  markError(`Network error on chunk ${currentChunk + 1}`);
+                });
+                
+                chunkXhr.open("POST", `${API_BASE}/api/upload/chunk`);
+                chunkXhr.send(chunkFormData);
+              };
               
-              xhr.open("POST", "https://catbox.moe/user/api.php");
-              xhr.send(formData);
+              uploadNextChunk();
             } else {
               // Direct upload for smaller files
               const xhr = new XMLHttpRequest();

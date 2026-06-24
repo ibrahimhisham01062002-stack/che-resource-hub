@@ -2,7 +2,7 @@ import os
 import json
 import shutil
 import asyncio
-from typing import Optional, List
+from typing import Optional, List, Union, Any
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form, BackgroundTasks, Response, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, HTMLResponse, RedirectResponse
@@ -329,13 +329,13 @@ async def safe_telegram_request(method: str, url: str, **kwargs) -> httpx.Respon
             
     return await http_client.request(method, url, **kwargs)
 
-async def upload_to_catbox(file_bytes: bytes, filename: str) -> str:
+async def upload_to_catbox(file_payload: Union[bytes, Any], filename: str) -> str:
     global http_client
     if http_client is None:
         limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
         http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
     url = "https://catbox.moe/user/api.php"
-    files = {"fileToUpload": (filename, file_bytes)}
+    files = {"fileToUpload": (filename, file_payload)}
     data = {"reqtype": "fileupload"}
     resp = await http_client.post(url, data=data, files=files, timeout=300.0)
     if resp.status_code == 200:
@@ -917,13 +917,15 @@ async def cache_telegram_file_to_catbox(course_id: str, file_index: int, file_it
         file_name = file_item["name"]
         print(f"Background task: Caching {file_name} to Catbox...")
         if storage_type == "telegram_chunks":
+            import tempfile
             file_ids = file_item.get("telegram_file_ids", [])
             if not file_ids and file_item.get("telegram_file_id"):
                 file_ids = [file_item.get("telegram_file_id")]
-            merged_bytes = b""
-            async for chunk in stream_telegram_chunks(file_ids):
-                merged_bytes += chunk
-            catbox_url = await upload_to_catbox(merged_bytes, file_name)
+            with tempfile.TemporaryFile() as tmp:
+                async for chunk in stream_telegram_chunks(file_ids):
+                    tmp.write(chunk)
+                tmp.seek(0)
+                catbox_url = await upload_to_catbox(tmp, file_name)
         else:
             file_id = file_item.get("telegram_file_id")
             message_id = file_item.get("telegram_message_id")
@@ -1666,10 +1668,8 @@ async def upload_complete(
         catbox_url = None
         try:
             with open(merged_filepath, "rb") as f:
-                merged_bytes = f.read()
-            catbox_url = await upload_to_catbox(merged_bytes, filename)
+                catbox_url = await upload_to_catbox(f, filename)
             print(f"Successfully cached merged file to Catbox: {catbox_url}")
-            del merged_bytes
         except Exception as ce:
             print(f"Failed to cache merged file to Catbox (will fallback to direct Telegram streaming): {str(ce)}")
         
