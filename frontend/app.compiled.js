@@ -1538,77 +1538,37 @@ function App() {
               resolve();
             };
             if (isLargeFile) {
-              var chunkSize = 2 * 1024 * 1024; // 2 MB chunks
-              var totalChunks = Math.ceil(file.size / chunkSize);
-              var sessionId = Date.now() + "_" + Math.random().toString(36).substring(2, 10);
-              var uploadChunk = function uploadChunk(chunkIndex) {
-                return new Promise(function (resolveChunk, rejectChunk) {
-                  var start = chunkIndex * chunkSize;
-                  var end = Math.min(start + chunkSize, file.size);
-                  var chunk = file.slice(start, end);
-                  var chunkFormData = new FormData();
-                  chunkFormData.append("file_chunk", chunk, file.name);
-                  chunkFormData.append("session_id", sessionId);
-                  chunkFormData.append("chunk_index", chunkIndex);
-                  chunkFormData.append("total_chunks", totalChunks);
-                  chunkFormData.append("filename", file.name);
-                  var xhr = new XMLHttpRequest();
-                  xhr.upload.addEventListener("progress", function (event) {
-                    if (event.lengthComputable) {
-                      var chunkProgress = event.loaded / event.total;
-                      var overallLoaded = chunkIndex * chunkSize + chunkProgress * (end - start);
-                      var percentage = Math.round(overallLoaded / file.size * 80); // max 80% for upload phase
-
-                      setUploadProgress(Math.round((i * 100 + percentage) / files.length));
-                      setUploadStatus(function (prev) {
-                        var queue = prev.queue ? prev.queue : initialQueueStatus;
-                        var newQueue = _toConsumableArray(queue);
-                        if (newQueue[i]) {
-                          newQueue[i].progress = percentage;
-                        }
-                        return {
-                          type: "batch",
-                          queue: newQueue
-                        };
-                      });
-                    }
-                  });
-                  xhr.addEventListener("load", function () {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                      resolveChunk();
-                    } else {
-                      rejectChunk("Chunk ".concat(chunkIndex, " upload failed: ").concat(xhr.statusText));
-                    }
-                  });
-                  xhr.addEventListener("error", function () {
-                    rejectChunk("Chunk ".concat(chunkIndex, " network error"));
-                  });
-                  xhr.open("POST", "".concat(RENDER_BACKEND_URL, "/api/upload/chunk"));
-                  xhr.send(chunkFormData);
-                });
-              };
-              (async function () {
-                try {
-                  for (var c = 0; c < totalChunks; c++) {
-                    await uploadChunk(c);
-                  }
-
-                  // Complete the upload
+              // Direct upload to Catbox.moe via CORS
+              var xhr = new XMLHttpRequest();
+              xhr.upload.addEventListener("progress", function (event) {
+                if (event.lengthComputable) {
+                  // Catbox upload represents 0-90% of the total progress
+                  var loaded = event.loaded;
+                  var total = event.total;
+                  var percentage = Math.round(loaded / total * 90);
+                  setUploadProgress(Math.round((i * 100 + percentage) / files.length));
                   setUploadStatus(function (prev) {
                     var queue = prev.queue ? prev.queue : initialQueueStatus;
                     var newQueue = _toConsumableArray(queue);
                     if (newQueue[i]) {
-                      newQueue[i].progress = 85;
+                      newQueue[i].progress = percentage;
                     }
                     return {
                       type: "batch",
                       queue: newQueue
                     };
                   });
+                }
+              });
+              xhr.addEventListener("load", function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                  var catboxUrl = xhr.responseText.trim();
+
+                  // Now register with our backend
                   var completeFormData = new FormData();
-                  completeFormData.append("session_id", sessionId);
+                  completeFormData.append("catbox_url", catboxUrl);
                   completeFormData.append("filename", file.name);
-                  completeFormData.append("total_chunks", totalChunks);
+                  completeFormData.append("file_size", file.size);
                   completeFormData.append("category", category);
                   if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
                     completeFormData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
@@ -1618,7 +1578,7 @@ function App() {
                     if (completeXhr.status >= 200 && completeXhr.status < 300) {
                       markSuccess();
                     } else {
-                      var err = "Assembly failed";
+                      var err = "Registration failed";
                       try {
                         var data = JSON.parse(completeXhr.responseText);
                         err = data.detail || err;
@@ -1627,45 +1587,53 @@ function App() {
                     }
                   });
                   completeXhr.addEventListener("error", function () {
-                    markError("Assembly connection error");
+                    markError("Backend connection error");
                   });
-                  completeXhr.open("POST", "".concat(RENDER_BACKEND_URL, "/api/upload/complete/").concat(activeCourse.id));
+                  completeXhr.open("POST", "".concat(API_BASE, "/api/upload/").concat(activeCourse.id));
                   completeXhr.send(completeFormData);
-                } catch (chunkErr) {
-                  markError(chunkErr);
+                } else {
+                  markError("Catbox upload failed: ".concat(xhr.statusText));
                 }
-              })();
+              });
+              xhr.addEventListener("error", function () {
+                markError("Catbox network error");
+              });
+              var formData = new FormData();
+              formData.append("reqtype", "fileupload");
+              formData.append("fileToUpload", file);
+              xhr.open("POST", "https://catbox.moe/user/api.php");
+              xhr.send(formData);
             } else {
               // Direct upload for smaller files
-              var xhr = new XMLHttpRequest();
-              xhr.upload.addEventListener("progress", function (event) {
+              var _xhr = new XMLHttpRequest();
+              _xhr.upload.addEventListener("progress", function (event) {
                 if (event.lengthComputable) {
                   updateProgress(event.loaded, event.total);
                 }
               });
-              xhr.addEventListener("load", function () {
-                if (xhr.status >= 200 && xhr.status < 300) {
+              _xhr.addEventListener("load", function () {
+                if (_xhr.status >= 200 && _xhr.status < 300) {
                   markSuccess();
                 } else {
                   var err = "Upload failed";
                   try {
-                    var data = JSON.parse(xhr.responseText);
+                    var data = JSON.parse(_xhr.responseText);
                     err = data.detail || err;
                   } catch (e) {}
                   markError(err);
                 }
               });
-              xhr.addEventListener("error", function () {
+              _xhr.addEventListener("error", function () {
                 markError("Network timeout");
               });
-              var formData = new FormData();
-              formData.append("file", file);
-              formData.append("category", category);
+              var _formData = new FormData();
+              _formData.append("file", file);
+              _formData.append("category", category);
               if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
-                formData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
+                _formData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
               }
-              xhr.open("POST", "".concat(API_BASE, "/api/upload/").concat(activeCourse.id));
-              xhr.send(formData);
+              _xhr.open("POST", "".concat(API_BASE, "/api/upload/").concat(activeCourse.id));
+              _xhr.send(_formData);
             }
           });
         } catch (err) {
