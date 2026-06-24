@@ -307,7 +307,7 @@ function App() {
     safeStorage.setItem("che_selected_term", selectedTerm);
   }, [selectedLevel, selectedTerm]);
 
-  // Load PDF directly using standard streaming proxy endpoint
+  // Load PDF directly — prefer Catbox URL (zero Render bandwidth) with fallback to streaming proxy
   useEffect(() => {
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
@@ -324,10 +324,16 @@ function App() {
     
     setPreviewLoading(true);
     
-    // Set the preview URL directly to our secure streaming proxy endpoint.
-    // This lets the browser natively stream and render the PDF (supporting range requests and fast page-by-page loading).
-    const directUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
-    setPreviewUrl(directUrl);
+    // Use Catbox URL directly if available (bypasses Render, zero bandwidth cost, supports range requests for progressive loading)
+    const file = activeCourse.files[previewFile.index];
+    const catboxUrl = file && file.catbox_url;
+    if (catboxUrl) {
+      setPreviewUrl(catboxUrl);
+    } else {
+      // Fallback to Render streaming proxy for files not yet cached on Catbox
+      const directUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
+      setPreviewUrl(directUrl);
+    }
     
     const safetyTimer = setTimeout(() => {
       setPreviewLoading(false);
@@ -917,8 +923,11 @@ function App() {
   const handleDownloadFile = async (fileIndex, fileName) => {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async () => {
-      // The user requested: "for downloading, there should open a new tab just for the downloading section"
-      const url = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
+      const file = activeCourse.files[fileIndex];
+      const catboxUrl = file && file.catbox_url;
+      // Use Catbox URL directly to bypass Render bandwidth (zero cost).
+      // Falls back to Render proxy for files not yet on Catbox.
+      const url = catboxUrl || `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
       window.open(url, '_blank');
     });
   };
@@ -985,26 +994,217 @@ function App() {
   const renderPdfViewerOrPlaceholder = (file) => {
     if (!file) return null;
 
-    return (
-      <div className="w-full h-full relative bg-dark-900">
-        {previewLoading && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400">
-            <div className="w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"></div>
-            <div className="text-center space-y-1">
-              <p className="text-xs font-bold text-slate-300">Streaming PDF securely from Telegram cloud...</p>
-              <p className="text-[10px] text-slate-500">This may take a moment if the server is waking up.</p>
-            </div>
-          </div>
-        )}
-        {previewUrl && (
-          <iframe 
-            src={previewUrl}
-            onLoad={() => setPreviewLoading(false)}
-            className={`w-full h-full border-none transition-opacity duration-300 ${previewLoading ? 'opacity-0' : 'opacity-100'}`}
-            title="PDF Viewer Frame"
-          ></iframe>
-        )}
-      </div>
+    return React.createElement('div', { className: "w-full h-full relative bg-dark-900" },
+      previewLoading && React.createElement('div', { className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400" },
+        React.createElement('div', { className: "w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin" }),
+        React.createElement('div', { className: "text-center space-y-1" },
+          React.createElement('p', { className: "text-xs font-bold text-slate-300" }, "Loading PDF pages progressively..."),
+          React.createElement('p', { className: "text-[10px] text-slate-500" }, "First pages will appear shortly.")
+        )
+      ),
+      previewUrl && React.createElement(PdfJsViewer, { url: previewUrl, onFirstPageReady: () => setPreviewLoading(false) })
+    );
+  };
+
+  // PDF.js Progressive Viewer Component — renders pages lazily as user scrolls
+  // Only fetches bytes needed for visible pages (Catbox supports HTTP Range requests)
+  const PdfJsViewer = ({ url, onFirstPageReady }) => {
+    const containerRef = useRef(null);
+    const pdfDocRef = useRef(null);
+    const renderedPagesRef = useRef(new Set());
+    const renderingRef = useRef(new Set());
+    const [totalPages, setTotalPages] = useState(0);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      if (!url || !window.pdfjsLib) {
+        setError("PDF viewer library not loaded. Try refreshing the page.");
+        return;
+      }
+
+      let cancelled = false;
+      renderedPagesRef.current = new Set();
+      renderingRef.current = new Set();
+
+      const loadPdf = async () => {
+        try {
+          // PDF.js will use range requests automatically when the server supports Accept-Ranges
+          // This means only the bytes for the requested pages are downloaded, not the whole file
+          const loadingTask = pdfjsLib.getDocument({
+            url: url,
+            rangeChunkSize: 65536, // 64KB chunks for progressive loading
+            disableAutoFetch: true, // Don't prefetch the entire PDF — only fetch on demand
+            disableStream: false, // Allow streaming
+          });
+
+          const pdf = await loadingTask.promise;
+          if (cancelled) return;
+
+          pdfDocRef.current = pdf;
+          setTotalPages(pdf.numPages);
+
+          // Render first 3 pages immediately for instant preview
+          const initialPages = Math.min(3, pdf.numPages);
+          for (let i = 1; i <= initialPages; i++) {
+            if (cancelled) return;
+            await renderPage(pdf, i);
+            if (i === 1 && onFirstPageReady) onFirstPageReady();
+          }
+        } catch (err) {
+          if (!cancelled) {
+            console.error("PDF.js loading error:", err);
+            setError("Failed to load PDF. The file may be temporarily unavailable.");
+          }
+        }
+      };
+
+      const renderPage = async (pdf, pageNum) => {
+        if (renderedPagesRef.current.has(pageNum) || renderingRef.current.has(pageNum)) return;
+        renderingRef.current.add(pageNum);
+
+        try {
+          const page = await pdf.getPage(pageNum);
+          if (cancelled) return;
+
+          const container = containerRef.current;
+          if (!container) return;
+
+          const canvasId = `pdf-page-${pageNum}`;
+          let canvas = container.querySelector(`#${canvasId}`);
+          if (!canvas) return;
+
+          const containerWidth = container.clientWidth - 32; // 16px padding each side
+          const viewport = page.getViewport({ scale: 1 });
+          const scale = containerWidth / viewport.width;
+          const scaledViewport = page.getViewport({ scale });
+
+          canvas.width = scaledViewport.width;
+          canvas.height = scaledViewport.height;
+          canvas.style.width = scaledViewport.width + 'px';
+          canvas.style.height = scaledViewport.height + 'px';
+
+          const ctx = canvas.getContext('2d');
+          await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
+
+          renderedPagesRef.current.add(pageNum);
+          renderingRef.current.delete(pageNum);
+
+          // Remove placeholder styling
+          const wrapper = canvas.parentElement;
+          if (wrapper) {
+            wrapper.style.minHeight = 'auto';
+            const placeholder = wrapper.querySelector('.page-placeholder');
+            if (placeholder) placeholder.style.display = 'none';
+          }
+        } catch (err) {
+          renderingRef.current.delete(pageNum);
+          console.error(`Failed to render page ${pageNum}:`, err);
+        }
+      };
+
+      loadPdf();
+
+      return () => {
+        cancelled = true;
+        if (pdfDocRef.current) {
+          pdfDocRef.current.destroy();
+          pdfDocRef.current = null;
+        }
+      };
+    }, [url]);
+
+    // Set up IntersectionObserver for lazy loading remaining pages
+    useEffect(() => {
+      if (totalPages === 0 || !containerRef.current) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const pageNum = parseInt(entry.target.dataset.page);
+            if (pdfDocRef.current && !renderedPagesRef.current.has(pageNum) && !renderingRef.current.has(pageNum)) {
+              const renderPage = async () => {
+                renderingRef.current.add(pageNum);
+                try {
+                  const page = await pdfDocRef.current.getPage(pageNum);
+                  const container = containerRef.current;
+                  if (!container) return;
+
+                  const canvas = container.querySelector(`#pdf-page-${pageNum}`);
+                  if (!canvas) return;
+
+                  const containerWidth = container.clientWidth - 32;
+                  const viewport = page.getViewport({ scale: 1 });
+                  const scale = containerWidth / viewport.width;
+                  const scaledViewport = page.getViewport({ scale });
+
+                  canvas.width = scaledViewport.width;
+                  canvas.height = scaledViewport.height;
+                  canvas.style.width = scaledViewport.width + 'px';
+                  canvas.style.height = scaledViewport.height + 'px';
+
+                  const ctx = canvas.getContext('2d');
+                  await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
+
+                  renderedPagesRef.current.add(pageNum);
+                  renderingRef.current.delete(pageNum);
+
+                  const wrapper = canvas.parentElement;
+                  if (wrapper) {
+                    wrapper.style.minHeight = 'auto';
+                    const placeholder = wrapper.querySelector('.page-placeholder');
+                    if (placeholder) placeholder.style.display = 'none';
+                  }
+                } catch (err) {
+                  renderingRef.current.delete(pageNum);
+                }
+              };
+              renderPage();
+            }
+          }
+        });
+      }, { root: containerRef.current, rootMargin: '200px' }); // Pre-load pages 200px before they're visible
+
+      const wrappers = containerRef.current.querySelectorAll('[data-page]');
+      wrappers.forEach(el => observer.observe(el));
+
+      return () => observer.disconnect();
+    }, [totalPages]);
+
+    if (error) {
+      return React.createElement('div', { className: "w-full h-full flex items-center justify-center text-slate-400 text-sm p-8 text-center" }, error);
+    }
+
+    // Render canvas placeholders for all pages
+    const pageElements = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageElements.push(
+        React.createElement('div', {
+          key: i,
+          'data-page': i,
+          className: "relative mb-4 flex flex-col items-center",
+          style: { minHeight: i > 3 ? '800px' : 'auto' }
+        },
+          React.createElement('canvas', {
+            id: `pdf-page-${i}`,
+            className: "shadow-lg rounded",
+            style: { maxWidth: '100%' }
+          }),
+          i > 3 && React.createElement('div', {
+            className: "page-placeholder absolute inset-0 flex items-center justify-center text-slate-500 text-xs"
+          }, `Loading page ${i}...`)
+        )
+      );
+    }
+
+    return React.createElement('div', {
+      ref: containerRef,
+      className: "w-full h-full overflow-y-auto p-4 bg-[#2a2a2a]",
+      style: { scrollBehavior: 'smooth' }
+    },
+      totalPages > 0 && React.createElement('div', { className: "text-center text-slate-400 text-xs mb-3 font-semibold" },
+        `${totalPages} pages • Scroll to load more`
+      ),
+      ...pageElements
     );
   };
   // Handle file uploads recursively for multiple files sequentially
