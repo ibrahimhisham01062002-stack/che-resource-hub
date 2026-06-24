@@ -918,24 +918,10 @@ function App() {
   const handleDownloadFile = async (fileIndex, fileName) => {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async () => {
-      const url = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
-      try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const blob = await res.blob();
-        const blobUrl = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = blobUrl;
-        a.download = fileName || "download";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-      } catch (err) {
-        console.error("Download failed:", err);
-        // Fallback: open in new tab
-        window.open(url, "_blank");
-      }
+      const file = activeCourse.files[fileIndex];
+      // Bypass fetch and use direct URL if available to prevent UI freezing during large file downloads
+      const url = file && file.catbox_url ? file.catbox_url : `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
+      window.open(url, "_blank");
     });
   };
 
