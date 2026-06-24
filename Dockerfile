@@ -3,6 +3,9 @@ FROM python:3.10-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
+# Install Node.js for compiling the React frontend
+RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
+
 # Create a non-root user with UID 1000
 RUN useradd -m -u 1000 user
 
@@ -19,11 +22,13 @@ USER user
 ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH
 
-# Install Python dependencies locally in the user home directory
+# Install Python dependencies locally
 RUN pip install --no-cache-dir --user -r backend/requirements.txt
 
-# Expose the default Hugging Face Space port
-EXPOSE 7860
+# Compile the React frontend
+RUN node compile.js
 
-# Run Uvicorn pointing to backend.main:app on port 7860
-CMD ["python", "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "7860"]
+EXPOSE 10000
+
+# Start the correct modern FastAPI entrypoint
+CMD uvicorn frontend.api.index:app --host 0.0.0.0 --port ${PORT:-10000}
