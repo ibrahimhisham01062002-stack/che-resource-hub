@@ -1526,53 +1526,55 @@ function App() {
               var chunkSize = 2 * 1024 * 1024; // 2MB chunks
               var totalChunks = Math.ceil(file.size / chunkSize);
               var sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-              var currentChunk = 0;
-              var uploadNextChunk = function uploadNextChunk() {
-                if (currentChunk >= totalChunks) {
-                  // All chunks uploaded, call complete endpoint
-                  var completeFormData = new FormData();
-                  completeFormData.append("session_id", sessionId);
-                  completeFormData.append("filename", file.name);
-                  completeFormData.append("total_chunks", totalChunks);
-                  completeFormData.append("category", category);
-                  if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
-                    completeFormData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
-                  }
-                  var completeXhr = new XMLHttpRequest();
-                  completeXhr.addEventListener("load", function () {
-                    if (completeXhr.status >= 200 && completeXhr.status < 300) {
-                      markSuccess();
-                    } else {
-                      var err = "Merge and upload failed";
-                      try {
-                        var data = JSON.parse(completeXhr.responseText);
-                        err = data.detail || err;
-                      } catch (e) {}
-                      markError(err);
-                    }
-                  });
-                  completeXhr.addEventListener("error", function () {
-                    markError("Backend completion connection error");
-                  });
-                  completeXhr.open("POST", "".concat(API_BASE, "/api/upload/complete/").concat(activeCourse.id));
-                  completeXhr.send(completeFormData);
-                  return;
+              var nextChunkIndex = 0;
+              var activeUploads = 0;
+              var hasFailed = false;
+              var chunkProgress = new Array(totalChunks).fill(0);
+              var sendCompleteRequest = function sendCompleteRequest() {
+                var completeFormData = new FormData();
+                completeFormData.append("session_id", sessionId);
+                completeFormData.append("filename", file.name);
+                completeFormData.append("total_chunks", totalChunks);
+                completeFormData.append("category", category);
+                if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
+                  completeFormData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
                 }
-                var start = currentChunk * chunkSize;
+                var completeXhr = new XMLHttpRequest();
+                completeXhr.addEventListener("load", function () {
+                  if (completeXhr.status >= 200 && completeXhr.status < 300) {
+                    markSuccess();
+                  } else {
+                    var err = "Merge and upload failed";
+                    try {
+                      var data = JSON.parse(completeXhr.responseText);
+                      err = data.detail || err;
+                    } catch (e) {}
+                    markError(err);
+                  }
+                });
+                completeXhr.addEventListener("error", function () {
+                  markError("Backend completion connection error");
+                });
+                completeXhr.open("POST", "".concat(API_BASE, "/api/upload/complete/").concat(activeCourse.id));
+                completeXhr.send(completeFormData);
+              };
+              var uploadChunk = function uploadChunk(chunkIdx) {
+                var start = chunkIdx * chunkSize;
                 var end = Math.min(start + chunkSize, file.size);
                 var chunk = file.slice(start, end);
                 var chunkFormData = new FormData();
                 chunkFormData.append("file_chunk", chunk, file.name);
                 chunkFormData.append("session_id", sessionId);
-                chunkFormData.append("chunk_index", currentChunk);
+                chunkFormData.append("chunk_index", chunkIdx);
                 chunkFormData.append("total_chunks", totalChunks);
                 chunkFormData.append("filename", file.name);
                 var chunkXhr = new XMLHttpRequest();
                 chunkXhr.upload.addEventListener("progress", function (event) {
-                  if (event.lengthComputable) {
-                    var chunkLoaded = event.loaded;
-                    var chunkTotal = event.total;
-                    var totalLoaded = start + chunkLoaded / chunkTotal * (end - start);
+                  if (event.lengthComputable && !hasFailed) {
+                    chunkProgress[chunkIdx] = event.loaded;
+                    var totalLoaded = chunkProgress.reduce(function (sum, val) {
+                      return sum + val;
+                    }, 0);
                     var percentage = Math.round(totalLoaded / file.size * 90);
                     setUploadProgress(Math.round((i * 100 + percentage) / files.length));
                     setUploadStatus(function (prev) {
@@ -1589,11 +1591,14 @@ function App() {
                   }
                 });
                 chunkXhr.addEventListener("load", function () {
+                  if (hasFailed) return;
                   if (chunkXhr.status >= 200 && chunkXhr.status < 300) {
-                    currentChunk++;
-                    uploadNextChunk();
+                    chunkProgress[chunkIdx] = end - start;
+                    activeUploads--;
+                    startUpload();
                   } else {
-                    var err = "Chunk ".concat(currentChunk + 1, " upload failed");
+                    hasFailed = true;
+                    var err = "Chunk ".concat(chunkIdx + 1, " upload failed");
                     try {
                       var data = JSON.parse(chunkXhr.responseText);
                       err = data.detail || err;
@@ -1602,12 +1607,27 @@ function App() {
                   }
                 });
                 chunkXhr.addEventListener("error", function () {
-                  markError("Network error on chunk ".concat(currentChunk + 1));
+                  hasFailed = true;
+                  markError("Network error on chunk ".concat(chunkIdx + 1));
                 });
                 chunkXhr.open("POST", "".concat(API_BASE, "/api/upload/chunk"));
                 chunkXhr.send(chunkFormData);
               };
-              uploadNextChunk();
+              var startUpload = function startUpload() {
+                if (hasFailed) return;
+                if (nextChunkIndex >= totalChunks) {
+                  if (activeUploads === 0) {
+                    sendCompleteRequest();
+                  }
+                  return;
+                }
+                while (activeUploads < 3 && nextChunkIndex < totalChunks && !hasFailed) {
+                  var chunkIdx = nextChunkIndex++;
+                  activeUploads++;
+                  uploadChunk(chunkIdx);
+                }
+              };
+              startUpload();
             } else {
               // Direct upload for smaller files
               var xhr = new XMLHttpRequest();

@@ -1625,6 +1625,7 @@ async def upload_chunk(
 @app.post("/api/upload/complete/{course_id}")
 async def upload_complete(
     course_id: str,
+    background_tasks: BackgroundTasks,
     session_id: str = Form(...),
     filename: str = Form(...),
     total_chunks: int = Form(...),
@@ -1673,9 +1674,11 @@ async def upload_complete(
         except Exception as ce:
             print(f"Failed to cache merged file to Catbox (will fallback to direct Telegram streaming): {str(ce)}")
         
-        # Upload to Telegram in chunks
-        with open(merged_filepath, "rb") as f:
-            telegram_file_ids = await upload_file_in_chunks_to_telegram(f, filename, bytes_size)
+        telegram_file_ids = None
+        if not catbox_url:
+            # Fallback to direct Telegram chunked upload synchronously if Catbox upload fails
+            with open(merged_filepath, "rb") as f:
+                telegram_file_ids = await upload_file_in_chunks_to_telegram(f, filename, bytes_size)
             
     except HTTPException as he:
         raise he
@@ -1708,12 +1711,14 @@ async def upload_complete(
         "size": format_size(bytes_size),
         "bytes": bytes_size,
         "type": file_type,
-        "storage_type": "telegram_chunks",
-        "telegram_file_ids": telegram_file_ids
     }
     
     if catbox_url:
+        new_file_item["storage_type"] = "catbox"
         new_file_item["catbox_url"] = catbox_url
+    else:
+        new_file_item["storage_type"] = "telegram_chunks"
+        new_file_item["telegram_file_ids"] = telegram_file_ids
         
     if folder:
         new_file_item["folder"] = folder
@@ -1721,13 +1726,18 @@ async def upload_complete(
     if "files" not in course:
         course["files"] = []
     course["files"].append(new_file_item)
+    file_index = len(course["files"]) - 1
     
     save_courses_config(config)
+    
+    # Async backup to Telegram in background
+    if catbox_url:
+        background_tasks.add_task(backup_catbox_file_to_telegram, course_id, file_index, filename, catbox_url)
     
     return {
         "status": "success", 
         "filename": filename, 
-        "storage_type": "telegram_chunks",
+        "storage_type": "catbox" if catbox_url else "telegram_chunks",
         "message": "File uploaded and merged successfully!"
     }
 
