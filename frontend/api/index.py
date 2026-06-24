@@ -650,6 +650,23 @@ class CourseUpdate(BaseModel):
 def health_check():
     return {"status": "healthy"}
 
+@app.get("/api/cron-ping")
+async def cron_ping():
+    render_health_url = "https://che-resource-hub-2.onrender.com/api/health"
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.get(render_health_url)
+            return {
+                "status": "success",
+                "render_status": resp.status_code,
+                "detail": "Render backend pinged successfully to stay awake."
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "detail": f"Failed to ping Render: {str(e)}"
+        }
+
 @app.get("/api/courses")
 def get_courses(response: Response):
     response.headers["Cache-Control"] = "public, max-age=300"
