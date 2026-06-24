@@ -1137,12 +1137,64 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         # Concurrent downloads of the same file from Telegram cause the connection to drop (502 error).
         # We will directly stream/proxy the file below.
             
-        # Use HTTP Redirect for Catbox to completely bypass Render's 5GB bandwidth limit!
-        # Catbox drops streaming connections from Render anyway, but direct redirects work perfectly
-        # and consume zero Render backend bandwidth.
-        if catbox_url:
+        # For downloads: redirect directly to Catbox (zero Render bandwidth)
+        # For preview: proxy bytes through backend with CORS headers (PDF.js needs fetch access)
+        if catbox_url and not preview:
             from fastapi.responses import RedirectResponse
             return RedirectResponse(url=catbox_url, status_code=302)
+        
+        if catbox_url and preview:
+            async def stream_catbox_preview(url: str):
+                try:
+                    global http_client
+                    if http_client is None:
+                        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                    req_headers = {}
+                    if range_header:
+                        req_headers["Range"] = range_header
+                    async with http_client.stream("GET", url, headers=req_headers) as r:
+                        async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
+                            yield chunk
+                except Exception as e:
+                    print(f"Catbox preview streaming error: {e}")
+            
+            resp_headers = {
+                "Accept-Ranges": "bytes",
+                "Content-Disposition": f'inline; filename="{file_name}"',
+                "Content-Type": content_type,
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *",
+                "Access-Control-Allow-Origin": "*"
+            }
+            
+            if range_header and range_header.startswith("bytes="):
+                try:
+                    if http_client is None:
+                        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                    head_resp = await http_client.head(catbox_url)
+                    total_size = int(head_resp.headers.get("content-length", 0))
+                    range_spec = range_header.replace("bytes=", "")
+                    start_str, end_str = range_spec.split("-")
+                    start = int(start_str) if start_str else 0
+                    end = int(end_str) if end_str else total_size - 1
+                    resp_headers["Content-Range"] = f"bytes {start}-{end}/{total_size}"
+                    resp_headers["Content-Length"] = str(end - start + 1)
+                    return StreamingResponse(
+                        stream_catbox_preview(catbox_url),
+                        status_code=206,
+                        media_type=content_type,
+                        headers=resp_headers
+                    )
+                except Exception as e:
+                    print(f"Catbox range request error: {e}")
+            
+            return StreamingResponse(
+                stream_catbox_preview(catbox_url),
+                media_type=content_type,
+                headers=resp_headers
+            )
             
         elif file_ids:
             try:

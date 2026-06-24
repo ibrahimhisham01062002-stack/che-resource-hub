@@ -307,7 +307,8 @@ function App() {
     safeStorage.setItem("che_selected_term", selectedTerm);
   }, [selectedLevel, selectedTerm]);
 
-  // Load PDF directly — prefer Catbox URL (zero Render bandwidth) with fallback to streaming proxy
+  // Load PDF directly — always use backend URL for preview (Catbox blocks CORS from browser fetch)
+  // PDF.js needs fetch access to the URL; Catbox doesn't send Access-Control-Allow-Origin headers
   useEffect(() => {
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
@@ -324,20 +325,13 @@ function App() {
     
     setPreviewLoading(true);
     
-    // Use Catbox URL directly if available (bypasses Render, zero bandwidth cost, supports range requests for progressive loading)
-    const file = activeCourse.files[previewFile.index];
-    const catboxUrl = file && file.catbox_url;
-    if (catboxUrl) {
-      setPreviewUrl(catboxUrl);
-    } else {
-      // Fallback to Render streaming proxy for files not yet cached on Catbox
-      const directUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
-      setPreviewUrl(directUrl);
-    }
+    // Backend proxy URL — supports CORS and streams bytes to PDF.js for progressive rendering
+    const directUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
+    setPreviewUrl(directUrl);
     
     const safetyTimer = setTimeout(() => {
       setPreviewLoading(false);
-    }, 15000); // 15-second safety fallback to hide spinner on errors
+    }, 15000);
     
     return () => clearTimeout(safetyTimer);
     
