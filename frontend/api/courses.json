@@ -56,7 +56,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAO_ahtfg_r8z6gNOBwSNfKgzw5m-Z0AAmUhAALFINlUVLwVFUi-Sbg7BA"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/wncskn"
         },
         {
           "name": "Fogler ED5.pdf",
@@ -68,7 +69,8 @@
             "BQACAgUAAyEGAATqgTaTAAPCahtgs6GR6oUX1zIelJ_a2N4FA64AAmchAALFINlUW8glwFbYCnA7BA",
             "BQACAgUAAyEGAATqgTaTAAPDahtgtdqC3kKReEpjeb_ztjocJpwAAmghAALFINlUwVLrrmODXTM7BA",
             "BQACAgUAAyEGAATqgTaTAAPEahtgtnifG_9iQ5k2XEj85GnkJ3MAAmkhAALFINlUTN_4soOYVe47BA"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/jrl9nl.pdf"
         },
         {
           "name": "Levenspiel  CRE SOLUTION  ( PDFDrive )_2.pdf",
@@ -79,7 +81,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAPHahtlrynJXO2ExiWa0Ow_m4wuVxgAAmshAALFINlUXiO18eYhkUc7BA",
             "BQACAgUAAyEGAATqgTaTAAPIahtlsOUBzGtN7Ajpfbuv-MGLtXEAAmwhAALFINlUaEEBTWjzLAY7BA"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/ihn8m6.pdf"
         },
         {
           "name": "ChE 401_Lecture 3 & 4_July 25-MRD.pdf",
@@ -91,7 +94,8 @@
             "BQACAgUAAyEGAATqgTaTAAIB-WoekK2l-4xLjH9DusqIRlsuY791AAJbIgAC9u7wVAsX-cgYc62DOwQ"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Lecture 03: Chemical Reaction Thermodynamics\n\n1. **Introduction to Chemical Reaction Thermodynamics**\n   - **Chemical Kinetics vs. Thermodynamics**: \n     - Chemical kinetics deals with the rates of chemical reactions and the energy and mass fluxes associated with them.\n     - Thermodynamics focuses on equilibrium systems, where no net change occurs over time.\n   - **Equilibrium Conversion**:\n     - Provides a standard to compare the actual performance of a reactor.\n\n2. **Terminology Recap**\n   - **Activity**: A measure of the effective concentration of a species in a solution.\n   - **Fugacity**: A measure of the tendency of a species to escape from a phase.\n   - **Chemical Potential**: The change in Gibbs free energy when one mole of a substance is added to a system.\n   - **Standard State**: A reference state for a substance, chosen for convenience and reproducibility.\n   - **Temperature of Standard State**: Same as the system under investigation.\n   - **Hypothetical Standard States**: Sometimes used for reproducibility, even if not achievable experimentally.\n\n3. **Standard Enthalpy Change and Gibbs Free Energy Change**\n   - **Standard Enthalpy Change**: The change in enthalpy for a reaction at standard conditions.\n   - **Gibbs Free Energy Change**: The maximum non-expansion work that can be done by a system at constant temperature and pressure.\n\n4. **Equilibrium Constant**\n   - **Effect of Temperature**: \n     - The equilibrium constant \\( K \\) changes with temperature according to the Van't Hoff equation.\n   - **Effect of Pressure**:\n     - For reactions involving gases, the equilibrium constant \\( K \\) can be affected by changes in pressure.\n   - **Equilibrium Composition Determination**:\n     - Methods to determine the equilibrium composition of a system.\n\n5. **Effects of Reaction Conditions on Equilibrium Yields**\n   - **Temperature Change**: \n     - Increasing temperature favors endothermic reactions, while decreasing temperature favors exothermic reactions.\n   - **Pressure Change**:\n     - Increasing pressure favors reactions that decrease the number of gas molecules.\n   - **Presence of Inert Species**:\n     - Inert species do not participate in the reaction but can affect the equilibrium by changing the total pressure.\n   - **Catalyst**:\n     - Catalysts do not affect the equilibrium position but can speed up the rate at which equilibrium is reached.\n   - **Excess Reactants**:\n     - Adding excess reactants can shift the equilibrium to produce more products.\n\n6. **Heterogeneous Reactions**\n   - **Standard States for Solids and Liquids**:\n     - Activities of pure species at equilibrium are taken as unity at moderate pressures.\n   - **High Pressure Effects**:\n     - Poynting correction factor is used to account for the effect of high pressure on the activity of condensed phases.\n\n### 2. Key Concepts & Explanations\n\n1. **Chemical Kinetics vs. Thermodynamics**\n   - **Chemical Kinetics**: Focuses on the rates of reactions and the mechanisms by which they occur.\n   - **Thermodynamics**: Focuses on the equilibrium state and the energy changes associated with reactions.\n\n2. **Equilibrium Conversion**\n   - **Definition**: The extent to which a reaction proceeds to completion under equilibrium conditions.\n   - **Significance**: Provides a benchmark for comparing the performance of different reactors.\n\n3. **Activity and Fugacity**\n   - **Activity**: A measure of the effective concentration of a species in a solution, accounting for interactions between molecules.\n   - **Fugacity**: A measure of the tendency of a species to escape from a phase, similar to partial pressure but more accurate for non-ideal gases.\n\n4. **Chemical Potential**\n   - **Definition**: The change in Gibbs free energy when one mole of a substance is added to a system at constant temperature and pressure.\n   - **Significance**: Determines the direction of spontaneous processes.\n\n5. **Standard State**\n   - **Definition**: A reference state for a substance, chosen for convenience and reproducibility.\n   - **Temperature**: The same as the system under investigation.\n   - **Hypothetical States**: Sometimes used for reproducibility, even if not achievable experimentally.\n\n6. **Standard Enthalpy Change and Gibbs Free Energy Change**\n   - **Standard Enthalpy Change**: The change in enthalpy for a reaction at standard conditions (298 K and 1 bar).\n   - **Gibbs Free Energy Change**: The maximum non-expansion work that can be done by a system at constant temperature and pressure.\n\n7. **Equilibrium Constant**\n   - **Definition**: A measure of the extent to which a reaction proceeds to completion at equilibrium.\n   - **Temperature Dependence**: Described by the Van't Hoff equation.\n   - **Pressure Dependence**: For gas-phase reactions, the equilibrium constant can be affected by changes in pressure.\n\n8. **Effects of Reaction Conditions on Equilibrium Yields**\n   - **Temperature**: Increasing temperature favors endothermic reactions, while decreasing temperature favors exothermic reactions.\n   - **Pressure**: Increasing pressure favors reactions that decrease the number of gas molecules.\n   - **Inert Species**: Do not participate in the reaction but can affect the equilibrium by changing the total pressure.\n   - **Catalyst**: Speeds up the rate at which equilibrium is reached but does not affect the equilibrium position.\n   - **Excess Reactants**: Adding excess reactants can shift the equilibrium to produce more products.\n\n9. **Heterogeneous Reactions**\n   - **Standard States for Solids and Liquids**: Activities of pure species at equilibrium are taken as unity at moderate pressures.\n   - **High Pressure Effects**: Poynting correction factor accounts for the effect of high pressure on the activity of condensed phases.\n\n### 3. Formulas & Notations Dictated\n\n1. **Van't Hoff Equation**\n   \\[\n   \\frac{d \\ln K}{d T} = \\frac{\\Delta H^\\circ}{R T^2}\n   \\]\n   - \\( K \\): Equilibrium constant\n   - \\( \\Delta H^\\circ \\): Standard enthalpy change\n   - \\( R \\): Gas constant\n   - \\( T \\): Temperature\n\n2. **Gibbs Free Energy Change**\n   \\[\n   \\Delta G^\\circ = \\Delta H^\\circ - T \\Delta S^\\circ\n   \\]\n   - \\( \\Delta G^\\circ \\): Standard Gibbs free energy change\n   - \\( \\Delta H^\\circ \\): Standard enthalpy change\n   - \\( \\Delta S^\\circ \\): Standard entropy change\n   - \\( T \\): Temperature\n\n3. **Equilibrium Constant for Gas-Phase Reactions**\n   \\[\n   K_p = \\frac{(P_C)^c (P_D)^d}{(P_A)^a (P_B)^b}\n   \\]\n   - \\( K_p \\): Equilibrium constant in terms of partial pressures\n   - \\( P_A, P_B, P_C, P_D \\): Partial pressures of reactants and products\n   - \\( a, b, c, d \\): Stoichiometric coefficients\n\n4. **Poynting Correction Factor**\n   \\[\n   f = \\exp\\left(\\frac{V (P - P^\\circ)}{RT}\\right)\n   \\]\n   - \\( f \\): Activity ratio\n   - \\( V \\): Molar volume at the condensed phase\n   - \\( P \\): Pressure\n   - \\( P^\\circ \\): Standard pressure (1 bar)\n   - \\( R \\): Gas constant\n   - \\( T \\): Temperature\n\n### 4. Comparative Analysis Table\n\n| Method/Process | Assumptions | Parameters | Advantages | Limitations |\n|----------------|-------------|------------|------------|-------------|\n| **Van't Hoff Equation** | - Ideal gas behavior<br>- Constant enthalpy change | \\( K \\), \\( \\Delta H^\\circ \\), \\( R \\), \\( T \\) | Predicts the effect of temperature on equilibrium constant | Assumes constant enthalpy change, which may not hold for all reactions |\n| **Gibbs Free Energy Change** | - Standard conditions (298 K, 1 bar)<br>- Ideal behavior | \\( \\Delta G^\\circ \\), \\( \\Delta H^\\circ \\), \\( \\Delta S^\\circ \\), \\( T \\) | Provides a comprehensive measure of reaction spontaneity | Assumes standard conditions, which may not always be applicable |\n| **Equilibrium Constant for Gas-Phase Reactions** | - Ideal gas behavior<br>- Constant temperature and pressure | \\( K_p \\), \\( P_A, P_B, P_C, P_D \\), \\( a, b, c, d \\) | Describes the equilibrium composition of gas-phase reactions | Assumes ideal gas behavior, which may not hold at high pressures |\n| **Poynting Correction Factor** | - High pressure<br>- Condensed phase | \\( f \\), \\( V \\), \\( P \\), \\( P^\\circ \\), \\( R \\), \\( T \\) | Accounts for the effect of high pressure on activity | Applicable only to high-pressure systems, may not be accurate for all condensed phases |\n\nThis structured summary should help you understand and review the key concepts, equations, and methodologies discussed in the lectures."
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Lecture 03: Chemical Reaction Thermodynamics\n\n1. **Introduction to Chemical Reaction Thermodynamics**\n   - **Chemical Kinetics vs. Thermodynamics**: \n     - Chemical kinetics deals with the rates of chemical reactions and the energy and mass fluxes associated with them.\n     - Thermodynamics focuses on equilibrium systems, where no net change occurs over time.\n   - **Equilibrium Conversion**:\n     - Provides a standard to compare the actual performance of a reactor.\n\n2. **Terminology Recap**\n   - **Activity**: A measure of the effective concentration of a species in a solution.\n   - **Fugacity**: A measure of the tendency of a species to escape from a phase.\n   - **Chemical Potential**: The change in Gibbs free energy when one mole of a substance is added to a system.\n   - **Standard State**: A reference state for a substance, chosen for convenience and reproducibility.\n   - **Temperature of Standard State**: Same as the system under investigation.\n   - **Hypothetical Standard States**: Sometimes used for reproducibility, even if not achievable experimentally.\n\n3. **Standard Enthalpy Change and Gibbs Free Energy Change**\n   - **Standard Enthalpy Change**: The change in enthalpy for a reaction at standard conditions.\n   - **Gibbs Free Energy Change**: The maximum non-expansion work that can be done by a system at constant temperature and pressure.\n\n4. **Equilibrium Constant**\n   - **Effect of Temperature**: \n     - The equilibrium constant \\( K \\) changes with temperature according to the Van't Hoff equation.\n   - **Effect of Pressure**:\n     - For reactions involving gases, the equilibrium constant \\( K \\) can be affected by changes in pressure.\n   - **Equilibrium Composition Determination**:\n     - Methods to determine the equilibrium composition of a system.\n\n5. **Effects of Reaction Conditions on Equilibrium Yields**\n   - **Temperature Change**: \n     - Increasing temperature favors endothermic reactions, while decreasing temperature favors exothermic reactions.\n   - **Pressure Change**:\n     - Increasing pressure favors reactions that decrease the number of gas molecules.\n   - **Presence of Inert Species**:\n     - Inert species do not participate in the reaction but can affect the equilibrium by changing the total pressure.\n   - **Catalyst**:\n     - Catalysts do not affect the equilibrium position but can speed up the rate at which equilibrium is reached.\n   - **Excess Reactants**:\n     - Adding excess reactants can shift the equilibrium to produce more products.\n\n6. **Heterogeneous Reactions**\n   - **Standard States for Solids and Liquids**:\n     - Activities of pure species at equilibrium are taken as unity at moderate pressures.\n   - **High Pressure Effects**:\n     - Poynting correction factor is used to account for the effect of high pressure on the activity of condensed phases.\n\n### 2. Key Concepts & Explanations\n\n1. **Chemical Kinetics vs. Thermodynamics**\n   - **Chemical Kinetics**: Focuses on the rates of reactions and the mechanisms by which they occur.\n   - **Thermodynamics**: Focuses on the equilibrium state and the energy changes associated with reactions.\n\n2. **Equilibrium Conversion**\n   - **Definition**: The extent to which a reaction proceeds to completion under equilibrium conditions.\n   - **Significance**: Provides a benchmark for comparing the performance of different reactors.\n\n3. **Activity and Fugacity**\n   - **Activity**: A measure of the effective concentration of a species in a solution, accounting for interactions between molecules.\n   - **Fugacity**: A measure of the tendency of a species to escape from a phase, similar to partial pressure but more accurate for non-ideal gases.\n\n4. **Chemical Potential**\n   - **Definition**: The change in Gibbs free energy when one mole of a substance is added to a system at constant temperature and pressure.\n   - **Significance**: Determines the direction of spontaneous processes.\n\n5. **Standard State**\n   - **Definition**: A reference state for a substance, chosen for convenience and reproducibility.\n   - **Temperature**: The same as the system under investigation.\n   - **Hypothetical States**: Sometimes used for reproducibility, even if not achievable experimentally.\n\n6. **Standard Enthalpy Change and Gibbs Free Energy Change**\n   - **Standard Enthalpy Change**: The change in enthalpy for a reaction at standard conditions (298 K and 1 bar).\n   - **Gibbs Free Energy Change**: The maximum non-expansion work that can be done by a system at constant temperature and pressure.\n\n7. **Equilibrium Constant**\n   - **Definition**: A measure of the extent to which a reaction proceeds to completion at equilibrium.\n   - **Temperature Dependence**: Described by the Van't Hoff equation.\n   - **Pressure Dependence**: For gas-phase reactions, the equilibrium constant can be affected by changes in pressure.\n\n8. **Effects of Reaction Conditions on Equilibrium Yields**\n   - **Temperature**: Increasing temperature favors endothermic reactions, while decreasing temperature favors exothermic reactions.\n   - **Pressure**: Increasing pressure favors reactions that decrease the number of gas molecules.\n   - **Inert Species**: Do not participate in the reaction but can affect the equilibrium by changing the total pressure.\n   - **Catalyst**: Speeds up the rate at which equilibrium is reached but does not affect the equilibrium position.\n   - **Excess Reactants**: Adding excess reactants can shift the equilibrium to produce more products.\n\n9. **Heterogeneous Reactions**\n   - **Standard States for Solids and Liquids**: Activities of pure species at equilibrium are taken as unity at moderate pressures.\n   - **High Pressure Effects**: Poynting correction factor accounts for the effect of high pressure on the activity of condensed phases.\n\n### 3. Formulas & Notations Dictated\n\n1. **Van't Hoff Equation**\n   \\[\n   \\frac{d \\ln K}{d T} = \\frac{\\Delta H^\\circ}{R T^2}\n   \\]\n   - \\( K \\): Equilibrium constant\n   - \\( \\Delta H^\\circ \\): Standard enthalpy change\n   - \\( R \\): Gas constant\n   - \\( T \\): Temperature\n\n2. **Gibbs Free Energy Change**\n   \\[\n   \\Delta G^\\circ = \\Delta H^\\circ - T \\Delta S^\\circ\n   \\]\n   - \\( \\Delta G^\\circ \\): Standard Gibbs free energy change\n   - \\( \\Delta H^\\circ \\): Standard enthalpy change\n   - \\( \\Delta S^\\circ \\): Standard entropy change\n   - \\( T \\): Temperature\n\n3. **Equilibrium Constant for Gas-Phase Reactions**\n   \\[\n   K_p = \\frac{(P_C)^c (P_D)^d}{(P_A)^a (P_B)^b}\n   \\]\n   - \\( K_p \\): Equilibrium constant in terms of partial pressures\n   - \\( P_A, P_B, P_C, P_D \\): Partial pressures of reactants and products\n   - \\( a, b, c, d \\): Stoichiometric coefficients\n\n4. **Poynting Correction Factor**\n   \\[\n   f = \\exp\\left(\\frac{V (P - P^\\circ)}{RT}\\right)\n   \\]\n   - \\( f \\): Activity ratio\n   - \\( V \\): Molar volume at the condensed phase\n   - \\( P \\): Pressure\n   - \\( P^\\circ \\): Standard pressure (1 bar)\n   - \\( R \\): Gas constant\n   - \\( T \\): Temperature\n\n### 4. Comparative Analysis Table\n\n| Method/Process | Assumptions | Parameters | Advantages | Limitations |\n|----------------|-------------|------------|------------|-------------|\n| **Van't Hoff Equation** | - Ideal gas behavior<br>- Constant enthalpy change | \\( K \\), \\( \\Delta H^\\circ \\), \\( R \\), \\( T \\) | Predicts the effect of temperature on equilibrium constant | Assumes constant enthalpy change, which may not hold for all reactions |\n| **Gibbs Free Energy Change** | - Standard conditions (298 K, 1 bar)<br>- Ideal behavior | \\( \\Delta G^\\circ \\), \\( \\Delta H^\\circ \\), \\( \\Delta S^\\circ \\), \\( T \\) | Provides a comprehensive measure of reaction spontaneity | Assumes standard conditions, which may not always be applicable |\n| **Equilibrium Constant for Gas-Phase Reactions** | - Ideal gas behavior<br>- Constant temperature and pressure | \\( K_p \\), \\( P_A, P_B, P_C, P_D \\), \\( a, b, c, d \\) | Describes the equilibrium composition of gas-phase reactions | Assumes ideal gas behavior, which may not hold at high pressures |\n| **Poynting Correction Factor** | - High pressure<br>- Condensed phase | \\( f \\), \\( V \\), \\( P \\), \\( P^\\circ \\), \\( R \\), \\( T \\) | Accounts for the effect of high pressure on activity | Applicable only to high-pressure systems, may not be accurate for all condensed phases |\n\nThis structured summary should help you understand and review the key concepts, equations, and methodologies discussed in the lectures.",
+          "catbox_url": "https://files.catbox.moe/su4bh1.pdf"
         },
         {
           "name": "diagnostic_test.txt",
@@ -101,7 +105,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICBWoemZHAqixtvE-Xj0eY2XkKSotzAAJ2IgAC9u7wVLDlXGH_HDQuOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/4r73gg.txt"
         },
         {
           "name": "ChE 401_Lecture 5 -10_July 25-MRD.pdf",
@@ -112,7 +117,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICCGoemkE_FU1eAjw6J3itXljlwDB3AAJ5IgAC9u7wVK43OfiCOocBOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/l7ns6f.pdf"
         },
         {
           "name": "ChE 401_Lecture 11-18(Catalysis I)_July 25-MRD.pdf",
@@ -123,7 +129,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICEGoemwpDoJkSnGpDxqhayw0WgiZIAAKBIgAC9u7wVEzZcvR6aTI4OwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/zr37fr.pdf"
         },
         {
           "name": "opt_test.txt",
@@ -133,7 +140,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICE2oemzvivhYIAXfiICG5qblo5YVsAAKDIgAC9u7wVA4JziOnj4CJOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/pexzk8.txt"
         },
         {
           "name": "ChE 401_Lecture 19-25(Catalysis II)_July 25-MRD.pdf",
@@ -144,7 +152,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICFmoem5vi3WazQeuG6-Y8zOxwUD-oAAKGIgAC9u7wVANvlfpTI-DCOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/n6i996.pdf"
         },
         {
           "name": "Reactor Design for Heterogeneous Catalysis.pdf",
@@ -155,7 +164,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICGWoeqCGLdLMsfTdQP08RD_1us5a1AAKpIgAC9u7wVIZ668ggaA7ROwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/a0ccp4.pdf"
         },
         {
           "name": "Anondo sir merged.pdf",
@@ -166,7 +176,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICHGoeqDLF3CzjG89dILYJnRoHUHj_AAKrIgAC9u7wVLzSK3bFqQp-OwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/s8p4ma.pdf"
         }
       ],
       "folders": [
@@ -456,7 +467,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAOLahsnrq0CxGOYJaVl95W5R6xTTc0AAgwhAALFINlUjTZj_KcVPZ87BA"
           ],
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Chapter 1: Particulate Solids\n- **Introduction**: Overview of particulate solids and their importance in chemical engineering.\n- **Particle Characterisation**: Techniques for characterizing particle size, shape, and distribution.\n- **Particulate Solids in Bulk**: Behavior of particulate solids in bulk, including packing, density, and flow properties.\n- **Blending of Solid Particles**: Methods and principles of blending solid particles to achieve uniform mixtures.\n- **Classification of Solid Particles**: Techniques for classifying particles based on size, shape, and composition.\n- **Separation of Suspended Solid Particles from Fluids**: Methods for separating solid particles from fluids, including sedimentation, filtration, and centrifugation.\n\n#### Chapter 2: Particle Size Reduction and Enlargement\n- **Introduction**: Overview of particle size reduction and enlargement processes.\n- **Size Reduction of Solids**: Mechanisms and equipment for reducing particle size, including crushing, grinding, and milling.\n- **Types of Crushing Equipment**: Description and comparison of different types of crushing equipment.\n- **Size Enlargement of Particles**: Methods for increasing particle size, such as agglomeration and granulation.\n\n#### Chapter 3: Motion of Particles in a Fluid\n- **Introduction**: Overview of particle motion in fluids.\n- **Flow Past a Cylinder and a Sphere**: Analysis of fluid flow around cylindrical and spherical particles.\n- **Drag Force on a Spherical Particle**: Calculation of drag forces on spherical particles.\n- **Non-Spherical Particles**: Behavior of non-spherical particles in fluid flow.\n- **Motion of Bubbles and Drops**: Dynamics of bubbles and drops in fluids.\n- **Drag Forces and Settling Velocities for Particles in Non-Newtonian Fluids**: Analysis of drag forces and settling velocities in non-Newtonian fluids.\n- **Accelerating Motion of a Particle in the Gravitational Field**: Dynamics of particle motion under gravity.\n- **Motion of Particles in a Centrifugal Field**: Analysis of particle motion in centrifugal fields.\n\n#### Chapter 4: Flow of Fluids through Granular Beds and Packed Columns\n- **Introduction**: Overview of fluid flow through granular beds and packed columns.\n- **Flow of a Single Fluid through a Granular Bed**: Analysis of single-phase flow through granular beds.\n- **Dispersion**: Phenomenon of dispersion in packed beds.\n- **Heat Transfer in Packed Beds**: Heat transfer mechanisms in packed beds.\n- **Packed Columns**: Design and operation of packed columns.\n\n#### Chapter 5: Sedimentation\n- **Introduction**: Overview of sedimentation processes.\n- **Sedimentation of Fine Particles**: Mechanisms and theories for the sedimentation of fine particles.\n- **Sedimentation of Coarse Particles**: Mechanisms and theories for the sedimentation of coarse particles.\n\n#### Chapter 6: Fluidisation\n- **Characteristics of Fluidised Systems**: Properties and behavior of fluidised systems.\n- **Liquid-Solids Systems**: Fluidisation of liquid-solids systems.\n- **Gas-Solids Systems**: Fluidisation of gas-solids systems.\n- **Gas-Liquid Solids Fluidised Beds**: Fluidisation of gas-liquid-solids systems.\n- **Heat Transfer to a Boundary Surface**: Heat transfer mechanisms in fluidised beds.\n- **Mass and Heat Transfer Between Fluid and Particles**: Mass and heat transfer phenomena in fluidised beds.\n- **Summary of the Properties of Fluidised Beds**: Overview of the key properties of fluidised beds.\n- **Applications of the Fluidised Solids Technique**: Industrial applications of fluidised bed technology.\n\n#### Chapter 7: Liquid Filtration\n- **Introduction**: Overview of liquid filtration processes.\n- **Filtration Theory**: Theoretical aspects of filtration, including cake formation and resistance.\n- **Filtration Practice**: Practical aspects of filtration, including equipment and operation.\n- **Filtration Equipment**: Description and comparison of different types of filtration equipment.\n\n#### Chapter 8: Membrane Separation Processes\n- **Introduction**: Overview of membrane separation processes.\n- **Classification of Membrane Processes**: Different types of membrane separation processes, including microfiltration, ultrafiltration, and reverse osmosis.\n- **The Nature of Synthetic Membranes**: Properties and characteristics of synthetic membranes.\n- **General Membrane Equation**: Mathematical description of membrane processes.\n- **Cross-Flow Microfiltration**: Operation and design of cross-flow microfiltration systems.\n- **Ultrafiltration**: Operation and design of ultrafiltration systems.\n- **Reverse Osmosis**: Operation and design of reverse osmosis systems.\n- **Membrane Modules and Plant Configuration**: Design and configuration of membrane modules and plants.\n- **Membrane Fouling**: Causes and prevention of membrane fouling.\n- **Electrodialysis**: Operation and design of electrodialysis systems.\n- **Reverse Osmosis Water Treatment Plant**: Design and operation of reverse osmosis water treatment plants.\n- **Pervaporation**: Operation and design of pervaporation systems.\n- **Liquid Membranes**: Properties and applications of liquid membranes.\n- **Gas Separations**: Operation and design of gas separation systems using membranes.\n\n#### Chapter 9: Centrifugal Separations\n- **Introduction**: Overview of centrifugal separation processes.\n- **Shape of the Free Surface of the Liquid**: Analysis of the free surface shape in centrifugal fields.\n- **Centrifugal Pressure**: Calculation of centrifugal pressure.\n- **Separation of Immiscible Liquids of Different Densities**: Mechanisms for separating immiscible liquids using centrifugal fields.\n- **Sedimentation in a Centrifugal Field**: Analysis of sedimentation in centrifugal fields.\n- **Filtration in a Centrifuge**: Operation and design of centrifugal filtration systems.\n- **Mechanical Design**: Design considerations for centrifugal equipment.\n- **Centrifugal Equipment**: Description and comparison of different types of centrifugal equipment.\n\n#### Chapter 10: Leaching\n- **Introduction**: Overview of leaching processes.\n- **Mass Transfer in Leaching Operations**: Mass transfer mechanisms in leaching.\n- **Equipment for Leaching**: Description and comparison of different types of leaching equipment.\n- **Countercurrent Washing of Solids**: Operation and design of countercurrent washing systems.\n- **Calculation of the Number of Stages**: Methods for calculating the number of stages in leaching processes.\n- **Number of Stages for Countercurrent Washing by Graphical Methods**: Graphical methods for determining the number of stages in countercurrent washing.\n\n#### Chapter 11: Distillation\n- **Introduction**: Overview of distillation processes.\n- **Vapour-Liquid Equilibrium**: Theoretical aspects of vapour-liquid equilibrium.\n- **Methods of Distillation - Two Component Mixtures**: Distillation methods for two-component mixtures.\n- **The Fractionating Column**: Design and operation of fractionating columns.\n- **Conditions for Varying Overflow in Non-Ideal Binary Systems**: Conditions for varying overflow in non-ideal binary systems.\n- **Batch Distillation**: Operation and design of batch distillation systems.\n- **Multicomponent Mixtures**: Distillation of multicomponent mixtures.\n- **Azeotropic and Extractive Distillation**: Azeotropic and extractive distillation methods.\n- **Steam Distillation**: Operation and design of steam distillation systems.\n- **Plate Columns**: Design and operation of plate columns.\n- **Packed Columns for Distillation**: Design and operation of packed columns for distillation.\n\n#### Chapter 12: Absorption of Gases\n- **Introduction**: Overview of gas absorption processes.\n- **Conditions of Equilibrium Between Liquid and Gas**: Equilibrium conditions between liquid and gas phases.\n- **The Mechanism of Absorption**: Mechanisms of gas absorption.\n- **Determination of Transfer Coefficients**: Methods for determining mass transfer coefficients.\n- **Absorption Associated with Chemical Reaction**: Absorption processes involving chemical reactions.\n- **Absorption Accompanied by the Liberation of Heat**: Absorption processes involving heat release.\n- **Packed Towers for Gas Absorption**: Design and operation of packed towers for gas absorption.\n- **Plate Towers for Gas Absorption**: Design and operation of plate towers for gas absorption.\n- **Other Equipment for Gas Absorption**: Description and comparison of other types of gas absorption equipment.\n\n#### Chapter 13: Liquid-Liquid Extraction\n- **Introduction**: Overview of liquid-liquid extraction processes.\n- **Extraction Processes**: Description and comparison of different extraction processes.\n- **Equilibrium Data**: Equilibrium data for liquid-liquid extraction.\n- **Calculation of the Number of Theoretical Stages**: Methods for calculating the number of theoretical stages in extraction processes.\n- **Classification of Extraction Equipment**: Classification of different types of extraction equipment.\n- **Stage-Wise Equipment for Extraction**: Design and operation of stage-wise extraction equipment.\n- **Differential Contact Equipment for Extraction**: Design and operation of differential contact extraction equipment.\n- **Use of Specialised Fluids**: Use of specialised fluids in extraction processes.\n\n#### Chapter 14: Evaporation\n- **Introduction**: Overview of evaporation processes.\n- **Heat Transfer in Evaporators**: Heat transfer mechanisms in evaporators.\n- **Single-Effect Evaporators**: Design and operation of single-effect evaporators.\n- **Multiple-Effect Evaporators**: Design and operation of multiple-effect evaporators.\n- **Improved Efficiency in Evaporation**: Methods for improving the efficiency of evaporation processes.\n- **Evaporator Operation**: Operation and control of evaporators.\n- **Equipment for Evaporation**: Description and comparison of different types of evaporation equipment.\n\n####"
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Chapter 1: Particulate Solids\n- **Introduction**: Overview of particulate solids and their importance in chemical engineering.\n- **Particle Characterisation**: Techniques for characterizing particle size, shape, and distribution.\n- **Particulate Solids in Bulk**: Behavior of particulate solids in bulk, including packing, density, and flow properties.\n- **Blending of Solid Particles**: Methods and principles of blending solid particles to achieve uniform mixtures.\n- **Classification of Solid Particles**: Techniques for classifying particles based on size, shape, and composition.\n- **Separation of Suspended Solid Particles from Fluids**: Methods for separating solid particles from fluids, including sedimentation, filtration, and centrifugation.\n\n#### Chapter 2: Particle Size Reduction and Enlargement\n- **Introduction**: Overview of particle size reduction and enlargement processes.\n- **Size Reduction of Solids**: Mechanisms and equipment for reducing particle size, including crushing, grinding, and milling.\n- **Types of Crushing Equipment**: Description and comparison of different types of crushing equipment.\n- **Size Enlargement of Particles**: Methods for increasing particle size, such as agglomeration and granulation.\n\n#### Chapter 3: Motion of Particles in a Fluid\n- **Introduction**: Overview of particle motion in fluids.\n- **Flow Past a Cylinder and a Sphere**: Analysis of fluid flow around cylindrical and spherical particles.\n- **Drag Force on a Spherical Particle**: Calculation of drag forces on spherical particles.\n- **Non-Spherical Particles**: Behavior of non-spherical particles in fluid flow.\n- **Motion of Bubbles and Drops**: Dynamics of bubbles and drops in fluids.\n- **Drag Forces and Settling Velocities for Particles in Non-Newtonian Fluids**: Analysis of drag forces and settling velocities in non-Newtonian fluids.\n- **Accelerating Motion of a Particle in the Gravitational Field**: Dynamics of particle motion under gravity.\n- **Motion of Particles in a Centrifugal Field**: Analysis of particle motion in centrifugal fields.\n\n#### Chapter 4: Flow of Fluids through Granular Beds and Packed Columns\n- **Introduction**: Overview of fluid flow through granular beds and packed columns.\n- **Flow of a Single Fluid through a Granular Bed**: Analysis of single-phase flow through granular beds.\n- **Dispersion**: Phenomenon of dispersion in packed beds.\n- **Heat Transfer in Packed Beds**: Heat transfer mechanisms in packed beds.\n- **Packed Columns**: Design and operation of packed columns.\n\n#### Chapter 5: Sedimentation\n- **Introduction**: Overview of sedimentation processes.\n- **Sedimentation of Fine Particles**: Mechanisms and theories for the sedimentation of fine particles.\n- **Sedimentation of Coarse Particles**: Mechanisms and theories for the sedimentation of coarse particles.\n\n#### Chapter 6: Fluidisation\n- **Characteristics of Fluidised Systems**: Properties and behavior of fluidised systems.\n- **Liquid-Solids Systems**: Fluidisation of liquid-solids systems.\n- **Gas-Solids Systems**: Fluidisation of gas-solids systems.\n- **Gas-Liquid Solids Fluidised Beds**: Fluidisation of gas-liquid-solids systems.\n- **Heat Transfer to a Boundary Surface**: Heat transfer mechanisms in fluidised beds.\n- **Mass and Heat Transfer Between Fluid and Particles**: Mass and heat transfer phenomena in fluidised beds.\n- **Summary of the Properties of Fluidised Beds**: Overview of the key properties of fluidised beds.\n- **Applications of the Fluidised Solids Technique**: Industrial applications of fluidised bed technology.\n\n#### Chapter 7: Liquid Filtration\n- **Introduction**: Overview of liquid filtration processes.\n- **Filtration Theory**: Theoretical aspects of filtration, including cake formation and resistance.\n- **Filtration Practice**: Practical aspects of filtration, including equipment and operation.\n- **Filtration Equipment**: Description and comparison of different types of filtration equipment.\n\n#### Chapter 8: Membrane Separation Processes\n- **Introduction**: Overview of membrane separation processes.\n- **Classification of Membrane Processes**: Different types of membrane separation processes, including microfiltration, ultrafiltration, and reverse osmosis.\n- **The Nature of Synthetic Membranes**: Properties and characteristics of synthetic membranes.\n- **General Membrane Equation**: Mathematical description of membrane processes.\n- **Cross-Flow Microfiltration**: Operation and design of cross-flow microfiltration systems.\n- **Ultrafiltration**: Operation and design of ultrafiltration systems.\n- **Reverse Osmosis**: Operation and design of reverse osmosis systems.\n- **Membrane Modules and Plant Configuration**: Design and configuration of membrane modules and plants.\n- **Membrane Fouling**: Causes and prevention of membrane fouling.\n- **Electrodialysis**: Operation and design of electrodialysis systems.\n- **Reverse Osmosis Water Treatment Plant**: Design and operation of reverse osmosis water treatment plants.\n- **Pervaporation**: Operation and design of pervaporation systems.\n- **Liquid Membranes**: Properties and applications of liquid membranes.\n- **Gas Separations**: Operation and design of gas separation systems using membranes.\n\n#### Chapter 9: Centrifugal Separations\n- **Introduction**: Overview of centrifugal separation processes.\n- **Shape of the Free Surface of the Liquid**: Analysis of the free surface shape in centrifugal fields.\n- **Centrifugal Pressure**: Calculation of centrifugal pressure.\n- **Separation of Immiscible Liquids of Different Densities**: Mechanisms for separating immiscible liquids using centrifugal fields.\n- **Sedimentation in a Centrifugal Field**: Analysis of sedimentation in centrifugal fields.\n- **Filtration in a Centrifuge**: Operation and design of centrifugal filtration systems.\n- **Mechanical Design**: Design considerations for centrifugal equipment.\n- **Centrifugal Equipment**: Description and comparison of different types of centrifugal equipment.\n\n#### Chapter 10: Leaching\n- **Introduction**: Overview of leaching processes.\n- **Mass Transfer in Leaching Operations**: Mass transfer mechanisms in leaching.\n- **Equipment for Leaching**: Description and comparison of different types of leaching equipment.\n- **Countercurrent Washing of Solids**: Operation and design of countercurrent washing systems.\n- **Calculation of the Number of Stages**: Methods for calculating the number of stages in leaching processes.\n- **Number of Stages for Countercurrent Washing by Graphical Methods**: Graphical methods for determining the number of stages in countercurrent washing.\n\n#### Chapter 11: Distillation\n- **Introduction**: Overview of distillation processes.\n- **Vapour-Liquid Equilibrium**: Theoretical aspects of vapour-liquid equilibrium.\n- **Methods of Distillation - Two Component Mixtures**: Distillation methods for two-component mixtures.\n- **The Fractionating Column**: Design and operation of fractionating columns.\n- **Conditions for Varying Overflow in Non-Ideal Binary Systems**: Conditions for varying overflow in non-ideal binary systems.\n- **Batch Distillation**: Operation and design of batch distillation systems.\n- **Multicomponent Mixtures**: Distillation of multicomponent mixtures.\n- **Azeotropic and Extractive Distillation**: Azeotropic and extractive distillation methods.\n- **Steam Distillation**: Operation and design of steam distillation systems.\n- **Plate Columns**: Design and operation of plate columns.\n- **Packed Columns for Distillation**: Design and operation of packed columns for distillation.\n\n#### Chapter 12: Absorption of Gases\n- **Introduction**: Overview of gas absorption processes.\n- **Conditions of Equilibrium Between Liquid and Gas**: Equilibrium conditions between liquid and gas phases.\n- **The Mechanism of Absorption**: Mechanisms of gas absorption.\n- **Determination of Transfer Coefficients**: Methods for determining mass transfer coefficients.\n- **Absorption Associated with Chemical Reaction**: Absorption processes involving chemical reactions.\n- **Absorption Accompanied by the Liberation of Heat**: Absorption processes involving heat release.\n- **Packed Towers for Gas Absorption**: Design and operation of packed towers for gas absorption.\n- **Plate Towers for Gas Absorption**: Design and operation of plate towers for gas absorption.\n- **Other Equipment for Gas Absorption**: Description and comparison of other types of gas absorption equipment.\n\n#### Chapter 13: Liquid-Liquid Extraction\n- **Introduction**: Overview of liquid-liquid extraction processes.\n- **Extraction Processes**: Description and comparison of different extraction processes.\n- **Equilibrium Data**: Equilibrium data for liquid-liquid extraction.\n- **Calculation of the Number of Theoretical Stages**: Methods for calculating the number of theoretical stages in extraction processes.\n- **Classification of Extraction Equipment**: Classification of different types of extraction equipment.\n- **Stage-Wise Equipment for Extraction**: Design and operation of stage-wise extraction equipment.\n- **Differential Contact Equipment for Extraction**: Design and operation of differential contact extraction equipment.\n- **Use of Specialised Fluids**: Use of specialised fluids in extraction processes.\n\n#### Chapter 14: Evaporation\n- **Introduction**: Overview of evaporation processes.\n- **Heat Transfer in Evaporators**: Heat transfer mechanisms in evaporators.\n- **Single-Effect Evaporators**: Design and operation of single-effect evaporators.\n- **Multiple-Effect Evaporators**: Design and operation of multiple-effect evaporators.\n- **Improved Efficiency in Evaporation**: Methods for improving the efficiency of evaporation processes.\n- **Evaporator Operation**: Operation and control of evaporators.\n- **Equipment for Evaporation**: Description and comparison of different types of evaporation equipment.\n\n####",
+          "catbox_url": "https://files.catbox.moe/o23njb.pdf"
         },
         {
           "name": "Ludwig_Volume 1.pdf",
@@ -467,7 +479,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAOlahtOwfzc5Qz_ePIMcEdYSEdoNpkAAjQhAALFINlUPHIewE56lAg7BA",
             "BQACAgUAAyEGAATqgTaTAAOmahtOw50gxHFQYOn_x51yqCYO_7QAAjUhAALFINlUMMRx4I3U-L07BA"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/p3x3ge.pdf"
         },
         {
           "name": "1) Mech.sep_1_January 2025.pptx",
@@ -478,7 +491,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICH2oe6fhrPkh12q04PF0TGAiiZ3RNAALuJgAC9u74VI3AIrHCYHGoOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/vn6ahz.pptx"
         },
         {
           "name": "2) Mech.sep_2_1_January 2025.pptx",
@@ -489,7 +503,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICImoe6fvbKxzH8SqGFc4HVR79K78iAALwJgAC9u74VESBwmJRXqn4OwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/qjhfa8.pptx"
         },
         {
           "name": "3) Mech.sep_2_2_January 2025.pptx",
@@ -500,7 +515,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICJGoe6f7jxWDI5letSkTa4klUUL7NAALyJgAC9u74VDOjjoytgWhgOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/cksh7c.pptx"
         },
         {
           "name": "4) Mech.sep_2_3_January 25.pptx",
@@ -511,7 +527,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICJ2oe6gGfA3EPq-wm6bl8OmSxwo6rAAL0JgAC9u74VE8b0y2MaQhsOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/vjpm5w.pptx"
         },
         {
           "name": "5)_Mixing and Agitation_ZT_Jan 25.pptx",
@@ -522,7 +539,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICK2oe6gWfhDH54lDGEpB6OFNzbmACAAL2JgAC9u74VBg_jw7N195EOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/83rli8.pptx"
         },
         {
           "name": "6) Crystallization_ZT_January_25.pptx",
@@ -533,7 +551,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICLmoe6hamI8jc0sFaSgY9OzLi8mOeAAL4JgAC9u74VOu21RS1ZT8wOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/hnpzp8.pptx"
         },
         {
           "name": "7) Size Reduction_jan25.pdf",
@@ -545,7 +564,8 @@
             "BQACAgUAAyEGAATqgTaTAAICMWoe6hlzHAN-dHYmZXVLFDie6c_tAAL6JgAC9u74VD_5gN2Zq6klOwQ"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Introduction\n- **Purpose of Size Reduction**: Materials are often too coarse and need to be reduced in size to meet specific requirements. The process involves multiple stages, each using different machines based on the material properties and desired particle size.\n- **Types of Size Reduction Operations**:\n  - **Crushing**: Reduces coarse lumps to sizes no smaller than 13-19 mm.\n  - **Grinding**: Reduces small particles to sizes as small as several microns.\n  - **Crushing is usually dry**, while grinding can be wet or dry.\n\n#### Purposes of Size Reduction\n- **Reaction**: Increases the surface area, enhancing reaction rates.\n- **Leaching**: Increases extraction rates and reduces solvent penetration distance.\n- **Drying**: Enhances drying efficiency by increasing surface area and reducing moisture travel distance.\n- **Protective Coating**: Increases coverage per unit area.\n\n#### Mechanism of Size Reduction\n- **Energy Utilization**: Size reduction is inefficient, with only 0.1 to 2.0% of the energy supplied resulting in increased surface area.\n- **Crack Propagation**: Material contains cracks that propagate under sufficient force, leading to size reduction.\n- **Force Types**:\n  - **Impact**: Particle concussion by a single rigid force.\n  - **Compression**: Particle disintegration by two rigid forces.\n  - **Shear**: Produced by particle-particle interaction.\n  - **Attrition**: Arising from particles scraping against each other or a rigid surface.\n\n#### Laws on Energy for Size Reduction\n- **Rittinger’s Law**: Energy required is proportional to the increase in surface area.\n  - \\[ E = K_R \\left( \\frac{1}{L_2} - \\frac{1}{L_1} \\right) \\]\n- **Kick’s Law**: Energy required is proportional to the reduction ratio.\n  - \\[ E = K_k \\ln \\left( \\frac{L_1}{L_2} \\right) \\]\n- **Bond’s Law**: Intermediate between Rittinger’s and Kick’s laws.\n  - \\[ E = K_B \\left( \\frac{1}{\\sqrt{L_2}} - \\frac{1}{\\sqrt{L_1}} \\right) \\]\n\n#### Methods of Operating Crushers\n- **Free Crushing**: Material fed at a low rate, short residence time, and minimal undersize material.\n- **Choke Feeding**: Machine kept full, longer residence time, higher degree of crushing, reduced capacity, and high energy consumption.\n\n#### Dry and Wet Grinding\n- **Advantages of Wet Grinding**:\n  - Reduced power consumption.\n  - Increased plant capacity.\n  - Facilitated product removal.\n  - Reduced fines.\n  - Eliminated dust formation.\n  - Easier handling of solids.\n- **Disadvantages**:\n  - Increased wear on grinding medium.\n  - Possible need for drying the product.\n\n#### Factors Affecting Size Reduction\n- **Hardness**: Affects power consumption and wear on the machine.\n- **Structure**: Different materials require different forces (e.g., fibrous materials need tearing).\n- **Moisture Content**: Affects material flow and caking.\n- **Crushing Strength**: Proportional to the power required.\n- **Friability**: Tendency to fracture during handling.\n- **Stickiness**: Can clog equipment.\n- **Soapiness**: Measure of friction.\n- **Explosiveness**: Requires wet grinding or inert atmosphere.\n- **Dustiness**: Health concerns.\n- **Bulk Density**: Affects machine capacity.\n- **Ratio of Feed and Product Size**: Multiple stages may be necessary.\n- **Softening Temperature**: Important for waxy substances.\n- **Abrasiveness**: Limits machinery type.\n- **Toughness**: More important than hardness for some materials.\n\n#### Classification of Size Reduction Equipment\n- **Based on Feed and Product Size**:\n  - **Crushers**: Coarse particles, compression.\n  - **Grinders**: Intermediate and fine particles, impact, attrition, sometimes combined with compression.\n  - **Ultrafine Grinders**: Very fine particles, attrition.\n- **Based on Applied Force**:\n  - **Compression**: Jaw crushers, gyratory crushers, smooth roll crushers.\n  - **Impact**: Hammer mills, impactors.\n  - **Attrition**: Attrition mills, tumbling mills, pin mills, fluid energy mills.\n\n#### Detailed Equipment Descriptions\n- **Jaw Crushers**: Blake jaw crusher, operates by compression, suitable for large, hard materials.\n- **Gyratory Crushers**: Similar to jaw crushers but with a circular jaw, continuous discharge, lower maintenance.\n- **Smooth Roll Crushers**: Two smooth-faced metal rolls, compression only, suitable for secondary crushing.\n- **Toothed Roll Crushers**: Equipped with corrugations, breaker bars, or teeth, handles softer materials.\n- **Hammer Mills**: High-speed rotor, impact and rubbing, suitable for intermediate duties.\n- **Rolling Mills**: Bowl mills, roller mills, suitable for coal and other materials.\n- **Attrition Mills**: Soft solids rubbed between grooved disks, suitable for fine particles.\n- **Tumbling Mills**: Cylindrical shell, grinding medium, suitable for abrasive materials.\n- **Ball Mills**: Rotating hollow cylinder, steel or flint balls, suitable for a wide range of materials.\n- **Pin Mills**: Two disks, one rotating and one static, suitable for very fine particles.\n- **Fluid Energy Mills**: Particles collide in a turbulent stream of air or gas, suitable for ultrafine grinding.\n\n### 2. Key Concepts & Explanations\n\n- **Size Reduction**: The process of reducing the particle size of materials to meet specific requirements, often involving multiple stages.\n- **Crushing**: Reducing coarse lumps to sizes no smaller than 13-19 mm, typically dry.\n- **Grinding**: Reducing small particles to sizes as small as several microns, can be wet or dry.\n- **Energy Utilization**: Size reduction is inefficient, with only a small fraction of the energy supplied resulting in increased surface area.\n- **Crack Propagation**: Material contains pre-existing cracks that propagate under sufficient force, leading to size reduction.\n- **Force Types**:\n  - **Impact**: Single rigid force causing particle concussion.\n  - **Compression**: Two rigid forces causing particle disintegration.\n  - **Shear**: Particle-particle interaction.\n  - **Attrition**: Particles scraping against each other or a rigid surface.\n- **Laws on Energy for Size Reduction**:\n  - **Rittinger’s Law**: Energy required is proportional to the increase in surface area.\n  - **Kick’s Law**: Energy required is proportional to the reduction ratio.\n  - **Bond’s Law**: Intermediate between Rittinger’s and Kick’s laws.\n- **Methods of Operating Crushers**:\n  - **Free Crushing**: Low feed rate, short residence time.\n  - **Choke Feeding**: Machine kept full, longer residence time, higher energy consumption.\n- **Dry and Wet Grinding**:\n  - **Advantages of Wet Grinding**: Reduced power consumption, increased plant capacity, facilitated product removal, reduced fines, eliminated dust formation, easier handling of solids.\n  - **Disadvantages**: Increased wear on grinding medium, possible need for drying the product.\n- **Factors Affecting Size Reduction**:\n  - **Hardness**: Affects power consumption and wear on the machine.\n  - **Structure**: Different materials require different forces.\n  - **Moisture Content**: Affects material flow and caking.\n  - **Crushing Strength**: Proportional to the power required.\n  - **Friability**: Tendency to fracture during handling.\n  - **Stickiness**: Can clog equipment.\n  - **Soapiness**: Measure of friction.\n  - **Explosiveness**: Requires wet grinding or inert atmosphere.\n  - **Dustiness**: Health concerns.\n  - **Bulk Density**: Affects machine capacity.\n  - **Ratio of Feed and Product Size**: Multiple stages may be necessary.\n  - **Softening Temperature**: Important for waxy substances.\n  - **Abrasiveness**: Limits machinery type.\n  - **Toughness**: More important than hardness for some materials.\n- **Classification of Size Reduction Equipment**:\n  - **Based on Feed and Product Size**: Crushers, grinders, ultrafine grinders.\n  - **Based on Applied Force**: Compression, impact, attrition.\n- **Detailed Equipment Descriptions**:\n  - **Jaw Crushers**: Blake jaw crusher, compression, suitable for large, hard materials.\n  - **Gyratory Crushers**: Continuous discharge, lower maintenance.\n  - **Smooth Roll Crushers**: Compression only, suitable for secondary crushing.\n  - **Toothed Roll Crushers**: Handles softer materials.\n  - **Hammer Mills**: Impact and rubbing, suitable for intermediate duties.\n  - **Rolling Mills**: Bowl mills, roller mills, suitable for coal and other materials.\n  - **Attrition Mills**: Soft solids rubbed between grooved disks, suitable for fine particles.\n  - **Tumbling Mills**: Grinding medium, suitable for abrasive materials.\n  - **Ball Mills**: Steel or flint balls, suitable for a wide range of materials.\n  - **Pin Mills**: Suitable for very fine particles.\n  - **Fluid Energy Mills**: Ultrafine grinding using a turbulent stream of air or gas.\n\n### 3. Formulas & Notations Dictated\n\n- **Rittinger’s Law**:\n  - \\[ E = K_R \\left( \\frac{1}{L_2} - \\frac{1}{"
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Introduction\n- **Purpose of Size Reduction**: Materials are often too coarse and need to be reduced in size to meet specific requirements. The process involves multiple stages, each using different machines based on the material properties and desired particle size.\n- **Types of Size Reduction Operations**:\n  - **Crushing**: Reduces coarse lumps to sizes no smaller than 13-19 mm.\n  - **Grinding**: Reduces small particles to sizes as small as several microns.\n  - **Crushing is usually dry**, while grinding can be wet or dry.\n\n#### Purposes of Size Reduction\n- **Reaction**: Increases the surface area, enhancing reaction rates.\n- **Leaching**: Increases extraction rates and reduces solvent penetration distance.\n- **Drying**: Enhances drying efficiency by increasing surface area and reducing moisture travel distance.\n- **Protective Coating**: Increases coverage per unit area.\n\n#### Mechanism of Size Reduction\n- **Energy Utilization**: Size reduction is inefficient, with only 0.1 to 2.0% of the energy supplied resulting in increased surface area.\n- **Crack Propagation**: Material contains cracks that propagate under sufficient force, leading to size reduction.\n- **Force Types**:\n  - **Impact**: Particle concussion by a single rigid force.\n  - **Compression**: Particle disintegration by two rigid forces.\n  - **Shear**: Produced by particle-particle interaction.\n  - **Attrition**: Arising from particles scraping against each other or a rigid surface.\n\n#### Laws on Energy for Size Reduction\n- **Rittinger’s Law**: Energy required is proportional to the increase in surface area.\n  - \\[ E = K_R \\left( \\frac{1}{L_2} - \\frac{1}{L_1} \\right) \\]\n- **Kick’s Law**: Energy required is proportional to the reduction ratio.\n  - \\[ E = K_k \\ln \\left( \\frac{L_1}{L_2} \\right) \\]\n- **Bond’s Law**: Intermediate between Rittinger’s and Kick’s laws.\n  - \\[ E = K_B \\left( \\frac{1}{\\sqrt{L_2}} - \\frac{1}{\\sqrt{L_1}} \\right) \\]\n\n#### Methods of Operating Crushers\n- **Free Crushing**: Material fed at a low rate, short residence time, and minimal undersize material.\n- **Choke Feeding**: Machine kept full, longer residence time, higher degree of crushing, reduced capacity, and high energy consumption.\n\n#### Dry and Wet Grinding\n- **Advantages of Wet Grinding**:\n  - Reduced power consumption.\n  - Increased plant capacity.\n  - Facilitated product removal.\n  - Reduced fines.\n  - Eliminated dust formation.\n  - Easier handling of solids.\n- **Disadvantages**:\n  - Increased wear on grinding medium.\n  - Possible need for drying the product.\n\n#### Factors Affecting Size Reduction\n- **Hardness**: Affects power consumption and wear on the machine.\n- **Structure**: Different materials require different forces (e.g., fibrous materials need tearing).\n- **Moisture Content**: Affects material flow and caking.\n- **Crushing Strength**: Proportional to the power required.\n- **Friability**: Tendency to fracture during handling.\n- **Stickiness**: Can clog equipment.\n- **Soapiness**: Measure of friction.\n- **Explosiveness**: Requires wet grinding or inert atmosphere.\n- **Dustiness**: Health concerns.\n- **Bulk Density**: Affects machine capacity.\n- **Ratio of Feed and Product Size**: Multiple stages may be necessary.\n- **Softening Temperature**: Important for waxy substances.\n- **Abrasiveness**: Limits machinery type.\n- **Toughness**: More important than hardness for some materials.\n\n#### Classification of Size Reduction Equipment\n- **Based on Feed and Product Size**:\n  - **Crushers**: Coarse particles, compression.\n  - **Grinders**: Intermediate and fine particles, impact, attrition, sometimes combined with compression.\n  - **Ultrafine Grinders**: Very fine particles, attrition.\n- **Based on Applied Force**:\n  - **Compression**: Jaw crushers, gyratory crushers, smooth roll crushers.\n  - **Impact**: Hammer mills, impactors.\n  - **Attrition**: Attrition mills, tumbling mills, pin mills, fluid energy mills.\n\n#### Detailed Equipment Descriptions\n- **Jaw Crushers**: Blake jaw crusher, operates by compression, suitable for large, hard materials.\n- **Gyratory Crushers**: Similar to jaw crushers but with a circular jaw, continuous discharge, lower maintenance.\n- **Smooth Roll Crushers**: Two smooth-faced metal rolls, compression only, suitable for secondary crushing.\n- **Toothed Roll Crushers**: Equipped with corrugations, breaker bars, or teeth, handles softer materials.\n- **Hammer Mills**: High-speed rotor, impact and rubbing, suitable for intermediate duties.\n- **Rolling Mills**: Bowl mills, roller mills, suitable for coal and other materials.\n- **Attrition Mills**: Soft solids rubbed between grooved disks, suitable for fine particles.\n- **Tumbling Mills**: Cylindrical shell, grinding medium, suitable for abrasive materials.\n- **Ball Mills**: Rotating hollow cylinder, steel or flint balls, suitable for a wide range of materials.\n- **Pin Mills**: Two disks, one rotating and one static, suitable for very fine particles.\n- **Fluid Energy Mills**: Particles collide in a turbulent stream of air or gas, suitable for ultrafine grinding.\n\n### 2. Key Concepts & Explanations\n\n- **Size Reduction**: The process of reducing the particle size of materials to meet specific requirements, often involving multiple stages.\n- **Crushing**: Reducing coarse lumps to sizes no smaller than 13-19 mm, typically dry.\n- **Grinding**: Reducing small particles to sizes as small as several microns, can be wet or dry.\n- **Energy Utilization**: Size reduction is inefficient, with only a small fraction of the energy supplied resulting in increased surface area.\n- **Crack Propagation**: Material contains pre-existing cracks that propagate under sufficient force, leading to size reduction.\n- **Force Types**:\n  - **Impact**: Single rigid force causing particle concussion.\n  - **Compression**: Two rigid forces causing particle disintegration.\n  - **Shear**: Particle-particle interaction.\n  - **Attrition**: Particles scraping against each other or a rigid surface.\n- **Laws on Energy for Size Reduction**:\n  - **Rittinger’s Law**: Energy required is proportional to the increase in surface area.\n  - **Kick’s Law**: Energy required is proportional to the reduction ratio.\n  - **Bond’s Law**: Intermediate between Rittinger’s and Kick’s laws.\n- **Methods of Operating Crushers**:\n  - **Free Crushing**: Low feed rate, short residence time.\n  - **Choke Feeding**: Machine kept full, longer residence time, higher energy consumption.\n- **Dry and Wet Grinding**:\n  - **Advantages of Wet Grinding**: Reduced power consumption, increased plant capacity, facilitated product removal, reduced fines, eliminated dust formation, easier handling of solids.\n  - **Disadvantages**: Increased wear on grinding medium, possible need for drying the product.\n- **Factors Affecting Size Reduction**:\n  - **Hardness**: Affects power consumption and wear on the machine.\n  - **Structure**: Different materials require different forces.\n  - **Moisture Content**: Affects material flow and caking.\n  - **Crushing Strength**: Proportional to the power required.\n  - **Friability**: Tendency to fracture during handling.\n  - **Stickiness**: Can clog equipment.\n  - **Soapiness**: Measure of friction.\n  - **Explosiveness**: Requires wet grinding or inert atmosphere.\n  - **Dustiness**: Health concerns.\n  - **Bulk Density**: Affects machine capacity.\n  - **Ratio of Feed and Product Size**: Multiple stages may be necessary.\n  - **Softening Temperature**: Important for waxy substances.\n  - **Abrasiveness**: Limits machinery type.\n  - **Toughness**: More important than hardness for some materials.\n- **Classification of Size Reduction Equipment**:\n  - **Based on Feed and Product Size**: Crushers, grinders, ultrafine grinders.\n  - **Based on Applied Force**: Compression, impact, attrition.\n- **Detailed Equipment Descriptions**:\n  - **Jaw Crushers**: Blake jaw crusher, compression, suitable for large, hard materials.\n  - **Gyratory Crushers**: Continuous discharge, lower maintenance.\n  - **Smooth Roll Crushers**: Compression only, suitable for secondary crushing.\n  - **Toothed Roll Crushers**: Handles softer materials.\n  - **Hammer Mills**: Impact and rubbing, suitable for intermediate duties.\n  - **Rolling Mills**: Bowl mills, roller mills, suitable for coal and other materials.\n  - **Attrition Mills**: Soft solids rubbed between grooved disks, suitable for fine particles.\n  - **Tumbling Mills**: Grinding medium, suitable for abrasive materials.\n  - **Ball Mills**: Steel or flint balls, suitable for a wide range of materials.\n  - **Pin Mills**: Suitable for very fine particles.\n  - **Fluid Energy Mills**: Ultrafine grinding using a turbulent stream of air or gas.\n\n### 3. Formulas & Notations Dictated\n\n- **Rittinger’s Law**:\n  - \\[ E = K_R \\left( \\frac{1}{L_2} - \\frac{1}{",
+          "catbox_url": "https://files.catbox.moe/62it43.pdf"
         },
         {
           "name": "7)_Size Reduction_jan25.pptx",
@@ -556,7 +576,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICNGoe6jUrmvFJQ_0k9_JKVJIAAS1COAAC_CYAAvbu-FTJUaYMpflDOjsE"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/97ib5u.pptx"
         },
         {
           "name": "8)_ChE-311-Solid_Handling_Machinery_2025.pptx",
@@ -567,7 +588,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICN2oe6jikfGquG8JSJCm_uOiKbhNLAAL-JgAC9u74VEmhMV2OJinlOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/kvshza.pptx"
         },
         {
           "name": "1) Relief system.pdf",
@@ -578,7 +600,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICOmoe6qqnCfVv_Cs4td2qoWsCC4qYAAMnAAL27vhU9fQaaWYfDN47BA"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/3ln493.pdf"
         },
         {
           "name": "1)__Safety slide example.pdf",
@@ -589,7 +612,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICPWoe6q2BZQhiLifeLpiPkPbor2MmAAICJwAC9u74VA6YMqTmzkwnOwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/v9lzz3.pdf"
         },
         {
           "name": "1)_Chapter 9 relief sizing.pdf",
@@ -600,7 +624,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICP2oe6q-bb42TgokwaZVpnYGWIh8DAAIEJwAC9u74VHTj2c48JSE4OwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/wrq84x.pdf"
         },
         {
           "name": "2) Ejector 2023.pdf",
@@ -611,7 +636,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICQ2oe6rMDPSu6pZb_NYX9z0gagIfKAAIGJwAC9u74VLKo7c_ePu6KOwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/qnss2i.pdf"
         },
         {
           "name": "2)__eJECTOR dIAGRAM.pdf",
@@ -622,7 +648,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICRWoe6rUKXGjX5t8sNVsjcCEBo0kOAAIIJwAC9u74VIcuvyZgIpkBOwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/75xwfb.pdf"
         },
         {
           "name": "2)_Ejector Ludwig Chapter 6.pdf",
@@ -633,7 +660,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICSWoe6ruVquV2w0XB_D10ktQZaQn-AAIKJwAC9u74VGCI3UDqFQvXOwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/ckpign.pdf"
         },
         {
           "name": "3) 2025_Evaporator_Presentation.pdf",
@@ -644,7 +672,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICTGoe6r6h1MUEYbExoz_UAzksQnGEAAIMJwAC9u74VBENFWzBg2eWOwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/9y1fwb.pdf"
         },
         {
           "name": "3)__Evaporator 2023 1.pdf",
@@ -655,7 +684,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICT2oe62LOZZm5QC-ZqDlNKv0iOJLIAAIPJwAC9u74VI0YaV_kUER7OwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/69hwes.pdf"
         },
         {
           "name": "3)_Condensed_Evaporator_Presentation.pptx",
@@ -666,7 +696,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICUmoe62b-5YDUgQWycqe2EcVMk4EeAAIRJwAC9u74VAZATxNiGJ3BOwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/l41y25.pptx"
         },
         {
           "name": "4) Dryer ChE 311 Dr Sowgath 2020.pdf",
@@ -678,7 +709,8 @@
             "BQACAgUAAyEGAATqgTaTAAICVmoe63OZ_E3pyPFBqtG3vVb48DPKAAIUJwAC9u74VI3AZei3DOt7OwQ",
             "BQACAgUAAyEGAATqgTaTAAICVWoe63JaRfiAQMMYgMUQuUU_qgjGAAITJwAC9u74VL4orIWBHU0jOwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/zkp7a3.pdf"
         },
         {
           "name": "4)_Dryer 2025 condensed version.pdf",
@@ -689,7 +721,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICWWoe63bf1DCoLt0baHIVpPwuEo68AAIWJwAC9u74VOciBryTDFwSOwQ"
           ],
-          "folder": "Tanvir Sowgath Sir"
+          "folder": "Tanvir Sowgath Sir",
+          "catbox_url": "https://files.catbox.moe/vo29nh.pdf"
         },
         {
           "name": "Chemical Process Safety_ 2nd ed_ Daniel A. Crowl_Joseph F. L - Chapter 8 Chapter 9...FOR 22 BATCH.pdf",
@@ -701,7 +734,8 @@
             "BQACAgUAAyEGAATqgTaTAAICXGoe6_1OzjtqaAi9OjIKo5IRyLETAAIYJwAC9u74VJ4W_q-CJy0hOwQ",
             "BQACAgUAAyEGAATqgTaTAAICX2oe6_9QGmU2iqUgOLS37dcfPwmrAAIbJwAC9u74VMga4VKSxZ0fOwQ",
             "BQACAgUAAyEGAATqgTaTAAICYGoe6_8V2X8FyVnJhq0MqE9uPcHLAAIcJwAC9u74VCmafhYdThjUOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/wn2lix.pdf"
         },
         {
           "name": "Foust_Principles_of_Unit_Operations.......FOR 22 BATCH.pdf",
@@ -714,7 +748,8 @@
             "BQACAgUAAyEGAATqgTaTAAICZWoe7Bg7Ur1XFivcxonhzDq8m1uJAAIfJwAC9u74VPIWS49q3Xb2OwQ",
             "BQACAgUAAyEGAATqgTaTAAICZmoe7Bn9xBy8OwmxOaxU6Wh-6lD1AAIgJwAC9u74VKuPUplS7oWtOwQ",
             "BQACAgUAAyEGAATqgTaTAAICZ2oe7BqPBJ1U-ZHvTn6FdYw_V4A7AAIhJwAC9u74VEOt9Mjjm5xgOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/kxmdml.pdf"
         },
         {
           "name": "Foust_Principles_of_Unit_Operations.pdf",
@@ -727,7 +762,8 @@
             "BQACAgUAAyEGAATqgTaTAAICamoe7DIn78A5rmIrblcBYKsdgWvPAAIjJwAC9u74VK_ECd2gdnrMOwQ",
             "BQACAgUAAyEGAATqgTaTAAICbGoe7DVin4uRz4gKIipJBSG6FVwuAAIlJwAC9u74VFjJb1kg_Bs7OwQ",
             "BQACAgUAAyEGAATqgTaTAAICbWoe7DYQGLH7auyros9-rTAi1VHBAAImJwAC9u74VO8nuqw5kORKOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/j19wm6.pdf"
         }
       ],
       "folders": [
@@ -756,7 +792,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAANxahpkfavG4fg3NRV65teI5Vfb6OoAAiAgAALFINFUW6lZcDpA_3Y7BA"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/u0wgzu.pdf"
         },
         {
           "name": "heat-transfer-a-practical-approach-by-y-a-cengel.pdf",
@@ -766,7 +803,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAN3ahplTWInuW3-ID0V0l8mN3sbyeIAAiUgAALFINFUpYOq5ZoRPq87BA"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/bxnk9c.pdf"
         },
         {
           "name": "Process_Heat_Transfer_Kern,_Donald_Quentin_Tate_McGraw_Hill_ed,.pdf",
@@ -786,7 +824,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAN9ahplguCw_v76tpv5wotuL2bKN9AAAikgAALFINFUQXTS9l4vJLA7BA"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/46v24q.pdf"
         },
         {
           "name": "CENGEL SOLUTION MANUAL.pdf",
@@ -796,7 +835,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAOAahpll-wzKVd7c1R6CYexoS7IpPYAAisgAALFINFU4waC5iZ1-J47BA"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/zf3dk5.pdf"
         },
         {
           "name": "APPENDIX_Heat Transfer by Çengel.pdf",
@@ -835,7 +875,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIB22oekEtjyq5Tt1CdWTUTp6U0UqbgAAJGIgAC9u7wVPYzg26arIaaOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/rmg7jv.pdf"
         },
         {
           "name": "2) ChE_301_Conduction_p1.pdf",
@@ -846,7 +887,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIB3moekFd4HdWquf21hAP0RboqwTbkAAJJIgAC9u7wVG9-urRBziJsOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/2hm92j.pdf"
         },
         {
           "name": "3) CHE 301 02_Conduction_p2.pdf",
