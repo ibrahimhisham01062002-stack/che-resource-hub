@@ -1137,52 +1137,13 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         # Concurrent downloads of the same file from Telegram cause the connection to drop (502 error).
         # We will directly stream/proxy the file below.
             
-        # If caching failed, fall back to direct streaming proxy
-        if False and catbox_url:
-            async def stream_catbox_file(url: str, request_headers: dict):
-                try:
-                    global http_client
-                    if http_client is None:
-                        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-                        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-                    async with http_client.stream("GET", url, headers=request_headers) as r:
-                        if r.status_code not in (200, 206):
-                            print(f"Catbox download returned status {r.status_code}")
-                            return
-                        async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
-                            yield chunk
-                except Exception as e:
-                    print(f"Catbox streaming exception: {e}")
-            headers = {
-                "Accept-Ranges": "bytes",
-                "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
-                "Content-Type": content_type,
-                "X-Frame-Options": "ALLOWALL",
-                "Content-Security-Policy": "frame-ancestors *"
-            }
-            if range_header and range_header.startswith("bytes="):
-                req_headers = {"Range": range_header}
-                try:
-                    async with http_client.stream("GET", catbox_url, headers=req_headers) as r:
-                        if r.status_code == 206:
-                            headers["Content-Range"] = r.headers.get("Content-Range", "")
-                            headers["Content-Length"] = r.headers.get("Content-Length", "")
-                            return StreamingResponse(
-                                stream_catbox_file(catbox_url, req_headers),
-                                status_code=206,
-                                media_type=content_type,
-                                headers=headers
-                            )
-                except Exception as e:
-                    print(f"Catbox range streaming error: {str(e)}")
-            raw_bytes = file_item.get("bytes")
-            if raw_bytes:
-                headers["Content-Length"] = str(raw_bytes)
-            return StreamingResponse(
-                stream_catbox_file(catbox_url, {}),
-                media_type=content_type,
-                headers=headers
-            )
+        # Use HTTP Redirect for Catbox to completely bypass Render's 5GB bandwidth limit!
+        # Catbox drops streaming connections from Render anyway, but direct redirects work perfectly
+        # and consume zero Render backend bandwidth.
+        if catbox_url:
+            from fastapi.responses import RedirectResponse
+            return RedirectResponse(url=catbox_url, status_code=302)
+            
         elif file_ids:
             try:
                 headers = {
