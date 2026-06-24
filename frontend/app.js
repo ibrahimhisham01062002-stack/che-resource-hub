@@ -914,20 +914,12 @@ function App() {
     });
   };
 
-  // Handle file downloads — fetches as blob to bypass cross-origin download attribute limitation
-  // The HTML `download` attribute is silently ignored on cross-origin <a> tags by all browsers.
-  // This function fetches the binary, creates a blob URL, and triggers a real download.
   const handleDownloadFile = async (fileIndex, fileName) => {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async () => {
-      const file = activeCourse.files[fileIndex];
-      // Bypass fetch and use direct backend URL to trigger a native download popup in the current window (no new tab!)
+      // The user requested: "for downloading, there should open a new tab just for the downloading section"
       const url = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
-      const link = document.createElement("a");
-      link.href = url;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      window.open(url, '_blank');
     });
   };
 
