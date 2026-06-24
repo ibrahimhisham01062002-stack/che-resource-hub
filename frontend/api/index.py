@@ -398,6 +398,16 @@ async def startup_event():
     http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
     # Use create_task to prevent blocking serverless cold starts which leads to 504 timeouts
     asyncio.create_task(async_sync_database_from_telegram())
+    asyncio.create_task(hourly_sync_loop())
+
+async def hourly_sync_loop():
+    while True:
+        await asyncio.sleep(3600)  # Wait 1 hour
+        try:
+            print("Running hourly Telegram database sync...")
+            await async_sync_database_from_telegram()
+        except Exception as e:
+            print(f"Hourly sync failed: {e}")
 
 
 # Directory and path settings for serverless environment

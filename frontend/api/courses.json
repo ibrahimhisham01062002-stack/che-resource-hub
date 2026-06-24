@@ -1143,7 +1143,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAPLahvGz7H9cmKuhm8LhczsLJz0VlUAAtIcAALik-FUTWBjkk2Ni8Y7BA"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/8pjb35.pdf"
         },
         {
           "name": "Solution Manual Process Dynamics and Control 4th Edition.pdf",
@@ -1166,7 +1167,8 @@
             "BQACAgUAAyEGAATqgTaTAAPcahvMmkSrGnvxKCDivZESjNAAAZZDAALgHAAC4pPhVAABQYP423ZbFTsE"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1.1 Introduction to Process Control\n- **Incentives for Process Control**: Importance of process control in maintaining stable and efficient operations, ensuring safety, and maximizing profitability.\n- **Design Aspects**: Overview of the design considerations for process control systems, including hardware elements and control strategies.\n- **Course Outline**: Overview of the course structure, including topics such as modeling for control, dynamic and static behavior of processes, feedback control systems, frequency response analysis, and advanced control systems.\n\n#### 1.2 Course Information\n- **Instructor**: Dr. M. A. A. Shoukat Choudhury\n- **Textbook**: \"Process Dynamics and Control\" by Seborg, Edgar, and Mellichamp (2004)\n- **Reference Books**: Additional resources by Karim, Riggs, Marlin, and Stephanopoulos.\n- **Course Website**: Access to course materials and resources.\n\n#### 1.3 Career in Process Control\n- **Professional Benefits**: Career longevity, significant savings for companies, professional visibility, and high pay.\n- **Global Demand**: Shortage of experienced process control engineers worldwide.\n\n#### 1.4 What is a Process?\n- **Definition**: Examples of processes include heat exchangers, reactors, separators, tanks, human body, cars, and computer drives.\n- **Example Processes**: Detailed examples of various processes and their control.\n\n#### 1.5 Process Control\n- **Definition**: Maintaining process variables at desired operating conditions.\n- **Objectives**: Stable operation, safety, disturbance rejection, set-point tracking, tight specifications, and profitability.\n- **Process Dynamics**: Steady-state vs. unsteady-state behavior, continuous vs. batch processes, and examples of transient behavior.\n\n#### 1.6 Control Variables\n- **Controlled Variables (CV or PV)**: Variables to be controlled.\n- **Manipulated Variables (MV, CO, OP)**: Variables adjusted to maintain CVs.\n- **Disturbance Variables (DV)**: Variables affecting CVs but not controllable.\n\n#### 1.7 Illustrative Example: Blending System\n- **Notation**: Mass flow rates and mass fractions.\n- **Assumptions**: Constant flow rates and perfect mixing.\n- **Control Objective**: Maintain desired concentration despite variations in inlet concentration.\n- **Design Equation**: Equation for determining the required flow rate.\n- **Control Strategies**: Feedback control, feedforward control, combined control, and design changes.\n\n#### 1.8 Classification of Control Strategies\n- **Feedback Control (FB)**: Measures the controlled variable and adjusts the manipulated variable.\n- **Feedforward Control (FF)**: Measures the disturbance variable and adjusts the manipulated variable.\n- **Combined Control (FF/FB)**: Uses both feedback and feedforward control.\n- **Design Change**: Modifying the process design to improve control.\n\n#### 1.9 Hierarchy of Process Control Activities\n- **Measurement and Actuation**: Real-time monitoring and control.\n- **Safety, Environment, and Equipment Protection**: Ensuring safe and environmentally friendly operations.\n- **Regulatory Control**: Maintaining process variables within specified limits.\n- **Real-Time Optimization**: Optimizing process performance.\n- **Planning and Scheduling**: Long-term planning and scheduling.\n\n#### 1.10 Control System Development\n- **Key Steps**: Identifying control objectives, designing control strategies, and implementing control systems.\n- **Feedback Loop Exercises**: Practical exercises to understand feedback loops and their principles.\n\n### 2. Key Concepts & Explanations\n\n#### 2.1 Process Control\n- **Definition**: The application of control theory to chemical processes to maintain desired operating conditions.\n- **Objectives**:\n  - **Stable Operation**: Ensuring the process operates smoothly without significant fluctuations.\n  - **Safety**: Preventing hazardous conditions and ensuring the process is safe.\n  - **Disturbance Rejection**: Minimizing the impact of disturbances on the process.\n  - **Set-Point Tracking**: Ensuring the process variables reach and maintain desired set points.\n  - **Tight Specifications**: Operating within tight tolerances to meet product quality requirements.\n  - **Profitability**: Maximizing the economic benefits of the process.\n\n#### 2.2 Process Dynamics\n- **Steady-State Behavior**: Conditions where process variables do not change with time.\n- **Unsteady-State Behavior**: Conditions where process variables change with time, such as during start-up, shutdown, grade changes, and disturbances.\n- **Continuous Processes**: Processes that operate continuously, often with a large number of measured variables.\n- **Batch Processes**: Processes that operate in discrete batches, inherently unsteady-state.\n\n#### 2.3 Control Variables\n- **Controlled Variables (CV or PV)**: Variables that need to be controlled, such as temperature, pressure, or concentration.\n- **Manipulated Variables (MV, CO, OP)**: Variables that can be adjusted to control the CVs, such as flow rates or valve positions.\n- **Disturbance Variables (DV)**: Variables that affect the CVs but cannot be controlled, such as feed composition or ambient temperature.\n\n#### 2.4 Control Strategies\n- **Feedback Control (FB)**: Measures the CV and adjusts the MV to maintain the set point.\n  - **Advantages**: Corrective action regardless of disturbance source, reduced sensitivity to disturbances.\n  - **Disadvantages**: Delayed response, potential for oscillatory behavior.\n- **Feedforward Control (FF)**: Measures the DV and adjusts the MV to prevent disturbances from affecting the CV.\n  - **Advantages**: Proactive correction, reduced impact of disturbances.\n  - **Disadvantages**: Requires measurement of DV, no correction for unmeasured disturbances.\n- **Combined Control (FF/FB)**: Combines both feedback and feedforward control for improved performance.\n- **Design Change**: Modifying the process design to improve control, such as using a larger tank.\n\n### 3. Formulas & Notations Dictated\n\n#### 3.1 Blending System Equations\n- **Overall Mass Balance**:\n  \\[\n  \\overline{w}_1 + \\overline{w}_2 = \\overline{w}\n  \\]\n- **Component A Balance**:\n  \\[\n  \\overline{w}_1 \\overline{x}_1 + \\overline{w}_2 \\overline{x}_2 = \\overline{w} \\overline{x}\n  \\]\n- **Design Equation**:\n  \\[\n  \\overline{w}_2 = \\frac{\\overline{x}_{SP} - \\overline{x}_1}{1 - \\overline{x}_{SP}}\n  \\]\n  - **Variables**:\n    - \\(\\overline{w}_1\\): Nominal mass flow rate of stream 1\n    - \\(\\overline{w}_2\\): Nominal mass flow rate of stream 2\n    - \\(\\overline{w}\\): Total mass flow rate\n    - \\(\\overline{x}_1\\): Mass fraction of component A in stream 1\n    - \\(\\overline{x}_2\\): Mass fraction of component A in stream 2 (pure A, \\(\\overline{x}_2 = 1\\))\n    - \\(\\overline{x}_{SP}\\): Desired mass fraction of component A in the blend\n\n#### 3.2 Control Law\n- **Proportional Feedback Control Law**:\n  \\[\n  w_2(t) = w_{2,0} + K_c (x_{SP} - x(t))\n  \\]\n  - **Variables**:\n    - \\(w_2(t)\\): Manipulated variable (flow rate of stream 2) at time \\(t\\)\n    - \\(w_{2,0}\\): Nominal flow rate of stream 2\n    - \\(K_c\\): Controller gain\n    - \\(x_{SP}\\): Set point for the mass fraction of component A\n    - \\(x(t)\\): Measured mass fraction of component A at time \\(t\\)\n\n### 4. Comparative Analysis Table\n\n| Method | Measured Variable | Manipulated Variable | Category | Advantages | Disadvantages |\n|--------|-------------------|----------------------|----------|------------|---------------|\n| 1      | \\(x\\)             | \\(w_2\\)              | FB       | Corrective action regardless of disturbance source, reduced sensitivity to disturbances | Delayed response, potential for oscillatory behavior |\n| 2      | \\(x_1\\)           | \\(w_2\\)              | FF       | Proactive correction, reduced impact of disturbances | Requires measurement of \\(x_1\\), no correction for unmeasured disturbances |\n| 3      | \\(x_1\\) and \\(x\\) | \\(w_2\\)              | FF/FB    | Combines advantages of both FB and FF, improved performance | More complex, requires measurement of both \\(x_1\\) and \\(x\\) |\n| 4      | -                 | -                    | Design   | Improved control through process design changes | Increased capital cost, may not be feasible in all cases |\n\nThis structured summary provides a comprehensive overview of the key topics, concepts, formulas, and comparative analysis from the document \"Chapter_1m.pdf\" on chemical process control."
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1.1 Introduction to Process Control\n- **Incentives for Process Control**: Importance of process control in maintaining stable and efficient operations, ensuring safety, and maximizing profitability.\n- **Design Aspects**: Overview of the design considerations for process control systems, including hardware elements and control strategies.\n- **Course Outline**: Overview of the course structure, including topics such as modeling for control, dynamic and static behavior of processes, feedback control systems, frequency response analysis, and advanced control systems.\n\n#### 1.2 Course Information\n- **Instructor**: Dr. M. A. A. Shoukat Choudhury\n- **Textbook**: \"Process Dynamics and Control\" by Seborg, Edgar, and Mellichamp (2004)\n- **Reference Books**: Additional resources by Karim, Riggs, Marlin, and Stephanopoulos.\n- **Course Website**: Access to course materials and resources.\n\n#### 1.3 Career in Process Control\n- **Professional Benefits**: Career longevity, significant savings for companies, professional visibility, and high pay.\n- **Global Demand**: Shortage of experienced process control engineers worldwide.\n\n#### 1.4 What is a Process?\n- **Definition**: Examples of processes include heat exchangers, reactors, separators, tanks, human body, cars, and computer drives.\n- **Example Processes**: Detailed examples of various processes and their control.\n\n#### 1.5 Process Control\n- **Definition**: Maintaining process variables at desired operating conditions.\n- **Objectives**: Stable operation, safety, disturbance rejection, set-point tracking, tight specifications, and profitability.\n- **Process Dynamics**: Steady-state vs. unsteady-state behavior, continuous vs. batch processes, and examples of transient behavior.\n\n#### 1.6 Control Variables\n- **Controlled Variables (CV or PV)**: Variables to be controlled.\n- **Manipulated Variables (MV, CO, OP)**: Variables adjusted to maintain CVs.\n- **Disturbance Variables (DV)**: Variables affecting CVs but not controllable.\n\n#### 1.7 Illustrative Example: Blending System\n- **Notation**: Mass flow rates and mass fractions.\n- **Assumptions**: Constant flow rates and perfect mixing.\n- **Control Objective**: Maintain desired concentration despite variations in inlet concentration.\n- **Design Equation**: Equation for determining the required flow rate.\n- **Control Strategies**: Feedback control, feedforward control, combined control, and design changes.\n\n#### 1.8 Classification of Control Strategies\n- **Feedback Control (FB)**: Measures the controlled variable and adjusts the manipulated variable.\n- **Feedforward Control (FF)**: Measures the disturbance variable and adjusts the manipulated variable.\n- **Combined Control (FF/FB)**: Uses both feedback and feedforward control.\n- **Design Change**: Modifying the process design to improve control.\n\n#### 1.9 Hierarchy of Process Control Activities\n- **Measurement and Actuation**: Real-time monitoring and control.\n- **Safety, Environment, and Equipment Protection**: Ensuring safe and environmentally friendly operations.\n- **Regulatory Control**: Maintaining process variables within specified limits.\n- **Real-Time Optimization**: Optimizing process performance.\n- **Planning and Scheduling**: Long-term planning and scheduling.\n\n#### 1.10 Control System Development\n- **Key Steps**: Identifying control objectives, designing control strategies, and implementing control systems.\n- **Feedback Loop Exercises**: Practical exercises to understand feedback loops and their principles.\n\n### 2. Key Concepts & Explanations\n\n#### 2.1 Process Control\n- **Definition**: The application of control theory to chemical processes to maintain desired operating conditions.\n- **Objectives**:\n  - **Stable Operation**: Ensuring the process operates smoothly without significant fluctuations.\n  - **Safety**: Preventing hazardous conditions and ensuring the process is safe.\n  - **Disturbance Rejection**: Minimizing the impact of disturbances on the process.\n  - **Set-Point Tracking**: Ensuring the process variables reach and maintain desired set points.\n  - **Tight Specifications**: Operating within tight tolerances to meet product quality requirements.\n  - **Profitability**: Maximizing the economic benefits of the process.\n\n#### 2.2 Process Dynamics\n- **Steady-State Behavior**: Conditions where process variables do not change with time.\n- **Unsteady-State Behavior**: Conditions where process variables change with time, such as during start-up, shutdown, grade changes, and disturbances.\n- **Continuous Processes**: Processes that operate continuously, often with a large number of measured variables.\n- **Batch Processes**: Processes that operate in discrete batches, inherently unsteady-state.\n\n#### 2.3 Control Variables\n- **Controlled Variables (CV or PV)**: Variables that need to be controlled, such as temperature, pressure, or concentration.\n- **Manipulated Variables (MV, CO, OP)**: Variables that can be adjusted to control the CVs, such as flow rates or valve positions.\n- **Disturbance Variables (DV)**: Variables that affect the CVs but cannot be controlled, such as feed composition or ambient temperature.\n\n#### 2.4 Control Strategies\n- **Feedback Control (FB)**: Measures the CV and adjusts the MV to maintain the set point.\n  - **Advantages**: Corrective action regardless of disturbance source, reduced sensitivity to disturbances.\n  - **Disadvantages**: Delayed response, potential for oscillatory behavior.\n- **Feedforward Control (FF)**: Measures the DV and adjusts the MV to prevent disturbances from affecting the CV.\n  - **Advantages**: Proactive correction, reduced impact of disturbances.\n  - **Disadvantages**: Requires measurement of DV, no correction for unmeasured disturbances.\n- **Combined Control (FF/FB)**: Combines both feedback and feedforward control for improved performance.\n- **Design Change**: Modifying the process design to improve control, such as using a larger tank.\n\n### 3. Formulas & Notations Dictated\n\n#### 3.1 Blending System Equations\n- **Overall Mass Balance**:\n  \\[\n  \\overline{w}_1 + \\overline{w}_2 = \\overline{w}\n  \\]\n- **Component A Balance**:\n  \\[\n  \\overline{w}_1 \\overline{x}_1 + \\overline{w}_2 \\overline{x}_2 = \\overline{w} \\overline{x}\n  \\]\n- **Design Equation**:\n  \\[\n  \\overline{w}_2 = \\frac{\\overline{x}_{SP} - \\overline{x}_1}{1 - \\overline{x}_{SP}}\n  \\]\n  - **Variables**:\n    - \\(\\overline{w}_1\\): Nominal mass flow rate of stream 1\n    - \\(\\overline{w}_2\\): Nominal mass flow rate of stream 2\n    - \\(\\overline{w}\\): Total mass flow rate\n    - \\(\\overline{x}_1\\): Mass fraction of component A in stream 1\n    - \\(\\overline{x}_2\\): Mass fraction of component A in stream 2 (pure A, \\(\\overline{x}_2 = 1\\))\n    - \\(\\overline{x}_{SP}\\): Desired mass fraction of component A in the blend\n\n#### 3.2 Control Law\n- **Proportional Feedback Control Law**:\n  \\[\n  w_2(t) = w_{2,0} + K_c (x_{SP} - x(t))\n  \\]\n  - **Variables**:\n    - \\(w_2(t)\\): Manipulated variable (flow rate of stream 2) at time \\(t\\)\n    - \\(w_{2,0}\\): Nominal flow rate of stream 2\n    - \\(K_c\\): Controller gain\n    - \\(x_{SP}\\): Set point for the mass fraction of component A\n    - \\(x(t)\\): Measured mass fraction of component A at time \\(t\\)\n\n### 4. Comparative Analysis Table\n\n| Method | Measured Variable | Manipulated Variable | Category | Advantages | Disadvantages |\n|--------|-------------------|----------------------|----------|------------|---------------|\n| 1      | \\(x\\)             | \\(w_2\\)              | FB       | Corrective action regardless of disturbance source, reduced sensitivity to disturbances | Delayed response, potential for oscillatory behavior |\n| 2      | \\(x_1\\)           | \\(w_2\\)              | FF       | Proactive correction, reduced impact of disturbances | Requires measurement of \\(x_1\\), no correction for unmeasured disturbances |\n| 3      | \\(x_1\\) and \\(x\\) | \\(w_2\\)              | FF/FB    | Combines advantages of both FB and FF, improved performance | More complex, requires measurement of both \\(x_1\\) and \\(x\\) |\n| 4      | -                 | -                    | Design   | Improved control through process design changes | Increased capital cost, may not be feasible in all cases |\n\nThis structured summary provides a comprehensive overview of the key topics, concepts, formulas, and comparative analysis from the document \"Chapter_1m.pdf\" on chemical process control.",
+          "catbox_url": "https://files.catbox.moe/clm139.pdf"
         },
         {
           "name": "Chapter_2m.pdf",
@@ -1178,7 +1180,8 @@
             "BQACAgUAAyEGAATqgTaTAAPkahvNMbufEjDAYCvSKJToGkycojMAAuUcAALik-FUN3eMxX2ct087BA"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1.1 Introduction to Theoretical Models of Chemical Processes\n- **Rationale for Dynamic Models**: \n  - Improve understanding of the process.\n  - Train plant operating personnel.\n  - Develop control strategies for new plants.\n  - Optimize process operating conditions.\n- **Types of Models**:\n  - **Theoretical Models**: Developed using principles of chemistry, physics, and biology. Applicable over wide ranges but can be expensive and time-consuming.\n  - **Empirical Models**: Obtained by fitting experimental data. Limited to the range of the data and do not extrapolate well.\n  - **Semi-empirical Models**: Combination of theoretical and empirical models, overcoming some limitations and requiring less developmental effort.\n\n#### 1.2 General Modeling Principles\n- Models are approximations of real processes.\n- Modeling involves a trade-off between accuracy and complexity.\n- Dynamic models consist of ODEs and/or PDEs, plus algebraic equations.\n- Process modeling is both an art and a science, requiring creativity in making simplifying assumptions.\n\n#### 1.3 Systematic Approach for Developing Dynamic Models\n1. **State the modeling objectives and end use**.\n2. **Draw a schematic diagram and label all process variables**.\n3. **List all assumptions**.\n4. **Determine the importance of spatial variations**.\n5. **Write appropriate conservation equations**.\n6. **Introduce equilibrium relations and other algebraic equations**.\n7. **Perform a degrees of freedom analysis**.\n8. **Simplify the model**.\n9. **Classify inputs as disturbance variables or manipulated variables**.\n\n#### 1.4 Illustrative Example: Blending Process\n- **Objective**: Blend two inlet streams to produce an outlet stream with a desired composition of component A.\n- **Assumptions**:\n  - Constant mass flow rate for Stream 1.\n  - Stream 2 is pure A.\n  - Perfect mixing.\n  - No reaction.\n  - Constant density of the liquid holdup.\n- **Conservation Equations**:\n  - Mass balance.\n  - Component balance.\n- **Degrees of Freedom Analysis**:\n  - 2 parameters: V, ρ.\n  - 4 variables: x, x1, w1, w2.\n  - 1 equation: Eq. 2-3.\n  - Degrees of freedom: NF = 4 - 1 = 3.\n  - Output: x.\n  - Inputs: x1, w1, w2.\n\n#### 1.5 Conservation Laws\n- **Conservation of Mass**:\n  - Rate of mass accumulation = Rate of mass in - Rate of mass out.\n- **Conservation of Component i**:\n  - Rate of component i accumulation = Rate of component i in - Rate of component i out + Rate of component i produced.\n- **Conservation of Energy**:\n  - Rate of energy accumulation = Rate of energy in - Rate of energy out + Net rate of heat addition - Net rate of work.\n  - Simplified for processes with negligible potential and kinetic energy changes and negligible work.\n\n#### 1.6 Stirred-Tank Heating Process\n- **Assumptions**:\n  - Perfect mixing.\n  - Constant holdup.\n  - Constant density and heat capacity.\n  - Negligible heat losses.\n- **Model Development**:\n  - Internal energy and enthalpy relationships.\n  - Energy balance equation.\n- **Degrees of Freedom Analysis**:\n  - 3 parameters: V, ρ, C.\n  - 4 variables: T, Ti, w, Q.\n  - 1 equation: Eq. 2-36.\n  - Degrees of freedom: NF = 4 - 1 = 3.\n  - Output: T.\n  - Inputs: Ti, w, Q.\n\n#### 1.7 Continuous Stirred Tank Reactor (CSTR)\n- **Assumptions**:\n  - Single, irreversible reaction.\n  - Perfect mixing.\n  - Constant liquid volume.\n  - Constant mass densities.\n  - Negligible heat losses.\n  - Reaction rate given by \\( r = k c_A \\).\n  - Arrhenius temperature dependence of the rate constant.\n- **Model Development**:\n  - Unsteady-state component balance.\n  - Unsteady-state mass balance.\n  - Unsteady-state energy balance.\n- **Extensions**:\n  - Multiple reactions.\n  - Different kinetics.\n  - Significant thermal capacity of coolant.\n  - Variable liquid volume.\n  - Non-negligible heat losses.\n  - Non-perfect mixing.\n\n#### 1.8 Simulation Software\n- **Matlab**: www.mathworks.com\n- **Mathematica**: www.wolfram.com\n- **HYSYS**: www.aspentech.com\n- **Modelica**: www.modelica.org\n- **gPROMS**: www.psenterprise.com\n- **Aspen Custom Modeller**: www.aspentech.com\n- **Global Cape Open**: www.global-cape-open.org\n\n#### 1.9 Importance of Dynamics in Process Safety\n- **Cooling Water Pump Failure**: Time to reactor runaway.\n- **Bartek Maleic Anhydride Process**: Controlling critical variables.\n- **Feed Material Delivery**: Tank volume for continuous feed.\n- **Distillation**: Controlling distillate composition.\n\n### 2. Key Concepts & Explanations\n\n#### 2.1 Dynamic Models\n- **Definition**: Models that describe the behavior of a system over time.\n- **Purpose**: To understand, predict, and control the behavior of chemical processes.\n- **Types**:\n  - **Theoretical Models**: Based on fundamental principles.\n  - **Empirical Models**: Based on experimental data.\n  - **Semi-empirical Models**: Combination of theoretical and empirical approaches.\n\n#### 2.2 Conservation Laws\n- **Mass Balance**: Describes the conservation of mass in a system.\n  - \\[ \\frac{dM}{dt} = \\text{Rate of mass in} - \\text{Rate of mass out} \\]\n- **Component Balance**: Describes the conservation of a specific component in a system.\n  - \\[ \\frac{dM_i}{dt} = \\text{Rate of component i in} - \\text{Rate of component i out} + \\text{Rate of component i produced} \\]\n- **Energy Balance**: Describes the conservation of energy in a system.\n  - \\[ \\frac{dU_{\\text{int}}}{dt} = \\text{Rate of energy in} - \\text{Rate of energy out} + \\text{Net rate of heat addition} - \\text{Net rate of work} \\]\n\n#### 2.3 Degrees of Freedom Analysis\n- **Definition**: Determines the number of independent variables that need to be specified to solve a system of equations.\n- **Steps**:\n  1. List known constants and parameters.\n  2. Count the number of equations and process variables.\n  3. Calculate degrees of freedom: \\( \\text{NF} = \\text{NV} - \\text{NE} \\).\n  4. Identify output variables.\n  5. Identify input variables (disturbance and manipulated).\n\n#### 2.4 Stirred-Tank Heating Process\n- **Assumptions**: Perfect mixing, constant holdup, constant density and heat capacity, negligible heat losses.\n- **Energy Balance Equation**:\n  - \\[ \\rho V C \\frac{dT}{dt} = w C (T_i - T) + Q \\]\n- **Degrees of Freedom**: 3 (Ti, w, Q).\n\n#### 2.5 Continuous Stirred Tank Reactor (CSTR)\n- **Assumptions**: Single irreversible reaction, perfect mixing, constant volume, constant densities, negligible heat losses.\n- **Component Balance**:\n  - \\[ V \\frac{dc_A}{dt} = w (c_{A0} - c_A) - V r \\]\n- **Energy Balance**:\n  - \\[ \\rho V C \\frac{dT}{dt} = w C (T_i - T) + \\Delta H_r r V + Q \\]\n- **Rate Constant**:\n  - \\[ k = k_0 \\exp\\left(-\\frac{E_a}{RT}\\right) \\]\n\n### 3. Formulas & Notations Dictated\n\n#### 3.1 Mass Balance\n- \\[ \\frac{dM}{dt} = \\text{Rate of mass in} - \\text{Rate of mass out} \\]\n- \\[ \\frac{dM}{dt} = w_1 + w_2 - w \\]\n\n#### 3.2 Component Balance\n- \\[ \\frac{dM_i}{dt} = \\text{Rate of component i in} - \\text{Rate of component i out} + \\text{Rate of component i produced} \\]\n- \\[ \\frac{d(M_A)}{dt} = w_1 x_1 + w_2 x_2 - w x \\]\n\n#### 3.3 Energy Balance\n- \\[ \\frac{dU_{\\text{int}}}{dt} = \\text{Rate of energy in} - \\text{Rate of energy out} + \\text{Net rate of heat addition} - \\text{Net rate of work} \\]\n- \\[ \\rho V C \\frac{dT}{dt} = w C (T_i - T) + Q \\]\n\n#### 3.4 CSTR Component Balance\n-"
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1.1 Introduction to Theoretical Models of Chemical Processes\n- **Rationale for Dynamic Models**: \n  - Improve understanding of the process.\n  - Train plant operating personnel.\n  - Develop control strategies for new plants.\n  - Optimize process operating conditions.\n- **Types of Models**:\n  - **Theoretical Models**: Developed using principles of chemistry, physics, and biology. Applicable over wide ranges but can be expensive and time-consuming.\n  - **Empirical Models**: Obtained by fitting experimental data. Limited to the range of the data and do not extrapolate well.\n  - **Semi-empirical Models**: Combination of theoretical and empirical models, overcoming some limitations and requiring less developmental effort.\n\n#### 1.2 General Modeling Principles\n- Models are approximations of real processes.\n- Modeling involves a trade-off between accuracy and complexity.\n- Dynamic models consist of ODEs and/or PDEs, plus algebraic equations.\n- Process modeling is both an art and a science, requiring creativity in making simplifying assumptions.\n\n#### 1.3 Systematic Approach for Developing Dynamic Models\n1. **State the modeling objectives and end use**.\n2. **Draw a schematic diagram and label all process variables**.\n3. **List all assumptions**.\n4. **Determine the importance of spatial variations**.\n5. **Write appropriate conservation equations**.\n6. **Introduce equilibrium relations and other algebraic equations**.\n7. **Perform a degrees of freedom analysis**.\n8. **Simplify the model**.\n9. **Classify inputs as disturbance variables or manipulated variables**.\n\n#### 1.4 Illustrative Example: Blending Process\n- **Objective**: Blend two inlet streams to produce an outlet stream with a desired composition of component A.\n- **Assumptions**:\n  - Constant mass flow rate for Stream 1.\n  - Stream 2 is pure A.\n  - Perfect mixing.\n  - No reaction.\n  - Constant density of the liquid holdup.\n- **Conservation Equations**:\n  - Mass balance.\n  - Component balance.\n- **Degrees of Freedom Analysis**:\n  - 2 parameters: V, ρ.\n  - 4 variables: x, x1, w1, w2.\n  - 1 equation: Eq. 2-3.\n  - Degrees of freedom: NF = 4 - 1 = 3.\n  - Output: x.\n  - Inputs: x1, w1, w2.\n\n#### 1.5 Conservation Laws\n- **Conservation of Mass**:\n  - Rate of mass accumulation = Rate of mass in - Rate of mass out.\n- **Conservation of Component i**:\n  - Rate of component i accumulation = Rate of component i in - Rate of component i out + Rate of component i produced.\n- **Conservation of Energy**:\n  - Rate of energy accumulation = Rate of energy in - Rate of energy out + Net rate of heat addition - Net rate of work.\n  - Simplified for processes with negligible potential and kinetic energy changes and negligible work.\n\n#### 1.6 Stirred-Tank Heating Process\n- **Assumptions**:\n  - Perfect mixing.\n  - Constant holdup.\n  - Constant density and heat capacity.\n  - Negligible heat losses.\n- **Model Development**:\n  - Internal energy and enthalpy relationships.\n  - Energy balance equation.\n- **Degrees of Freedom Analysis**:\n  - 3 parameters: V, ρ, C.\n  - 4 variables: T, Ti, w, Q.\n  - 1 equation: Eq. 2-36.\n  - Degrees of freedom: NF = 4 - 1 = 3.\n  - Output: T.\n  - Inputs: Ti, w, Q.\n\n#### 1.7 Continuous Stirred Tank Reactor (CSTR)\n- **Assumptions**:\n  - Single, irreversible reaction.\n  - Perfect mixing.\n  - Constant liquid volume.\n  - Constant mass densities.\n  - Negligible heat losses.\n  - Reaction rate given by \\( r = k c_A \\).\n  - Arrhenius temperature dependence of the rate constant.\n- **Model Development**:\n  - Unsteady-state component balance.\n  - Unsteady-state mass balance.\n  - Unsteady-state energy balance.\n- **Extensions**:\n  - Multiple reactions.\n  - Different kinetics.\n  - Significant thermal capacity of coolant.\n  - Variable liquid volume.\n  - Non-negligible heat losses.\n  - Non-perfect mixing.\n\n#### 1.8 Simulation Software\n- **Matlab**: www.mathworks.com\n- **Mathematica**: www.wolfram.com\n- **HYSYS**: www.aspentech.com\n- **Modelica**: www.modelica.org\n- **gPROMS**: www.psenterprise.com\n- **Aspen Custom Modeller**: www.aspentech.com\n- **Global Cape Open**: www.global-cape-open.org\n\n#### 1.9 Importance of Dynamics in Process Safety\n- **Cooling Water Pump Failure**: Time to reactor runaway.\n- **Bartek Maleic Anhydride Process**: Controlling critical variables.\n- **Feed Material Delivery**: Tank volume for continuous feed.\n- **Distillation**: Controlling distillate composition.\n\n### 2. Key Concepts & Explanations\n\n#### 2.1 Dynamic Models\n- **Definition**: Models that describe the behavior of a system over time.\n- **Purpose**: To understand, predict, and control the behavior of chemical processes.\n- **Types**:\n  - **Theoretical Models**: Based on fundamental principles.\n  - **Empirical Models**: Based on experimental data.\n  - **Semi-empirical Models**: Combination of theoretical and empirical approaches.\n\n#### 2.2 Conservation Laws\n- **Mass Balance**: Describes the conservation of mass in a system.\n  - \\[ \\frac{dM}{dt} = \\text{Rate of mass in} - \\text{Rate of mass out} \\]\n- **Component Balance**: Describes the conservation of a specific component in a system.\n  - \\[ \\frac{dM_i}{dt} = \\text{Rate of component i in} - \\text{Rate of component i out} + \\text{Rate of component i produced} \\]\n- **Energy Balance**: Describes the conservation of energy in a system.\n  - \\[ \\frac{dU_{\\text{int}}}{dt} = \\text{Rate of energy in} - \\text{Rate of energy out} + \\text{Net rate of heat addition} - \\text{Net rate of work} \\]\n\n#### 2.3 Degrees of Freedom Analysis\n- **Definition**: Determines the number of independent variables that need to be specified to solve a system of equations.\n- **Steps**:\n  1. List known constants and parameters.\n  2. Count the number of equations and process variables.\n  3. Calculate degrees of freedom: \\( \\text{NF} = \\text{NV} - \\text{NE} \\).\n  4. Identify output variables.\n  5. Identify input variables (disturbance and manipulated).\n\n#### 2.4 Stirred-Tank Heating Process\n- **Assumptions**: Perfect mixing, constant holdup, constant density and heat capacity, negligible heat losses.\n- **Energy Balance Equation**:\n  - \\[ \\rho V C \\frac{dT}{dt} = w C (T_i - T) + Q \\]\n- **Degrees of Freedom**: 3 (Ti, w, Q).\n\n#### 2.5 Continuous Stirred Tank Reactor (CSTR)\n- **Assumptions**: Single irreversible reaction, perfect mixing, constant volume, constant densities, negligible heat losses.\n- **Component Balance**:\n  - \\[ V \\frac{dc_A}{dt} = w (c_{A0} - c_A) - V r \\]\n- **Energy Balance**:\n  - \\[ \\rho V C \\frac{dT}{dt} = w C (T_i - T) + \\Delta H_r r V + Q \\]\n- **Rate Constant**:\n  - \\[ k = k_0 \\exp\\left(-\\frac{E_a}{RT}\\right) \\]\n\n### 3. Formulas & Notations Dictated\n\n#### 3.1 Mass Balance\n- \\[ \\frac{dM}{dt} = \\text{Rate of mass in} - \\text{Rate of mass out} \\]\n- \\[ \\frac{dM}{dt} = w_1 + w_2 - w \\]\n\n#### 3.2 Component Balance\n- \\[ \\frac{dM_i}{dt} = \\text{Rate of component i in} - \\text{Rate of component i out} + \\text{Rate of component i produced} \\]\n- \\[ \\frac{d(M_A)}{dt} = w_1 x_1 + w_2 x_2 - w x \\]\n\n#### 3.3 Energy Balance\n- \\[ \\frac{dU_{\\text{int}}}{dt} = \\text{Rate of energy in} - \\text{Rate of energy out} + \\text{Net rate of heat addition} - \\text{Net rate of work} \\]\n- \\[ \\rho V C \\frac{dT}{dt} = w C (T_i - T) + Q \\]\n\n#### 3.4 CSTR Component Balance\n-",
+          "catbox_url": "https://files.catbox.moe/e5buog.pdf"
         },
         {
           "name": "Chapter_3m.pdf",
@@ -1190,7 +1193,8 @@
             "BQACAgUAAyEGAATqgTaTAAPsahvNneq5fw2fVWMyydK40BlosX8AAuocAALik-FUthOdWEpbqpo7BA"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1. Introduction to Laplace Transforms\n- **Historical Context**: Pierre-Simon Laplace (1749-1827) is introduced as the founder of Laplace transforms.\n- **Importance**: Laplace transforms are crucial for solving linear ordinary differential equations (ODEs) and are widely used in process control, transfer functions, frequency response, control system design, and stability analysis.\n\n#### 2. Definition of Laplace Transform\n- **Definition**: The Laplace transform of a function \\( f(t) \\) is defined as:\n  \\[\n  F(s) = \\mathcal{L}\\{f(t)\\} = \\int_0^\\infty f(t) e^{-st} \\, dt\n  \\]\n  where \\( F(s) \\) is the Laplace transform, \\( \\mathcal{L} \\) is the Laplace transform operator, and \\( s \\) is a complex variable \\( s = a + bj \\) with \\( j = \\sqrt{-1} \\).\n\n#### 3. Inverse Laplace Transform\n- **Definition**: The inverse Laplace transform converts an \\( s \\)-domain function back to the time domain:\n  \\[\n  f(t) = \\mathcal{L}^{-1}\\{F(s)\\}\n  \\]\n- **Linearity**: Both \\( \\mathcal{L} \\) and \\( \\mathcal{L}^{-1} \\) are linear operators:\n  \\[\n  \\mathcal{L}\\{ax(t) + by(t)\\} = aX(s) + bY(s)\n  \\]\n  \\[\n  \\mathcal{L}^{-1}\\{aX(s) + bY(s)\\} = ax(t) + by(t)\n  \\]\n\n#### 4. Laplace Transforms of Common Functions\n- **Constant Function**: \\( f(t) = a \\)\n  \\[\n  \\mathcal{L}\\{a\\} = \\frac{a}{s}\n  \\]\n- **Step Function**: \\( u(t) \\)\n  \\[\n  \\mathcal{L}\\{u(t)\\} = \\frac{1}{s}\n  \\]\n- **Derivatives**: \n  \\[\n  \\mathcal{L}\\left\\{\\frac{df(t)}{dt}\\right\\} = sF(s) - f(0)\n  \\]\n  For higher-order derivatives:\n  \\[\n  \\mathcal{L}\\left\\{\\frac{d^n f(t)}{dt^n}\\right\\} = s^n F(s) - s^{n-1} f(0) - s^{n-2} f'(0) - \\cdots - f^{(n-1)}(0)\n  \\]\n- **Exponential Function**: \\( f(t) = e^{-bt} \\)\n  \\[\n  \\mathcal{L}\\{e^{-bt}\\} = \\frac{1}{s + b}\n  \\]\n- **Rectangular Pulse Function**: \\( f(t) \\) defined as:\n  \\[\n  f(t) = \\begin{cases} \n  0 & \\text{for } t < 0 \\\\\n  h & \\text{for } 0 \\leq t < w \\\\\n  0 & \\text{for } t \\geq w \n  \\end{cases}\n  \\]\n  \\[\n  \\mathcal{L}\\{f(t)\\} = \\frac{h(1 - e^{-sw})}{s}\n  \\]\n- **Impulse Function (Dirac Delta Function)**: \\( \\delta(t) \\)\n  \\[\n  \\mathcal{L}\\{\\delta(t)\\} = 1\n  \\]\n\n#### 5. Solution of ODEs by Laplace Transforms\n- **Procedure**:\n  1. Take the Laplace transform of both sides of the ODE.\n  2. Rearrange the resulting algebraic equation to solve for \\( Y(s) \\).\n  3. Perform a partial fraction expansion.\n  4. Use the inverse Laplace transform to find \\( y(t) \\).\n\n#### 6. Partial Fraction Expansions\n- **Basic Idea**: Expand a complex expression for \\( Y(s) \\) into simpler terms that appear in the Laplace transform table.\n- **Example**:\n  \\[\n  Y(s) = \\frac{5}{(s+1)(s+4)}\n  \\]\n  Perform a partial fraction expansion:\n  \\[\n  Y(s) = \\frac{\\alpha_1}{s+1} + \\frac{\\alpha_2}{s+4}\n  \\]\n  Solve for coefficients \\( \\alpha_1 \\) and \\( \\alpha_2 \\).\n\n#### 7. Important Properties of Laplace Transforms\n- **Final Value Theorem**:\n  \\[\n  \\lim_{t \\to \\infty} y(t) = \\lim_{s \\to 0} sY(s)\n  \\]\n  provided the limit exists.\n- **Time Delay**:\n  \\[\n  \\mathcal{L}\\{y(t - \\theta)\\} = e^{-s\\theta} Y(s)\n  \\]\n- **Initial Value Theorem**:\n  \\[\n  \\lim_{t \\to 0} y(t) = \\lim_{s \\to \\infty} sY(s)\n  \\]\n\n### 2. Key Concepts & Explanations\n\n#### 1. Laplace Transform\n- **Definition**: A mathematical tool that transforms a function of time into a function of a complex variable \\( s \\).\n- **Purpose**: Simplifies the solution of linear ODEs by converting them into algebraic equations.\n\n#### 2. Inverse Laplace Transform\n- **Definition**: Converts a function in the \\( s \\)-domain back to the time domain.\n- **Linearity**: Both the Laplace transform and its inverse are linear operators, allowing the transformation of linear combinations of functions.\n\n#### 3. Common Laplace Transforms\n- **Constant Function**: The Laplace transform of a constant \\( a \\) is \\( \\frac{a}{s} \\).\n- **Step Function**: The Laplace transform of the unit step function \\( u(t) \\) is \\( \\frac{1}{s} \\).\n- **Derivatives**: The Laplace transform of the \\( n \\)-th derivative of \\( f(t) \\) is \\( s^n F(s) - s^{n-1} f(0) - \\cdots - f^{(n-1)}(0) \\).\n- **Exponential Function**: The Laplace transform of \\( e^{-bt} \\) is \\( \\frac{1}{s + b} \\).\n- **Rectangular Pulse Function**: The Laplace transform of a rectangular pulse is \\( \\frac{h(1 - e^{-sw})}{s} \\).\n- **Impulse Function**: The Laplace transform of the Dirac delta function \\( \\delta(t) \\) is 1.\n\n#### 4. Solution of ODEs\n- **Procedure**: The Laplace transform method involves transforming the ODE, solving the resulting algebraic equation, and then using the inverse Laplace transform to find the solution in the time domain.\n\n#### 5. Partial Fraction Expansions\n- **Purpose**: Simplifies the expression for \\( Y(s) \\) into terms that can be easily inverted using the Laplace transform table.\n- **Example**: For \\( Y(s) = \\frac{5}{(s+1)(s+4)} \\), the partial fraction expansion is \\( \\frac{\\alpha_1}{s+1} + \\frac{\\alpha_2}{s+4} \\).\n\n#### 6. Important Properties\n- **Final Value Theorem**: Provides the steady-state value of a system.\n- **Time Delay**: Represents a delay in the system.\n- **Initial Value Theorem**: Provides the initial value of a system.\n\n### 3. Formulas & Notations Dictated\n\n#### 1. Definition of Laplace Transform\n\\[\nF(s) = \\mathcal{L}\\{f(t)\\} = \\int_0^\\infty f(t) e^{-st} \\, dt\n\\]\n- \\( F(s) \\): Laplace transform of \\( f(t) \\)\n- \\( \\mathcal{L} \\): Laplace transform operator\n- \\( f(t) \\): Function of time\n- \\( s \\): Complex variable \\( s = a + bj \\) where \\( j = \\sqrt{-1} \\)\n\n#### 2. Inverse Laplace Transform\n\\[\nf(t) = \\mathcal{L}^{-1}\\{F(s)\\}\n\\]\n\n#### 3. Common Laplace Transforms\n- **Constant Function**:\n  \\[\n  \\mathcal{L}\\{a\\} = \\frac{a}{s}\n  \\]\n- **Step Function**:\n  \\[\n  \\mathcal{L}\\{u(t)\\} = \\frac{1}{s}\n  \\]\n- **Derivatives**:\n  \\[\n  \\mathcal{L}\\left\\{\\frac{df(t)}{dt}\\right\\} = sF(s) - f(0)\n  \\]\n  \\[\n  \\mathcal{L}\\left\\{\\frac{d^n f(t)}{dt^n}\\right\\} = s^n F(s) - s^{n"
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1. Introduction to Laplace Transforms\n- **Historical Context**: Pierre-Simon Laplace (1749-1827) is introduced as the founder of Laplace transforms.\n- **Importance**: Laplace transforms are crucial for solving linear ordinary differential equations (ODEs) and are widely used in process control, transfer functions, frequency response, control system design, and stability analysis.\n\n#### 2. Definition of Laplace Transform\n- **Definition**: The Laplace transform of a function \\( f(t) \\) is defined as:\n  \\[\n  F(s) = \\mathcal{L}\\{f(t)\\} = \\int_0^\\infty f(t) e^{-st} \\, dt\n  \\]\n  where \\( F(s) \\) is the Laplace transform, \\( \\mathcal{L} \\) is the Laplace transform operator, and \\( s \\) is a complex variable \\( s = a + bj \\) with \\( j = \\sqrt{-1} \\).\n\n#### 3. Inverse Laplace Transform\n- **Definition**: The inverse Laplace transform converts an \\( s \\)-domain function back to the time domain:\n  \\[\n  f(t) = \\mathcal{L}^{-1}\\{F(s)\\}\n  \\]\n- **Linearity**: Both \\( \\mathcal{L} \\) and \\( \\mathcal{L}^{-1} \\) are linear operators:\n  \\[\n  \\mathcal{L}\\{ax(t) + by(t)\\} = aX(s) + bY(s)\n  \\]\n  \\[\n  \\mathcal{L}^{-1}\\{aX(s) + bY(s)\\} = ax(t) + by(t)\n  \\]\n\n#### 4. Laplace Transforms of Common Functions\n- **Constant Function**: \\( f(t) = a \\)\n  \\[\n  \\mathcal{L}\\{a\\} = \\frac{a}{s}\n  \\]\n- **Step Function**: \\( u(t) \\)\n  \\[\n  \\mathcal{L}\\{u(t)\\} = \\frac{1}{s}\n  \\]\n- **Derivatives**: \n  \\[\n  \\mathcal{L}\\left\\{\\frac{df(t)}{dt}\\right\\} = sF(s) - f(0)\n  \\]\n  For higher-order derivatives:\n  \\[\n  \\mathcal{L}\\left\\{\\frac{d^n f(t)}{dt^n}\\right\\} = s^n F(s) - s^{n-1} f(0) - s^{n-2} f'(0) - \\cdots - f^{(n-1)}(0)\n  \\]\n- **Exponential Function**: \\( f(t) = e^{-bt} \\)\n  \\[\n  \\mathcal{L}\\{e^{-bt}\\} = \\frac{1}{s + b}\n  \\]\n- **Rectangular Pulse Function**: \\( f(t) \\) defined as:\n  \\[\n  f(t) = \\begin{cases} \n  0 & \\text{for } t < 0 \\\\\n  h & \\text{for } 0 \\leq t < w \\\\\n  0 & \\text{for } t \\geq w \n  \\end{cases}\n  \\]\n  \\[\n  \\mathcal{L}\\{f(t)\\} = \\frac{h(1 - e^{-sw})}{s}\n  \\]\n- **Impulse Function (Dirac Delta Function)**: \\( \\delta(t) \\)\n  \\[\n  \\mathcal{L}\\{\\delta(t)\\} = 1\n  \\]\n\n#### 5. Solution of ODEs by Laplace Transforms\n- **Procedure**:\n  1. Take the Laplace transform of both sides of the ODE.\n  2. Rearrange the resulting algebraic equation to solve for \\( Y(s) \\).\n  3. Perform a partial fraction expansion.\n  4. Use the inverse Laplace transform to find \\( y(t) \\).\n\n#### 6. Partial Fraction Expansions\n- **Basic Idea**: Expand a complex expression for \\( Y(s) \\) into simpler terms that appear in the Laplace transform table.\n- **Example**:\n  \\[\n  Y(s) = \\frac{5}{(s+1)(s+4)}\n  \\]\n  Perform a partial fraction expansion:\n  \\[\n  Y(s) = \\frac{\\alpha_1}{s+1} + \\frac{\\alpha_2}{s+4}\n  \\]\n  Solve for coefficients \\( \\alpha_1 \\) and \\( \\alpha_2 \\).\n\n#### 7. Important Properties of Laplace Transforms\n- **Final Value Theorem**:\n  \\[\n  \\lim_{t \\to \\infty} y(t) = \\lim_{s \\to 0} sY(s)\n  \\]\n  provided the limit exists.\n- **Time Delay**:\n  \\[\n  \\mathcal{L}\\{y(t - \\theta)\\} = e^{-s\\theta} Y(s)\n  \\]\n- **Initial Value Theorem**:\n  \\[\n  \\lim_{t \\to 0} y(t) = \\lim_{s \\to \\infty} sY(s)\n  \\]\n\n### 2. Key Concepts & Explanations\n\n#### 1. Laplace Transform\n- **Definition**: A mathematical tool that transforms a function of time into a function of a complex variable \\( s \\).\n- **Purpose**: Simplifies the solution of linear ODEs by converting them into algebraic equations.\n\n#### 2. Inverse Laplace Transform\n- **Definition**: Converts a function in the \\( s \\)-domain back to the time domain.\n- **Linearity**: Both the Laplace transform and its inverse are linear operators, allowing the transformation of linear combinations of functions.\n\n#### 3. Common Laplace Transforms\n- **Constant Function**: The Laplace transform of a constant \\( a \\) is \\( \\frac{a}{s} \\).\n- **Step Function**: The Laplace transform of the unit step function \\( u(t) \\) is \\( \\frac{1}{s} \\).\n- **Derivatives**: The Laplace transform of the \\( n \\)-th derivative of \\( f(t) \\) is \\( s^n F(s) - s^{n-1} f(0) - \\cdots - f^{(n-1)}(0) \\).\n- **Exponential Function**: The Laplace transform of \\( e^{-bt} \\) is \\( \\frac{1}{s + b} \\).\n- **Rectangular Pulse Function**: The Laplace transform of a rectangular pulse is \\( \\frac{h(1 - e^{-sw})}{s} \\).\n- **Impulse Function**: The Laplace transform of the Dirac delta function \\( \\delta(t) \\) is 1.\n\n#### 4. Solution of ODEs\n- **Procedure**: The Laplace transform method involves transforming the ODE, solving the resulting algebraic equation, and then using the inverse Laplace transform to find the solution in the time domain.\n\n#### 5. Partial Fraction Expansions\n- **Purpose**: Simplifies the expression for \\( Y(s) \\) into terms that can be easily inverted using the Laplace transform table.\n- **Example**: For \\( Y(s) = \\frac{5}{(s+1)(s+4)} \\), the partial fraction expansion is \\( \\frac{\\alpha_1}{s+1} + \\frac{\\alpha_2}{s+4} \\).\n\n#### 6. Important Properties\n- **Final Value Theorem**: Provides the steady-state value of a system.\n- **Time Delay**: Represents a delay in the system.\n- **Initial Value Theorem**: Provides the initial value of a system.\n\n### 3. Formulas & Notations Dictated\n\n#### 1. Definition of Laplace Transform\n\\[\nF(s) = \\mathcal{L}\\{f(t)\\} = \\int_0^\\infty f(t) e^{-st} \\, dt\n\\]\n- \\( F(s) \\): Laplace transform of \\( f(t) \\)\n- \\( \\mathcal{L} \\): Laplace transform operator\n- \\( f(t) \\): Function of time\n- \\( s \\): Complex variable \\( s = a + bj \\) where \\( j = \\sqrt{-1} \\)\n\n#### 2. Inverse Laplace Transform\n\\[\nf(t) = \\mathcal{L}^{-1}\\{F(s)\\}\n\\]\n\n#### 3. Common Laplace Transforms\n- **Constant Function**:\n  \\[\n  \\mathcal{L}\\{a\\} = \\frac{a}{s}\n  \\]\n- **Step Function**:\n  \\[\n  \\mathcal{L}\\{u(t)\\} = \\frac{1}{s}\n  \\]\n- **Derivatives**:\n  \\[\n  \\mathcal{L}\\left\\{\\frac{df(t)}{dt}\\right\\} = sF(s) - f(0)\n  \\]\n  \\[\n  \\mathcal{L}\\left\\{\\frac{d^n f(t)}{dt^n}\\right\\} = s^n F(s) - s^{n",
+          "catbox_url": "https://files.catbox.moe/6mgu8d.pdf"
         },
         {
           "name": "Chapter_4m.pdf",
@@ -1202,7 +1206,8 @@
             "BQACAgUAAyEGAATqgTaTAAPvahvNx6G4GFk6byPvpG_3NFxGX3YAAu0cAALik-FUyAtS83nJIRA7BA"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Introduction to Transfer Function Models\n- **Dynamic Models and ODEs**: Previously, dynamic models were represented using ordinary differential equations (ODEs). Laplace transforms (LT) were used to determine transient responses from these ODE models.\n- **Disadvantages of ODE Models**: Any change in initial conditions or forcing functions required rederiving the complete solution.\n- **Transfer Function Models**: Introduced as an alternative model form based on Laplace transforms. These models characterize the dynamic relationship between input and output variables.\n\n#### Definition and Properties of Transfer Functions\n- **Convenient Representation**: Transfer functions (TFs) provide a convenient representation of linear, dynamic models.\n- **Input-Output Relationship**: A TF relates one input and one output, where the input is the forcing function and the output is the response.\n- **Mathematical Definition**: The TF \\( G(s) \\) is defined as the ratio of the Laplace transform of the output \\( Y(s) \\) to the Laplace transform of the input \\( X(s) \\):\n  \\[\n  G(s) = \\frac{Y(s)}{X(s)}\n  \\]\n\n#### Development of Transfer Functions\n- **Stirred Tank Heating System**: An example of a stirred tank heating system is used to illustrate the development of transfer functions.\n- **Dynamic Model**: The dynamic model for the system is given by:\n  \\[\n  \\rho V \\frac{dT}{dt} = wC_p (T_i - T) + Q\n  \\]\n- **Steady-State Conditions**: At steady state, the equation simplifies to:\n  \\[\n  wC_p (T_i - T) + Q = 0\n  \\]\n- **Deviation Variables**: Introducing deviation variables \\( T' = T - T_s \\), \\( T_i' = T_i - T_{is} \\), and \\( Q' = Q - Q_s \\), the dynamic model becomes:\n  \\[\n  \\rho V \\frac{dT'}{dt} = wC_p (T_i' - T') + Q'\n  \\]\n- **Laplace Transform**: Taking the Laplace transform of the deviation model:\n  \\[\n  \\rho V \\left[ sT'(s) - T'(0) \\right] = wC_p \\left[ T_i'(s) - T'(s) \\right] + Q'(s)\n  \\]\n- **Initial Conditions**: Assuming zero initial conditions, the equation simplifies to:\n  \\[\n  \\rho V sT'(s) = wC_p \\left[ T_i'(s) - T'(s) \\right] + Q'(s)\n  \\]\n- **Transfer Function**: Solving for \\( T'(s) \\):\n  \\[\n  T'(s) = \\frac{K}{\\tau s + 1} Q'(s) + \\frac{K}{\\tau s + 1} T_i'(s)\n  \\]\n  where \\( K = \\frac{1}{\\rho V} \\) and \\( \\tau = \\frac{\\rho V}{wC_p} \\).\n\n#### Properties of Transfer Function Models\n- **Steady-State Gain**: The steady-state gain \\( K \\) of a TF can be used to calculate the steady-state change in the output due to a steady-state change in the input:\n  \\[\n  K = \\lim_{s \\to 0} G(s)\n  \\]\n- **Order of a TF**: The order of a TF is defined as the order of the denominator polynomial, which is equal to the order of the ODE.\n- **Additive Property**: For a system influenced by multiple inputs, the response to changes in both inputs can be written as:\n  \\[\n  Y(s) = G_1(s) U_1(s) + G_2(s) U_2(s)\n  \\]\n- **Multiplicative Property**: For a system with multiple transfer functions in series:\n  \\[\n  Y(s) = G_1(s) G_2(s) U(s)\n  \\]\n\n#### Linearization of Nonlinear Models\n- **Taylor Series Expansion**: Nonlinear models can be linearized using a Taylor series expansion about a specified operating point.\n- **Example**: For a nonlinear model \\( \\frac{dy}{dt} = f(y, u) \\), the linearized model is:\n  \\[\n  \\frac{dy'}{dt} = \\frac{\\partial f}{\\partial y} y' + \\frac{\\partial f}{\\partial u} u'\n  \\]\n\n#### State-Space Models\n- **General Form**: State-space models are a general class of ODE models:\n  \\[\n  \\frac{dx}{dt} = A x + B u + E d\n  \\]\n  \\[\n  y = C x + D u\n  \\]\n- **Two Tank System**: Examples of interacting and noninteracting systems are provided, with mass balance and valve relations for each.\n\n#### Example: CSTR Model\n- **Nonlinear Model**: The nonlinear CSTR model is given by:\n  \\[\n  \\frac{dc_A}{dt} = \\frac{q}{V} (c_{A_i} - c_A) - k_0 e^{-\\frac{E}{RT}} c_A\n  \\]\n  \\[\n  \\frac{dT}{dt} = \\frac{q}{V} (T_i - T) + \\frac{1}{\\rho C_p} \\left( -k_0 e^{-\\frac{E}{RT}} \\Delta H_r c_A + \\frac{U A}{V} (T_c - T) \\right)\n  \\]\n- **Linearized Model**: The linearized model is:\n  \\[\n  \\frac{dc_A'}{dt} = a_{11} c_A' + a_{12} T' + b_1 T_c'\n  \\]\n  \\[\n  \\frac{dT'}{dt} = a_{21} c_A' + a_{22} T' + b_2 T_c'\n  \\]\n- **State-Space Form**: The linearized model can be written in state-space form:\n  \\[\n  \\begin{bmatrix}\n  \\frac{dc_A'}{dt} \\\\\n  \\frac{dT'}{dt}\n  \\end{bmatrix}\n  =\n  \\begin{bmatrix}\n  a_{11} & a_{12} \\\\\n  a_{21} & a_{22}\n  \\end{bmatrix}\n  \\begin{bmatrix}\n  c_A' \\\\\n  T'\n  \\end{bmatrix}\n  +\n  \\begin{bmatrix}\n  b_1 \\\\\n  b_2\n  \\end{bmatrix}\n  T_c'\n  \\]\n\n### 2. Key Concepts & Explanations\n\n- **Transfer Functions**: Mathematical representations that describe the relationship between the input and output of a system in the Laplace domain. They are particularly useful for linear, time-invariant systems.\n- **Steady-State Gain**: The ratio of the steady-state change in the output to the steady-state change in the input. It is obtained by evaluating the transfer function as \\( s \\to 0 \\).\n- **Order of a Transfer Function**: The order of the transfer function is the highest power of \\( s \\) in the denominator polynomial, which corresponds to the order of the ODE.\n- **Additive Property**: For systems influenced by multiple inputs, the output is the sum of the responses to each input.\n- **Multiplicative Property**: For systems with multiple transfer functions in series, the overall transfer function is the product of the individual transfer functions.\n- **Linearization**: The process of approximating a nonlinear model with a linear model around a specified operating point using a Taylor series expansion.\n- **State-Space Models**: A general form of dynamic models that describe the behavior of a system using state variables, control variables, and disturbance variables. They are particularly useful for systems with multiple inputs and outputs.\n\n### 3. Formulas & Notations Dictated\n\n- **Transfer Function Definition**:\n  \\[\n  G(s) = \\frac{Y(s)}{X(s)}\n  \\]\n  where \\( Y(s) \\) is the Laplace transform of the output \\( y(t) \\) and \\( X(s) \\) is the Laplace transform of the input \\( x(t) \\).\n\n- **Stirred Tank Heating System**:\n  \\[\n  \\rho V \\frac{dT}{dt} = wC_p (T_i - T) + Q\n  \\]\n  \\[\n  \\rho V \\frac{dT'}{dt} = wC_p (T_i' - T') + Q'\n  \\]\n  \\[\n  T'(s) = \\frac{K}{\\tau s + 1} Q'(s) + \\frac{K}{\\tau s + 1} T_i'(s)\n  \\]\n  where \\( K = \\frac{1}{\\rho V} \\) and \\( \\tau = \\frac{\\rho V}{wC_p} \\).\n\n- **Steady-State Gain**:\n  \\[\n  K = \\lim_{s \\to 0} G(s)\n  \\]\n\n- **Order of a Transfer Function**:\n  \\[\n  \\text{Order} = \\text{Order of the denominator polynomial}\n  \\]\n\n- **Additive"
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Introduction to Transfer Function Models\n- **Dynamic Models and ODEs**: Previously, dynamic models were represented using ordinary differential equations (ODEs). Laplace transforms (LT) were used to determine transient responses from these ODE models.\n- **Disadvantages of ODE Models**: Any change in initial conditions or forcing functions required rederiving the complete solution.\n- **Transfer Function Models**: Introduced as an alternative model form based on Laplace transforms. These models characterize the dynamic relationship between input and output variables.\n\n#### Definition and Properties of Transfer Functions\n- **Convenient Representation**: Transfer functions (TFs) provide a convenient representation of linear, dynamic models.\n- **Input-Output Relationship**: A TF relates one input and one output, where the input is the forcing function and the output is the response.\n- **Mathematical Definition**: The TF \\( G(s) \\) is defined as the ratio of the Laplace transform of the output \\( Y(s) \\) to the Laplace transform of the input \\( X(s) \\):\n  \\[\n  G(s) = \\frac{Y(s)}{X(s)}\n  \\]\n\n#### Development of Transfer Functions\n- **Stirred Tank Heating System**: An example of a stirred tank heating system is used to illustrate the development of transfer functions.\n- **Dynamic Model**: The dynamic model for the system is given by:\n  \\[\n  \\rho V \\frac{dT}{dt} = wC_p (T_i - T) + Q\n  \\]\n- **Steady-State Conditions**: At steady state, the equation simplifies to:\n  \\[\n  wC_p (T_i - T) + Q = 0\n  \\]\n- **Deviation Variables**: Introducing deviation variables \\( T' = T - T_s \\), \\( T_i' = T_i - T_{is} \\), and \\( Q' = Q - Q_s \\), the dynamic model becomes:\n  \\[\n  \\rho V \\frac{dT'}{dt} = wC_p (T_i' - T') + Q'\n  \\]\n- **Laplace Transform**: Taking the Laplace transform of the deviation model:\n  \\[\n  \\rho V \\left[ sT'(s) - T'(0) \\right] = wC_p \\left[ T_i'(s) - T'(s) \\right] + Q'(s)\n  \\]\n- **Initial Conditions**: Assuming zero initial conditions, the equation simplifies to:\n  \\[\n  \\rho V sT'(s) = wC_p \\left[ T_i'(s) - T'(s) \\right] + Q'(s)\n  \\]\n- **Transfer Function**: Solving for \\( T'(s) \\):\n  \\[\n  T'(s) = \\frac{K}{\\tau s + 1} Q'(s) + \\frac{K}{\\tau s + 1} T_i'(s)\n  \\]\n  where \\( K = \\frac{1}{\\rho V} \\) and \\( \\tau = \\frac{\\rho V}{wC_p} \\).\n\n#### Properties of Transfer Function Models\n- **Steady-State Gain**: The steady-state gain \\( K \\) of a TF can be used to calculate the steady-state change in the output due to a steady-state change in the input:\n  \\[\n  K = \\lim_{s \\to 0} G(s)\n  \\]\n- **Order of a TF**: The order of a TF is defined as the order of the denominator polynomial, which is equal to the order of the ODE.\n- **Additive Property**: For a system influenced by multiple inputs, the response to changes in both inputs can be written as:\n  \\[\n  Y(s) = G_1(s) U_1(s) + G_2(s) U_2(s)\n  \\]\n- **Multiplicative Property**: For a system with multiple transfer functions in series:\n  \\[\n  Y(s) = G_1(s) G_2(s) U(s)\n  \\]\n\n#### Linearization of Nonlinear Models\n- **Taylor Series Expansion**: Nonlinear models can be linearized using a Taylor series expansion about a specified operating point.\n- **Example**: For a nonlinear model \\( \\frac{dy}{dt} = f(y, u) \\), the linearized model is:\n  \\[\n  \\frac{dy'}{dt} = \\frac{\\partial f}{\\partial y} y' + \\frac{\\partial f}{\\partial u} u'\n  \\]\n\n#### State-Space Models\n- **General Form**: State-space models are a general class of ODE models:\n  \\[\n  \\frac{dx}{dt} = A x + B u + E d\n  \\]\n  \\[\n  y = C x + D u\n  \\]\n- **Two Tank System**: Examples of interacting and noninteracting systems are provided, with mass balance and valve relations for each.\n\n#### Example: CSTR Model\n- **Nonlinear Model**: The nonlinear CSTR model is given by:\n  \\[\n  \\frac{dc_A}{dt} = \\frac{q}{V} (c_{A_i} - c_A) - k_0 e^{-\\frac{E}{RT}} c_A\n  \\]\n  \\[\n  \\frac{dT}{dt} = \\frac{q}{V} (T_i - T) + \\frac{1}{\\rho C_p} \\left( -k_0 e^{-\\frac{E}{RT}} \\Delta H_r c_A + \\frac{U A}{V} (T_c - T) \\right)\n  \\]\n- **Linearized Model**: The linearized model is:\n  \\[\n  \\frac{dc_A'}{dt} = a_{11} c_A' + a_{12} T' + b_1 T_c'\n  \\]\n  \\[\n  \\frac{dT'}{dt} = a_{21} c_A' + a_{22} T' + b_2 T_c'\n  \\]\n- **State-Space Form**: The linearized model can be written in state-space form:\n  \\[\n  \\begin{bmatrix}\n  \\frac{dc_A'}{dt} \\\\\n  \\frac{dT'}{dt}\n  \\end{bmatrix}\n  =\n  \\begin{bmatrix}\n  a_{11} & a_{12} \\\\\n  a_{21} & a_{22}\n  \\end{bmatrix}\n  \\begin{bmatrix}\n  c_A' \\\\\n  T'\n  \\end{bmatrix}\n  +\n  \\begin{bmatrix}\n  b_1 \\\\\n  b_2\n  \\end{bmatrix}\n  T_c'\n  \\]\n\n### 2. Key Concepts & Explanations\n\n- **Transfer Functions**: Mathematical representations that describe the relationship between the input and output of a system in the Laplace domain. They are particularly useful for linear, time-invariant systems.\n- **Steady-State Gain**: The ratio of the steady-state change in the output to the steady-state change in the input. It is obtained by evaluating the transfer function as \\( s \\to 0 \\).\n- **Order of a Transfer Function**: The order of the transfer function is the highest power of \\( s \\) in the denominator polynomial, which corresponds to the order of the ODE.\n- **Additive Property**: For systems influenced by multiple inputs, the output is the sum of the responses to each input.\n- **Multiplicative Property**: For systems with multiple transfer functions in series, the overall transfer function is the product of the individual transfer functions.\n- **Linearization**: The process of approximating a nonlinear model with a linear model around a specified operating point using a Taylor series expansion.\n- **State-Space Models**: A general form of dynamic models that describe the behavior of a system using state variables, control variables, and disturbance variables. They are particularly useful for systems with multiple inputs and outputs.\n\n### 3. Formulas & Notations Dictated\n\n- **Transfer Function Definition**:\n  \\[\n  G(s) = \\frac{Y(s)}{X(s)}\n  \\]\n  where \\( Y(s) \\) is the Laplace transform of the output \\( y(t) \\) and \\( X(s) \\) is the Laplace transform of the input \\( x(t) \\).\n\n- **Stirred Tank Heating System**:\n  \\[\n  \\rho V \\frac{dT}{dt} = wC_p (T_i - T) + Q\n  \\]\n  \\[\n  \\rho V \\frac{dT'}{dt} = wC_p (T_i' - T') + Q'\n  \\]\n  \\[\n  T'(s) = \\frac{K}{\\tau s + 1} Q'(s) + \\frac{K}{\\tau s + 1} T_i'(s)\n  \\]\n  where \\( K = \\frac{1}{\\rho V} \\) and \\( \\tau = \\frac{\\rho V}{wC_p} \\).\n\n- **Steady-State Gain**:\n  \\[\n  K = \\lim_{s \\to 0} G(s)\n  \\]\n\n- **Order of a Transfer Function**:\n  \\[\n  \\text{Order} = \\text{Order of the denominator polynomial}\n  \\]\n\n- **Additive",
+          "catbox_url": "https://files.catbox.moe/rwgay0.pdf"
         },
         {
           "name": "Chapter_5m.pdf",
@@ -1214,7 +1219,8 @@
             "BQACAgUAAyEGAATqgTaTAAPyahvN0QYWjFRvS_zRSCD21c5x540AAu8cAALik-FUM3uGh6eA_LM7BA"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1. Dynamic Behavior\n- **Introduction**: Understanding how processes respond to changes in inputs is crucial for process dynamic and control systems.\n- **Standard Input Changes**: These are used because they are representative of real-world changes and are mathematically easy to analyze.\n\n#### 2. Step Input\n- **Definition**: A sudden change in a process variable.\n- **Special Case**: A unit step change where the magnitude \\( M = 1 \\).\n- **Example**: Switching reactor feedstock causing sudden changes in feed concentration and flow.\n- **Mathematical Representation**: \n  \\[\n  U_s(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  M & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_s(s) = \\frac{M}{s}\n  \\]\n\n#### 3. Ramp Input\n- **Definition**: Represents slow, drifting disturbances with a constant rate of change.\n- **Examples**: Air temperature and humidity changes in a cooling tower, feed composition changes, heat exchanger fouling.\n- **Mathematical Representation**: \n  \\[\n  U_R(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  at & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_R(s) = \\frac{a}{s^2}\n  \\]\n\n#### 4. Rectangular Pulse Input\n- **Definition**: Represents a brief, sudden change in a process variable.\n- **Examples**: Reactor feed shut off for a period, fuel gas supply interruption.\n- **Mathematical Representation**: \n  \\[\n  U_{RP}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  h & 0 \\leq t < t_w \\\\\n  0 & t \\geq t_w \n  \\end{cases}\n  \\]\n  \\[\n  U_{RP}(s) = \\frac{h}{s} (1 - e^{-t_w s})\n  \\]\n\n#### 5. Sinusoidal Input\n- **Definition**: Represents periodic disturbances.\n- **Examples**: Electrical noise spikes, concentrated dye injection.\n- **Mathematical Representation**: \n  \\[\n  U_{sin}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  A \\sin(\\omega t) & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_{sin}(s) = \\frac{A \\omega}{s^2 + \\omega^2}\n  \\]\n\n#### 6. Impulse Input\n- **Definition**: Represents a short, transient disturbance.\n- **Mathematical Representation**: \n  \\[\n  U_I(t) = \\delta(t)\n  \\]\n  \\[\n  U_I(s) = 1\n  \\]\n\n#### 7. First-Order System\n- **Transfer Function**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K}{\\tau s + 1}\n  \\]\n- **Step Response**: \n  \\[\n  Y(s) = \\frac{KM}{s(\\tau s + 1)}\n  \\]\n  \\[\n  y(t) = KM (1 - e^{-t/\\tau})\n  \\]\n- **Steady-State Value**: \n  \\[\n  y_{\\infty} = KM\n  \\]\n- **Time Constants**: \n  \\[\n  \\begin{array}{c|c}\n  t & \\frac{y(t)}{y_{\\infty}} \\\\\n  \\hline\n  0 & 0 \\\\\n  \\tau & 0.632 \\\\\n  2\\tau & 0.865 \\\\\n  3\\tau & 0.950 \\\\\n  4\\tau & 0.982 \\\\\n  5\\tau & 0.993 \\\\\n  \\end{array}\n  \\]\n\n#### 8. Integrating Process\n- **Transfer Function**: \n  \\[\n  Y(s) = \\frac{K M}{s^2}\n  \\]\n- **Response**: \n  \\[\n  y(t) = K M t\n  \\]\n- **Characteristics**: Unbounded response, no steady-state value.\n\n#### 9. Second-Order System\n- **Transfer Function**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K}{\\tau^2 s^2 + 2 \\zeta \\tau s + 1}\n  \\]\n- **Standard Form**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K}{\\left(\\frac{s}{\\omega_n}\\right)^2 + 2 \\zeta \\left(\\frac{s}{\\omega_n}\\right) + 1}\n  \\]\n- **Damping Coefficient**: \n  \\[\n  \\zeta\n  \\]\n- **Types of Responses**:\n  - **Overdamped**: Real and distinct roots.\n  - **Critically Damped**: Real and equal roots.\n  - **Underdamped**: Complex conjugate roots.\n- **Characteristics**:\n  - **Rise Time**: Time to reach the new steady-state value.\n  - **Time to First Peak**: Time to reach the first maximum value.\n  - **Settling Time**: Time to reach and remain within ±5% of the total change.\n  - **Overshoot**: Percentage overshoot.\n  - **Decay Ratio**: Ratio of the height of the second peak to the first peak.\n  - **Period of Oscillation**: Time between two successive peaks or valleys.\n\n### 2. Key Concepts & Explanations\n\n#### 1. Dynamic Behavior\n- **Process Dynamics**: Study of how process variables change over time in response to input changes.\n- **Control Systems**: Systems designed to manage and regulate process variables to maintain desired performance.\n\n#### 2. Input Types\n- **Step Input**: Sudden change in a process variable.\n- **Ramp Input**: Gradual, linear change over time.\n- **Rectangular Pulse Input**: Brief, sudden change followed by a return to the original state.\n- **Sinusoidal Input**: Periodic, oscillatory changes.\n- **Impulse Input**: Short, transient disturbance.\n\n#### 3. First-Order System\n- **Transfer Function**: Describes the relationship between input and output in the Laplace domain.\n- **Step Response**: How the system responds to a step input.\n- **Time Constants**: Characterize the speed of the system's response.\n- **Steady-State Value**: The value the system approaches as time goes to infinity.\n\n#### 4. Integrating Process\n- **Transfer Function**: Describes a system with no steady-state gain.\n- **Response**: Unbounded, linear increase over time.\n\n#### 5. Second-Order System\n- **Transfer Function**: Describes systems with more complex dynamics.\n- **Damping Coefficient**: Determines the type of response (overdamped, critically damped, underdamped).\n- **Response Characteristics**: Rise time, time to first peak, settling time, overshoot, decay ratio, period of oscillation.\n\n### 3. Formulas & Notations Dictated\n\n#### 1. Step Input\n- **Mathematical Representation**: \n  \\[\n  U_s(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  M & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_s(s) = \\frac{M}{s}\n  \\]\n\n#### 2. Ramp Input\n- **Mathematical Representation**: \n  \\[\n  U_R(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  at & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_R(s) = \\frac{a}{s^2}\n  \\]\n\n#### 3. Rectangular Pulse Input\n- **Mathematical Representation**: \n  \\[\n  U_{RP}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  h & 0 \\leq t < t_w \\\\\n  0 & t \\geq t_w \n  \\end{cases}\n  \\]\n  \\[\n  U_{RP}(s) = \\frac{h}{s} (1 - e^{-t_w s})\n  \\]\n\n#### 4. Sinusoidal Input\n- **Mathematical Representation**: \n  \\[\n  U_{sin}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  A \\sin(\\omega t) & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_{sin}(s) = \\frac{A \\omega}{s^2 + \\omega^2}\n  \\]\n\n#### 5. Impulse Input\n- **Mathematical Representation**: \n  \\[\n  U_I(t) = \\delta(t)\n  \\]\n  \\[\n  U_I(s) = 1\n  \\]\n\n#### 6. First-Order System\n- **Transfer Function**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K"
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1. Dynamic Behavior\n- **Introduction**: Understanding how processes respond to changes in inputs is crucial for process dynamic and control systems.\n- **Standard Input Changes**: These are used because they are representative of real-world changes and are mathematically easy to analyze.\n\n#### 2. Step Input\n- **Definition**: A sudden change in a process variable.\n- **Special Case**: A unit step change where the magnitude \\( M = 1 \\).\n- **Example**: Switching reactor feedstock causing sudden changes in feed concentration and flow.\n- **Mathematical Representation**: \n  \\[\n  U_s(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  M & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_s(s) = \\frac{M}{s}\n  \\]\n\n#### 3. Ramp Input\n- **Definition**: Represents slow, drifting disturbances with a constant rate of change.\n- **Examples**: Air temperature and humidity changes in a cooling tower, feed composition changes, heat exchanger fouling.\n- **Mathematical Representation**: \n  \\[\n  U_R(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  at & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_R(s) = \\frac{a}{s^2}\n  \\]\n\n#### 4. Rectangular Pulse Input\n- **Definition**: Represents a brief, sudden change in a process variable.\n- **Examples**: Reactor feed shut off for a period, fuel gas supply interruption.\n- **Mathematical Representation**: \n  \\[\n  U_{RP}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  h & 0 \\leq t < t_w \\\\\n  0 & t \\geq t_w \n  \\end{cases}\n  \\]\n  \\[\n  U_{RP}(s) = \\frac{h}{s} (1 - e^{-t_w s})\n  \\]\n\n#### 5. Sinusoidal Input\n- **Definition**: Represents periodic disturbances.\n- **Examples**: Electrical noise spikes, concentrated dye injection.\n- **Mathematical Representation**: \n  \\[\n  U_{sin}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  A \\sin(\\omega t) & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_{sin}(s) = \\frac{A \\omega}{s^2 + \\omega^2}\n  \\]\n\n#### 6. Impulse Input\n- **Definition**: Represents a short, transient disturbance.\n- **Mathematical Representation**: \n  \\[\n  U_I(t) = \\delta(t)\n  \\]\n  \\[\n  U_I(s) = 1\n  \\]\n\n#### 7. First-Order System\n- **Transfer Function**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K}{\\tau s + 1}\n  \\]\n- **Step Response**: \n  \\[\n  Y(s) = \\frac{KM}{s(\\tau s + 1)}\n  \\]\n  \\[\n  y(t) = KM (1 - e^{-t/\\tau})\n  \\]\n- **Steady-State Value**: \n  \\[\n  y_{\\infty} = KM\n  \\]\n- **Time Constants**: \n  \\[\n  \\begin{array}{c|c}\n  t & \\frac{y(t)}{y_{\\infty}} \\\\\n  \\hline\n  0 & 0 \\\\\n  \\tau & 0.632 \\\\\n  2\\tau & 0.865 \\\\\n  3\\tau & 0.950 \\\\\n  4\\tau & 0.982 \\\\\n  5\\tau & 0.993 \\\\\n  \\end{array}\n  \\]\n\n#### 8. Integrating Process\n- **Transfer Function**: \n  \\[\n  Y(s) = \\frac{K M}{s^2}\n  \\]\n- **Response**: \n  \\[\n  y(t) = K M t\n  \\]\n- **Characteristics**: Unbounded response, no steady-state value.\n\n#### 9. Second-Order System\n- **Transfer Function**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K}{\\tau^2 s^2 + 2 \\zeta \\tau s + 1}\n  \\]\n- **Standard Form**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K}{\\left(\\frac{s}{\\omega_n}\\right)^2 + 2 \\zeta \\left(\\frac{s}{\\omega_n}\\right) + 1}\n  \\]\n- **Damping Coefficient**: \n  \\[\n  \\zeta\n  \\]\n- **Types of Responses**:\n  - **Overdamped**: Real and distinct roots.\n  - **Critically Damped**: Real and equal roots.\n  - **Underdamped**: Complex conjugate roots.\n- **Characteristics**:\n  - **Rise Time**: Time to reach the new steady-state value.\n  - **Time to First Peak**: Time to reach the first maximum value.\n  - **Settling Time**: Time to reach and remain within ±5% of the total change.\n  - **Overshoot**: Percentage overshoot.\n  - **Decay Ratio**: Ratio of the height of the second peak to the first peak.\n  - **Period of Oscillation**: Time between two successive peaks or valleys.\n\n### 2. Key Concepts & Explanations\n\n#### 1. Dynamic Behavior\n- **Process Dynamics**: Study of how process variables change over time in response to input changes.\n- **Control Systems**: Systems designed to manage and regulate process variables to maintain desired performance.\n\n#### 2. Input Types\n- **Step Input**: Sudden change in a process variable.\n- **Ramp Input**: Gradual, linear change over time.\n- **Rectangular Pulse Input**: Brief, sudden change followed by a return to the original state.\n- **Sinusoidal Input**: Periodic, oscillatory changes.\n- **Impulse Input**: Short, transient disturbance.\n\n#### 3. First-Order System\n- **Transfer Function**: Describes the relationship between input and output in the Laplace domain.\n- **Step Response**: How the system responds to a step input.\n- **Time Constants**: Characterize the speed of the system's response.\n- **Steady-State Value**: The value the system approaches as time goes to infinity.\n\n#### 4. Integrating Process\n- **Transfer Function**: Describes a system with no steady-state gain.\n- **Response**: Unbounded, linear increase over time.\n\n#### 5. Second-Order System\n- **Transfer Function**: Describes systems with more complex dynamics.\n- **Damping Coefficient**: Determines the type of response (overdamped, critically damped, underdamped).\n- **Response Characteristics**: Rise time, time to first peak, settling time, overshoot, decay ratio, period of oscillation.\n\n### 3. Formulas & Notations Dictated\n\n#### 1. Step Input\n- **Mathematical Representation**: \n  \\[\n  U_s(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  M & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_s(s) = \\frac{M}{s}\n  \\]\n\n#### 2. Ramp Input\n- **Mathematical Representation**: \n  \\[\n  U_R(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  at & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_R(s) = \\frac{a}{s^2}\n  \\]\n\n#### 3. Rectangular Pulse Input\n- **Mathematical Representation**: \n  \\[\n  U_{RP}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  h & 0 \\leq t < t_w \\\\\n  0 & t \\geq t_w \n  \\end{cases}\n  \\]\n  \\[\n  U_{RP}(s) = \\frac{h}{s} (1 - e^{-t_w s})\n  \\]\n\n#### 4. Sinusoidal Input\n- **Mathematical Representation**: \n  \\[\n  U_{sin}(t) = \\begin{cases} \n  0 & t < 0 \\\\\n  A \\sin(\\omega t) & t \\geq 0 \n  \\end{cases}\n  \\]\n  \\[\n  U_{sin}(s) = \\frac{A \\omega}{s^2 + \\omega^2}\n  \\]\n\n#### 5. Impulse Input\n- **Mathematical Representation**: \n  \\[\n  U_I(t) = \\delta(t)\n  \\]\n  \\[\n  U_I(s) = 1\n  \\]\n\n#### 6. First-Order System\n- **Transfer Function**: \n  \\[\n  \\frac{Y(s)}{U(s)} = \\frac{K",
+          "catbox_url": "https://files.catbox.moe/iv69mc.pdf"
         },
         {
           "name": "Chapter_6.pdf",
@@ -1226,7 +1232,8 @@
             "BQACAgUAAyEGAATqgTaTAAP1ahvOkiAPzhiTolbpGKZrgxcSQUAAAvEcAALik-FULZhHtrcIkyA7BA"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1.1 Poles and Zeros and their Effect on Process Response\n- **Poles and Zeros**: The dynamic behavior of a transfer function is characterized by the numerical values of its poles and zeros.\n- **Poles**: Roots of the denominator polynomial (characteristic polynomial). They determine the system's stability and response modes.\n  - **Right Half Plane (RHP) Pole**: Indicates an unstable system.\n  - **Complex Pole**: Results in oscillatory responses.\n  - **Pole at the Origin**: Indicates an integrating process.\n- **Zeros**: Roots of the numerator polynomial. They do not affect system stability but can influence the response.\n  - **RHP Zero**: Results in an inverse response.\n  - **Left Half Plane Zero**: May result in overshoot during a step response.\n\n#### 1.2 Time Delay and Its Approximation\n- **Time Delay**: Occurs due to fluid flow, transport of solid material, and chemical analysis.\n- **Mathematical Description**: Time delay between input \\( u \\) and output \\( y \\) is represented as:\n  \\[\n  y(t) = \\begin{cases} \n  0 & \\text{for } t < \\theta \\\\\n  u(t - \\theta) & \\text{for } t \\geq \\theta \n  \\end{cases}\n  \\]\n- **Polynomial Approximations**:\n  - **Taylor Series Expansion**:\n    \\[\n    e^{-\\theta s} \\approx 1 - \\theta s + \\frac{\\theta^2 s^2}{2!} - \\frac{\\theta^3 s^3}{3!} + \\cdots\n    \\]\n  - **Padé Approximations**:\n    \\[\n    e^{-\\theta s} \\approx \\frac{1 - \\frac{\\theta s}{2}}{1 + \\frac{\\theta s}{2}}\n    \\]\n\n#### 1.3 Dynamic Behavior Analysis of Interacting and Noninteracting Processes\n- **Noninteracting Systems**: Changes in downstream units do not affect upstream units.\n  - **Example**: Two surge tanks in series.\n  - **Transfer Function**: Derived using mass balance and valve relations.\n- **Interacting Systems**: Downstream units affect upstream units and vice versa.\n  - **Example**: Two tanks in series with interacting liquid levels.\n  - **Transfer Function**: More complex, involving additional terms to account for interactions.\n\n#### 1.4 State-Space and Transfer Function Matrix Models\n- **State-Space Models**: Represented by:\n  \\[\n  \\dot{x} = A x + B u + E d\n  \\]\n  \\[\n  y = C x\n  \\]\n  - \\( x \\): State vector\n  - \\( u \\): Control vector\n  - \\( d \\): Disturbance vector\n  - \\( y \\): Output vector\n- **Stability Criterion**: The system is stable if all eigenvalues of \\( A \\) have negative real parts.\n- **MIMO Processes**: Multiple-input, multiple-output systems. Modeling is conceptually similar to SISO systems but involves more variables and interactions.\n\n### 2. Key Concepts & Explanations\n\n#### 2.1 Poles and Zeros\n- **Poles**: Determine the stability and response modes of a system. Poles in the right half plane indicate instability, complex poles result in oscillatory responses, and poles at the origin indicate integrating processes.\n- **Zeros**: Influence the response but do not affect stability. RHP zeros can cause inverse responses, and LHP zeros can cause overshoot.\n\n#### 2.2 Time Delay\n- **Time Delay**: Represents a delay in the system's response to an input. Commonly occurs in fluid flow, material transport, and chemical analysis.\n- **Approximations**: Polynomial approximations (Taylor series and Padé) are used to simplify the analysis of systems with time delays.\n\n#### 2.3 Interacting vs. Noninteracting Systems\n- **Noninteracting Systems**: Changes in downstream units do not affect upstream units. Transfer functions are simpler and easier to analyze.\n- **Interacting Systems**: Changes in downstream units affect upstream units, leading to more complex transfer functions and dynamic behavior.\n\n#### 2.4 State-Space Models\n- **State-Space Representation**: A general form of dynamic models derived from physical principles. Involves state variables, control variables, disturbance variables, and output variables.\n- **Stability**: Determined by the eigenvalues of the system matrix \\( A \\). All eigenvalues must have negative real parts for the system to be stable.\n\n#### 2.5 MIMO Processes\n- **MIMO Systems**: Involve multiple input and output variables. Common in industrial process control. Conceptually similar to SISO systems but more complex due to multiple interactions.\n\n### 3. Formulas & Notations Dictated\n\n#### 3.1 Transfer Function and Poles/Zeros\n- **General Transfer Function**:\n  \\[\n  G(s) = \\frac{\\sum_{i=0}^{m} b_i s^i}{\\sum_{i=0}^{n} a_i s^i}\n  \\]\n  - \\( \\{z_i\\} \\): Zeros\n  - \\( \\{p_i\\} \\): Poles\n- **Poles and Zeros**:\n  - Poles: Roots of the denominator polynomial.\n  - Zeros: Roots of the numerator polynomial.\n- **Stability**: A system is stable if all poles have negative real parts.\n\n#### 3.2 Time Delay\n- **Mathematical Description**:\n  \\[\n  y(t) = \\begin{cases} \n  0 & \\text{for } t < \\theta \\\\\n  u(t - \\theta) & \\text{for } t \\geq \\theta \n  \\end{cases}\n  \\]\n- **Taylor Series Approximation**:\n  \\[\n  e^{-\\theta s} \\approx 1 - \\theta s + \\frac{\\theta^2 s^2}{2!} - \\frac{\\theta^3 s^3}{3!} + \\cdots\n  \\]\n- **Padé Approximation**:\n  \\[\n  e^{-\\theta s} \\approx \\frac{1 - \\frac{\\theta s}{2}}{1 + \\frac{\\theta s}{2}}\n  \\]\n\n#### 3.3 Transfer Functions for Noninteracting and Interacting Systems\n- **Noninteracting System**:\n  \\[\n  G(s) = \\frac{K_1 K_2}{(1 + \\tau_1 s)(1 + \\tau_2 s)}\n  \\]\n- **Interacting System**:\n  \\[\n  G(s) = \\frac{K_1 K_2}{\\tau_1^2 s^2 + 2 \\zeta \\tau_1 s + 1}\n  \\]\n  - \\( \\zeta > 1 \\): Overdamped, second-order system with a negative zero.\n\n#### 3.4 State-Space Models\n- **State-Space Equations**:\n  \\[\n  \\dot{x} = A x + B u + E d\n  \\]\n  \\[\n  y = C x\n  \\]\n- **Stability Criterion**:\n  \\[\n  \\text{All eigenvalues of } A \\text{ must have negative real parts.}\n  \\]\n\n### 4. Comparative Analysis Table\n\n| **Parameter** | **Noninteracting System** | **Interacting System** |\n|---------------|--------------------------|------------------------|\n| **Transfer Function** | \\( G(s) = \\frac{K_1 K_2}{(1 + \\tau_1 s)(1 + \\tau_2 s)} \\) | \\( G(s) = \\frac{K_1 K_2}{\\tau_1^2 s^2 + 2 \\zeta \\tau_1 s + 1} \\) |\n| **Stability** | Stable if all poles have negative real parts. | Stable if all poles have negative real parts. |\n| **Response** | Faster response due to simpler dynamics. | Slower response due to more complex dynamics. |\n| **Interactions** | No interactions between units. | Interactions between units. |\n| **Complexity** | Simpler transfer function and easier to analyze. | More complex transfer function and harder to analyze. |\n| **Example** | Two surge tanks in series. | Two tanks in series with interacting liquid levels. |\n\nThis structured summary should provide a comprehensive overview of the key topics, concepts, formulas, and comparative analysis from Chapter 6 of the document."
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1.1 Poles and Zeros and their Effect on Process Response\n- **Poles and Zeros**: The dynamic behavior of a transfer function is characterized by the numerical values of its poles and zeros.\n- **Poles**: Roots of the denominator polynomial (characteristic polynomial). They determine the system's stability and response modes.\n  - **Right Half Plane (RHP) Pole**: Indicates an unstable system.\n  - **Complex Pole**: Results in oscillatory responses.\n  - **Pole at the Origin**: Indicates an integrating process.\n- **Zeros**: Roots of the numerator polynomial. They do not affect system stability but can influence the response.\n  - **RHP Zero**: Results in an inverse response.\n  - **Left Half Plane Zero**: May result in overshoot during a step response.\n\n#### 1.2 Time Delay and Its Approximation\n- **Time Delay**: Occurs due to fluid flow, transport of solid material, and chemical analysis.\n- **Mathematical Description**: Time delay between input \\( u \\) and output \\( y \\) is represented as:\n  \\[\n  y(t) = \\begin{cases} \n  0 & \\text{for } t < \\theta \\\\\n  u(t - \\theta) & \\text{for } t \\geq \\theta \n  \\end{cases}\n  \\]\n- **Polynomial Approximations**:\n  - **Taylor Series Expansion**:\n    \\[\n    e^{-\\theta s} \\approx 1 - \\theta s + \\frac{\\theta^2 s^2}{2!} - \\frac{\\theta^3 s^3}{3!} + \\cdots\n    \\]\n  - **Padé Approximations**:\n    \\[\n    e^{-\\theta s} \\approx \\frac{1 - \\frac{\\theta s}{2}}{1 + \\frac{\\theta s}{2}}\n    \\]\n\n#### 1.3 Dynamic Behavior Analysis of Interacting and Noninteracting Processes\n- **Noninteracting Systems**: Changes in downstream units do not affect upstream units.\n  - **Example**: Two surge tanks in series.\n  - **Transfer Function**: Derived using mass balance and valve relations.\n- **Interacting Systems**: Downstream units affect upstream units and vice versa.\n  - **Example**: Two tanks in series with interacting liquid levels.\n  - **Transfer Function**: More complex, involving additional terms to account for interactions.\n\n#### 1.4 State-Space and Transfer Function Matrix Models\n- **State-Space Models**: Represented by:\n  \\[\n  \\dot{x} = A x + B u + E d\n  \\]\n  \\[\n  y = C x\n  \\]\n  - \\( x \\): State vector\n  - \\( u \\): Control vector\n  - \\( d \\): Disturbance vector\n  - \\( y \\): Output vector\n- **Stability Criterion**: The system is stable if all eigenvalues of \\( A \\) have negative real parts.\n- **MIMO Processes**: Multiple-input, multiple-output systems. Modeling is conceptually similar to SISO systems but involves more variables and interactions.\n\n### 2. Key Concepts & Explanations\n\n#### 2.1 Poles and Zeros\n- **Poles**: Determine the stability and response modes of a system. Poles in the right half plane indicate instability, complex poles result in oscillatory responses, and poles at the origin indicate integrating processes.\n- **Zeros**: Influence the response but do not affect stability. RHP zeros can cause inverse responses, and LHP zeros can cause overshoot.\n\n#### 2.2 Time Delay\n- **Time Delay**: Represents a delay in the system's response to an input. Commonly occurs in fluid flow, material transport, and chemical analysis.\n- **Approximations**: Polynomial approximations (Taylor series and Padé) are used to simplify the analysis of systems with time delays.\n\n#### 2.3 Interacting vs. Noninteracting Systems\n- **Noninteracting Systems**: Changes in downstream units do not affect upstream units. Transfer functions are simpler and easier to analyze.\n- **Interacting Systems**: Changes in downstream units affect upstream units, leading to more complex transfer functions and dynamic behavior.\n\n#### 2.4 State-Space Models\n- **State-Space Representation**: A general form of dynamic models derived from physical principles. Involves state variables, control variables, disturbance variables, and output variables.\n- **Stability**: Determined by the eigenvalues of the system matrix \\( A \\). All eigenvalues must have negative real parts for the system to be stable.\n\n#### 2.5 MIMO Processes\n- **MIMO Systems**: Involve multiple input and output variables. Common in industrial process control. Conceptually similar to SISO systems but more complex due to multiple interactions.\n\n### 3. Formulas & Notations Dictated\n\n#### 3.1 Transfer Function and Poles/Zeros\n- **General Transfer Function**:\n  \\[\n  G(s) = \\frac{\\sum_{i=0}^{m} b_i s^i}{\\sum_{i=0}^{n} a_i s^i}\n  \\]\n  - \\( \\{z_i\\} \\): Zeros\n  - \\( \\{p_i\\} \\): Poles\n- **Poles and Zeros**:\n  - Poles: Roots of the denominator polynomial.\n  - Zeros: Roots of the numerator polynomial.\n- **Stability**: A system is stable if all poles have negative real parts.\n\n#### 3.2 Time Delay\n- **Mathematical Description**:\n  \\[\n  y(t) = \\begin{cases} \n  0 & \\text{for } t < \\theta \\\\\n  u(t - \\theta) & \\text{for } t \\geq \\theta \n  \\end{cases}\n  \\]\n- **Taylor Series Approximation**:\n  \\[\n  e^{-\\theta s} \\approx 1 - \\theta s + \\frac{\\theta^2 s^2}{2!} - \\frac{\\theta^3 s^3}{3!} + \\cdots\n  \\]\n- **Padé Approximation**:\n  \\[\n  e^{-\\theta s} \\approx \\frac{1 - \\frac{\\theta s}{2}}{1 + \\frac{\\theta s}{2}}\n  \\]\n\n#### 3.3 Transfer Functions for Noninteracting and Interacting Systems\n- **Noninteracting System**:\n  \\[\n  G(s) = \\frac{K_1 K_2}{(1 + \\tau_1 s)(1 + \\tau_2 s)}\n  \\]\n- **Interacting System**:\n  \\[\n  G(s) = \\frac{K_1 K_2}{\\tau_1^2 s^2 + 2 \\zeta \\tau_1 s + 1}\n  \\]\n  - \\( \\zeta > 1 \\): Overdamped, second-order system with a negative zero.\n\n#### 3.4 State-Space Models\n- **State-Space Equations**:\n  \\[\n  \\dot{x} = A x + B u + E d\n  \\]\n  \\[\n  y = C x\n  \\]\n- **Stability Criterion**:\n  \\[\n  \\text{All eigenvalues of } A \\text{ must have negative real parts.}\n  \\]\n\n### 4. Comparative Analysis Table\n\n| **Parameter** | **Noninteracting System** | **Interacting System** |\n|---------------|--------------------------|------------------------|\n| **Transfer Function** | \\( G(s) = \\frac{K_1 K_2}{(1 + \\tau_1 s)(1 + \\tau_2 s)} \\) | \\( G(s) = \\frac{K_1 K_2}{\\tau_1^2 s^2 + 2 \\zeta \\tau_1 s + 1} \\) |\n| **Stability** | Stable if all poles have negative real parts. | Stable if all poles have negative real parts. |\n| **Response** | Faster response due to simpler dynamics. | Slower response due to more complex dynamics. |\n| **Interactions** | No interactions between units. | Interactions between units. |\n| **Complexity** | Simpler transfer function and easier to analyze. | More complex transfer function and harder to analyze. |\n| **Example** | Two surge tanks in series. | Two tanks in series with interacting liquid levels. |\n\nThis structured summary should provide a comprehensive overview of the key topics, concepts, formulas, and comparative analysis from Chapter 6 of the document.",
+          "catbox_url": "https://files.catbox.moe/q2xui2.pdf"
         },
         {
           "name": "Chapter_7.pdf",
@@ -1238,7 +1245,8 @@
             "BQACAgUAAyEGAATqgTaTAAP4ahvOm4765uC8ReXN6tkcMlYS_S0AAvMcAALik-FUs4ldNpo1zr87BA"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1. Introduction to Empirical Models\n- **Purpose**: Develop empirical dynamic models from input-output data when theoretical models are not feasible.\n- **Reasons**: Lack of information, model complexity, and engineering effort.\n- **Advantages**: Less effort required.\n- **Disadvantages**: Models are valid only for the range of data used in their development and do not extrapolate well.\n\n#### 2. Simple Linear Regression: Steady-State Model\n- **Model Form**: $y = \\beta_1 + \\beta_2 u + \\epsilon$\n- **Parameters**: $\\beta_1$ and $\\beta_2$ are unknown model parameters, and $\\epsilon$ is a random error.\n- **Prediction**: $\\hat{y} = \\hat{\\beta}_1 + \\hat{\\beta}_2 u$\n- **Least Squares Method**: Minimize the sum of the squares of the errors, $S = \\sum_{i=1}^{N} (Y_i - \\hat{y}_i)^2$.\n\n#### 3. The Least Squares Approach\n- **Sum of Squares Function**: $S = \\sum_{i=1}^{N} (Y_i - \\beta_1 - \\beta_2 u_i)^2$\n- **Residuals**: $e_i = Y_i - \\hat{y}_i$\n- **Solution**: $\\hat{\\beta}_1 = \\bar{y} - \\hat{\\beta}_2 \\bar{u}$ and $\\hat{\\beta}_2 = \\frac{\\sum_{i=1}^{N} (u_i - \\bar{u})(Y_i - \\bar{y})}{\\sum_{i=1}^{N} (u_i - \\bar{u})^2}$\n\n#### 4. Extensions of the Least Squares Approach\n- **General Models**: More than one input or output variable, and functionals of input variables.\n- **Nonlinear Models**: Linear in parameters, $y = \\sum_{j=1}^{p} \\beta_j X_j + \\epsilon$\n- **Sum of Squares Function**: $S = \\sum_{i=1}^{N} \\left( Y_i - \\sum_{j=1}^{p} \\beta_j X_{ij} \\right)^2$\n- **Matrix Form**: $S = (Y - X\\beta)^T (Y - X\\beta)$\n- **Least Squares Estimates**: $\\hat{\\beta} = (X^T X)^{-1} X^T Y$\n\n#### 5. Fitting First and Second-Order Models Using Step Tests\n- **First-Order Model**: $Y(s)/U(s) = \\frac{K}{\\tau s + 1}$\n- **Step Response**: $y(t) = K M (1 - e^{-t/\\tau})$\n- **Initial Slope**: $\\left. \\frac{dy}{dt} \\right|_{t=0} = \\frac{K M}{\\tau}$\n- **Gain**: $K = \\frac{\\Delta y}{\\Delta u}$\n- **Time Constant**: $\\tau = \\frac{t}{5}$ (settling time)\n- **First-Order Plus Time Delay Model**: $G(s) = \\frac{K e^{-\\theta s}}{\\tau s + 1}$\n- **Graphical Methods**: Slope-intercept method and Sundaresan and Krishnaswamy’s method.\n\n#### 6. Estimating Second-Order Model Parameters Using Graphical Analysis\n- **Second-Order Model**: $G(s) = \\frac{K}{\\tau_1 s + 1} \\frac{1}{\\tau_2 s + 1}$\n- **Step Response**: Various shapes depending on $\\tau_1$ and $\\tau_2$\n- **Dominant Time Constant**: $\\tau_1$ (larger time constant)\n- **Smith’s Method**: Determine $t_{20}$ and $t_{60}$ from the step response, find $\\zeta$ and $\\tau$ from Fig. 7.7.\n\n#### 7. Fitting an Integrator Model to Step Response Data\n- **First-Order Process**: $y(t) = K M (1 - e^{-t/\\tau})$\n- **Approximation for Short Times**: $y(t) \\approx K M \\left(1 - \\frac{t}{\\tau}\\right)$\n- **Integrator Model**: $G(s) = \\frac{K}{s}$\n- **Step Response**: $y(t) = K M t$\n- **Parameter Matching**: $\\tau = \\frac{K}{K_{\\text{int}}}$\n\n### 2. Key Concepts & Explanations\n\n- **Empirical Models**: Models developed from input-output data, useful when theoretical models are complex or lack information.\n- **Simple Linear Regression**: A method to estimate the relationship between an output variable and one or more input variables.\n- **Least Squares Method**: A technique to minimize the sum of the squares of the errors between observed and predicted values.\n- **First-Order Model**: Describes processes with a single time constant, $\\tau$, and gain, $K$.\n- **First-Order Plus Time Delay Model**: Extends the first-order model to include a time delay, $\\theta$.\n- **Second-Order Model**: Describes processes with two time constants, $\\tau_1$ and $\\tau_2$, and gain, $K$.\n- **Integrator Model**: Describes processes that integrate the input over time, with a step response that is a linear ramp.\n\n### 3. Formulas & Notations Dictated\n\n- **Simple Linear Regression**:\n  - Model: $y = \\beta_1 + \\beta_2 u + \\epsilon$\n  - Prediction: $\\hat{y} = \\hat{\\beta}_1 + \\hat{\\beta}_2 u$\n  - Sum of Squares: $S = \\sum_{i=1}^{N} (Y_i - \\hat{y}_i)^2$\n  - Residuals: $e_i = Y_i - \\hat{y}_i$\n  - Least Squares Estimates: $\\hat{\\beta}_1 = \\bar{y} - \\hat{\\beta}_2 \\bar{u}$ and $\\hat{\\beta}_2 = \\frac{\\sum_{i=1}^{N} (u_i - \\bar{u})(Y_i - \\bar{y})}{\\sum_{i=1}^{N} (u_i - \\bar{u})^2}$\n\n- **General Nonlinear Model**:\n  - Model: $y = \\sum_{j=1}^{p} \\beta_j X_j + \\epsilon$\n  - Sum of Squares: $S = \\sum_{i=1}^{N} \\left( Y_i - \\sum_{j=1}^{p} \\beta_j X_{ij} \\right)^2$\n  - Matrix Form: $S = (Y - X\\beta)^T (Y - X\\beta)$\n  - Least Squares Estimates: $\\hat{\\beta} = (X^T X)^{-1} X^T Y$\n\n- **First-Order Model**:\n  - Transfer Function: $G(s) = \\frac{K}{\\tau s + 1}$\n  - Step Response: $y(t) = K M (1 - e^{-t/\\tau})$\n  - Initial Slope: $\\left. \\frac{dy}{dt} \\right|_{t=0} = \\frac{K M}{\\tau}$\n  - Gain: $K = \\frac{\\Delta y}{\\Delta u}$\n  - Time Constant: $\\tau = \\frac{t}{5}$ (settling time)\n\n- **First-Order Plus Time Delay Model**:\n  - Transfer Function: $G(s) = \\frac{K e^{-\\theta s}}{\\tau s + 1}$\n  - Graphical Methods: Slope-intercept method and Sundaresan and Krishnaswamy’s method\n\n- **Second-Order Model**:\n  - Transfer Function: $G(s) = \\frac{K}{\\tau_1 s + 1} \\frac{1}{\\tau_2 s + 1}$\n  - Step Response: Various shapes depending on $\\tau_1$ and $\\tau_2$\n  - Dominant Time Constant: $\\tau_1$ (larger time constant)\n  - Smith’s Method: Determine $t_{20}$ and $t_{60}$ from the step response, find $\\zeta$ and $\\tau$ from Fig. 7.7\n\n- **Integrator Model**:\n  - Transfer Function: $G(s) = \\frac{K}{s}$\n  - Step Response: $y(t) = K M t$\n  - Parameter Matching: $\\tau = \\frac{K}{K_{\\text{int}}}$\n\n### 4. Comparative Analysis Table\n\n| Method/Model | Assumptions | Parameters | Advantages | Limitations |\n|--------------|-------------|------------|------------|-------------|\n| **Simple Linear Regression** | Linear relationship between input and output | $\\beta_1$, $\\beta_2$ | Simple, widely applicable | Limited to linear relationships |\n| **Least Squares Method** | Minimizes"
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### 1. Introduction to Empirical Models\n- **Purpose**: Develop empirical dynamic models from input-output data when theoretical models are not feasible.\n- **Reasons**: Lack of information, model complexity, and engineering effort.\n- **Advantages**: Less effort required.\n- **Disadvantages**: Models are valid only for the range of data used in their development and do not extrapolate well.\n\n#### 2. Simple Linear Regression: Steady-State Model\n- **Model Form**: $y = \\beta_1 + \\beta_2 u + \\epsilon$\n- **Parameters**: $\\beta_1$ and $\\beta_2$ are unknown model parameters, and $\\epsilon$ is a random error.\n- **Prediction**: $\\hat{y} = \\hat{\\beta}_1 + \\hat{\\beta}_2 u$\n- **Least Squares Method**: Minimize the sum of the squares of the errors, $S = \\sum_{i=1}^{N} (Y_i - \\hat{y}_i)^2$.\n\n#### 3. The Least Squares Approach\n- **Sum of Squares Function**: $S = \\sum_{i=1}^{N} (Y_i - \\beta_1 - \\beta_2 u_i)^2$\n- **Residuals**: $e_i = Y_i - \\hat{y}_i$\n- **Solution**: $\\hat{\\beta}_1 = \\bar{y} - \\hat{\\beta}_2 \\bar{u}$ and $\\hat{\\beta}_2 = \\frac{\\sum_{i=1}^{N} (u_i - \\bar{u})(Y_i - \\bar{y})}{\\sum_{i=1}^{N} (u_i - \\bar{u})^2}$\n\n#### 4. Extensions of the Least Squares Approach\n- **General Models**: More than one input or output variable, and functionals of input variables.\n- **Nonlinear Models**: Linear in parameters, $y = \\sum_{j=1}^{p} \\beta_j X_j + \\epsilon$\n- **Sum of Squares Function**: $S = \\sum_{i=1}^{N} \\left( Y_i - \\sum_{j=1}^{p} \\beta_j X_{ij} \\right)^2$\n- **Matrix Form**: $S = (Y - X\\beta)^T (Y - X\\beta)$\n- **Least Squares Estimates**: $\\hat{\\beta} = (X^T X)^{-1} X^T Y$\n\n#### 5. Fitting First and Second-Order Models Using Step Tests\n- **First-Order Model**: $Y(s)/U(s) = \\frac{K}{\\tau s + 1}$\n- **Step Response**: $y(t) = K M (1 - e^{-t/\\tau})$\n- **Initial Slope**: $\\left. \\frac{dy}{dt} \\right|_{t=0} = \\frac{K M}{\\tau}$\n- **Gain**: $K = \\frac{\\Delta y}{\\Delta u}$\n- **Time Constant**: $\\tau = \\frac{t}{5}$ (settling time)\n- **First-Order Plus Time Delay Model**: $G(s) = \\frac{K e^{-\\theta s}}{\\tau s + 1}$\n- **Graphical Methods**: Slope-intercept method and Sundaresan and Krishnaswamy’s method.\n\n#### 6. Estimating Second-Order Model Parameters Using Graphical Analysis\n- **Second-Order Model**: $G(s) = \\frac{K}{\\tau_1 s + 1} \\frac{1}{\\tau_2 s + 1}$\n- **Step Response**: Various shapes depending on $\\tau_1$ and $\\tau_2$\n- **Dominant Time Constant**: $\\tau_1$ (larger time constant)\n- **Smith’s Method**: Determine $t_{20}$ and $t_{60}$ from the step response, find $\\zeta$ and $\\tau$ from Fig. 7.7.\n\n#### 7. Fitting an Integrator Model to Step Response Data\n- **First-Order Process**: $y(t) = K M (1 - e^{-t/\\tau})$\n- **Approximation for Short Times**: $y(t) \\approx K M \\left(1 - \\frac{t}{\\tau}\\right)$\n- **Integrator Model**: $G(s) = \\frac{K}{s}$\n- **Step Response**: $y(t) = K M t$\n- **Parameter Matching**: $\\tau = \\frac{K}{K_{\\text{int}}}$\n\n### 2. Key Concepts & Explanations\n\n- **Empirical Models**: Models developed from input-output data, useful when theoretical models are complex or lack information.\n- **Simple Linear Regression**: A method to estimate the relationship between an output variable and one or more input variables.\n- **Least Squares Method**: A technique to minimize the sum of the squares of the errors between observed and predicted values.\n- **First-Order Model**: Describes processes with a single time constant, $\\tau$, and gain, $K$.\n- **First-Order Plus Time Delay Model**: Extends the first-order model to include a time delay, $\\theta$.\n- **Second-Order Model**: Describes processes with two time constants, $\\tau_1$ and $\\tau_2$, and gain, $K$.\n- **Integrator Model**: Describes processes that integrate the input over time, with a step response that is a linear ramp.\n\n### 3. Formulas & Notations Dictated\n\n- **Simple Linear Regression**:\n  - Model: $y = \\beta_1 + \\beta_2 u + \\epsilon$\n  - Prediction: $\\hat{y} = \\hat{\\beta}_1 + \\hat{\\beta}_2 u$\n  - Sum of Squares: $S = \\sum_{i=1}^{N} (Y_i - \\hat{y}_i)^2$\n  - Residuals: $e_i = Y_i - \\hat{y}_i$\n  - Least Squares Estimates: $\\hat{\\beta}_1 = \\bar{y} - \\hat{\\beta}_2 \\bar{u}$ and $\\hat{\\beta}_2 = \\frac{\\sum_{i=1}^{N} (u_i - \\bar{u})(Y_i - \\bar{y})}{\\sum_{i=1}^{N} (u_i - \\bar{u})^2}$\n\n- **General Nonlinear Model**:\n  - Model: $y = \\sum_{j=1}^{p} \\beta_j X_j + \\epsilon$\n  - Sum of Squares: $S = \\sum_{i=1}^{N} \\left( Y_i - \\sum_{j=1}^{p} \\beta_j X_{ij} \\right)^2$\n  - Matrix Form: $S = (Y - X\\beta)^T (Y - X\\beta)$\n  - Least Squares Estimates: $\\hat{\\beta} = (X^T X)^{-1} X^T Y$\n\n- **First-Order Model**:\n  - Transfer Function: $G(s) = \\frac{K}{\\tau s + 1}$\n  - Step Response: $y(t) = K M (1 - e^{-t/\\tau})$\n  - Initial Slope: $\\left. \\frac{dy}{dt} \\right|_{t=0} = \\frac{K M}{\\tau}$\n  - Gain: $K = \\frac{\\Delta y}{\\Delta u}$\n  - Time Constant: $\\tau = \\frac{t}{5}$ (settling time)\n\n- **First-Order Plus Time Delay Model**:\n  - Transfer Function: $G(s) = \\frac{K e^{-\\theta s}}{\\tau s + 1}$\n  - Graphical Methods: Slope-intercept method and Sundaresan and Krishnaswamy’s method\n\n- **Second-Order Model**:\n  - Transfer Function: $G(s) = \\frac{K}{\\tau_1 s + 1} \\frac{1}{\\tau_2 s + 1}$\n  - Step Response: Various shapes depending on $\\tau_1$ and $\\tau_2$\n  - Dominant Time Constant: $\\tau_1$ (larger time constant)\n  - Smith’s Method: Determine $t_{20}$ and $t_{60}$ from the step response, find $\\zeta$ and $\\tau$ from Fig. 7.7\n\n- **Integrator Model**:\n  - Transfer Function: $G(s) = \\frac{K}{s}$\n  - Step Response: $y(t) = K M t$\n  - Parameter Matching: $\\tau = \\frac{K}{K_{\\text{int}}}$\n\n### 4. Comparative Analysis Table\n\n| Method/Model | Assumptions | Parameters | Advantages | Limitations |\n|--------------|-------------|------------|------------|-------------|\n| **Simple Linear Regression** | Linear relationship between input and output | $\\beta_1$, $\\beta_2$ | Simple, widely applicable | Limited to linear relationships |\n| **Least Squares Method** | Minimizes",
+          "catbox_url": "https://files.catbox.moe/uobxsq.pdf"
         },
         {
           "name": "Chapter_8m_June2021.pdf",
@@ -1250,7 +1258,8 @@
             "BQACAgUAAyEGAATqgTaTAAP7ahvOplI7SxoIpIxDpN5ygbQpxXsAAvUcAALik-FURczPEu8VrBs7BA"
           ],
           "folder": "Root",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Chapter 8: Feedback Controllers\n\n1. **Introduction to Feedback Controllers**\n   - **On-Off Controllers**\n     - Simple and cheap.\n     - Used in residential heating and domestic refrigerators.\n     - Limited use in process control due to continuous cycling of the controlled variable, leading to excessive wear on control valves.\n     - Synonyms: \"two-position\" or \"bang-bang\" controllers.\n     - Controller output has two possible values.\n     - Practical case: dead band to reduce cycling.\n\n2. **Basic Control Modes**\n   - **Proportional Control**\n     - Objective: reduce the error signal to zero.\n     - Error signal: $e(t) = y_{sp}(t) - y(t)$.\n     - Controller output: $p(t) = K_c e(t) + b$.\n     - Key concepts:\n       - Controller gain ($K_c$) can be adjusted to make the controller output changes sensitive to deviations.\n       - Bias ($b$) can be adjusted, referred to as manual reset.\n       - Proportional band ($PB$) defined as $PB = \\frac{100\\%}{K_c}$.\n     - Transfer function: $P(s) = K_c E(s)$.\n     - Disadvantage: steady-state error occurs after a set-point change or sustained disturbance.\n\n   - **Integral Control**\n     - Controller output depends on the integral of the error signal over time.\n     - Equation: $p(t) = \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$.\n     - Integral time ($\\tau_I$) is an adjustable parameter.\n     - Integral control eliminates steady-state error (offset).\n     - Transfer function: $P(s) = \\frac{K_c}{\\tau_I s} E(s)$.\n     - Disadvantage: reset windup (controller output saturates due to sustained error).\n\n   - **Proportional-Integral (PI) Control**\n     - Combines proportional and integral control.\n     - Equation: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$.\n     - Transfer function: $P(s) = K_c \\left(1 + \\frac{1}{\\tau_I s}\\right) E(s)$.\n     - Eliminates steady-state error and provides better performance than proportional control alone.\n\n   - **Derivative Control**\n     - Anticipates future behavior of the error signal by considering its rate of change.\n     - Equation: $p(t) = \\tau_D \\frac{de(t)}{dt} + b$.\n     - Derivative time ($\\tau_D$) has units of time.\n     - Transfer function: $P(s) = K_c (1 + \\tau_D s) E(s)$.\n     - Provides anticipatory control action, stabilizing the process.\n     - Ideal derivative action is physically unrealizable; approximations are used in practice.\n\n   - **Proportional-Integral-Derivative (PID) Control**\n     - Combines proportional, integral, and derivative control.\n     - Common forms: parallel, series, and expanded.\n     - Parallel form: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + \\tau_D \\frac{de(t)}{dt} + b$.\n     - Transfer function: $P(s) = K_c \\left(1 + \\frac{1}{\\tau_I s} + \\tau_D s\\right) E(s)$.\n     - Series form: $P(s) = K_c \\left(\\frac{\\tau_I s + 1}{\\tau_I s}\\right) \\left(\\tau_D s + 1\\right) E(s)$.\n     - Expanded form: $p(t) = K_c e(t) + K_I \\int_0^t e(t^*) dt^* + K_D \\frac{de(t)}{dt} + b$.\n     - Digital PID control: position and velocity algorithms.\n     - Position form: $p_k = p_{k-1} + K_c e_k + \\frac{K_I}{t_s} \\sum_{j=1}^k e_j t_s + K_D \\frac{e_k - e_{k-1}}{t_s}$.\n     - Velocity form: $\\Delta p_k = K_c (e_k - e_{k-1}) + \\frac{K_I}{t_s} e_k t_s + K_D \\frac{e_k - 2e_{k-1} + e_{k-2}}{t_s}$.\n\n3. **Features of PID Controllers**\n   - **Elimination of Derivative and Proportional Kick**\n     - Derivative kick: sudden change in set point causes a large derivative term.\n     - Solution: base derivative action on the measurement ($y_m$) rather than the error signal ($e$).\n     - Equation: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* - \\tau_D \\frac{dy_m(t)}{dt} + b$.\n   - **Reverse and Direct-Acting Controllers**\n     - Reverse-acting: $K_c > 0$, controller output decreases as input increases.\n     - Direct-acting: $K_c < 0$, controller output increases as input increases.\n   - **Automatic and Manual Control Modes**\n     - Automatic mode: controller output depends on error, controller constants, and type of controller.\n     - Manual mode: controller output adjusted manually.\n     - Manual mode is useful during plant start-up, shut-down, and emergencies.\n\n4. **Typical Response of Feedback Control Systems**\n   - **Step Input in Set Point**\n     - Effect of $K_c$: increasing $K_c$ reduces the rise time and overshoot.\n     - Effect of $\\tau_I$: increasing $\\tau_I$ reduces the integral action, leading to a slower response.\n   - **Step Input in Disturbance**\n     - Effect of $K_c$: increasing $K_c$ reduces the rise time and overshoot.\n     - Effect of $\\tau_I$: increasing $\\tau_I$ reduces the integral action, leading to a slower response.\n     - Effect of $\\tau_D$: increasing $\\tau_D$ improves the stability and reduces overshoot.\n\n### 2. Key Concepts & Explanations\n\n1. **Feedback Controllers**\n   - **On-Off Controllers**: Simple, cheap, and used in residential applications. Limited in process control due to continuous cycling.\n   - **Proportional Control**: Reduces error by adjusting the controller output proportional to the error. Key parameters: controller gain ($K_c$) and bias ($b$).\n   - **Integral Control**: Eliminates steady-state error by integrating the error over time. Key parameter: integral time ($\\tau_I$).\n   - **Proportional-Integral (PI) Control**: Combines proportional and integral control to eliminate steady-state error and improve performance.\n   - **Derivative Control**: Anticipates future behavior by considering the rate of change of the error. Key parameter: derivative time ($\\tau_D$).\n   - **Proportional-Integral-Derivative (PID) Control**: Combines all three control modes to provide robust control. Common forms: parallel, series, and expanded.\n\n2. **Controller Modes**\n   - **Automatic Mode**: Controller output is automatically adjusted based on the error and controller settings.\n   - **Manual Mode**: Controller output is manually adjusted, useful during start-up, shut-down, and emergencies.\n\n3. **Controller Types**\n   - **Reverse-Acting Controllers**: $K_c > 0$, output decreases as input increases.\n   - **Direct-Acting Controllers**: $K_c < 0$, output increases as input increases.\n\n4. **Digital PID Control**\n   - **Position Form**: Calculates the actual value of the controller output.\n   - **Velocity Form**: Calculates the change in controller output.\n\n### 3. Formulas & Notations Dictated\n\n1. **Proportional Control**\n   - Error signal: $e(t) = y_{sp}(t) - y(t)$\n   - Controller output: $p(t) = K_c e(t) + b$\n   - Proportional band: $PB = \\frac{100\\%}{K_c}$\n   - Transfer function: $P(s) = K_c E(s)$\n\n2. **Integral Control**\n   - Controller output: $p(t) = \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$\n   - Transfer function: $P(s) = \\frac{K_c}{\\tau_I s} E(s)$\n\n3. **Proportional-Integral (PI) Control**\n   - Controller output: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$\n   - Transfer function: $P(s) = K_c \\left(1 + \\frac{1}{\\tau_I s}\\right) E(s)$\n\n4. **Derivative Control**\n   - Controller output: $p(t) = \\tau_D \\frac{de(t)}{dt}"
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Chapter 8: Feedback Controllers\n\n1. **Introduction to Feedback Controllers**\n   - **On-Off Controllers**\n     - Simple and cheap.\n     - Used in residential heating and domestic refrigerators.\n     - Limited use in process control due to continuous cycling of the controlled variable, leading to excessive wear on control valves.\n     - Synonyms: \"two-position\" or \"bang-bang\" controllers.\n     - Controller output has two possible values.\n     - Practical case: dead band to reduce cycling.\n\n2. **Basic Control Modes**\n   - **Proportional Control**\n     - Objective: reduce the error signal to zero.\n     - Error signal: $e(t) = y_{sp}(t) - y(t)$.\n     - Controller output: $p(t) = K_c e(t) + b$.\n     - Key concepts:\n       - Controller gain ($K_c$) can be adjusted to make the controller output changes sensitive to deviations.\n       - Bias ($b$) can be adjusted, referred to as manual reset.\n       - Proportional band ($PB$) defined as $PB = \\frac{100\\%}{K_c}$.\n     - Transfer function: $P(s) = K_c E(s)$.\n     - Disadvantage: steady-state error occurs after a set-point change or sustained disturbance.\n\n   - **Integral Control**\n     - Controller output depends on the integral of the error signal over time.\n     - Equation: $p(t) = \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$.\n     - Integral time ($\\tau_I$) is an adjustable parameter.\n     - Integral control eliminates steady-state error (offset).\n     - Transfer function: $P(s) = \\frac{K_c}{\\tau_I s} E(s)$.\n     - Disadvantage: reset windup (controller output saturates due to sustained error).\n\n   - **Proportional-Integral (PI) Control**\n     - Combines proportional and integral control.\n     - Equation: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$.\n     - Transfer function: $P(s) = K_c \\left(1 + \\frac{1}{\\tau_I s}\\right) E(s)$.\n     - Eliminates steady-state error and provides better performance than proportional control alone.\n\n   - **Derivative Control**\n     - Anticipates future behavior of the error signal by considering its rate of change.\n     - Equation: $p(t) = \\tau_D \\frac{de(t)}{dt} + b$.\n     - Derivative time ($\\tau_D$) has units of time.\n     - Transfer function: $P(s) = K_c (1 + \\tau_D s) E(s)$.\n     - Provides anticipatory control action, stabilizing the process.\n     - Ideal derivative action is physically unrealizable; approximations are used in practice.\n\n   - **Proportional-Integral-Derivative (PID) Control**\n     - Combines proportional, integral, and derivative control.\n     - Common forms: parallel, series, and expanded.\n     - Parallel form: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + \\tau_D \\frac{de(t)}{dt} + b$.\n     - Transfer function: $P(s) = K_c \\left(1 + \\frac{1}{\\tau_I s} + \\tau_D s\\right) E(s)$.\n     - Series form: $P(s) = K_c \\left(\\frac{\\tau_I s + 1}{\\tau_I s}\\right) \\left(\\tau_D s + 1\\right) E(s)$.\n     - Expanded form: $p(t) = K_c e(t) + K_I \\int_0^t e(t^*) dt^* + K_D \\frac{de(t)}{dt} + b$.\n     - Digital PID control: position and velocity algorithms.\n     - Position form: $p_k = p_{k-1} + K_c e_k + \\frac{K_I}{t_s} \\sum_{j=1}^k e_j t_s + K_D \\frac{e_k - e_{k-1}}{t_s}$.\n     - Velocity form: $\\Delta p_k = K_c (e_k - e_{k-1}) + \\frac{K_I}{t_s} e_k t_s + K_D \\frac{e_k - 2e_{k-1} + e_{k-2}}{t_s}$.\n\n3. **Features of PID Controllers**\n   - **Elimination of Derivative and Proportional Kick**\n     - Derivative kick: sudden change in set point causes a large derivative term.\n     - Solution: base derivative action on the measurement ($y_m$) rather than the error signal ($e$).\n     - Equation: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* - \\tau_D \\frac{dy_m(t)}{dt} + b$.\n   - **Reverse and Direct-Acting Controllers**\n     - Reverse-acting: $K_c > 0$, controller output decreases as input increases.\n     - Direct-acting: $K_c < 0$, controller output increases as input increases.\n   - **Automatic and Manual Control Modes**\n     - Automatic mode: controller output depends on error, controller constants, and type of controller.\n     - Manual mode: controller output adjusted manually.\n     - Manual mode is useful during plant start-up, shut-down, and emergencies.\n\n4. **Typical Response of Feedback Control Systems**\n   - **Step Input in Set Point**\n     - Effect of $K_c$: increasing $K_c$ reduces the rise time and overshoot.\n     - Effect of $\\tau_I$: increasing $\\tau_I$ reduces the integral action, leading to a slower response.\n   - **Step Input in Disturbance**\n     - Effect of $K_c$: increasing $K_c$ reduces the rise time and overshoot.\n     - Effect of $\\tau_I$: increasing $\\tau_I$ reduces the integral action, leading to a slower response.\n     - Effect of $\\tau_D$: increasing $\\tau_D$ improves the stability and reduces overshoot.\n\n### 2. Key Concepts & Explanations\n\n1. **Feedback Controllers**\n   - **On-Off Controllers**: Simple, cheap, and used in residential applications. Limited in process control due to continuous cycling.\n   - **Proportional Control**: Reduces error by adjusting the controller output proportional to the error. Key parameters: controller gain ($K_c$) and bias ($b$).\n   - **Integral Control**: Eliminates steady-state error by integrating the error over time. Key parameter: integral time ($\\tau_I$).\n   - **Proportional-Integral (PI) Control**: Combines proportional and integral control to eliminate steady-state error and improve performance.\n   - **Derivative Control**: Anticipates future behavior by considering the rate of change of the error. Key parameter: derivative time ($\\tau_D$).\n   - **Proportional-Integral-Derivative (PID) Control**: Combines all three control modes to provide robust control. Common forms: parallel, series, and expanded.\n\n2. **Controller Modes**\n   - **Automatic Mode**: Controller output is automatically adjusted based on the error and controller settings.\n   - **Manual Mode**: Controller output is manually adjusted, useful during start-up, shut-down, and emergencies.\n\n3. **Controller Types**\n   - **Reverse-Acting Controllers**: $K_c > 0$, output decreases as input increases.\n   - **Direct-Acting Controllers**: $K_c < 0$, output increases as input increases.\n\n4. **Digital PID Control**\n   - **Position Form**: Calculates the actual value of the controller output.\n   - **Velocity Form**: Calculates the change in controller output.\n\n### 3. Formulas & Notations Dictated\n\n1. **Proportional Control**\n   - Error signal: $e(t) = y_{sp}(t) - y(t)$\n   - Controller output: $p(t) = K_c e(t) + b$\n   - Proportional band: $PB = \\frac{100\\%}{K_c}$\n   - Transfer function: $P(s) = K_c E(s)$\n\n2. **Integral Control**\n   - Controller output: $p(t) = \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$\n   - Transfer function: $P(s) = \\frac{K_c}{\\tau_I s} E(s)$\n\n3. **Proportional-Integral (PI) Control**\n   - Controller output: $p(t) = K_c e(t) + \\frac{1}{\\tau_I} \\int_0^t e(t^*) dt^* + b$\n   - Transfer function: $P(s) = K_c \\left(1 + \\frac{1}{\\tau_I s}\\right) E(s)$\n\n4. **Derivative Control**\n   - Controller output: $p(t) = \\tau_D \\frac{de(t)}{dt}",
+          "catbox_url": "https://files.catbox.moe/j9hi6j.pdf"
         },
         {
           "name": "Chapter_9.pdf",
@@ -1261,7 +1270,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAP-ahvOsU_0cBGvDdx0fuLwohonWLQAAvccAALik-FUXcqyUGIbziI7BA"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/ea066y.pdf"
         }
       ],
       "folders": [
@@ -1293,7 +1303,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBAWob0ttt5xQrtQc51anEcOEnaKpvAAMdAALik-FU9lUgzSyBoYI7BA"
           ],
-          "folder": "IAK Sir"
+          "folder": "IAK Sir",
+          "catbox_url": "https://files.catbox.moe/c9hfhd.pdf"
         },
         {
           "name": "IAK_ChE453 Chapter 2.pdf",
@@ -1304,7 +1315,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBBGob0uY8xXIKLLbrv1RRM1FkQO1vAAICHQAC4pPhVOAWAQ111wtQOwQ"
           ],
-          "folder": "IAK Sir"
+          "folder": "IAK Sir",
+          "catbox_url": "https://files.catbox.moe/ntyqap.pdf"
         },
         {
           "name": "Introductory Transport Phenomena.pdf",
@@ -1314,7 +1326,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBCGob2Wd11BMCXyG19ZvbxpbcTIwmAAIPHQAC4pPhVF-_sqWIDMMvOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/lme3yg.pdf"
         },
         {
           "name": "Transport Phenomena 2nd Edition.pdf",
@@ -1324,7 +1337,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBC2ob2nFnWUaU2au6x1cUbSC7Gdz2AAIRHQAC4pPhVBCzgBAEvVucOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/51abhf.pdf"
         },
         {
           "name": "Tf transport soln.pdf",
@@ -1334,7 +1348,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBpmoeVKN1z9HhGPtaKsrxhMfpg3jqAAJDIQAC9u7wVAT8lRZ-K0hkOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/sfgi4d.pdf"
         },
         {
           "name": "TF Transport Solve by Srabon.pdf",
@@ -1345,7 +1360,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBqmoeVLRy6gPKPkL_OIUWiLzykLBuAAJGIQAC9u7wVPGdzSv5AAGsbjsE",
             "BQACAgUAAyEGAATqgTaTAAIBqWoeVLPkVuitMU3Njc-pUsLMzEYmAAJFIQAC9u7wVMOStK5GGRbDOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/nljuxz.pdf"
         },
         {
           "name": "Handwritten SOLUTION Transport Phenomena 2nd Edition.pdf",
@@ -1355,7 +1371,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBrWoeVMsR4VCOxqmCAhsZ3TkW6_svAAJIIQAC9u7wVHEzk0ha_EdoOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/9weui6.pdf"
         },
         {
           "name": "SOLUTION Transport Phenomena 2nd Edition.pdf",
@@ -1366,7 +1383,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBsGoeVNTX5GuZ2D0IgZtdC7oOscU3AAJKIQAC9u7wVE6TcYJPnJasOwQ",
             "BQACAgUAAyEGAATqgTaTAAIBsWoeVNW3D5kM_pSIndtoY-YqZlp7AAJLIQAC9u7wVJeefBguIFGyOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/wilwp9.pdf"
         }
       ],
       "folders": [
@@ -1421,7 +1439,8 @@
             "BQACAgUAAyEGAATqgTaTAAIBDmob3SC3JrZf_BC9Dvl9e3YHD6igAAIaHQAC4pPhVNeCOuhhNkGnOwQ"
           ],
           "folder": "OH Mam",
-          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Introduction to Biochemical Engineering II\n- **Course Overview**: Advanced bioreactor design, transport phenomena, downstream processing, bioprocess scale-up, and applications in human and plant disease detection.\n- **Instructor Background**: Dr. Oindrila Hossain, with expertise in chemical engineering and a focus on field-deployable sensors for plant health monitoring.\n\n#### Biological Catalysis and Microorganisms\n- **Biological Catalysis**: Introduction to enzymes and their role in biological reactions.\n- **Microorganisms**: Classification, importance, and industrially important microorganisms.\n- **Biomolecules**: Amino acids, proteins, metabolic stoichiometry, and molecular genetics.\n\n#### Enzyme Kinetics\n- **Michaelis-Menten Equation**: Steady-state kinetics, rapid equilibrium, and the significance of the Michaelis-Menten equation.\n- **Immobilized Enzyme Technology**: Immobilization methods and kinetics.\n- **Enzyme-Linked Immunosorbent Assay (ELISA)**: Principles and applications.\n\n#### Microbial Growth Kinetics\n- **Growth Phases**: Lag, exponential, stationary, and death phases.\n- **Monod Growth Kinetics**: Mathematical relationship between specific growth rate and substrate concentration.\n- **Historical Background**: Development of Monod's equation and its applications in bioprocess engineering.\n\n#### Continuous Processes and Bioreactors\n- **Continuous Fermenter (CSTR)**: Steady-state conditions, washout, and aeration tanks in environmental treatment.\n- **Bioreactor vs. Fermenter**: Definitions, design considerations, and applications.\n\n#### Biorefinery and Biomass Conversion\n- **Biorefinery Overview**: Integrated facility for converting biomass into fuels, energy, and chemicals.\n- **Biomass Conversion Processes**: Gasification, liquefaction, pyrolysis, direct combustion, and anaerobic digestion.\n- **Bioethanol and Biodiesel Production**: Feedstocks, processes, and environmental considerations.\n\n#### Applications and Case Studies\n- **Antibodies, Citric Acid, and Lactic Acid Production**: Bioreactor design and optimization.\n- **Algae-Based Biofuel**: Advantages, challenges, and sustainability.\n\n### 2. Key Concepts & Explanations\n\n#### Biological Catalysis\n- **Enzymes**: Highly specific biological catalysts that lower the activation energy of chemical reactions.\n- **Types of Enzymes**: Oxidoreductases, transferases, hydrolases, lyases, isomerases, and ligases.\n\n#### Microorganisms\n- **Classification**: Eukaryotes (with a nucleus) and prokaryotes (without a nucleus).\n- **Industrially Important Microorganisms**: Bacteria, yeast, and fungi used in fermentation processes.\n\n#### Biomolecules\n- **Amino Acids and Proteins**: Building blocks of proteins, involved in various biological processes.\n- **Nucleic Acids**: DNA and RNA, essential for genetic information storage and transfer.\n- **Carbohydrates and Fats**: Energy sources and structural components in cells.\n\n#### Enzyme Kinetics\n- **Michaelis-Menten Equation**: Describes the relationship between the rate of an enzymatic reaction and the substrate concentration.\n  \\[\n  v = \\frac{V_{\\text{max}} [S]}{K_m + [S]}\n  \\]\n  - \\( v \\): Reaction rate\n  - \\( V_{\\text{max}} \\): Maximum reaction rate\n  - \\( [S] \\): Substrate concentration\n  - \\( K_m \\): Michaelis constant\n\n#### Microbial Growth Kinetics\n- **Monod Equation**: Relates specific growth rate to substrate concentration.\n  \\[\n  \\mu = \\frac{\\mu_{\\text{max}} [S]}{K_s + [S]}\n  \\]\n  - \\( \\mu \\): Specific growth rate\n  - \\( \\mu_{\\text{max}} \\): Maximum specific growth rate\n  - \\( [S] \\): Substrate concentration\n  - \\( K_s \\): Half-saturation constant\n\n#### Continuous Processes\n- **Continuous Stirred Tank Reactor (CSTR)**: Maintains a constant volume by continuously adding fresh medium and removing culture liquid.\n- **Washout Condition**: Occurs when the dilution rate exceeds the maximum specific growth rate, leading to biomass depletion.\n\n#### Biorefinery\n- **Gasification**: High-temperature partial oxidation of biomass to produce syngas.\n- **Liquefaction (HTL)**: Conversion of biomass to bio-oil in hot, pressurized water.\n- **Pyrolysis**: Thermal decomposition of biomass without oxygen to produce bio-oil, charcoal, and syngas.\n- **Direct Combustion**: Complete combustion of biomass to produce heat and ash.\n- **Anaerobic Digestion**: Biological breakdown of organic material in the absence of oxygen to produce biogas.\n\n### 3. Formulas & Notations Dictated\n\n#### Michaelis-Menten Equation\n\\[\nv = \\frac{V_{\\text{max}} [S]}{K_m + [S]}\n\\]\n- \\( v \\): Reaction rate\n- \\( V_{\\text{max}} \\): Maximum reaction rate\n- \\( [S] \\): Substrate concentration\n- \\( K_m \\): Michaelis constant (substrate concentration at half-maximal reaction rate)\n\n#### Monod Equation\n\\[\n\\mu = \\frac{\\mu_{\\text{max}} [S]}{K_s + [S]}\n\\]\n- \\( \\mu \\): Specific growth rate\n- \\( \\mu_{\\text{max}} \\): Maximum specific growth rate\n- \\( [S] \\): Substrate concentration\n- \\( K_s \\): Half-saturation constant (substrate concentration at half-maximal growth rate)\n\n#### Biomass Growth Equations\n- **Exponential Phase**:\n  \\[\n  x = x_0 e^{\\mu t}\n  \\]\n- **Stationary Phase**:\n  \\[\n  x = x_0 + S_0 Y_{x/s}\n  \\]\n- **Death Phase**:\n  \\[\n  x = x_0 e^{(\\mu - k_d)t}\n  \\]\n  - \\( x \\): Number of viable cells\n  - \\( x_0 \\): Initial number of viable cells\n  - \\( \\mu \\): Specific growth rate\n  - \\( k_d \\): Specific death rate constant\n  - \\( S_0 \\): Initial substrate concentration\n  - \\( Y_{x/s} \\): Yield coefficient (biomass produced per unit substrate consumed)\n\n### 4. Comparative Analysis Table\n\n| Method/Process | Definition | Parameters | Advantages | Limitations |\n|----------------|------------|------------|------------|-------------|\n| **Gasification** | High-temperature partial oxidation of biomass | Temperature: 700-1000°C, Atmosphere: Limited O2 | Cleaner process, no dioxin formation, flexible syngas use | High temperature, requires particulate removal |\n| **Liquefaction (HTL)** | Biomass to bio-oil in hot, pressurized water | Temperature: 250-350°C, Pressure: 10-25 MPa | Processes wet biomass, reduces drying needs | High energy demand, equipment corrosion, high-pressure maintenance |\n| **Pyrolysis** | Thermal decomposition without oxygen | Temperature: 350-600°C | Uses larger biomass particles, lower pre-treatment costs | Energy-intensive, acidic bio-oil, costly storage and handling |\n| **Direct Combustion** | Complete combustion of biomass in the presence of oxygen | Temperature: 800-1000°C | Immediate energy generation, volume reduction | Produces air pollutants, not suitable for wet biomass |\n| **Anaerobic Digestion** | Biological breakdown of organic material in the absence of oxygen | Temperature: 30-60°C, pH: 6.5-8, Retention: 20-40 days | Produces biogas, digestate for fertilizer | Requires strict environmental control, slow process |\n| **Bioethanol Production** | Fermentation of sugars from various feedstocks | Feedstocks: Sugarcane, corn, wheat | Renewable, reduces greenhouse gas emissions | Competes with food crops, requires significant water and energy |\n| **Biodiesel Production** | Transesterification of vegetable oils or animal fats | Pre-treatment, transesterification, separation, purification | Reduces dependence on fossil fuels, lower emissions | Requires pre-treatment, catalysts, and purification steps |\n\nThis structured summary provides a comprehensive overview of the key topics, concepts, formulas, and comparative analysis of the methods and processes covered in the \"CHE_475_CT1_Lecture_1-6.pdf\" document."
+          "summary": "### 1. Topic-by-Topic Outline & Summary\n\n#### Introduction to Biochemical Engineering II\n- **Course Overview**: Advanced bioreactor design, transport phenomena, downstream processing, bioprocess scale-up, and applications in human and plant disease detection.\n- **Instructor Background**: Dr. Oindrila Hossain, with expertise in chemical engineering and a focus on field-deployable sensors for plant health monitoring.\n\n#### Biological Catalysis and Microorganisms\n- **Biological Catalysis**: Introduction to enzymes and their role in biological reactions.\n- **Microorganisms**: Classification, importance, and industrially important microorganisms.\n- **Biomolecules**: Amino acids, proteins, metabolic stoichiometry, and molecular genetics.\n\n#### Enzyme Kinetics\n- **Michaelis-Menten Equation**: Steady-state kinetics, rapid equilibrium, and the significance of the Michaelis-Menten equation.\n- **Immobilized Enzyme Technology**: Immobilization methods and kinetics.\n- **Enzyme-Linked Immunosorbent Assay (ELISA)**: Principles and applications.\n\n#### Microbial Growth Kinetics\n- **Growth Phases**: Lag, exponential, stationary, and death phases.\n- **Monod Growth Kinetics**: Mathematical relationship between specific growth rate and substrate concentration.\n- **Historical Background**: Development of Monod's equation and its applications in bioprocess engineering.\n\n#### Continuous Processes and Bioreactors\n- **Continuous Fermenter (CSTR)**: Steady-state conditions, washout, and aeration tanks in environmental treatment.\n- **Bioreactor vs. Fermenter**: Definitions, design considerations, and applications.\n\n#### Biorefinery and Biomass Conversion\n- **Biorefinery Overview**: Integrated facility for converting biomass into fuels, energy, and chemicals.\n- **Biomass Conversion Processes**: Gasification, liquefaction, pyrolysis, direct combustion, and anaerobic digestion.\n- **Bioethanol and Biodiesel Production**: Feedstocks, processes, and environmental considerations.\n\n#### Applications and Case Studies\n- **Antibodies, Citric Acid, and Lactic Acid Production**: Bioreactor design and optimization.\n- **Algae-Based Biofuel**: Advantages, challenges, and sustainability.\n\n### 2. Key Concepts & Explanations\n\n#### Biological Catalysis\n- **Enzymes**: Highly specific biological catalysts that lower the activation energy of chemical reactions.\n- **Types of Enzymes**: Oxidoreductases, transferases, hydrolases, lyases, isomerases, and ligases.\n\n#### Microorganisms\n- **Classification**: Eukaryotes (with a nucleus) and prokaryotes (without a nucleus).\n- **Industrially Important Microorganisms**: Bacteria, yeast, and fungi used in fermentation processes.\n\n#### Biomolecules\n- **Amino Acids and Proteins**: Building blocks of proteins, involved in various biological processes.\n- **Nucleic Acids**: DNA and RNA, essential for genetic information storage and transfer.\n- **Carbohydrates and Fats**: Energy sources and structural components in cells.\n\n#### Enzyme Kinetics\n- **Michaelis-Menten Equation**: Describes the relationship between the rate of an enzymatic reaction and the substrate concentration.\n  \\[\n  v = \\frac{V_{\\text{max}} [S]}{K_m + [S]}\n  \\]\n  - \\( v \\): Reaction rate\n  - \\( V_{\\text{max}} \\): Maximum reaction rate\n  - \\( [S] \\): Substrate concentration\n  - \\( K_m \\): Michaelis constant\n\n#### Microbial Growth Kinetics\n- **Monod Equation**: Relates specific growth rate to substrate concentration.\n  \\[\n  \\mu = \\frac{\\mu_{\\text{max}} [S]}{K_s + [S]}\n  \\]\n  - \\( \\mu \\): Specific growth rate\n  - \\( \\mu_{\\text{max}} \\): Maximum specific growth rate\n  - \\( [S] \\): Substrate concentration\n  - \\( K_s \\): Half-saturation constant\n\n#### Continuous Processes\n- **Continuous Stirred Tank Reactor (CSTR)**: Maintains a constant volume by continuously adding fresh medium and removing culture liquid.\n- **Washout Condition**: Occurs when the dilution rate exceeds the maximum specific growth rate, leading to biomass depletion.\n\n#### Biorefinery\n- **Gasification**: High-temperature partial oxidation of biomass to produce syngas.\n- **Liquefaction (HTL)**: Conversion of biomass to bio-oil in hot, pressurized water.\n- **Pyrolysis**: Thermal decomposition of biomass without oxygen to produce bio-oil, charcoal, and syngas.\n- **Direct Combustion**: Complete combustion of biomass to produce heat and ash.\n- **Anaerobic Digestion**: Biological breakdown of organic material in the absence of oxygen to produce biogas.\n\n### 3. Formulas & Notations Dictated\n\n#### Michaelis-Menten Equation\n\\[\nv = \\frac{V_{\\text{max}} [S]}{K_m + [S]}\n\\]\n- \\( v \\): Reaction rate\n- \\( V_{\\text{max}} \\): Maximum reaction rate\n- \\( [S] \\): Substrate concentration\n- \\( K_m \\): Michaelis constant (substrate concentration at half-maximal reaction rate)\n\n#### Monod Equation\n\\[\n\\mu = \\frac{\\mu_{\\text{max}} [S]}{K_s + [S]}\n\\]\n- \\( \\mu \\): Specific growth rate\n- \\( \\mu_{\\text{max}} \\): Maximum specific growth rate\n- \\( [S] \\): Substrate concentration\n- \\( K_s \\): Half-saturation constant (substrate concentration at half-maximal growth rate)\n\n#### Biomass Growth Equations\n- **Exponential Phase**:\n  \\[\n  x = x_0 e^{\\mu t}\n  \\]\n- **Stationary Phase**:\n  \\[\n  x = x_0 + S_0 Y_{x/s}\n  \\]\n- **Death Phase**:\n  \\[\n  x = x_0 e^{(\\mu - k_d)t}\n  \\]\n  - \\( x \\): Number of viable cells\n  - \\( x_0 \\): Initial number of viable cells\n  - \\( \\mu \\): Specific growth rate\n  - \\( k_d \\): Specific death rate constant\n  - \\( S_0 \\): Initial substrate concentration\n  - \\( Y_{x/s} \\): Yield coefficient (biomass produced per unit substrate consumed)\n\n### 4. Comparative Analysis Table\n\n| Method/Process | Definition | Parameters | Advantages | Limitations |\n|----------------|------------|------------|------------|-------------|\n| **Gasification** | High-temperature partial oxidation of biomass | Temperature: 700-1000°C, Atmosphere: Limited O2 | Cleaner process, no dioxin formation, flexible syngas use | High temperature, requires particulate removal |\n| **Liquefaction (HTL)** | Biomass to bio-oil in hot, pressurized water | Temperature: 250-350°C, Pressure: 10-25 MPa | Processes wet biomass, reduces drying needs | High energy demand, equipment corrosion, high-pressure maintenance |\n| **Pyrolysis** | Thermal decomposition without oxygen | Temperature: 350-600°C | Uses larger biomass particles, lower pre-treatment costs | Energy-intensive, acidic bio-oil, costly storage and handling |\n| **Direct Combustion** | Complete combustion of biomass in the presence of oxygen | Temperature: 800-1000°C | Immediate energy generation, volume reduction | Produces air pollutants, not suitable for wet biomass |\n| **Anaerobic Digestion** | Biological breakdown of organic material in the absence of oxygen | Temperature: 30-60°C, pH: 6.5-8, Retention: 20-40 days | Produces biogas, digestate for fertilizer | Requires strict environmental control, slow process |\n| **Bioethanol Production** | Fermentation of sugars from various feedstocks | Feedstocks: Sugarcane, corn, wheat | Renewable, reduces greenhouse gas emissions | Competes with food crops, requires significant water and energy |\n| **Biodiesel Production** | Transesterification of vegetable oils or animal fats | Pre-treatment, transesterification, separation, purification | Reduces dependence on fossil fuels, lower emissions | Requires pre-treatment, catalysts, and purification steps |\n\nThis structured summary provides a comprehensive overview of the key topics, concepts, formulas, and comparative analysis of the methods and processes covered in the \"CHE_475_CT1_Lecture_1-6.pdf\" document.",
+          "catbox_url": "https://files.catbox.moe/m9ba31.pdf"
         },
         {
           "name": "CHE_475_CT2_Lecture_7-25.pdf",
@@ -1432,7 +1451,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBEWob3Sn_mPImAfl2QwjfQBsSAeRwAAIdHQAC4pPhVN20CkvqGzE5OwQ"
           ],
-          "folder": "OH Mam"
+          "folder": "OH Mam",
+          "catbox_url": "https://files.catbox.moe/s9qhhh.pdf"
         },
         {
           "name": "CHE_475_CT3_Lecture_16-26.pdf",
@@ -1443,7 +1463,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBFGob3TQBDHzIlU_FSAu2ZsR7EklUAAIfHQAC4pPhVHcED93WMOdTOwQ"
           ],
-          "folder": "OH Mam"
+          "folder": "OH Mam",
+          "catbox_url": "https://files.catbox.moe/hv4vmx.pdf"
         },
         {
           "name": "CHE_475_CT4_Lecture_27-33.pdf",
@@ -1454,7 +1475,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBHGob3WaYMJFeNYl4DkLKHiK-nUE0AAInHQAC4pPhVPhFthK-Q3I1OwQ"
           ],
-          "folder": "OH Mam"
+          "folder": "OH Mam",
+          "catbox_url": "https://files.catbox.moe/kzoemm.pdf"
         },
         {
           "name": "CHE_475_Oindrila_Hossain_Lecture_34_July_26_2025.pdf",
@@ -1465,7 +1487,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBH2ob4HQmHn_cqc2t2CFMU9goNrR1AAItHQAC4pPhVAVlT3ytaj34OwQ"
           ],
-          "folder": "OH Mam"
+          "folder": "OH Mam",
+          "catbox_url": "https://files.catbox.moe/tsf7or.pdf"
         },
         {
           "name": "Bioreactor.pdf",
@@ -1476,7 +1499,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBU2ocGAvvDjXCmRjAZjFUhdRMXX-hAAKxHQAC4pPhVCmNstUHYMWJOwQ"
           ],
-          "folder": "Nafisa Mam"
+          "folder": "Nafisa Mam",
+          "catbox_url": "https://files.catbox.moe/iex1u1.pdf"
         },
         {
           "name": "Bioreactor 2.pdf",
@@ -1487,7 +1511,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBVmocGBXdcL7cl8kHD4xrKJz7byqHAAKzHQAC4pPhVDLFzYmcj2lbOwQ"
           ],
-          "folder": "Nafisa Mam"
+          "folder": "Nafisa Mam",
+          "catbox_url": "https://files.catbox.moe/uyvyv0.pdf"
         },
         {
           "name": "Bioproduct.pdf",
@@ -1498,7 +1523,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBWWocGCgG6qIpHreaZVsRhHK2OpGEAAK1HQAC4pPhVMKqmwjUecNjOwQ"
           ],
-          "folder": "Nafisa Mam"
+          "folder": "Nafisa Mam",
+          "catbox_url": "https://files.catbox.moe/4sv0za.pdf"
         },
         {
           "name": "Biosensor.pdf",
@@ -1509,7 +1535,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBXGocGECAscu6nbl_-t5ATlRHy9FhAAK3HQAC4pPhVF_5HS4ovLkiOwQ"
           ],
-          "folder": "Nafisa Mam"
+          "folder": "Nafisa Mam",
+          "catbox_url": "https://files.catbox.moe/gwqztt.pdf"
         }
       ],
       "folders": [
@@ -1542,7 +1569,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBImob4oKZDrM9KjJNlht-_zBFBJFdAAIxHQAC4pPhVDSO61xbyscUOwQ",
             "BQACAgUAAyEGAATqgTaTAAIBI2ob4oNqRbgf2TYKWpoQm00xPFS_AAIyHQAC4pPhVLTYLNsW7CgZOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/m9qcq8.pdf"
         },
         {
           "name": "loss-prevention-in-the-process-industries-chapter-1.pdf",
@@ -1552,7 +1580,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBJmob4pGlFOe96KVLEI4zQiNMsuqYAAI0HQAC4pPhVHzwEKM2QmOBOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/c2bmjg.pdf"
         },
         {
           "name": "loss-prevention-in-the-process-industries-chapter-8.pdf",
@@ -1562,7 +1591,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBKWob4pt5wkzG_tsF1g5jY8QDi06JAAI2HQAC4pPhVNOBaz6jDh7kOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/y02pjm.pdf"
         },
         {
           "name": "pdfcoffee.com_loss-prevention-in-the-process-industries-volume-1-pdf-free.pdf",
@@ -1572,7 +1602,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBLGob4qYGoZqM0CLvDrswV4nCkaq4AAI4HQAC4pPhVF9ftlJ0GCOZOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/10wmkc.pdf"
         },
         {
           "name": "Guidelines for Chemical Process Quantitative Risk Analysis_ CCPS_Guidelines (2010, John Wiley & Sons, Inc.) [10.1002_9780470935422] - libgen.li.pdf",
@@ -1583,7 +1614,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBL2ob4rWhWjfPyNDHbjRyVCtYFUUfAAI6HQAC4pPhVLAKD7xydu-JOwQ",
             "BQACAgUAAyEGAATqgTaTAAIBOGob46osbo5IPoHyedSxNtsHOBTMAAJFHQAC4pPhVK7rQSAjHKdkOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/tb3046.pdf"
         },
         {
           "name": "L1 FPS 2025.pdf",
@@ -1594,7 +1626,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBO2ob6tCvXGpmL_NtTXOtiS9RdbFpAAJiHQAC4pPhVCcMantx1Ie-OwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/5zitcb.pdf"
         },
         {
           "name": "L2 FPS Toxicology.pdf",
@@ -1605,7 +1638,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBPmob6tqD6aoqedGFqVeoqbCFPRPXAAJkHQAC4pPhVHVZTfvrN7hdOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/fbh111.pdf"
         },
         {
           "name": "L3 FPS Industrial Hygiene.pdf",
@@ -1616,7 +1650,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBQWob6uiucBawgvAzgb8cd9jbtGhCAAJmHQAC4pPhVHXWojQ0zeIjOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/bt2z5k.pdf"
         },
         {
           "name": "L4 FPS Source Models.pdf",
@@ -1627,7 +1662,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBRGob6vSFCuQzMNrZmMq_cNRO0eXPAAJoHQAC4pPhVLr6wXxCyJHhOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/rylmft.pdf"
         },
         {
           "name": "L5 FPS Dispersion Modelling.pdf",
@@ -1638,7 +1674,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBR2ob6wiqELLcj37qynv7Rrn1usNKAAJqHQAC4pPhVCbcV6hifQABZzsE"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/fzpdw9.pdf"
         },
         {
           "name": "L6 FPS  Fire and Explosion.pdf",
@@ -1649,7 +1686,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBSmob69WvQDwV_PLK8djmL69dSYM2AAJsHQAC4pPhVNVq0ip632AnOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/6tuwb5.pdf"
         },
         {
           "name": "L7 FPS  How to prevent Fire and Explosion.pdf",
@@ -1660,7 +1698,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBUGob7NUsbnJxZh5tusr690a4_71OAAJwHQAC4pPhVOpFJqnM2kFhOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/cgd99e.pdf"
         }
       ],
       "folders": [
@@ -1692,7 +1731,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBX2ocGrBNXpfCEw0oUSN_wlDgbj8kAAK6HQAC4pPhVHNy1i05DYq1OwQ"
           ],
-          "folder": "MR Sir"
+          "folder": "MR Sir",
+          "catbox_url": "https://files.catbox.moe/z18gzc.pdf"
         },
         {
           "name": "ChE 413 Lecture 3 Process flow sheet development 1.pdf",
@@ -1703,7 +1743,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBYmocGsw1gA4VWs76u0z6WIO53jeaAAK8HQAC4pPhVO1YzGZGC6ncOwQ"
           ],
-          "folder": "MR Sir"
+          "folder": "MR Sir",
+          "catbox_url": "https://files.catbox.moe/jau5zd.pdf"
         },
         {
           "name": "ChE 413 Lecture 4 Cost estimation.pdf",
@@ -1714,7 +1755,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBZWocGuEPq-BrsN0j1spGMztQDxcZAAK-HQAC4pPhVKTRoD9NvyIYOwQ"
           ],
-          "folder": "MR Sir"
+          "folder": "MR Sir",
+          "catbox_url": "https://files.catbox.moe/049xsg.pdf"
         },
         {
           "name": "ChE 413 Lecture 5 Optimum design_feb 2024 [Compatibility Mode].pdf",
@@ -1725,7 +1767,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBaGocGvEAAVi4x5eQHiI3yv_i9oHLRgACwB0AAuKT4VTYWeLGsi7vCDsE"
           ],
-          "folder": "MR Sir"
+          "folder": "MR Sir",
+          "catbox_url": "https://files.catbox.moe/tme72c.pdf"
         },
         {
           "name": "ChE 413 Lecture 6 Energy Integration_Pinch analysis.pdf",
@@ -1736,7 +1779,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBbGocHd7v0IGLaBiNNXsuRSRjolfyAALDHQAC4pPhVFilh1VALHuQOwQ"
           ],
-          "folder": "MR Sir"
+          "folder": "MR Sir",
+          "catbox_url": "https://files.catbox.moe/1f0xvj.pdf"
         },
         {
           "name": "ChE 413 Lecture 7.pdf",
@@ -1747,7 +1791,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBb2ocHeFOd4hnNT1iWU2ujNbMjfSvAALFHQAC4pPhVPiS6dM20ob5OwQ"
           ],
-          "folder": "MR Sir"
+          "folder": "MR Sir",
+          "catbox_url": "https://files.catbox.moe/ohai8y.pdf"
         },
         {
           "name": "ChE 413 Lecture 8.pdf",
@@ -1758,7 +1803,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBd2ocHl1-m32uqBzeXA5HIoa-yJI8AALKHQAC4pPhVHP-27ISQ5jnOwQ"
           ],
-          "folder": "MR Sir"
+          "folder": "MR Sir",
+          "catbox_url": "https://files.catbox.moe/m09o77.pdf"
         },
         {
           "name": "Chap_10_Materials.pdf",
@@ -1769,7 +1815,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBemocHvooEWgVw_LzYGo7roTBiG00AALMHQAC4pPhVP0EN18RfFahOwQ"
           ],
-          "folder": "SI Sir"
+          "folder": "SI Sir",
+          "catbox_url": "https://files.catbox.moe/scaqmz.pdf"
         },
         {
           "name": "Chap_12_Pressure Vessel.pdf",
@@ -1780,7 +1827,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBfWocHv08R61Onl90PL6ucSwefz7_AALOHQAC4pPhVFZ80JuEdyP6OwQ"
           ],
-          "folder": "SI Sir"
+          "folder": "SI Sir",
+          "catbox_url": "https://files.catbox.moe/66d50p.pdf"
         },
         {
           "name": "Chap_12_Pump.pdf",
@@ -1791,7 +1839,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBgGocH0Y1FgeCvfHXaXtbM9SqahiyAALQHQAC4pPhVKeoaDEmUNcwOwQ"
           ],
-          "folder": "SI Sir"
+          "folder": "SI Sir",
+          "catbox_url": "https://files.catbox.moe/8bfyu0.pdf"
         },
         {
           "name": "Chap_14_Double-Pipe.pdf",
@@ -1802,7 +1851,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBg2ocH2c4guGa6yVJRwSCn17avB6oAALTHQAC4pPhVK8sIf_oChEoOwQ"
           ],
-          "folder": "SI Sir"
+          "folder": "SI Sir",
+          "catbox_url": "https://files.catbox.moe/bdf9yn.pdf"
         },
         {
           "name": "Chap_14_Heat-Exhanger.pdf",
@@ -1813,7 +1863,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBhmocH69rzTfiHznGyYLvjIoOpz1kAALVHQAC4pPhVIb0mYauwkySOwQ"
           ],
-          "folder": "SI Sir"
+          "folder": "SI Sir",
+          "catbox_url": "https://files.catbox.moe/3u00oq.pdf"
         },
         {
           "name": "Chap_15_Separation-Eqipment.pdf",
@@ -1824,7 +1875,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBiWocH7MGJQzn1g85Vcbplk0ZDSwJAALXHQAC4pPhVA3pZT7_AwXMOwQ"
           ],
-          "folder": "SI Sir"
+          "folder": "SI Sir",
+          "catbox_url": "https://files.catbox.moe/bbwzwh.pdf"
         },
         {
           "name": "Pump _ Separation.pdf",
@@ -1835,7 +1887,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBi2ocH7Y1oo4AATemNmQapQXBduvcmwAC2R0AAuKT4VSfhK68SWCcGjsE"
           ],
-          "folder": "SI Sir"
+          "folder": "SI Sir",
+          "catbox_url": "https://files.catbox.moe/46v8s9.pdf"
         },
         {
           "name": "Max Peters, Klaus Timmerhaus, Ronald West, Max Peters - Plant Design and Economics for Chemical Engineers (2002, McGraw-Hill Education).pdf",
@@ -1846,7 +1899,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBj2ocINZNSqnFSMSpfG3ILZJSSJ2yAALcHQAC4pPhVJ8YJiWyrl0rOwQ",
             "BQACAgUAAyEGAATqgTaTAAIBkGocIU0TXYxg4k4h5iiOgAPzsEFFAALdHQAC4pPhVPX3copfsMbMOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/9yarqb.pdf"
         },
         {
           "name": "pdfcoffee.com_208468464-product-and-process-design-principles-synthesis-analysis-and-design-third-edition-1-pdf-free.pdf",
@@ -1856,7 +1910,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBk2ocIVGNN9Jl0ziNgxgiGyX-K2jsAALfHQAC4pPhVB04m0XqNHicOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/5eb1il.pdf"
         },
         {
           "name": "Towler, Gavin_ Sinnott, Ray K.-Chemical Engineering Design - Principles, Practice and Economics of Plant and Process Design-Elsevier (2013).pdf",
@@ -1867,7 +1922,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBl2ocIkq8ZGlai4UvASj_dGYN3-lSAALiHQAC4pPhVHiAngmC2rqBOwQ",
             "BQACAgUAAyEGAATqgTaTAAIBlWocIVVFY8_y_Hrwpg0muobXwydgAALhHQAC4pPhVKikaGF8zVoqOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/jck3aw.pdf"
         },
         {
           "name": "Plant Design and Economics for Chemical Engineers 5th edition.pdf",
@@ -1878,7 +1934,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBmmocIr1MncUkptIAAdhnPtCzDPVRCwAC6R0AAuKT4VRPbniUvQQn6TsE",
             "BQACAgUAAyEGAATqgTaTAAIBn2ocIzWSVbpVtQYi-uYOv1nMLIRiAALvHQAC4pPhVAhwe8B_Cr15OwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/x9n74j.pdf"
         },
         {
           "name": "Solutions Manual Plant Design and Economics for Chemical Engineers 5th edition.pdf",
@@ -1889,7 +1946,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBo2ocI4Rcd-xQMyNJ8d82IbR2we0CAALyHQAC4pPhVKLhhRjUJLK-OwQ",
             "BQACAgUAAyEGAATqgTaTAAIBomocI4NLo8ia-0zYah7zbbUKbredAALxHQAC4pPhVLobQqug11gEOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/5xivmz.pdf"
         }
       ],
       "folders": [
@@ -1924,7 +1982,8 @@
             "BQACAgUAAyEGAATqgTaTAAIBtWoejNIvmNG4EIH42KJyFHkbaq_-AAInIgAC9u7wVMa1x9i7w80sOwQ",
             "BQACAgUAAyEGAATqgTaTAAIBvGoejUrqXjV1wRJlBvGhMy1XuCicAAIsIgAC9u7wVGj1pzBOdyN5OwQ",
             "BQACAgUAAyEGAATqgTaTAAIBtGoejNGCpLTaKYnAs86dPQABO0IPnwACJiIAAvbu8FQ7JZNkGWwBwTsE"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/20oksf.pdf"
         },
         {
           "name": "DESIGN OF SULFURIC ACID MANUFACTURING PLANT FROM SULFUR.pdf",
@@ -1935,7 +1994,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBwmoejXb9Ed_hTLOxV9z6ZgxYulp0AAIxIgAC9u7wVPyglGLkZZtEOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/7ptko7.pdf"
         },
         {
           "name": "ChE 308 Hydrogen Peroxide.pptx",
@@ -1946,7 +2006,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBxWoeja9YvJZfqeswPcfbwji1fuK4AAIzIgAC9u7wVGDp77Vw-sWwOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/q5yozw.pptx"
         },
         {
           "name": "ChE 308 Introduction.pptx",
@@ -1957,7 +2018,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIByGoejbEyoMkBw1hCJTK1AXgSRT2KAAI1IgAC9u7wVNbNoyjO2G6yOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/7kyjx5.pptx"
         },
         {
           "name": "Online lecture on Ammonia.pdf",
@@ -1968,7 +2030,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBy2oejb57cNCHTeBo4JLCugZovSgcAAI3IgAC9u7wVDgXfs-66JOFOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/5thb4k.pdf"
         },
         {
           "name": "Ammonia Production.pdf",
@@ -1979,7 +2042,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIBzmoejdXW-9flkyL_NPlvh_19dyNwAAI5IgAC9u7wVGf67Ng0b_1SOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/4cvr5j.pdf"
         },
         {
           "name": "chapter8_Part 3_Jul23.pdf",
@@ -1990,7 +2054,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIB0Woejdi1_P2C42Q7-4x395kLNmmTAAI7IgAC9u7wVP4vts0FwktZOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/ku3ttg.pdf"
         },
         {
           "name": "Methanol Production.pdf",
@@ -2001,7 +2066,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIB1WoejdxJFMZLqX0ZPGqn8AtcGnV_AAI-IgAC9u7wVFpH8BAlK6iGOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/3ieaxk.pdf"
         }
       ],
       "folders": [
@@ -2033,7 +2099,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIB_WoekgbGEwfpPWsHDvR27ISkUV14AAJhIgAC9u7wVDnsIww1y1ixOwQ",
             "BQACAgUAAyEGAATqgTaTAAIB_GoekgUMbwTxQZiITerDyOXmI6uTAAJgIgAC9u7wVFPxu0qLnjmnOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/jupnv9.pdf"
         },
         {
           "name": "Lehninger Principles of Biochemistry, Fourth Edition Chapter 2.pdf",
@@ -2045,7 +2112,8 @@
             "BQACAgUAAyEGAATqgTaTAAICAWoelmaKSPY_S0P5--77Aaq4NBEKAAJxIgAC9u7wVIDy83acLXjcOwQ",
             "BQACAgUAAyEGAATqgTaTAAICAAFqHpZl7_XRYnp2sCJxK18pT4aNqQACcCIAAvbu8FQyV2RhVe9hITsE",
             "BQACAgUAAyEGAATqgTaTAAICAmoelty3CQigMZ7jR8Cnufv_uwqAAAJyIgAC9u7wVEc8nbvA3KcAATsE"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/q1rpsd.pdf"
         }
       ],
       "folders": [
@@ -2084,7 +2152,8 @@
             "BQACAgUAAyEGAATqgTaTAAICdmohM-h8PIDJFuOzNQ-ukAHfS4XXAAJJHgACv-AIVcoKnzV71F4uOwQ",
             "BQACAgUAAyEGAATqgTaTAAICd2ohM-m0DlGjvM4fbEElJ3vzsRb8AAJKHgACv-AIVZ12thCY0xX9OwQ",
             "BQACAgUAAyEGAATqgTaTAAICeGohM-vggwbtiK4ZRqqldVLphrX1AAJLHgACv-AIVTzz1KuXu1mkOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/ageluv.pdf"
         }
       ],
       "folders": [
@@ -2127,7 +2196,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICqGokXb9xk_hGBMr4mwqGtjMuXWbpAALPIQACPKUhVX9FuOTMvm_WOwQ"
           ],
-          "folder": "Sample Reports"
+          "folder": "Sample Reports",
+          "catbox_url": "https://files.catbox.moe/h264i4.pptx"
         },
         {
           "name": "ERL_Report_Conference_room.pdf",
@@ -2138,7 +2208,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAICq2okXcTYaR7guyd89XGfozK2rzZ1AALRIQACPKUhVayECL10syaGOwQ"
           ],
-          "folder": "Sample Reports"
+          "folder": "Sample Reports",
+          "catbox_url": "https://files.catbox.moe/ax226l.pdf"
         }
       ],
       "folders": [
@@ -2173,7 +2244,8 @@
             "BQACAgUAAyEGAATqgTaTAAICyWopUsK1WdhBbdAhlj7eN0qIGeCpAALlHQACES5QVTpVBIevfktdOwQ",
             "BQACAgUAAyEGAATqgTaTAAICymopUsNo8oq9Oybacoqa1lXJ2uubAALmHQACES5QVdj0IDo_nLU1OwQ",
             "BQACAgUAAyEGAATqgTaTAAICy2opUsTH_3cOy8YkeINBqnK60rVuAALnHQACES5QVTYDVtAS_oomOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/a33vyv.pdf"
         },
         {
           "name": "CHEM_111[1].pptx",
@@ -2186,7 +2258,8 @@
             "BQACAgUAAyEGAATqgTaTAAICzmopUxOI4tkMUa_jnMG9JGTErkIjAALrHQACES5QVQ8-g5kyyw1iOwQ",
             "BQACAgUAAyEGAATqgTaTAAIC0GopUxUHXTQrHUSxuXRdU-58UdjxAALtHQACES5QVf5z9gb2U_03OwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/v4iyym.pptx"
         },
         {
           "name": "General Chemistry 9th - Ebbing, Gammon.pdf",
@@ -2242,7 +2315,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIC3mopU_sNui5waqtNAaZF5slGA6wxAAL4HQACES5QVXvc8kiZqHoSOwQ",
             "BQACAgUAAyEGAATqgTaTAAIC3WopU_rIM6cJtCxZ-VyTB0xOo_nsAAL3HQACES5QVbKIUUWmy8t1OwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/t5bhni.PDF"
         },
         {
           "name": "Math 125 TF SOLVE final.pdf",
@@ -2255,7 +2329,8 @@
             "BQACAgUAAyEGAATqgTaTAAIC4mopVBi_tt5pPuS_qyn4DkG1V6e7AAL7HQACES5QVYUaDBj0OWcQOwQ",
             "BQACAgUAAyEGAATqgTaTAAIC42opVBnG7GZyTLTxKuRd8fQONdmWAAL8HQACES5QVX5-EjHAWSWAOwQ",
             "BQACAgUAAyEGAATqgTaTAAIC5GopVBrHhmWQLVnwRhhN21jtSmUIAAL9HQACES5QVWQ9htsxUoYsOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/thciqu.pdf"
         },
         {
           "name": "Pragati Integral Calculus with Applications by Hazra.pdf",
@@ -2266,7 +2341,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIC6GopVF6-SyV8WHSs0-RcddluKqz0AAMeAAIRLlBVb8vvfXPNwWc7BA",
             "BQACAgUAAyEGAATqgTaTAAIC52opVF3btoD8cjpbTKveMHo9ATCHAAL_HQACES5QVZD2qWQzMhuxOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/0j23c9.pdf"
         }
       ],
       "folders": [
@@ -2298,7 +2374,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIC7GopVOWiej5Z9TuanskgYhzKchgxAAIDHgACES5QVY4CrkSuw24SOwQ",
             "BQACAgUAAyEGAATqgTaTAAIC62opVOQSdcoVCwRshAAB79gDGwzNxAACAh4AAhEuUFWvbyg-7LWBOjsE"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/ceb4vo.pdf"
         },
         {
           "name": "solutions-manual-of-fundamentals-of-electric-circuits-4ed-by-alexander-m-sadiku-www-eeeuniversity-com.pdf",
@@ -2308,7 +2385,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIC72opVQ81MODwPvwg-jihtLTsKDxzAAIGHgACES5QVerQ_zC-aZ-yOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/iopkxm.pdf"
         },
         {
           "name": "boylestead.pdf",
@@ -2318,7 +2396,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIC8mopVR6eWImJRiImIao8368uUX1OAAIIHgACES5QVekjehXXPlzOOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/5j3cey.pdf"
         },
         {
           "name": "Assignment EEE.pdf",
@@ -2330,7 +2409,8 @@
             "BQACAgUAAyEGAATqgTaTAAIC9WopVdEBZyMXqHLFQGGaDiIVpqniAAIMHgACES5QVfzjP74Hmn7COwQ",
             "BQACAgUAAyEGAATqgTaTAAIC9mopVdI97Km878gd-eeD2fJ_uSW4AAINHgACES5QVV82KfXlJiHCOwQ",
             "BQACAgUAAyEGAATqgTaTAAIC92opVdNbDZh0F2E6u2ujZkX35wSSAAIOHgACES5QVVdRpV-OMpFSOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/0py1m3.pdf"
         }
       ],
       "folders": [
@@ -2362,7 +2442,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIC-mopVjox8cfw8o0m0MFa8ft1MOpIAAIQHgACES5QVWAuuZMGdam1OwQ",
             "BQACAgUAAyEGAATqgTaTAAIC-2opVjttePHtvWZcPba2vXPbl6EtAAIRHgACES5QVbGk-McN8easOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/iyh5a8.pdf"
         },
         {
           "name": "Sound_Lec_1.pdf",
@@ -2373,7 +2454,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIC_mopVsOouQd_vKoBSx4tBOUIgX7AAAIUHgACES5QVcGIbp4vslO9OwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/81n4t9.pdf"
         },
         {
           "name": "Sound_Lec_2.pdf",
@@ -2384,7 +2466,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIDAWopVtWBOtFudP10nLipBAaxN3h0AAIWHgACES5QVX2-mAg7gvZ0OwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/hesgiw.pdf"
         },
         {
           "name": "WO-Lecture-2,3,4.pdf",
@@ -2395,7 +2478,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIDBGopVvDcYEUNlYIDISXto9E-N31VAAIYHgACES5QVQw4pdLfm0lhOwQ"
           ],
-          "folder": "Root"
+          "folder": "Root",
+          "catbox_url": "https://files.catbox.moe/d5k8j9.pdf"
         }
       ],
       "folders": [
@@ -2428,7 +2512,8 @@
             "BQACAgUAAyEGAATqgTaTAAIDCGopWoX8AU50bJTCPayiZA-NdVHRAAIgHgACES5QVSw0CspjIPLsOwQ",
             "BQACAgUAAyEGAATqgTaTAAIDB2opWoSWdOOOPLexZQ_JCRkblUiEAAIfHgACES5QVefkntz8ucGfOwQ",
             "BQACAgUAAyEGAATqgTaTAAIDCWopWoYfht0aE7RxmdmQ7VjUWZ2BAAIhHgACES5QVXNLXPYSK2f8OwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/cl7mdj.pdf"
         },
         {
           "name": "Thermodynamics an Engineering Approach 8th Edition by Cengel and Boles.pdf",
@@ -2441,7 +2526,8 @@
             "BQACAgUAAyEGAATqgTaTAAIDDWopWqFvq9tJOsGIQKKJJXE-jLGzAAIkHgACES5QVWDZ0MgPvzaUOwQ",
             "BQACAgUAAyEGAATqgTaTAAIDD2opWqNM74oXGSE2uv2gzVOxIhJhAAImHgACES5QVfr4WyG0ZYc8OwQ",
             "BQACAgUAAyEGAATqgTaTAAIDDmopWqPDeHwtqHGPQza_srDuWi-jAAIlHgACES5QVYpj8arrF5gYOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/3u6m3x.pdf"
         },
         {
           "name": "Introduction to Chemical Engineering Thermodynamics 8th Edition by Smith, Van Ness, Abbott and Swihart Solution.pdf",
@@ -2451,7 +2537,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIDEmopWugQFZZSLBfFUvOVs-wK8ZQqAAIqHgACES5QVeS_-v2d5XbAOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/416tc0.pdf"
         }
       ],
       "folders": [
@@ -2504,7 +2591,8 @@
             "BQACAgUAAyEGAATqgTaTAAIDImopW9ycgOW4CuYSzToemUksfE4WAAJDHgACES5QVS_xu4rZ44DaOwQ",
             "BQACAgUAAyEGAATqgTaTAAIDI2opW97rRSg_a0Eoyszkxomi6xnOAAJEHgACES5QVaD71IJ8h6oMOwQ",
             "BQACAgUAAyEGAATqgTaTAAIDJGopW9888qSG1lcIZHLk0HBg1xZ_AAJFHgACES5QVce_l6XmxVuwOwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/d3v0nr.pdf"
         },
         {
           "name": "Thermodynamics CN.pdf",
@@ -2515,7 +2603,8 @@
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIDKGopXDLrVxWaJx3o58CuwUIP2o8ZAAJJHgACES5QVYHFNeYpuA6-OwQ",
             "BQACAgUAAyEGAATqgTaTAAIDJ2opXDBC_h86AAG1l6-uT4mteXIvNwACSB4AAhEuUFW-jWRCyDHuIDsE"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/f60bgf.pdf"
         },
         {
           "name": "2202069.pdf",
@@ -2525,7 +2614,8 @@
           "storage_type": "telegram_chunks",
           "telegram_file_ids": [
             "BQACAgUAAyEGAATqgTaTAAIDK2opXIs9zAUpgT4p01xh6N-6EoRyAAJMHgACES5QVXeTBYUnnwc_OwQ"
-          ]
+          ],
+          "catbox_url": "https://files.catbox.moe/6veimd.pdf"
         }
       ],
       "folders": [
