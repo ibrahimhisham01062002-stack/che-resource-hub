@@ -373,9 +373,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+async def keep_awake():
+    """Background task to ping the Render public URL every 10 mins to prevent sleep."""
+    import httpx
+    while True:
+        await asyncio.sleep(600)  # Wait 10 minutes
+        try:
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                await client.get("https://che-resource-hub-2.onrender.com/api/health")
+                print("Self-ping successful: Server kept awake.")
+        except Exception as e:
+            print(f"Self-ping failed: {e}")
+
 @app.on_event("startup")
 async def startup_event():
     global http_client
+    # Start the self-ping task to keep Render awake
+    asyncio.create_task(keep_awake())
+    
     limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
     http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
     # Use create_task to prevent blocking serverless cold starts which leads to 504 timeouts
