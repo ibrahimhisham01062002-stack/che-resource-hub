@@ -1473,6 +1473,10 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                 end = total_size - 1
             
             async def stream_range_generator():
+                global http_client
+                if http_client is None:
+                    limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                    http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
                 tg_headers = {"Range": f"bytes={start}-{end}"}
                 async with http_client.stream("GET", download_url, headers=tg_headers) as r:
                     if r.status_code not in (200, 206):
@@ -1515,6 +1519,10 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
             
         # Standard sequential download
         async def stream_generator():
+            global http_client
+            if http_client is None:
+                limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
             async with http_client.stream("GET", download_url) as r:
                 if r.status_code != 200:
                     yield b"Error streaming from Telegram servers"
@@ -1695,6 +1703,10 @@ async def upload_file_in_chunks_to_telegram(file_obj, filename: str, total_bytes
     return file_ids
 
 async def stream_telegram_chunks(file_ids: List[str]):
+    global http_client
+    if http_client is None:
+        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
     for file_id in file_ids:
         import time
         current_time = time.time()
@@ -1731,6 +1743,11 @@ async def stream_telegram_chunks_range(
     total_size: int,
     chunk_size_limit: int
 ):
+    global http_client
+    if http_client is None:
+        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+
     for i, file_id in enumerate(file_ids):
         chunk_start = i * chunk_size_limit
         chunk_end = min((i + 1) * chunk_size_limit - 1, total_size - 1)
