@@ -1177,17 +1177,7 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         cache_name = get_cache_filename(file_item)
         cache_path = os.path.join(DISK_CACHE_DIR, cache_name)
         
-        if not os.path.exists(cache_path):
-            if cache_name not in cache_locks:
-                cache_locks[cache_name] = asyncio.Lock()
-            async with cache_locks[cache_name]:
-                if not os.path.exists(cache_path):
-                    try:
-                        print(f"Downloading file to server disk cache: {file_name}")
-                        await download_file_to_cache(file_item, cache_path, course_id, file_index)
-                    except Exception as e:
-                        print(f"Caching failed for {file_name}: {str(e)}")
-                        
+        # If already cached, serve instantly from the local disk cache
         if os.path.exists(cache_path):
             headers = {
                 "Accept-Ranges": "bytes",
@@ -1203,6 +1193,107 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                 content_disposition_type=disposition_type,
                 headers=headers
             )
+            
+        # If not cached yet:
+        # 1. Trigger background caching download so subsequent range requests/downloads are instant
+        if cache_name not in cache_locks:
+            cache_locks[cache_name] = asyncio.Lock()
+            
+        async def background_cache_download():
+            async with cache_locks[cache_name]:
+                if not os.path.exists(cache_path):
+                    try:
+                        print(f"Background caching started for: {file_name}")
+                        await download_file_to_cache(file_item, cache_path, course_id, file_index)
+                        print(f"Background caching completed for: {file_name}")
+                    except Exception as e:
+                        print(f"Background caching failed for {file_name}: {str(e)}")
+                        
+        background_tasks.add_task(background_cache_download)
+        
+        # 2. Immediately proxy/stream the requested range (or full file) directly from the remote source
+        # This allows page-by-page loading instantly on the first preview click.
+        headers = {
+            "Accept-Ranges": "bytes",
+            "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+            "Content-Type": content_type,
+            "X-Frame-Options": "ALLOWALL",
+            "Content-Security-Policy": "frame-ancestors *"
+        }
+        
+        if catbox_url:
+            async def stream_catbox_file(url: str, request_headers: dict):
+                global http_client
+                if http_client is None:
+                    limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                    http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                async with http_client.stream("GET", url, headers=request_headers) as r:
+                    if r.status_code not in (200, 206):
+                        raise Exception(f"Catbox download returned status {r.status_code}")
+                    async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
+                        yield chunk
+                        
+            if range_header and range_header.startswith("bytes="):
+                req_headers = {"Range": range_header}
+                global http_client
+                if http_client is None:
+                    limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                    http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                try:
+                    async with http_client.stream("GET", catbox_url, headers=req_headers) as r:
+                        if r.status_code == 206:
+                            headers["Content-Range"] = r.headers.get("Content-Range", "")
+                            headers["Content-Length"] = r.headers.get("Content-Length", "")
+                            return StreamingResponse(
+                                stream_catbox_file(catbox_url, req_headers),
+                                status_code=206,
+                                media_type=content_type,
+                                headers=headers
+                            )
+                except Exception as e:
+                    print(f"Catbox range streaming error: {str(e)}")
+                    
+            raw_bytes = file_item.get("bytes")
+            if raw_bytes:
+                headers["Content-Length"] = str(raw_bytes)
+            return StreamingResponse(
+                stream_catbox_file(catbox_url, {}),
+                media_type=content_type,
+                headers=headers
+            )
+            
+        elif file_ids:
+            try:
+                raw_bytes = file_item.get("bytes")
+                if range_header and range_header.startswith("bytes=") and raw_bytes:
+                    start = 0
+                    end = None
+                    parts = range_header.replace("bytes=", "").split("-")
+                    if len(parts) == 2:
+                        if parts[0].strip():
+                            start = int(parts[0].strip())
+                        if parts[1].strip():
+                            end = int(parts[1].strip())
+                    if end is None or end >= raw_bytes:
+                        end = raw_bytes - 1
+                        
+                    headers["Content-Range"] = f"bytes {start}-{end}/{raw_bytes}"
+                    headers["Content-Length"] = str(end - start + 1)
+                    return StreamingResponse(
+                        stream_telegram_chunks_range(file_ids, start, end, raw_bytes, CHUNK_SIZE_LIMIT),
+                        status_code=206,
+                        media_type=content_type,
+                        headers=headers
+                    )
+                if raw_bytes:
+                    headers["Content-Length"] = str(raw_bytes)
+                return StreamingResponse(
+                    stream_telegram_chunks(file_ids),
+                    media_type=content_type,
+                    headers=headers
+                )
+            except Exception as e:
+                print(f"Telegram chunks streaming error: {str(e)}")
         
     storage_type = file_item.get("storage_type")
     gdrive_file_id = file_item.get("gdrive_file_id")
