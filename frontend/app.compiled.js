@@ -1329,26 +1329,10 @@ function App() {
   var handleDownloadFile = async function handleDownloadFile(fileIndex, fileName) {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async function () {
-      var url = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex);
-      try {
-        var res = await fetch(url);
-        if (!res.ok) throw new Error("HTTP ".concat(res.status));
-        var blob = await res.blob();
-        var blobUrl = URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.href = blobUrl;
-        a.download = fileName || "download";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(function () {
-          return URL.revokeObjectURL(blobUrl);
-        }, 1000);
-      } catch (err) {
-        console.error("Download failed:", err);
-        // Fallback: open in new tab
-        window.open(url, "_blank");
-      }
+      var file = activeCourse.files[fileIndex];
+      // Bypass fetch and use direct URL if available to prevent UI freezing during large file downloads
+      var url = file && file.catbox_url ? file.catbox_url : "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex);
+      window.open(url, "_blank");
     });
   };
 
