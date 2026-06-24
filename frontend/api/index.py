@@ -1487,16 +1487,25 @@ async def upload_file_in_chunks_to_telegram(file_obj, filename: str, total_bytes
 
 async def stream_telegram_chunks(file_ids: List[str]):
     for file_id in file_ids:
-        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-        resp = await safe_telegram_request("GET", get_file_url)
-        if resp.status_code != 200:
-            raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
+        import time
+        current_time = time.time()
+        file_path = None
+        
+        if file_id in telegram_file_path_cache and current_time - telegram_file_path_cache[file_id]['time'] < 1800:
+            file_path = telegram_file_path_cache[file_id]['path']
+        else:
+            get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+            resp = await safe_telegram_request("GET", get_file_url)
+            if resp.status_code != 200:
+                raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
+                
+            result = resp.json()
+            if not result.get("ok"):
+                raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
+                
+            file_path = result["result"]["file_path"]
+            telegram_file_path_cache[file_id] = {'path': file_path, 'time': current_time}
             
-        result = resp.json()
-        if not result.get("ok"):
-            raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
-            
-        file_path = result["result"]["file_path"]
         download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
         
         async with http_client.stream("GET", download_url) as r:
