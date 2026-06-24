@@ -1,4 +1,3 @@
-import { jsxDEV as _jsxDEV, Fragment as _Fragment } from "react/jsx-dev-runtime";
 const {
   useState,
   useEffect,
@@ -39,332 +38,307 @@ const Icon = ({
   ...props
 }) => {
   const icons = {
-    book: /*#__PURE__*/_jsxDEV("svg", {
+    book: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-      }, void 0, false)
-    }, void 0, false),
-    fileText: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+    })),
+    fileText: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-      }, void 0, false)
-    }, void 0, false),
-    video: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+    })),
+    video: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-      }, void 0, false)
-    }, void 0, false),
-    plus: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+    })),
+    plus: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M12 4v16m8-8H4"
-      }, void 0, false)
-    }, void 0, false),
-    search: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M12 4v16m8-8H4"
+    })),
+    search: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-      }, void 0, false)
-    }, void 0, false),
-    arrowLeft: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+    })),
+    arrowLeft: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M10 19l-7-7m0 0l7-7m-7 7h18"
-      }, void 0, false)
-    }, void 0, false),
-    trash: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M10 19l-7-7m0 0l7-7m-7 7h18"
+    })),
+    trash: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-      }, void 0, false)
-    }, void 0, false),
-    upload: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+    })),
+    upload: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-      }, void 0, false)
-    }, void 0, false),
-    download: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+    })),
+    download: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-      }, void 0, false)
-    }, void 0, false),
-    externalLink: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+    })),
+    externalLink: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-      }, void 0, false)
-    }, void 0, false),
-    layers: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+    })),
+    layers: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-      }, void 0, false)
-    }, void 0, false),
-    clock: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+    })),
+    clock: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-      }, void 0, false)
-    }, void 0, false),
-    edit: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+    })),
+    edit: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-      }, void 0, false)
-    }, void 0, false),
-    save: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+    })),
+    save: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-      }, void 0, false)
-    }, void 0, false),
-    bookOpen: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+    })),
+    bookOpen: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-      }, void 0, false)
-    }, void 0, false),
-    chevronRight: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+    })),
+    chevronRight: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M9 5l7 7-7 7"
-      }, void 0, false)
-    }, void 0, false),
-    play: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M9 5l7 7-7 7"
+    })),
+    play: /*#__PURE__*/React.createElement("svg", {
       fill: "currentColor",
       viewBox: "0 0 24 24",
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        d: "M8 5v14l11-7z"
-      }, void 0, false)
-    }, void 0, false),
-    folder: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M8 5v14l11-7z"
+    })),
+    folder: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-      }, void 0, false)
-    }, void 0, false),
-    folderPlus: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+    })),
+    folderPlus: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
-      }, void 0, false)
-    }, void 0, false),
-    check: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+    })),
+    check: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-      }, void 0, false)
-    }, void 0, false),
-    loader: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+    })),
+    loader: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17"
-      }, void 0, false)
-    }, void 0, false),
-    sparkles: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17"
+    })),
+    sparkles: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M9.813 15.904L9 21l-.813-5.096L3 15l5.096-.813L9 9l.813 5.096L15 15l-5.096.813zM19.071 4.929l-.707 1.414-1.414.707 1.414.707.707 1.414.707-1.414 1.414-.707-1.414-.707-.707-1.414z"
-      }, void 0, false)
-    }, void 0, false),
-    alertTriangle: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M9.813 15.904L9 21l-.813-5.096L3 15l5.096-.813L9 9l.813 5.096L15 15l-5.096.813zM19.071 4.929l-.707 1.414-1.414.707 1.414.707.707 1.414.707-1.414 1.414-.707-1.414-.707-.707-1.414z"
+    })),
+    alertTriangle: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-      }, void 0, false)
-    }, void 0, false),
-    eye: /*#__PURE__*/_jsxDEV("svg", {
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+    })),
+    eye: /*#__PURE__*/React.createElement("svg", {
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
       strokeWidth: 2,
       className: className,
-      ...props,
-      children: [/*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-      }, void 0, false)]
-    }, void 0, true)
+      ...props
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+    }), /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+    }))
   };
-  return icons[name] || /*#__PURE__*/_jsxDEV("svg", {
+  return icons[name] || /*#__PURE__*/React.createElement("svg", {
     fill: "none",
     viewBox: "0 0 24 24",
     stroke: "currentColor",
     strokeWidth: 2,
     className: className,
-    ...props,
-    children: /*#__PURE__*/_jsxDEV("path", {
-      strokeLinecap: "round",
-      strokeLinejoin: "round",
-      d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-    }, void 0, false)
-  }, void 0, false);
+    ...props
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+  }));
 };
 const RENDER_BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? "http://127.0.0.1:8000" : ""; // Use Vercel backend directly to bypass Render's 50-second cold starts
 const API_BASE = RENDER_BACKEND_URL;
@@ -2079,2387 +2053,1881 @@ function App() {
     return courses.reduce((acc, c) => acc + (c.fileCount || 0), 0);
   }, [courses]);
   if (loading) {
-    return /*#__PURE__*/_jsxDEV("div", {
-      className: "flex-grow flex items-center justify-center flex-col space-y-4",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "w-12 h-12 border-4 border-accent-sky border-t-transparent rounded-full animate-spin"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-        className: "text-glow text-accent-sky font-display font-medium tracking-wide",
-        children: "Loading Academic Space..."
-      }, void 0, false)]
-    }, void 0, true);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "flex-grow flex items-center justify-center flex-col space-y-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-12 h-12 border-4 border-accent-sky border-t-transparent rounded-full animate-spin"
+    }), /*#__PURE__*/React.createElement("p", {
+      className: "text-glow text-accent-sky font-display font-medium tracking-wide"
+    }, "Loading Academic Space..."));
   }
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "min-h-screen flex flex-col",
-    children: [editingCourse && /*#__PURE__*/_jsxDEV("div", {
-      className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in",
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-accent-sky border-opacity-30",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          onClick: () => setEditingCourse(null),
-          className: "absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-slate-300 hover:text-white transition-colors",
-          children: /*#__PURE__*/_jsxDEV("svg", {
-            className: "w-5 h-5",
-            fill: "none",
-            viewBox: "0 0 24 24",
-            stroke: "currentColor",
-            children: /*#__PURE__*/_jsxDEV("path", {
-              strokeLinecap: "round",
-              strokeLinejoin: "round",
-              strokeWidth: 2,
-              d: "M6 18L18 6M6 6l12 12"
-            }, void 0, false)
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "space-y-4",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "flex items-center space-x-2 text-accent-sky",
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "edit",
-              className: "w-5 h-5 animate-pulse"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("h3", {
-              className: "font-display font-bold text-lg text-white",
-              children: "Edit Course Details"
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-            onSubmit: handleSaveCourseEdit,
-            className: "space-y-4 pt-2",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "text-[10px] uppercase font-bold text-slate-400 tracking-wider font-display block mb-1",
-                children: "Course Code"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                type: "text",
-                required: true,
-                value: editCourseFields.code,
-                onChange: e => setEditCourseFields({
-                  ...editCourseFields,
-                  code: e.target.value
-                }),
-                className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-sky-500"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "text-[10px] uppercase font-bold text-slate-400 tracking-wider font-display block mb-1",
-                children: "Course Title"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                type: "text",
-                required: true,
-                value: editCourseFields.title,
-                onChange: e => setEditCourseFields({
-                  ...editCourseFields,
-                  title: e.target.value
-                }),
-                className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-sky-500"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              children: [/*#__PURE__*/_jsxDEV("label", {
-                className: "text-[10px] uppercase font-bold text-slate-400 tracking-wider font-display block mb-1",
-                children: "Description"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("textarea", {
-                rows: 3,
-                value: editCourseFields.description,
-                onChange: e => setEditCourseFields({
-                  ...editCourseFields,
-                  description: e.target.value
-                }),
-                className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-sky-500 resize-none"
-              }, void 0, false)]
-            }, void 0, true), editCourseError && /*#__PURE__*/_jsxDEV("p", {
-              className: "text-xs text-rose-400 font-semibold",
-              children: editCourseError
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "flex items-center space-x-3 pt-2",
-              children: [/*#__PURE__*/_jsxDEV("button", {
-                type: "button",
-                onClick: () => setEditingCourse(null),
-                className: "w-1/2 py-2.5 che-cancel-btn font-display font-semibold text-xs rounded-xl",
-                children: "Cancel"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                type: "submit",
-                disabled: isSavingCourseEdit,
-                className: "w-1/2 py-2.5 che-submit-btn text-white font-display font-semibold text-xs rounded-xl shadow-lg transition-transform hover:scale-[1.02]",
-                children: isSavingCourseEdit ? "Saving..." : "Save Changes"
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), showAuthModal && /*#__PURE__*/_jsxDEV("div", {
-      className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in",
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "glass-panel w-full max-w-sm rounded-2xl p-6 shadow-2xl relative border border-accent-rose border-opacity-30",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          onClick: () => {
-            setShowAuthModal(false);
-            setPendingAuthCallback(null);
-          },
-          className: "absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-black hover:text-black transition-colors che-admin-auth-close",
-          children: /*#__PURE__*/_jsxDEV("svg", {
-            className: "w-5 h-5",
-            fill: "none",
-            viewBox: "0 0 24 24",
-            stroke: "currentColor",
-            children: /*#__PURE__*/_jsxDEV("path", {
-              strokeLinecap: "round",
-              strokeLinejoin: "round",
-              strokeWidth: 3,
-              d: "M6 18L18 6M6 6l12 12"
-            }, void 0, false)
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "space-y-4 text-center",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center border border-rose-500/20 text-accent-rose mx-auto mb-2 animate-bounce",
-            children: /*#__PURE__*/_jsxDEV("svg", {
-              className: "w-6 h-6",
-              fill: "none",
-              viewBox: "0 0 24 24",
-              stroke: "currentColor",
-              strokeWidth: 2,
-              children: /*#__PURE__*/_jsxDEV("path", {
-                strokeLinecap: "round",
-                strokeLinejoin: "round",
-                d: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              }, void 0, false)
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("h3", {
-            className: "font-display font-bold text-lg text-white",
-            children: "Administrative Lock"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-            className: "text-slate-400 text-xs leading-relaxed",
-            children: "This action requires administrative authorization. Enter the academic access passcode to unlock edits."
-          }, void 0, false), /*#__PURE__*/_jsxDEV("form", {
-            onSubmit: handleVerifyPassword,
-            className: "space-y-4 pt-2",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              children: /*#__PURE__*/_jsxDEV("input", {
-                type: "password",
-                required: true,
-                placeholder: "Enter session passcode...",
-                value: authPasswordInput,
-                onChange: e => setAuthPasswordInput(e.target.value),
-                className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-rose-500 text-center",
-                autoFocus: true
-              }, void 0, false)
-            }, void 0, false), authError && /*#__PURE__*/_jsxDEV("p", {
-              className: "text-xs text-rose-400 font-semibold",
-              children: authError
-            }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-              type: "submit",
-              className: "w-full py-2.5 bg-gradient-to-r from-accent-rose to-red-600 text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-rose-500/25 transition-transform hover:scale-[1.02]",
-              children: "Verify and Unlock (1 Hour)"
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), showDownloadAuthModal && /*#__PURE__*/_jsxDEV("div", {
-      className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in",
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "glass-panel w-full max-w-sm rounded-2xl p-6 shadow-2xl relative border border-accent-sky border-opacity-30",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          onClick: () => {
-            setShowDownloadAuthModal(false);
-            setPendingDownloadCallback(null);
-          },
-          className: "absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-black hover:text-black transition-colors che-admin-auth-close",
-          title: "Close Panel",
-          children: /*#__PURE__*/_jsxDEV("svg", {
-            className: "w-5 h-5",
-            fill: "none",
-            viewBox: "0 0 24 24",
-            stroke: "currentColor",
-            children: /*#__PURE__*/_jsxDEV("path", {
-              strokeLinecap: "round",
-              strokeLinejoin: "round",
-              strokeWidth: 3,
-              d: "M6 18L18 6M6 6l12 12"
-            }, void 0, false)
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "space-y-4 text-center",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center border border-sky-500/20 text-accent-sky mx-auto mb-2 animate-bounce",
-            children: /*#__PURE__*/_jsxDEV("svg", {
-              className: "w-6 h-6",
-              fill: "none",
-              viewBox: "0 0 24 24",
-              stroke: "currentColor",
-              strokeWidth: 2,
-              children: /*#__PURE__*/_jsxDEV("path", {
-                strokeLinecap: "round",
-                strokeLinejoin: "round",
-                strokeWidth: 2,
-                d: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              }, void 0, false)
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("h3", {
-            className: "font-display font-bold text-lg text-white",
-            children: "Secure Download Lock"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-            className: "text-slate-400 text-xs leading-relaxed",
-            children: "This asset requires download authorization. Enter the passcode to unlock all files and videos for the next 6 hours."
-          }, void 0, false), /*#__PURE__*/_jsxDEV("form", {
-            onSubmit: handleVerifyDownloadPassword,
-            className: "space-y-4 pt-2",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              children: /*#__PURE__*/_jsxDEV("input", {
-                type: "password",
-                required: true,
-                placeholder: "Enter download passcode...",
-                value: downloadPasswordInput,
-                onChange: e => setDownloadPasswordInput(e.target.value),
-                className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-accent-sky text-center text-white placeholder-slate-500 border border-white border-opacity-15 bg-white bg-opacity-5",
-                autoFocus: true
-              }, void 0, false)
-            }, void 0, false), downloadAuthError && /*#__PURE__*/_jsxDEV("p", {
-              className: "text-xs text-rose-400 font-semibold",
-              children: downloadAuthError
-            }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-              type: "submit",
-              className: "w-full py-2.5 bg-gradient-to-r from-accent-sky to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02]",
-              children: "Verify and Unlock (6 Hours)"
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), playingVideoUrl && /*#__PURE__*/_jsxDEV("div", {
-      className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in",
-      children: /*#__PURE__*/_jsxDEV("div", {
-        className: "glass-panel w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl relative border-brand",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          onClick: () => setPlayingVideoUrl(null),
-          className: "absolute top-4 right-4 bg-dark-900 bg-opacity-80 p-2 rounded-full border border-white border-opacity-10 text-slate-300 hover:text-white transition-colors z-10",
-          children: /*#__PURE__*/_jsxDEV("svg", {
-            className: "w-6 h-6",
-            fill: "none",
-            viewBox: "0 0 24 24",
-            stroke: "currentColor",
-            children: /*#__PURE__*/_jsxDEV("path", {
-              strokeLinecap: "round",
-              strokeLinejoin: "round",
-              strokeWidth: 2,
-              d: "M6 18L18 6M6 6l12 12"
-            }, void 0, false)
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "aspect-video w-full",
-          children: /*#__PURE__*/_jsxDEV("iframe", {
-            src: playingVideoUrl,
-            className: "w-full h-full",
-            title: "YouTube Video Player",
-            allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
-            allowFullScreen: true
-          }, void 0, false)
-        }, void 0, false)]
-      }, void 0, true)
-    }, void 0, false), /*#__PURE__*/_jsxDEV("header", {
-      className: "glass-panel sticky top-0 z-40 border-b border-white border-opacity-10 px-4 md:px-6 py-3.5 md:py-4 flex flex-col md:flex-row md:items-center justify-between gap-3.5 md:gap-0",
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center justify-between w-full md:w-auto",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "flex items-center space-x-2.5 md:space-x-3 cursor-pointer",
-          onClick: () => {
-            setActiveCourse(null);
-            setSearchQuery("");
-            setFileSearchQuery("");
-          },
-          children: [/*#__PURE__*/_jsxDEV("img", {
-            src: "che_hub_logo.png",
-            alt: "ChE StudySpace Logo",
-            className: "w-9 h-9 md:w-10 md:h-10 rounded-xl shadow-lg shadow-sky-500/20 object-cover flex-shrink-0 border border-white/10"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "min-w-0",
-            children: [/*#__PURE__*/_jsxDEV("h1", {
-              className: "font-display font-extrabold text-base md:text-lg tracking-wide text-glow",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "che-brand-text",
-                children: "ChE"
-              }, void 0, false), " ", /*#__PURE__*/_jsxDEV("span", {
-                className: "gradient-text",
-                children: "StudySpace"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-              className: "text-[9px] md:text-[10px] text-slate-400 font-medium tracking-widest uppercase truncate",
-              children: "Department of Chemical Engineering"
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true), activeCourse && /*#__PURE__*/_jsxDEV("button", {
-          onClick: () => {
-            setActiveCourse(null);
-            setSearchQuery("");
-            setFileSearchQuery("");
-          },
-          className: "md:hidden che-return-to-hub-btn px-3 py-1.5 rounded-xl text-[10px] font-display font-bold uppercase tracking-wider",
-          children: "Return to Hub"
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center justify-between md:justify-end w-full md:w-auto space-x-4 md:space-x-8 text-sm border-t border-white/5 pt-2.5 md:pt-0 md:border-t-0",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "hidden md:block text-right",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "text-slate-400 block text-[11px] font-medium tracking-wider uppercase",
-            children: "Active Courses"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "font-display font-semibold text-white",
-            children: [courses.length, " courses"]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "hidden md:block h-8 w-px bg-white bg-opacity-10"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "text-left md:text-right",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "text-slate-400 block text-[9px] md:text-[11px] font-semibold tracking-wider uppercase",
-            children: "Resources Loaded"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "font-display font-bold text-xs md:text-sm text-accent-sky",
-            children: [totalFilesCount, " files"]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "h-6 md:h-8 w-px bg-white bg-opacity-10"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "flex items-center space-x-1.5 cursor-pointer select-none",
-          onClick: () => {
-            if (isAuthorizedState) {
-              if (window.confirm("Do you want to end your administrator session?")) {
-                safeStorage.removeItem("che_auth_until");
-                setIsAuthorizedState(false);
-              }
-            } else {
-              checkAuthAndExecute(() => {});
-            }
-          },
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: `w-2 h-2 rounded-full ${isAuthorizedState ? 'bg-violet-400 animate-pulse' : 'bg-slate-500'}`
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: `font-display text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${isAuthorizedState ? 'text-violet-400' : 'text-slate-500'}`,
-            children: isAuthorizedState ? '🔓 Admin Active' : '🔒 Guest'
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "h-6 md:h-8 w-px bg-white bg-opacity-10"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "flex flex-col text-left",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "text-slate-400 block text-[9px] md:text-[10px] font-bold tracking-wider uppercase mb-1",
-            children: "Level and term"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("select", {
-            value: selectedLevel && selectedTerm ? `${selectedLevel}, ${selectedTerm}` : "",
-            onChange: e => {
-              const val = e.target.value;
-              if (!val) {
-                setSelectedLevel("");
-                setSelectedTerm("");
-              } else {
-                const [lvl, trm] = val.split(", ");
-                setSelectedLevel(lvl);
-                setSelectedTerm(trm);
-              }
-              // Transition cleanly back to the dashboard filtered by the newly selected Level/Term
-              setActiveCourse(null);
-              setPreviewFile(null);
-              setPreviewUrl("");
-              setSearchQuery("");
-              setFileSearchQuery("");
-            },
-            className: "glass-input px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-sky-500 border border-white/10",
-            children: [/*#__PURE__*/_jsxDEV("option", {
-              value: "",
-              children: "All Levels & Terms"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-              value: "Level-1, Term-1",
-              children: "Level 1, Term 1"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-              value: "Level-1, Term-2",
-              children: "Level 1, Term 2"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-              value: "Level-2, Term-1",
-              children: "Level 2, Term 1"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-              value: "Level-2, Term-2",
-              children: "Level 2, Term 2"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-              value: "Level-3, Term-1",
-              children: "Level 3, Term 1"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-              value: "Level-3, Term-2",
-              children: "Level 3, Term 2"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-              value: "Level-4, Term-1",
-              children: "Level 4, Term 1"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("option", {
-              value: "Level-4, Term-2",
-              children: "Level 4, Term 2"
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("main", {
-      className: "flex-grow p-6 md:p-8 max-w-7xl mx-auto w-full flex flex-col",
-      children: !activeCourse ? /*#__PURE__*/_jsxDEV("div", {
-        className: "space-y-8 flex-grow flex flex-col justify-start animate-section-entrance",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "flex flex-col md:flex-row md:items-end justify-between gap-4",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            children: [/*#__PURE__*/_jsxDEV("h2", {
-              className: "font-display font-extrabold text-3xl md:text-4xl text-white tracking-tight",
-              children: ["Welcome to Your ", /*#__PURE__*/_jsxDEV("span", {
-                className: "gradient-text text-glow",
-                children: "Study Hub"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-              className: "text-slate-400 mt-2 text-sm max-w-xl",
-              children: "Centralized academic hub for Chemical Engineering slides, textbooks, and interactive study notes."
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "relative w-full md:w-80",
-            children: [/*#__PURE__*/_jsxDEV("input", {
-              type: "text",
-              placeholder: "Search active courses...",
-              value: searchQuery,
-              onChange: e => setSearchQuery(e.target.value),
-              className: "glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:border-sky-500"
-            }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-              name: "search",
-              className: "absolute left-3.5 top-3 w-4 h-4 text-slate-400"
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8",
-          children: [selectedLevel && selectedTerm && /*#__PURE__*/_jsxDEV("div", {
-            className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-2xl p-6 flex flex-col justify-between min-h-[220px] bg-sky-950/5 relative overflow-hidden group",
-            children: /*#__PURE__*/_jsxDEV("div", {
-              className: "z-10 w-full space-y-3",
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "flex items-center space-x-2 text-sky-300",
-                children: [/*#__PURE__*/_jsxDEV(Icon, {
-                  name: "plus",
-                  className: "w-5 h-5 text-accent-sky animate-pulse"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                  className: "font-display font-semibold text-xs uppercase tracking-wider",
-                  children: "Create Course Segment"
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-                onSubmit: handleCreateCourse,
-                className: "space-y-2",
-                children: [/*#__PURE__*/_jsxDEV("input", {
-                  type: "text",
-                  required: true,
-                  placeholder: "Course Code (e.g. ChE 403)",
-                  value: newCourse.code,
-                  onChange: e => setNewCourse({
-                    ...newCourse,
-                    code: e.target.value
-                  }),
-                  className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                  type: "text",
-                  required: true,
-                  placeholder: "Course Title (e.g. Process Control)",
-                  value: newCourse.title,
-                  onChange: e => setNewCourse({
-                    ...newCourse,
-                    title: e.target.value
-                  }),
-                  className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("textarea", {
-                  placeholder: "Description (optional)",
-                  rows: 1,
-                  value: newCourse.description,
-                  onChange: e => setNewCourse({
-                    ...newCourse,
-                    description: e.target.value
-                  }),
-                  className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs resize-none"
-                }, void 0, false), courseError && /*#__PURE__*/_jsxDEV("p", {
-                  className: "text-[10px] text-rose-400 font-medium",
-                  children: courseError
-                }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                  type: "submit",
-                  disabled: isCreatingCourse,
-                  className: "w-full py-2 bg-gradient-to-r from-accent-sky to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02] flex items-center justify-center space-x-1",
-                  children: [/*#__PURE__*/_jsxDEV("span", {
-                    children: isCreatingCourse ? "Adding Course..." : "Add Course"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "chevronRight",
-                    className: "w-3.5 h-3.5"
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)]
-            }, void 0, true)
-          }, void 0, false), filteredCourses.map((course, idx) => {
-            // Generates dynamic aesthetic gradient backgrounds by course code
-            const gradients = ["from-accent-sky to-sky-900/30", "from-accent-violet to-violet-900/30", "from-accent-violet to-violet-900/30", "from-accent-blue to-blue-900/30", "from-accent-rose to-rose-900/30"];
-            const grad = gradients[idx % gradients.length];
-            return /*#__PURE__*/_jsxDEV("div", {
-              onClick: () => setActiveCourse(course),
-              className: "glass-card rounded-2xl p-6 flex flex-col justify-between cursor-pointer min-h-[220px] relative overflow-hidden group",
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: `absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${grad} opacity-20 blur-2xl group-hover:opacity-40 transition-opacity`
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between mb-4",
-                  children: [/*#__PURE__*/_jsxDEV("span", {
-                    className: "che-course-badge inline-block px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/10 font-display",
-                    children: course.code
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                    type: "button",
-                    onClick: e => {
-                      e.stopPropagation();
-                      handleStartEditCourse(course);
-                    },
-                    className: "che-edit-course-btn p-1.5 rounded-lg bg-white border border-slate-200 transition-all relative z-10",
-                    title: "Edit Course Details",
-                    children: /*#__PURE__*/_jsxDEV(Icon, {
-                      name: "edit",
-                      className: "w-3.5 h-3.5"
-                    }, void 0, false)
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("h3", {
-                  className: "font-display font-bold text-xl text-white group-hover:text-accent-sky transition-colors line-clamp-1",
-                  children: course.title
-                }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                  className: "text-slate-400 text-xs mt-2 line-clamp-3 leading-relaxed",
-                  children: course.description
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "flex items-center justify-between border-t border-white border-opacity-5 pt-4 mt-6",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center space-x-2 text-xs text-slate-400",
-                  children: [/*#__PURE__*/_jsxDEV(Icon, {
-                    name: "fileText",
-                    className: "w-3.5 h-3.5 text-accent-sky"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                    children: [course.fileCount, " resources"]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center text-xs text-accent-sky font-medium group-hover:translate-x-1 transition-transform",
-                  children: [/*#__PURE__*/_jsxDEV("span", {
-                    children: "Enter Space"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "chevronRight",
-                    className: "w-3.5 h-3.5 ml-1"
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)]
-            }, course.id, true);
-          }), filteredCourses.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-            className: "col-span-full py-16 text-center glass-panel rounded-2xl border-dashed border-2 border-white border-opacity-10",
-            children: [/*#__PURE__*/_jsxDEV(Icon, {
-              name: "layers",
-              className: "w-12 h-12 text-slate-500 mx-auto mb-3"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-              className: "text-slate-400 font-display",
-              children: "No courses match your active search filter."
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true) :
-      /*#__PURE__*/
-      /* DETAILED COURSE SPACE */
-      _jsxDEV("div", {
-        className: "space-y-6 flex-grow flex flex-col che-course-workspace animate-section-entrance",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white border-opacity-5 pb-6",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "flex items-center space-x-4",
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              onClick: () => {
-                setActiveCourse(null);
-                setSearchQuery("");
-                setFileSearchQuery("");
-              },
-              className: "che-back-btn p-2.5 rounded-xl transition-all hover:scale-105",
-              title: "Back to Hub",
-              children: /*#__PURE__*/_jsxDEV(Icon, {
-                name: "arrowLeft",
-                className: "w-5 h-5"
-              }, void 0, false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "flex items-center space-x-3",
-                children: [/*#__PURE__*/_jsxDEV("span", {
-                  className: "text-[10px] font-bold px-2 py-0.5 rounded bg-accent-sky/20 text-accent-sky border border-accent-sky/10 uppercase tracking-widest font-display",
-                  children: activeCourse.code
-                }, void 0, false), /*#__PURE__*/_jsxDEV("h2", {
-                  className: "font-display font-extrabold text-2xl md:text-3xl text-glow text-white",
-                  children: activeCourse.title
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-                className: "text-slate-400 text-xs mt-1 max-w-2xl leading-relaxed",
-                children: activeCourse.description
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "flex bg-dark-950 p-1 rounded-xl border border-white border-opacity-5 flex-wrap gap-1 self-start md:self-center",
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              onClick: () => {
-                setPrimarySection("books");
-                setPreviewFile(null);
-              },
-              className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'books' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`,
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "book",
-                className: "w-3.5 h-3.5"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                children: "Books"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => {
-                setPrimarySection("solutions");
-                setPreviewFile(null);
-              },
-              className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`,
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "edit",
-                className: "w-3.5 h-3.5"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                children: "Solution Manual"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => {
-                setPrimarySection("slides");
-                setPreviewFile(null);
-              },
-              className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`,
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "layers",
-                className: "w-3.5 h-3.5"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                children: "Slides"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => {
-                setPrimarySection("videos");
-                setPreviewFile(null);
-              },
-              className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'videos' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`,
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "video",
-                className: "w-3.5 h-3.5"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                children: "Recorded Class"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => {
-                setPrimarySection("questions");
-                setPreviewFile(null);
-              },
-              className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'questions' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`,
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "fileText",
-                className: "w-3.5 h-3.5"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                children: "Term-Final Question"
-              }, void 0, false)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => {
-                setPrimarySection("solved");
-                setPreviewFile(null);
-              },
-              className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solved' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`,
-              children: [/*#__PURE__*/_jsxDEV(Icon, {
-                name: "check",
-                className: "w-3.5 h-3.5"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                children: "Term-Final Solved"
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "flex-grow flex flex-col",
-          children: [primarySection === 'books' && /*#__PURE__*/_jsxDEV("div", {
-            className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-1 space-y-6",
-              children: /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between",
-                  children: [/*#__PURE__*/_jsxDEV("h3", {
-                    className: "font-display font-bold text-base text-white",
-                    children: "Reference Books"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10",
-                    children: [booksList.length, " volumes"]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-                  onSubmit: e => handleFileUpload(e, bookUploadFile, "book", {
-                    setIsUploading: setIsBookUploading,
-                    setUploadProgress: setBookUploadProgress,
-                    setUploadStatus: setBookUploadStatus,
-                    setUploadFile: setBookUploadFile,
-                    fileInputRef: bookFileInputRef
-                  }),
-                  className: "relative group",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "file",
-                    multiple: true,
-                    accept: ".pdf,.docx,.doc,.xlsx,.xls",
-                    onChange: e => setBookUploadFile(Array.from(e.target.files)),
-                    className: "hidden",
-                    id: "book-upload-input",
-                    ref: bookFileInputRef
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("label", {
-                    htmlFor: "book-upload-input",
-                    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "upload",
-                      className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2",
-                      children: bookUploadFile && bookUploadFile.length > 0 ? bookUploadFile.length === 1 ? `Selected: ${bookUploadFile[0].name}` : `Selected: ${bookUploadFile.length} files` : "Upload reference textbooks or manuals directly."
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "text-[9px] text-slate-500 mt-0.5",
-                      children: "Drag & drop or click to browse"
-                    }, void 0, false)]
-                  }, void 0, true), bookUploadFile && bookUploadFile.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in",
-                    children: [/*#__PURE__*/_jsxDEV("button", {
-                      type: "button",
-                      onClick: () => {
-                        setBookUploadFile([]);
-                        if (bookFileInputRef.current) bookFileInputRef.current.value = "";
-                      },
-                      className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display",
-                      children: "Cancel"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      type: "submit",
-                      disabled: isBookUploading,
-                      className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        children: isBookUploading ? "Uploading..." : "Save to Books"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                        name: "plus",
-                        className: "w-3 h-3"
-                      }, void 0, false)]
-                    }, void 0, true)]
-                  }, void 0, true)]
-                }, void 0, true), isBookUploading && /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse",
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "bg-[#5C061C] h-full transition-all duration-300",
-                    style: {
-                      width: `${bookUploadProgress}%`
-                    }
-                  }, void 0, false)
-                }, void 0, false), bookUploadStatus.message && /*#__PURE__*/_jsxDEV("div", {
-                  className: `p-2 rounded-lg text-[10px] font-display font-medium ${bookUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`,
-                  children: bookUploadStatus.message
-                }, void 0, false), bookUploadStatus.type === "batch" && /*#__PURE__*/_jsxDEV("div", {
-                  className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center justify-between border-b border-black/5 pb-2",
-                    children: [/*#__PURE__*/_jsxDEV("span", {
-                      className: "font-display font-bold text-xs text-slate-300",
-                      children: "Upload Batch Queue"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                      className: "text-[10px] text-accent-sky font-bold",
-                      children: [bookUploadStatus.queue.filter(q => q.status === "success").length, " / ", bookUploadStatus.queue.length, " completed"]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1",
-                    children: bookUploadStatus.queue.map((item, idx) => /*#__PURE__*/_jsxDEV("div", {
-                      className: "flex items-center justify-between text-xs py-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        className: "truncate max-w-[180px] font-medium text-slate-400",
-                        children: item.name
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-2",
-                        children: [item.status === "pending" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
-                        }, void 0, false), item.status === "uploading" && /*#__PURE__*/_jsxDEV("div", {
-                          className: "flex items-center space-x-2 text-accent-violet",
-                          children: [/*#__PURE__*/_jsxDEV(Icon, {
-                            name: "loader",
-                            className: "w-3.5 h-3.5 animate-spin"
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[10px] font-bold",
-                            children: [item.progress, "%"]
-                          }, void 0, true)]
-                        }, void 0, true), item.status === "success" && /*#__PURE__*/_jsxDEV(Icon, {
-                          name: "check",
-                          className: "w-4 h-4 text-emerald-500 font-bold"
-                        }, void 0, false), item.status === "error" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "text-[9px] text-rose-500 font-semibold",
-                          title: item.error,
-                          children: "Failed"
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, idx, true))
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "relative",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "text",
-                    placeholder: "Search textbooks...",
-                    value: fileSearchQuery,
-                    onChange: e => setFileSearchQuery(e.target.value),
-                    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "search",
-                    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "space-y-2 max-h-[450px] overflow-y-auto pr-1",
-                  children: [filteredBooks.map(file => {
-                    const isPreviewing = previewFile && previewFile.index === file.index;
-                    return /*#__PURE__*/_jsxDEV("div", {
-                      onClick: () => setPreviewFile(file),
-                      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`,
-                      children: [/*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-3 min-w-0",
-                        children: [/*#__PURE__*/_jsxDEV("div", {
-                          className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "bookOpen",
-                            className: "w-5 h-5"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "min-w-0 flex flex-col items-start justify-center",
-                          children: [/*#__PURE__*/_jsxDEV("span", {
-                            className: "che-book-title block line-clamp-2 leading-relaxed",
-                            children: file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[9px] text-slate-500 font-display",
-                            children: [file.size, " • PDF Textbook"]
-                          }, void 0, true)]
-                        }, void 0, true)]
-                      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                        className: "absolute bottom-3 right-3 flex items-center space-x-2",
-                        onClick: e => e.stopPropagation(),
-                        children: [/*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDeleteFile(file.index),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
-                          title: "Delete Textbook",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "trash",
-                            className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDownloadFile(file.index, file.name),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-                          title: "Download",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "download",
-                            className: "w-3.5 h-3.5"
-                          }, void 0, false)
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, file.index, true);
-                  }), filteredBooks.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "py-8 text-center text-slate-500 text-xs font-display",
-                    children: "No books cataloged inside this folder."
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-2",
-              children: previewFile ? /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "fileText",
-                      className: "w-5 h-5 text-accent-sky"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                      className: "font-display font-bold text-sm text-white line-clamp-1",
-                      children: ["Reading: ", previewFile.name]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                    onClick: () => setPreviewFile(null),
-                    className: "che-close-reader-btn",
-                    children: "Close Reader"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-xl overflow-hidden",
-                  style: {
-                    height: "550px"
-                  },
-                  children: renderPdfViewerOrPlaceholder(previewFile)
-                }, void 0, false)]
-              }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
-                style: {
-                  height: "500px"
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2",
-                  children: /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "bookOpen",
-                    className: "w-8 h-8"
-                  }, void 0, false)
-                }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                  className: "font-display font-bold text-lg text-white",
-                  children: "Distraction-Free Textbook Reader"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                  className: "text-slate-400 text-xs max-w-md leading-relaxed",
-                  children: "Select any textbook or reference manual from the left catalog to launch our integrated full-screen PDF workspace."
-                }, void 0, false)]
-              }, void 0, true)
-            }, void 0, false)]
-          }, void 0, true), primarySection === 'questions' && /*#__PURE__*/_jsxDEV("div", {
-            className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-1 space-y-6",
-              children: /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between",
-                  children: [/*#__PURE__*/_jsxDEV("h3", {
-                    className: "font-display font-bold text-base text-white",
-                    children: "Term-Final Questions"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10",
-                    children: [questionsList.length, " papers"]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-                  onSubmit: e => handleFileUpload(e, questionUploadFile, "question", {
-                    setIsUploading: setIsQuestionUploading,
-                    setUploadProgress: setQuestionUploadProgress,
-                    setUploadStatus: setQuestionUploadStatus,
-                    setUploadFile: setQuestionUploadFile,
-                    fileInputRef: questionFileInputRef
-                  }),
-                  className: "relative group",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "file",
-                    multiple: true,
-                    accept: ".pdf,.docx,.doc",
-                    onChange: e => setQuestionUploadFile(Array.from(e.target.files)),
-                    className: "hidden",
-                    id: "question-upload-input",
-                    ref: questionFileInputRef
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("label", {
-                    htmlFor: "question-upload-input",
-                    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "upload",
-                      className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2",
-                      children: questionUploadFile && questionUploadFile.length > 0 ? questionUploadFile.length === 1 ? `Selected: ${questionUploadFile[0].name}` : `Selected: ${questionUploadFile.length} files` : "Upload term-final exam question papers directly."
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "text-[9px] text-slate-500 mt-0.5",
-                      children: "Drag & drop or click to browse"
-                    }, void 0, false)]
-                  }, void 0, true), questionUploadFile && questionUploadFile.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in",
-                    children: [/*#__PURE__*/_jsxDEV("button", {
-                      type: "button",
-                      onClick: () => {
-                        setQuestionUploadFile([]);
-                        if (questionFileInputRef.current) questionFileInputRef.current.value = "";
-                      },
-                      className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display",
-                      children: "Cancel"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      type: "submit",
-                      disabled: isQuestionUploading,
-                      className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        children: isQuestionUploading ? "Uploading..." : "Save to Questions"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                        name: "plus",
-                        className: "w-3 h-3"
-                      }, void 0, false)]
-                    }, void 0, true)]
-                  }, void 0, true)]
-                }, void 0, true), isQuestionUploading && /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse",
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "bg-[#5C061C] h-full transition-all duration-300",
-                    style: {
-                      width: `${questionUploadProgress}%`
-                    }
-                  }, void 0, false)
-                }, void 0, false), questionUploadStatus.message && /*#__PURE__*/_jsxDEV("div", {
-                  className: `p-2 rounded-lg text-[10px] font-display font-medium ${questionUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`,
-                  children: questionUploadStatus.message
-                }, void 0, false), questionUploadStatus.type === "batch" && /*#__PURE__*/_jsxDEV("div", {
-                  className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center justify-between border-b border-black/5 pb-2",
-                    children: [/*#__PURE__*/_jsxDEV("span", {
-                      className: "font-display font-bold text-xs text-slate-300",
-                      children: "Upload Batch Queue"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                      className: "text-[10px] text-accent-sky font-bold",
-                      children: [questionUploadStatus.queue.filter(q => q.status === "success").length, " / ", questionUploadStatus.queue.length, " completed"]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1",
-                    children: questionUploadStatus.queue.map((item, idx) => /*#__PURE__*/_jsxDEV("div", {
-                      className: "flex items-center justify-between text-xs py-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        className: "truncate max-w-[180px] font-medium text-slate-400",
-                        children: item.name
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-2",
-                        children: [item.status === "pending" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
-                        }, void 0, false), item.status === "uploading" && /*#__PURE__*/_jsxDEV("div", {
-                          className: "flex items-center space-x-2 text-accent-violet",
-                          children: [/*#__PURE__*/_jsxDEV(Icon, {
-                            name: "loader",
-                            className: "w-3.5 h-3.5 animate-spin"
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[10px] font-bold",
-                            children: [item.progress, "%"]
-                          }, void 0, true)]
-                        }, void 0, true), item.status === "success" && /*#__PURE__*/_jsxDEV(Icon, {
-                          name: "check",
-                          className: "w-4 h-4 text-emerald-500 font-bold"
-                        }, void 0, false), item.status === "error" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "text-[9px] text-rose-500 font-semibold",
-                          title: item.error,
-                          children: "Failed"
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, idx, true))
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "relative",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "text",
-                    placeholder: "Search questions...",
-                    value: fileSearchQuery,
-                    onChange: e => setFileSearchQuery(e.target.value),
-                    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "search",
-                    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "space-y-2 max-h-[450px] overflow-y-auto pr-1",
-                  children: [filteredQuestions.map(file => {
-                    const isPreviewing = previewFile && previewFile.index === file.index;
-                    return /*#__PURE__*/_jsxDEV("div", {
-                      onClick: () => setPreviewFile(file),
-                      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`,
-                      children: [/*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-3 min-w-0",
-                        children: [/*#__PURE__*/_jsxDEV("div", {
-                          className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "fileText",
-                            className: "w-5 h-5"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "min-w-0 flex flex-col items-start justify-center",
-                          children: [/*#__PURE__*/_jsxDEV("span", {
-                            className: "che-book-title block line-clamp-2 leading-relaxed",
-                            children: file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[9px] text-slate-500 font-display",
-                            children: [file.size, " • PDF Question Paper"]
-                          }, void 0, true)]
-                        }, void 0, true)]
-                      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                        className: "absolute bottom-3 right-3 flex items-center space-x-2",
-                        onClick: e => e.stopPropagation(),
-                        children: [/*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDeleteFile(file.index),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
-                          title: "Delete Question",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "trash",
-                            className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDownloadFile(file.index, file.name),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-                          title: "Download",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "download",
-                            className: "w-3.5 h-3.5"
-                          }, void 0, false)
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, file.index, true);
-                  }), filteredQuestions.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "py-8 text-center text-slate-500 text-xs font-display",
-                    children: "No exam questions cataloged inside this folder."
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-2",
-              children: previewFile ? /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "fileText",
-                      className: "w-5 h-5 text-accent-sky"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                      className: "font-display font-bold text-sm text-white line-clamp-1",
-                      children: ["Reading: ", previewFile.name]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                    onClick: () => setPreviewFile(null),
-                    className: "che-close-reader-btn",
-                    children: "Close Reader"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-xl overflow-hidden",
-                  style: {
-                    height: "550px"
-                  },
-                  children: renderPdfViewerOrPlaceholder(previewFile)
-                }, void 0, false)]
-              }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
-                style: {
-                  height: "500px"
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2",
-                  children: /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "fileText",
-                    className: "w-8 h-8"
-                  }, void 0, false)
-                }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                  className: "font-display font-bold text-lg text-white",
-                  children: "Term-Final Questions Reader"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                  className: "text-slate-400 text-xs max-w-md leading-relaxed",
-                  children: "Select any term-final question paper from the left catalog to launch our integrated full-screen PDF workspace."
-                }, void 0, false)]
-              }, void 0, true)
-            }, void 0, false)]
-          }, void 0, true), primarySection === 'solutions' && /*#__PURE__*/_jsxDEV("div", {
-            className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-1 space-y-6",
-              children: /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between",
-                  children: [/*#__PURE__*/_jsxDEV("h3", {
-                    className: "font-display font-bold text-base text-white",
-                    children: "Solution Manuals"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10",
-                    children: [solutionsList.length, " manuals"]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-                  onSubmit: e => handleFileUpload(e, solutionUploadFile, "solution", {
-                    setIsUploading: setIsSolutionUploading,
-                    setUploadProgress: setSolutionUploadProgress,
-                    setUploadStatus: setSolutionUploadStatus,
-                    setUploadFile: setSolutionUploadFile,
-                    fileInputRef: solutionFileInputRef
-                  }),
-                  className: "relative group",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "file",
-                    multiple: true,
-                    accept: ".pdf,.docx,.doc",
-                    onChange: e => setSolutionUploadFile(Array.from(e.target.files)),
-                    className: "hidden",
-                    id: "solution-upload-input",
-                    ref: solutionFileInputRef
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("label", {
-                    htmlFor: "solution-upload-input",
-                    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "upload",
-                      className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2",
-                      children: solutionUploadFile && solutionUploadFile.length > 0 ? solutionUploadFile.length === 1 ? `Selected: ${solutionUploadFile[0].name}` : `Selected: ${solutionUploadFile.length} files` : "Upload exam solutions or step-by-step guides directly."
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "text-[9px] text-slate-500 mt-0.5",
-                      children: "Drag & drop or click to browse"
-                    }, void 0, false)]
-                  }, void 0, true), solutionUploadFile && solutionUploadFile.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in",
-                    children: [/*#__PURE__*/_jsxDEV("button", {
-                      type: "button",
-                      onClick: () => {
-                        setSolutionUploadFile([]);
-                        if (solutionFileInputRef.current) solutionFileInputRef.current.value = "";
-                      },
-                      className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display",
-                      children: "Cancel"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      type: "submit",
-                      disabled: isSolutionUploading,
-                      className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        children: isSolutionUploading ? "Uploading..." : "Save to Solutions"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                        name: "plus",
-                        className: "w-3 h-3"
-                      }, void 0, false)]
-                    }, void 0, true)]
-                  }, void 0, true)]
-                }, void 0, true), isSolutionUploading && /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse",
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "bg-[#5C061C] h-full transition-all duration-300",
-                    style: {
-                      width: `${solutionUploadProgress}%`
-                    }
-                  }, void 0, false)
-                }, void 0, false), solutionUploadStatus.message && /*#__PURE__*/_jsxDEV("div", {
-                  className: `p-2 rounded-lg text-[10px] font-display font-medium ${solutionUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`,
-                  children: solutionUploadStatus.message
-                }, void 0, false), solutionUploadStatus.type === "batch" && /*#__PURE__*/_jsxDEV("div", {
-                  className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center justify-between border-b border-black/5 pb-2",
-                    children: [/*#__PURE__*/_jsxDEV("span", {
-                      className: "font-display font-bold text-xs text-slate-300",
-                      children: "Upload Batch Queue"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                      className: "text-[10px] text-accent-sky font-bold",
-                      children: [solutionUploadStatus.queue.filter(q => q.status === "success").length, " / ", solutionUploadStatus.queue.length, " completed"]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1",
-                    children: solutionUploadStatus.queue.map((item, idx) => /*#__PURE__*/_jsxDEV("div", {
-                      className: "flex items-center justify-between text-xs py-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        className: "truncate max-w-[180px] font-medium text-slate-400",
-                        children: item.name
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-2",
-                        children: [item.status === "pending" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
-                        }, void 0, false), item.status === "uploading" && /*#__PURE__*/_jsxDEV("div", {
-                          className: "flex items-center space-x-2 text-accent-violet",
-                          children: [/*#__PURE__*/_jsxDEV(Icon, {
-                            name: "loader",
-                            className: "w-3.5 h-3.5 animate-spin"
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[10px] font-bold",
-                            children: [item.progress, "%"]
-                          }, void 0, true)]
-                        }, void 0, true), item.status === "success" && /*#__PURE__*/_jsxDEV(Icon, {
-                          name: "check",
-                          className: "w-4 h-4 text-emerald-500 font-bold"
-                        }, void 0, false), item.status === "error" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "text-[9px] text-rose-500 font-semibold",
-                          title: item.error,
-                          children: "Failed"
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, idx, true))
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "relative",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "text",
-                    placeholder: "Search solution manuals...",
-                    value: fileSearchQuery,
-                    onChange: e => setFileSearchQuery(e.target.value),
-                    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "search",
-                    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "space-y-2 max-h-[450px] overflow-y-auto pr-1",
-                  children: [filteredSolutions.map(file => {
-                    const isPreviewing = previewFile && previewFile.index === file.index;
-                    return /*#__PURE__*/_jsxDEV("div", {
-                      onClick: () => setPreviewFile(file),
-                      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`,
-                      children: [/*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-3 min-w-0",
-                        children: [/*#__PURE__*/_jsxDEV("div", {
-                          className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "edit",
-                            className: "w-5 h-5"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "min-w-0 flex flex-col items-start justify-center",
-                          children: [/*#__PURE__*/_jsxDEV("span", {
-                            className: "che-book-title block line-clamp-2 leading-relaxed",
-                            children: file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[9px] text-slate-500 font-display",
-                            children: [file.size, " • PDF Exam Solve"]
-                          }, void 0, true)]
-                        }, void 0, true)]
-                      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                        className: "absolute bottom-3 right-3 flex items-center space-x-2",
-                        onClick: e => e.stopPropagation(),
-                        children: [/*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDeleteFile(file.index),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
-                          title: "Delete Solve",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "trash",
-                            className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDownloadFile(file.index, file.name),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-                          title: "Download",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "download",
-                            className: "w-3.5 h-3.5"
-                          }, void 0, false)
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, file.index, true);
-                  }), filteredSolutions.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "py-8 text-center text-slate-500 text-xs font-display",
-                    children: "No exam solutions cataloged inside this folder."
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-2",
-              children: previewFile ? /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "fileText",
-                      className: "w-5 h-5 text-accent-sky"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                      className: "font-display font-bold text-sm text-white line-clamp-1",
-                      children: ["Reading: ", previewFile.name]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                    onClick: () => setPreviewFile(null),
-                    className: "che-close-reader-btn",
-                    children: "Close Reader"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-xl overflow-hidden",
-                  style: {
-                    height: "550px"
-                  },
-                  children: renderPdfViewerOrPlaceholder(previewFile)
-                }, void 0, false)]
-              }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
-                style: {
-                  height: "500px"
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2",
-                  children: /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "edit",
-                    className: "w-8 h-8"
-                  }, void 0, false)
-                }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                  className: "font-display font-bold text-lg text-white",
-                  children: "Solution Manuals Reader"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                  className: "text-slate-400 text-xs max-w-md leading-relaxed",
-                  children: "Select any solution manual or guide from the left catalog to launch our integrated full-screen PDF workspace."
-                }, void 0, false)]
-              }, void 0, true)
-            }, void 0, false)]
-          }, void 0, true), primarySection === 'solved' && /*#__PURE__*/_jsxDEV("div", {
-            className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-1 space-y-6",
-              children: /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between",
-                  children: [/*#__PURE__*/_jsxDEV("h3", {
-                    className: "font-display font-bold text-base text-white",
-                    children: "Term-Final Solved"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10",
-                    children: [solvedList.length, " solved papers"]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-                  onSubmit: e => handleFileUpload(e, solvedUploadFile, "solved", {
-                    setIsUploading: setIsSolvedUploading,
-                    setUploadProgress: setSolvedUploadProgress,
-                    setUploadStatus: setSolvedUploadStatus,
-                    setUploadFile: setSolvedUploadFile,
-                    fileInputRef: solvedFileInputRef
-                  }),
-                  className: "relative group",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "file",
-                    multiple: true,
-                    accept: ".pdf,.docx,.doc",
-                    onChange: e => setSolvedUploadFile(Array.from(e.target.files)),
-                    className: "hidden",
-                    id: "solved-upload-input",
-                    ref: solvedFileInputRef
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("label", {
-                    htmlFor: "solved-upload-input",
-                    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "upload",
-                      className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2",
-                      children: solvedUploadFile && solvedUploadFile.length > 0 ? solvedUploadFile.length === 1 ? `Selected: ${solvedUploadFile[0].name}` : `Selected: ${solvedUploadFile.length} files` : "Upload exam solutions or solved answer keys directly."
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "text-[9px] text-slate-500 mt-0.5",
-                      children: "Drag & drop or click to browse"
-                    }, void 0, false)]
-                  }, void 0, true), solvedUploadFile && solvedUploadFile.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in",
-                    children: [/*#__PURE__*/_jsxDEV("button", {
-                      type: "button",
-                      onClick: () => {
-                        setSolvedUploadFile([]);
-                        if (solvedFileInputRef.current) solvedFileInputRef.current.value = "";
-                      },
-                      className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display",
-                      children: "Cancel"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      type: "submit",
-                      disabled: isSolvedUploading,
-                      className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        children: isSolvedUploading ? "Uploading..." : "Save to Solved"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                        name: "plus",
-                        className: "w-3 h-3"
-                      }, void 0, false)]
-                    }, void 0, true)]
-                  }, void 0, true)]
-                }, void 0, true), isSolvedUploading && /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse",
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "bg-[#5C061C] h-full transition-all duration-300",
-                    style: {
-                      width: `${solvedUploadProgress}%`
-                    }
-                  }, void 0, false)
-                }, void 0, false), solvedUploadStatus.message && /*#__PURE__*/_jsxDEV("div", {
-                  className: `p-2 rounded-lg text-[10px] font-display font-medium ${solvedUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`,
-                  children: solvedUploadStatus.message
-                }, void 0, false), solvedUploadStatus.type === "batch" && /*#__PURE__*/_jsxDEV("div", {
-                  className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center justify-between border-b border-black/5 pb-2",
-                    children: [/*#__PURE__*/_jsxDEV("span", {
-                      className: "font-display font-bold text-xs text-slate-300",
-                      children: "Upload Batch Queue"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                      className: "text-[10px] text-accent-sky font-bold",
-                      children: [solvedUploadStatus.queue.filter(q => q.status === "success").length, " / ", solvedUploadStatus.queue.length, " completed"]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1",
-                    children: solvedUploadStatus.queue.map((item, idx) => /*#__PURE__*/_jsxDEV("div", {
-                      className: "flex items-center justify-between text-xs py-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        className: "truncate max-w-[180px] font-medium text-slate-400",
-                        children: item.name
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-2",
-                        children: [item.status === "pending" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
-                        }, void 0, false), item.status === "uploading" && /*#__PURE__*/_jsxDEV("div", {
-                          className: "flex items-center space-x-2 text-accent-violet",
-                          children: [/*#__PURE__*/_jsxDEV(Icon, {
-                            name: "loader",
-                            className: "w-3.5 h-3.5 animate-spin"
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[10px] font-bold",
-                            children: [item.progress, "%"]
-                          }, void 0, true)]
-                        }, void 0, true), item.status === "success" && /*#__PURE__*/_jsxDEV(Icon, {
-                          name: "check",
-                          className: "w-4 h-4 text-emerald-500 font-bold"
-                        }, void 0, false), item.status === "error" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "text-[9px] text-rose-500 font-semibold",
-                          title: item.error,
-                          children: "Failed"
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, idx, true))
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "relative",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "text",
-                    placeholder: "Search solved answers...",
-                    value: fileSearchQuery,
-                    onChange: e => setFileSearchQuery(e.target.value),
-                    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "search",
-                    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "space-y-2 max-h-[450px] overflow-y-auto pr-1",
-                  children: [filteredSolved.map(file => {
-                    const isPreviewing = previewFile && previewFile.index === file.index;
-                    return /*#__PURE__*/_jsxDEV("div", {
-                      onClick: () => setPreviewFile(file),
-                      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`,
-                      children: [/*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-3 min-w-0",
-                        children: [/*#__PURE__*/_jsxDEV("div", {
-                          className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "check",
-                            className: "w-5 h-5"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "min-w-0 flex flex-col items-start justify-center",
-                          children: [/*#__PURE__*/_jsxDEV("span", {
-                            className: "che-book-title block line-clamp-2 leading-relaxed",
-                            children: file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[9px] text-slate-500 font-display",
-                            children: [file.size, " • PDF Exam Solve"]
-                          }, void 0, true)]
-                        }, void 0, true)]
-                      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                        className: "absolute bottom-3 right-3 flex items-center space-x-2",
-                        onClick: e => e.stopPropagation(),
-                        children: [/*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDeleteFile(file.index),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
-                          title: "Delete Solve",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "trash",
-                            className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDownloadFile(file.index, file.name),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-                          title: "Download",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "download",
-                            className: "w-3.5 h-3.5"
-                          }, void 0, false)
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, file.index, true);
-                  }), filteredSolved.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "py-8 text-center text-slate-500 text-xs font-display",
-                    children: "No solved papers cataloged inside this folder yet."
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-2",
-              children: previewFile && solvedList.some(f => f.index === previewFile.index) ? /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "fileText",
-                      className: "w-5 h-5 text-accent-sky"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                      className: "font-display font-bold text-sm text-white line-clamp-1",
-                      children: ["Reading: ", previewFile.name]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                    onClick: () => setPreviewFile(null),
-                    className: "che-close-reader-btn",
-                    children: "Close Reader"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-xl overflow-hidden",
-                  style: {
-                    height: "550px"
-                  },
-                  children: renderPdfViewerOrPlaceholder(previewFile)
-                }, void 0, false)]
-              }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
-                style: {
-                  height: "500px"
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2",
-                  children: /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "check",
-                    className: "w-8 h-8"
-                  }, void 0, false)
-                }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                  className: "font-display font-bold text-lg text-white",
-                  children: "Term-Final Solved Reader"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                  className: "text-slate-400 text-xs max-w-md leading-relaxed",
-                  children: "Select any term-final solved answer or guide from the left catalog to launch our integrated full-screen PDF workspace."
-                }, void 0, false)]
-              }, void 0, true)
-            }, void 0, false)]
-          }, void 0, true), primarySection === 'slides' && /*#__PURE__*/_jsxDEV("div", {
-            className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-1 space-y-6",
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between",
-                  children: [/*#__PURE__*/_jsxDEV("h3", {
-                    className: "font-display font-bold text-base text-white",
-                    children: "Class Slides & Assets"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10",
-                    children: [slidesList.length, " files"]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "space-y-3 pb-3 border-b border-white border-opacity-5",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center justify-between",
-                    children: [/*#__PURE__*/_jsxDEV("span", {
-                      className: "text-[10px] font-display font-bold text-sky-400 tracking-wider uppercase",
-                      children: "Folders"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      type: "button",
-                      onClick: handleCreateFolder,
-                      className: "flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2 py-0.5 rounded border border-sky-500/20",
-                      children: [/*#__PURE__*/_jsxDEV(Icon, {
-                        name: "folderPlus",
-                        className: "w-3 h-3"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                        children: "Create"
-                      }, void 0, false)]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "flex flex-wrap gap-1.5 max-h-[120px] overflow-y-auto pr-1",
-                    children: (activeCourse.folders || ["Root"]).map(folder => {
-                      const isSelected = currentFolder === folder;
-                      return /*#__PURE__*/_jsxDEV("button", {
-                        type: "button",
-                        onClick: () => {
-                          setCurrentFolder(folder);
-                          setPreviewFile(null);
-                        },
-                        className: `flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-display font-semibold transition-all border ${isSelected ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' : 'folder-btn-unselected'}`,
-                        children: [/*#__PURE__*/_jsxDEV(Icon, {
-                          name: "folder",
-                          className: `w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                          className: "truncate max-w-[80px]",
-                          children: folder
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "flex items-center space-x-1 ml-1",
-                          onClick: e => e.stopPropagation(),
-                          children: [/*#__PURE__*/_jsxDEV("span", {
-                            onClick: e => handleRenameFolder(e, folder),
-                            className: "p-0.5 rounded hover:bg-black/10 transition-all text-black",
-                            title: `Rename ${folder}`,
-                            children: /*#__PURE__*/_jsxDEV("svg", {
-                              className: "w-2.5 h-2.5",
-                              fill: "none",
-                              viewBox: "0 0 24 24",
-                              stroke: "currentColor",
-                              strokeWidth: 2.5,
-                              children: /*#__PURE__*/_jsxDEV("path", {
-                                strokeLinecap: "round",
-                                strokeLinejoin: "round",
-                                d: "M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                              }, void 0, false)
-                            }, void 0, false)
-                          }, void 0, false), folder !== "Root" && /*#__PURE__*/_jsxDEV("span", {
-                            onClick: e => handleDeleteFolder(e, folder),
-                            className: "p-0.5 rounded hover:bg-black/10 transition-all text-black",
-                            title: `Delete ${folder}`,
-                            children: /*#__PURE__*/_jsxDEV("svg", {
-                              className: "w-2.5 h-2.5",
-                              fill: "none",
-                              viewBox: "0 0 24 24",
-                              stroke: "currentColor",
-                              strokeWidth: 2.5,
-                              children: /*#__PURE__*/_jsxDEV("path", {
-                                strokeLinecap: "round",
-                                strokeLinejoin: "round",
-                                d: "M6 18L18 6M6 6l12 12"
-                              }, void 0, false)
-                            }, void 0, false)
-                          }, void 0, false)]
-                        }, void 0, true)]
-                      }, folder, true);
-                    })
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-                  onSubmit: e => handleFileUpload(e, slideUploadFile, "slide", {
-                    setIsUploading: setIsSlideUploading,
-                    setUploadProgress: setSlideUploadProgress,
-                    setUploadStatus: setSlideUploadStatus,
-                    setUploadFile: setSlideUploadFile,
-                    fileInputRef: slideFileInputRef
-                  }),
-                  className: "relative group",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "file",
-                    multiple: true,
-                    accept: ".pdf,.docx,.doc,.xlsx,.xls,.pptx,.ppt,.txt,.zip,.rar",
-                    onChange: e => setSlideUploadFile(Array.from(e.target.files)),
-                    className: "hidden",
-                    id: "slide-upload-input",
-                    ref: slideFileInputRef
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("label", {
-                    htmlFor: "slide-upload-input",
-                    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "upload",
-                      className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2",
-                      children: slideUploadFile && slideUploadFile.length > 0 ? slideUploadFile.length === 1 ? `Selected: ${slideUploadFile[0].name}` : `Selected: ${slideUploadFile.length} files` : "Upload lecture slides, notes, or spreadsheets."
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "text-[9px] text-slate-500 mt-0.5",
-                      children: "Drag & drop or click to browse"
-                    }, void 0, false)]
-                  }, void 0, true), slideUploadFile && slideUploadFile.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in",
-                    children: [/*#__PURE__*/_jsxDEV("button", {
-                      type: "button",
-                      onClick: () => {
-                        setSlideUploadFile([]);
-                        if (slideFileInputRef.current) slideFileInputRef.current.value = "";
-                      },
-                      className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display",
-                      children: "Cancel"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      type: "submit",
-                      disabled: isSlideUploading,
-                      className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        children: isSlideUploading ? "Uploading..." : "Save to Slides"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                        name: "plus",
-                        className: "w-3 h-3"
-                      }, void 0, false)]
-                    }, void 0, true)]
-                  }, void 0, true)]
-                }, void 0, true), isSlideUploading && /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse",
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "bg-[#5C061C] h-full transition-all duration-300",
-                    style: {
-                      width: `${slideUploadProgress}%`
-                    }
-                  }, void 0, false)
-                }, void 0, false), slideUploadStatus.message && /*#__PURE__*/_jsxDEV("div", {
-                  className: `p-2 rounded-lg text-[10px] font-display font-medium ${slideUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`,
-                  children: slideUploadStatus.message
-                }, void 0, false), slideUploadStatus.type === "batch" && /*#__PURE__*/_jsxDEV("div", {
-                  className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center justify-between border-b border-black/5 pb-2",
-                    children: [/*#__PURE__*/_jsxDEV("span", {
-                      className: "font-display font-bold text-xs text-slate-300",
-                      children: "Upload Batch Queue"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                      className: "text-[10px] text-accent-sky font-bold",
-                      children: [slideUploadStatus.queue.filter(q => q.status === "success").length, " / ", slideUploadStatus.queue.length, " completed"]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1",
-                    children: slideUploadStatus.queue.map((item, idx) => /*#__PURE__*/_jsxDEV("div", {
-                      className: "flex items-center justify-between text-xs py-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        className: "truncate max-w-[180px] font-medium text-slate-400",
-                        children: item.name
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-2",
-                        children: [item.status === "pending" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
-                        }, void 0, false), item.status === "uploading" && /*#__PURE__*/_jsxDEV("div", {
-                          className: "flex items-center space-x-2 text-accent-violet",
-                          children: [/*#__PURE__*/_jsxDEV(Icon, {
-                            name: "loader",
-                            className: "w-3.5 h-3.5 animate-spin"
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[10px] font-bold",
-                            children: [item.progress, "%"]
-                          }, void 0, true)]
-                        }, void 0, true), item.status === "success" && /*#__PURE__*/_jsxDEV(Icon, {
-                          name: "check",
-                          className: "w-4 h-4 text-emerald-500 font-bold"
-                        }, void 0, false), item.status === "error" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "text-[9px] text-rose-500 font-semibold",
-                          title: item.error,
-                          children: "Failed"
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, idx, true))
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "relative",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "text",
-                    placeholder: "Search slides...",
-                    value: fileSearchQuery,
-                    onChange: e => setFileSearchQuery(e.target.value),
-                    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "search",
-                    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "space-y-2 max-h-[350px] overflow-y-auto pr-1",
-                  children: [filteredSlides.map(file => {
-                    const isPreviewing = previewFile && previewFile.index === file.index;
-                    return /*#__PURE__*/_jsxDEV("div", {
-                      onClick: () => setPreviewFile(file),
-                      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`,
-                      children: [/*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-3 min-w-0",
-                        children: [/*#__PURE__*/_jsxDEV("div", {
-                          className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: (file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf') ? 'fileText' : 'layers',
-                            className: "w-5 h-5"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "min-w-0 flex flex-col items-start justify-center",
-                          children: [/*#__PURE__*/_jsxDEV("span", {
-                            className: "che-book-title block line-clamp-2 leading-relaxed",
-                            children: file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[9px] text-slate-500 font-display",
-                            children: [file.size, " • ", file.type || "Class Slide"]
-                          }, void 0, true)]
-                        }, void 0, true)]
-                      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                        className: "absolute bottom-3 right-3 flex items-center space-x-2",
-                        onClick: e => e.stopPropagation(),
-                        children: [/*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDeleteFile(file.index),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
-                          title: "Delete Asset",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "trash",
-                            className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDownloadFile(file.index, file.name),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-                          title: "Download",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "download",
-                            className: "w-3.5 h-3.5"
-                          }, void 0, false)
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, file.index, true);
-                  }), filteredSlides.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "py-8 text-center text-slate-500 text-xs font-display",
-                    children: "No slide materials cataloged inside this folder yet."
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4",
-                children: [/*#__PURE__*/_jsxDEV("h3", {
-                  className: "font-display font-bold text-base text-glow text-white",
-                  children: "Study Reference Links"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("form", {
-                  onSubmit: handleAddLink,
-                  className: "space-y-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    children: [/*#__PURE__*/_jsxDEV("label", {
-                      className: "text-[9px] uppercase font-semibold text-slate-400 tracking-wider font-display block mb-1",
-                      children: "Reference Title"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                      type: "text",
-                      placeholder: "e.g. Perry's Handbook Chapter 5",
-                      value: newLink.title,
-                      onChange: e => setNewLink({
-                        ...newLink,
-                        title: e.target.value
-                      }),
-                      className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs",
-                      required: true
-                    }, void 0, false)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    children: [/*#__PURE__*/_jsxDEV("label", {
-                      className: "text-[9px] uppercase font-semibold text-slate-400 tracking-wider font-display block mb-1",
-                      children: "Hyperlink URL"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                      type: "url",
-                      placeholder: "https://example.com/resource",
-                      value: newLink.url,
-                      onChange: e => setNewLink({
-                        ...newLink,
-                        url: e.target.value
-                      }),
-                      className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs",
-                      required: true
-                    }, void 0, false)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                    type: "submit",
-                    className: "w-full py-2 bg-gradient-to-r from-accent-sky to-accent-violet hover:from-sky-500 hover:to-violet-600 text-white font-display font-semibold text-[10px] uppercase tracking-wider rounded-lg transition-all shadow-md shadow-sky-950/20",
-                    children: "Add Reference Link"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "space-y-2 max-h-[220px] overflow-y-auto pr-1",
-                  children: [(activeCourse.reference_links || []).map((link, idx) => /*#__PURE__*/_jsxDEV("div", {
-                    className: "glass-panel p-2.5 rounded-xl flex items-center justify-between gap-3 text-xs border-white border-opacity-5 hover:bg-white/5 transition-colors",
-                    children: [/*#__PURE__*/_jsxDEV("a", {
-                      href: link.url,
-                      target: "_blank",
-                      rel: "noopener noreferrer",
-                      className: "font-display font-medium text-slate-300 hover:text-accent-sky truncate flex items-center space-x-1.5 max-w-[170px]",
-                      children: [/*#__PURE__*/_jsxDEV(Icon, {
-                        name: "externalLink",
-                        className: "w-3.5 h-3.5 text-accent-sky flex-shrink-0"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                        className: "truncate",
-                        children: link.title
-                      }, void 0, false)]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                      onClick: () => handleDeleteLink(idx),
-                      className: "p-1 hover:bg-rose-500/20 text-slate-500 hover:text-rose-400 rounded transition-all flex-shrink-0",
-                      title: "Remove Link",
-                      children: /*#__PURE__*/_jsxDEV(Icon, {
-                        name: "trash",
-                        className: "w-3 h-3"
-                      }, void 0, false)
-                    }, void 0, false)]
-                  }, idx, true)), (activeCourse.reference_links || []).length === 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "py-4 text-center text-slate-500 text-[10px] font-display",
-                    children: "No custom reference links added yet."
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-2",
-              children: previewFile && slidesList.some(f => f.index === previewFile.index) ? /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "fileText",
-                      className: "w-5 h-5 text-accent-sky"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                      className: "font-display font-bold text-sm text-white line-clamp-1",
-                      children: ["Preview: ", previewFile.name]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                    onClick: () => setPreviewFile(null),
-                    className: "che-close-reader-btn",
-                    children: "Close Preview"
-                  }, void 0, false)]
-                }, void 0, true), (previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? /*#__PURE__*/_jsxDEV(_Fragment, {
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
-                    style: {
-                      height: "550px"
-                    },
-                    children: renderPdfViewerOrPlaceholder(previewFile)
-                  }, void 0, false)
-                }, void 0, false) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center",
-                  style: {
-                    height: "550px"
-                  },
-                  children: /*#__PURE__*/_jsxDEV("video", {
-                    src: `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`,
-                    controls: true,
-                    preload: "metadata",
-                    playsInline: true,
-                    className: "w-full h-full rounded-xl shadow-lg border border-white border-opacity-5"
-                  }, void 0, false)
-                }, void 0, false) : /*#__PURE__*/_jsxDEV("div", {
-                  className: "p-16 text-center bg-dark-900 rounded-2xl space-y-4 border border-white border-opacity-5 flex flex-col items-center justify-center",
-                  style: {
-                    height: "500px"
-                  },
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2",
-                    children: /*#__PURE__*/_jsxDEV(Icon, {
-                      name: "layers",
-                      className: "w-8 h-8"
-                    }, void 0, false)
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                    className: "font-display font-bold text-base text-white",
-                    children: "Dynamic Preview Restricted"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                    className: "text-slate-400 text-xs max-w-sm leading-relaxed",
-                    children: "Dynamic previewing is only optimized for PDF and video assets. For spreadsheet models (.xlsx), HYSYS setups (.hsc), Matlab scripts (.m), or archives (.zip), download the file directly to open locally."
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                    onClick: () => handleDownloadFile(previewFile.index, previewFile.name),
-                    className: "px-4 py-2 bg-gradient-to-r from-accent-sky to-accent-violet hover:from-sky-500 hover:to-violet-600 text-white font-display font-semibold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-sky-950/20 flex items-center space-x-2",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "download",
-                      className: "w-4 h-4"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                      children: "Download Asset"
-                    }, void 0, false)]
-                  }, void 0, true)]
-                }, void 0, true)]
-              }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
-                style: {
-                  height: "500px"
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2",
-                  children: /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "layers",
-                    className: "w-8 h-8"
-                  }, void 0, false)
-                }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                  className: "font-display font-bold text-lg text-white",
-                  children: "Hub-Class Slides Terminal"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                  className: "text-slate-400 text-xs max-w-md leading-relaxed",
-                  children: "Select any slide, lecture note, or asset from the left catalog to launch our integrated interactive workspace."
-                }, void 0, false)]
-              }, void 0, true)
-            }, void 0, false)]
-          }, void 0, true), primarySection === 'videos' && /*#__PURE__*/_jsxDEV("div", {
-            className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-1 space-y-6",
-              children: /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between",
-                  children: [/*#__PURE__*/_jsxDEV("h3", {
-                    className: "font-display font-bold text-base text-white",
-                    children: "Recorded Class Videos"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10",
-                    children: [videosList.length, " recordings"]
-                  }, void 0, true)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "space-y-3 pb-3 border-b border-white border-opacity-5",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center justify-between",
-                    children: [/*#__PURE__*/_jsxDEV("span", {
-                      className: "text-[10px] font-display font-bold text-sky-400 tracking-wider uppercase",
-                      children: "Video Folders"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      type: "button",
-                      onClick: handleCreateVideoFolder,
-                      className: "flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2 py-0.5 rounded border border-sky-500/20",
-                      children: [/*#__PURE__*/_jsxDEV(Icon, {
-                        name: "folderPlus",
-                        className: "w-3 h-3"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                        children: "Create"
-                      }, void 0, false)]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "flex flex-wrap gap-1.5 max-h-[120px] overflow-y-auto pr-1",
-                    children: (activeCourse.video_folders || ["Root"]).map(folder => {
-                      const isSelected = currentVideoFolder === folder;
-                      return /*#__PURE__*/_jsxDEV("button", {
-                        type: "button",
-                        onClick: () => {
-                          setCurrentVideoFolder(folder);
-                          setPreviewFile(null);
-                        },
-                        className: `flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-display font-semibold transition-all border ${isSelected ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' : 'folder-btn-unselected'}`,
-                        children: [/*#__PURE__*/_jsxDEV(Icon, {
-                          name: "folder",
-                          className: `w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                          className: "truncate max-w-[80px]",
-                          children: folder
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "flex items-center space-x-1 ml-1",
-                          onClick: e => e.stopPropagation(),
-                          children: [/*#__PURE__*/_jsxDEV("span", {
-                            onClick: e => handleRenameVideoFolder(e, folder),
-                            className: "p-0.5 rounded hover:bg-black/10 transition-all text-black",
-                            title: `Rename ${folder}`,
-                            children: /*#__PURE__*/_jsxDEV("svg", {
-                              className: "w-2.5 h-2.5",
-                              fill: "none",
-                              viewBox: "0 0 24 24",
-                              stroke: "currentColor",
-                              strokeWidth: 2.5,
-                              children: /*#__PURE__*/_jsxDEV("path", {
-                                strokeLinecap: "round",
-                                strokeLinejoin: "round",
-                                d: "M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                              }, void 0, false)
-                            }, void 0, false)
-                          }, void 0, false), folder !== "Root" && /*#__PURE__*/_jsxDEV("span", {
-                            onClick: e => handleDeleteVideoFolder(e, folder),
-                            className: "p-0.5 rounded hover:bg-black/10 transition-all text-black",
-                            title: `Delete ${folder}`,
-                            children: /*#__PURE__*/_jsxDEV("svg", {
-                              className: "w-2.5 h-2.5",
-                              fill: "none",
-                              viewBox: "0 0 24 24",
-                              stroke: "currentColor",
-                              strokeWidth: 2.5,
-                              children: /*#__PURE__*/_jsxDEV("path", {
-                                strokeLinecap: "round",
-                                strokeLinejoin: "round",
-                                d: "M6 18L18 6M6 6l12 12"
-                              }, void 0, false)
-                            }, void 0, false)
-                          }, void 0, false)]
-                        }, void 0, true)]
-                      }, folder, true);
-                    })
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("form", {
-                  onSubmit: e => handleFileUpload(e, videoUploadFile, "video", {
-                    setIsUploading: setIsVideoUploading,
-                    setUploadProgress: setVideoUploadProgress,
-                    setUploadStatus: setVideoUploadStatus,
-                    setUploadFile: setVideoUploadFile,
-                    fileInputRef: videoFileInputRef
-                  }),
-                  className: "relative group",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "file",
-                    multiple: true,
-                    accept: "video/*",
-                    onChange: e => setVideoUploadFile(Array.from(e.target.files)),
-                    className: "hidden",
-                    id: "video-upload-input",
-                    ref: videoFileInputRef
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("label", {
-                    htmlFor: "video-upload-input",
-                    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "upload",
-                      className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2",
-                      children: videoUploadFile && videoUploadFile.length > 0 ? videoUploadFile.length === 1 ? `Selected: ${videoUploadFile[0].name}` : `Selected: ${videoUploadFile.length} files` : "Upload recorded lectures, tutorials, or HYSYS demos directly."
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                      className: "text-[9px] text-slate-500 mt-0.5",
-                      children: "Drag & drop or click to browse"
-                    }, void 0, false)]
-                  }, void 0, true), videoUploadFile && videoUploadFile.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in",
-                    children: [/*#__PURE__*/_jsxDEV("button", {
-                      type: "button",
-                      onClick: () => {
-                        setVideoUploadFile([]);
-                        if (videoFileInputRef.current) videoFileInputRef.current.value = "";
-                      },
-                      className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display",
-                      children: "Cancel"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      type: "submit",
-                      disabled: isVideoUploading,
-                      className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        children: isVideoUploading ? "Uploading..." : "Save to Videos"
-                      }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                        name: "plus",
-                        className: "w-3 h-3"
-                      }, void 0, false)]
-                    }, void 0, true)]
-                  }, void 0, true)]
-                }, void 0, true), isVideoUploading && /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse",
-                  children: /*#__PURE__*/_jsxDEV("div", {
-                    className: "bg-[#5C061C] h-full transition-all duration-300",
-                    style: {
-                      width: `${videoUploadProgress}%`
-                    }
-                  }, void 0, false)
-                }, void 0, false), videoUploadStatus.message && /*#__PURE__*/_jsxDEV("div", {
-                  className: `p-2 rounded-lg text-[10px] font-display font-medium ${videoUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`,
-                  children: videoUploadStatus.message
-                }, void 0, false), videoUploadStatus.type === "batch" && /*#__PURE__*/_jsxDEV("div", {
-                  className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center justify-between border-b border-black/5 pb-2",
-                    children: [/*#__PURE__*/_jsxDEV("span", {
-                      className: "font-display font-bold text-xs text-slate-300",
-                      children: "Upload Batch Queue"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                      className: "text-[10px] text-accent-sky font-bold",
-                      children: [videoUploadStatus.queue.filter(q => q.status === "success").length, " / ", videoUploadStatus.queue.length, " completed"]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1",
-                    children: videoUploadStatus.queue.map((item, idx) => /*#__PURE__*/_jsxDEV("div", {
-                      className: "flex items-center justify-between text-xs py-1",
-                      children: [/*#__PURE__*/_jsxDEV("span", {
-                        className: "truncate max-w-[180px] font-medium text-slate-400",
-                        children: item.name
-                      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-2",
-                        children: [item.status === "pending" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
-                        }, void 0, false), item.status === "uploading" && /*#__PURE__*/_jsxDEV("div", {
-                          className: "flex items-center space-x-2 text-accent-violet",
-                          children: [/*#__PURE__*/_jsxDEV(Icon, {
-                            name: "loader",
-                            className: "w-3.5 h-3.5 animate-spin"
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[10px] font-bold",
-                            children: [item.progress, "%"]
-                          }, void 0, true)]
-                        }, void 0, true), item.status === "success" && /*#__PURE__*/_jsxDEV(Icon, {
-                          name: "check",
-                          className: "w-4 h-4 text-emerald-500 font-bold"
-                        }, void 0, false), item.status === "error" && /*#__PURE__*/_jsxDEV("span", {
-                          className: "text-[9px] text-rose-500 font-semibold",
-                          title: item.error,
-                          children: "Failed"
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, idx, true))
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "relative",
-                  children: [/*#__PURE__*/_jsxDEV("input", {
-                    type: "text",
-                    placeholder: "Search videos...",
-                    value: videoSearchQuery,
-                    onChange: e => setVideoSearchQuery(e.target.value),
-                    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "search",
-                    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "space-y-2 max-h-[450px] overflow-y-auto pr-1",
-                  children: [filteredVideos.map(file => {
-                    const isPreviewing = previewFile && previewFile.index === file.index;
-                    return /*#__PURE__*/_jsxDEV("div", {
-                      onClick: () => setPreviewFile(file),
-                      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`,
-                      children: [/*#__PURE__*/_jsxDEV("div", {
-                        className: "flex items-center space-x-3 min-w-0",
-                        children: [/*#__PURE__*/_jsxDEV("div", {
-                          className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "video",
-                            className: "w-5 h-5"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                          className: "min-w-0 flex flex-col items-start justify-center",
-                          children: [/*#__PURE__*/_jsxDEV("span", {
-                            className: "che-book-title block line-clamp-2 leading-relaxed",
-                            children: file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''
-                          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                            className: "text-[9px] text-slate-500 font-display",
-                            children: [file.size, " • Recorded Class"]
-                          }, void 0, true)]
-                        }, void 0, true)]
-                      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                        className: "absolute bottom-3 right-3 flex items-center space-x-2",
-                        onClick: e => e.stopPropagation(),
-                        children: [/*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDeleteFile(file.index),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
-                          title: "Delete Video",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "trash",
-                            className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
-                          }, void 0, false)
-                        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                          onClick: () => handleDownloadFile(file.index, file.name),
-                          className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-                          title: "Download",
-                          children: /*#__PURE__*/_jsxDEV(Icon, {
-                            name: "download",
-                            className: "w-3.5 h-3.5"
-                          }, void 0, false)
-                        }, void 0, false)]
-                      }, void 0, true)]
-                    }, file.index, true);
-                  }), filteredVideos.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-                    className: "py-8 text-center text-slate-500 text-xs font-display",
-                    children: "No recorded videos cataloged inside this folder yet."
-                  }, void 0, false)]
-                }, void 0, true)]
-              }, void 0, true)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "lg:col-span-2",
-              children: previewFile && videosList.some(f => f.index === previewFile.index) ? /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky",
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3",
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    className: "flex items-center space-x-2",
-                    children: [/*#__PURE__*/_jsxDEV(Icon, {
-                      name: "video",
-                      className: "w-5 h-5 text-accent-sky"
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                      className: "font-display font-bold text-sm text-white line-clamp-1",
-                      children: ["Play Class: ", previewFile.name]
-                    }, void 0, true)]
-                  }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                    onClick: () => setPreviewFile(null),
-                    className: "che-close-reader-btn",
-                    children: "Close Preview"
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-                  className: "w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center",
-                  style: {
-                    height: "550px"
-                  },
-                  children: /*#__PURE__*/_jsxDEV("video", {
-                    src: `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`,
-                    controls: true,
-                    preload: "metadata",
-                    playsInline: true,
-                    className: "w-full h-full rounded-xl shadow-lg border border-white border-opacity-5"
-                  }, void 0, false)
-                }, void 0, false)]
-              }, void 0, true) : /*#__PURE__*/_jsxDEV("div", {
-                className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
-                style: {
-                  height: "500px"
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2",
-                  children: /*#__PURE__*/_jsxDEV(Icon, {
-                    name: "video",
-                    className: "w-8 h-8"
-                  }, void 0, false)
-                }, void 0, false), /*#__PURE__*/_jsxDEV("h4", {
-                  className: "font-display font-bold text-lg text-white",
-                  children: "Hub-Class Video Terminal"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-                  className: "text-slate-400 text-xs max-w-md leading-relaxed",
-                  children: "Select any recorded class lecture or HYSYS tutorial from the left catalog to launch our high-performance stream player."
-                }, void 0, false)]
-              }, void 0, true)
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true)]
-      }, void 0, true)
-    }, void 0, false), /*#__PURE__*/_jsxDEV("footer", {
-      className: "glass-panel border-t border-white border-opacity-5 py-4 px-6 mt-auto text-center text-slate-500 text-xs flex flex-col md:flex-row items-center justify-between gap-4",
-      children: [/*#__PURE__*/_jsxDEV("p", {
-        children: ["© ", new Date().getFullYear(), " Chemical Engineering Hub Space. Designed for premium study acceleration."]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "flex flex-wrap items-center justify-center gap-3",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "flex items-center space-x-1.5",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "credit-developed-by text-[10px] uppercase tracking-wider",
-            children: "Developed by"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "credit-2102072 font-display text-xs",
-            children: "Ibrahim Hisham-2102072"
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("span", {
-          className: "text-[10px] text-slate-400 font-bold",
-          children: "•"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-          className: "credit-presented-by text-[10px] uppercase tracking-wider",
-          children: "Presented by DDC"
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen flex flex-col"
+  }, editingCourse && /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-accent-sky border-opacity-30"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setEditingCourse(null),
+    className: "absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-slate-300 hover:text-white transition-colors"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-5 h-5",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    stroke: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: 2,
+    d: "M6 18L18 6M6 6l12 12"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 text-accent-sky"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "edit",
+    className: "w-5 h-5 animate-pulse"
+  }), /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-lg text-white"
+  }, "Edit Course Details")), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSaveCourseEdit,
+    className: "space-y-4 pt-2"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "text-[10px] uppercase font-bold text-slate-400 tracking-wider font-display block mb-1"
+  }, "Course Code"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    required: true,
+    value: editCourseFields.code,
+    onChange: e => setEditCourseFields({
+      ...editCourseFields,
+      code: e.target.value
+    }),
+    className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-sky-500"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "text-[10px] uppercase font-bold text-slate-400 tracking-wider font-display block mb-1"
+  }, "Course Title"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    required: true,
+    value: editCourseFields.title,
+    onChange: e => setEditCourseFields({
+      ...editCourseFields,
+      title: e.target.value
+    }),
+    className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-sky-500"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "text-[10px] uppercase font-bold text-slate-400 tracking-wider font-display block mb-1"
+  }, "Description"), /*#__PURE__*/React.createElement("textarea", {
+    rows: 3,
+    value: editCourseFields.description,
+    onChange: e => setEditCourseFields({
+      ...editCourseFields,
+      description: e.target.value
+    }),
+    className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-sky-500 resize-none"
+  })), editCourseError && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-rose-400 font-semibold"
+  }, editCourseError), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-3 pt-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setEditingCourse(null),
+    className: "w-1/2 py-2.5 che-cancel-btn font-display font-semibold text-xs rounded-xl"
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    disabled: isSavingCourseEdit,
+    className: "w-1/2 py-2.5 che-submit-btn text-white font-display font-semibold text-xs rounded-xl shadow-lg transition-transform hover:scale-[1.02]"
+  }, isSavingCourseEdit ? "Saving..." : "Save Changes")))))), showAuthModal && /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel w-full max-w-sm rounded-2xl p-6 shadow-2xl relative border border-accent-rose border-opacity-30"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setShowAuthModal(false);
+      setPendingAuthCallback(null);
+    },
+    className: "absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-black hover:text-black transition-colors che-admin-auth-close"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-5 h-5",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    stroke: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: 3,
+    d: "M6 18L18 6M6 6l12 12"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4 text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center border border-rose-500/20 text-accent-rose mx-auto mb-2 animate-bounce"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-6 h-6",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    stroke: "currentColor",
+    strokeWidth: 2
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    d: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+  }))), /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-lg text-white"
+  }, "Administrative Lock"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs leading-relaxed"
+  }, "This action requires administrative authorization. Enter the academic access passcode to unlock edits."), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleVerifyPassword,
+    className: "space-y-4 pt-2"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    required: true,
+    placeholder: "Enter session passcode...",
+    value: authPasswordInput,
+    onChange: e => setAuthPasswordInput(e.target.value),
+    className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-rose-500 text-center",
+    autoFocus: true
+  })), authError && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-rose-400 font-semibold"
+  }, authError), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "w-full py-2.5 bg-gradient-to-r from-accent-rose to-red-600 text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-rose-500/25 transition-transform hover:scale-[1.02]"
+  }, "Verify and Unlock (1 Hour)"))))), showDownloadAuthModal && /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel w-full max-w-sm rounded-2xl p-6 shadow-2xl relative border border-accent-sky border-opacity-30"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setShowDownloadAuthModal(false);
+      setPendingDownloadCallback(null);
+    },
+    className: "absolute top-4 right-4 bg-dark-900 p-2 rounded-full border border-white/10 text-black hover:text-black transition-colors che-admin-auth-close",
+    title: "Close Panel"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-5 h-5",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    stroke: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: 3,
+    d: "M6 18L18 6M6 6l12 12"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4 text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center border border-sky-500/20 text-accent-sky mx-auto mb-2 animate-bounce"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-6 h-6",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    stroke: "currentColor",
+    strokeWidth: 2
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: 2,
+    d: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+  }))), /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-lg text-white"
+  }, "Secure Download Lock"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs leading-relaxed"
+  }, "This asset requires download authorization. Enter the passcode to unlock all files and videos for the next 6 hours."), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleVerifyDownloadPassword,
+    className: "space-y-4 pt-2"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    required: true,
+    placeholder: "Enter download passcode...",
+    value: downloadPasswordInput,
+    onChange: e => setDownloadPasswordInput(e.target.value),
+    className: "glass-input w-full p-2.5 rounded-xl text-sm focus:border-accent-sky text-center text-white placeholder-slate-500 border border-white border-opacity-15 bg-white bg-opacity-5",
+    autoFocus: true
+  })), downloadAuthError && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-rose-400 font-semibold"
+  }, downloadAuthError), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "w-full py-2.5 bg-gradient-to-r from-accent-sky to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02]"
+  }, "Verify and Unlock (6 Hours)"))))), playingVideoUrl && /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md p-4 animate-fade-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl relative border-brand"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setPlayingVideoUrl(null),
+    className: "absolute top-4 right-4 bg-dark-900 bg-opacity-80 p-2 rounded-full border border-white border-opacity-10 text-slate-300 hover:text-white transition-colors z-10"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-6 h-6",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    stroke: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: 2,
+    d: "M6 18L18 6M6 6l12 12"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "aspect-video w-full"
+  }, /*#__PURE__*/React.createElement("iframe", {
+    src: playingVideoUrl,
+    className: "w-full h-full",
+    title: "YouTube Video Player",
+    allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+    allowFullScreen: true
+  })))), /*#__PURE__*/React.createElement("header", {
+    className: "glass-panel sticky top-0 z-40 border-b border-white border-opacity-10 px-4 md:px-6 py-3.5 md:py-4 flex flex-col md:flex-row md:items-center justify-between gap-3.5 md:gap-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between w-full md:w-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2.5 md:space-x-3 cursor-pointer",
+    onClick: () => {
+      setActiveCourse(null);
+      setSearchQuery("");
+      setFileSearchQuery("");
+    }
+  }, /*#__PURE__*/React.createElement("img", {
+    src: "che_hub_logo.png",
+    alt: "ChE StudySpace Logo",
+    className: "w-9 h-9 md:w-10 md:h-10 rounded-xl shadow-lg shadow-sky-500/20 object-cover flex-shrink-0 border border-white/10"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "min-w-0"
+  }, /*#__PURE__*/React.createElement("h1", {
+    className: "font-display font-extrabold text-base md:text-lg tracking-wide text-glow"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "che-brand-text"
+  }, "ChE"), " ", /*#__PURE__*/React.createElement("span", {
+    className: "gradient-text"
+  }, "StudySpace")), /*#__PURE__*/React.createElement("p", {
+    className: "text-[9px] md:text-[10px] text-slate-400 font-medium tracking-widest uppercase truncate"
+  }, "Department of Chemical Engineering"))), activeCourse && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setActiveCourse(null);
+      setSearchQuery("");
+      setFileSearchQuery("");
+    },
+    className: "md:hidden che-return-to-hub-btn px-3 py-1.5 rounded-xl text-[10px] font-display font-bold uppercase tracking-wider"
+  }, "Return to Hub")), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between md:justify-end w-full md:w-auto space-x-4 md:space-x-8 text-sm border-t border-white/5 pt-2.5 md:pt-0 md:border-t-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hidden md:block text-right"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-slate-400 block text-[11px] font-medium tracking-wider uppercase"
+  }, "Active Courses"), /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-semibold text-white"
+  }, courses.length, " courses")), /*#__PURE__*/React.createElement("div", {
+    className: "hidden md:block h-8 w-px bg-white bg-opacity-10"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "text-left md:text-right"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-slate-400 block text-[9px] md:text-[11px] font-semibold tracking-wider uppercase"
+  }, "Resources Loaded"), /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-bold text-xs md:text-sm text-accent-sky"
+  }, totalFilesCount, " files")), /*#__PURE__*/React.createElement("div", {
+    className: "h-6 md:h-8 w-px bg-white bg-opacity-10"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-1.5 cursor-pointer select-none",
+    onClick: () => {
+      if (isAuthorizedState) {
+        if (window.confirm("Do you want to end your administrator session?")) {
+          safeStorage.removeItem("che_auth_until");
+          setIsAuthorizedState(false);
+        }
+      } else {
+        checkAuthAndExecute(() => {});
+      }
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `w-2 h-2 rounded-full ${isAuthorizedState ? 'bg-violet-400 animate-pulse' : 'bg-slate-500'}`
+  }), /*#__PURE__*/React.createElement("span", {
+    className: `font-display text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${isAuthorizedState ? 'text-violet-400' : 'text-slate-500'}`
+  }, isAuthorizedState ? '🔓 Admin Active' : '🔒 Guest')), /*#__PURE__*/React.createElement("div", {
+    className: "h-6 md:h-8 w-px bg-white bg-opacity-10"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col text-left"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-slate-400 block text-[9px] md:text-[10px] font-bold tracking-wider uppercase mb-1"
+  }, "Level and term"), /*#__PURE__*/React.createElement("select", {
+    value: selectedLevel && selectedTerm ? `${selectedLevel}, ${selectedTerm}` : "",
+    onChange: e => {
+      const val = e.target.value;
+      if (!val) {
+        setSelectedLevel("");
+        setSelectedTerm("");
+      } else {
+        const [lvl, trm] = val.split(", ");
+        setSelectedLevel(lvl);
+        setSelectedTerm(trm);
+      }
+      // Transition cleanly back to the dashboard filtered by the newly selected Level/Term
+      setActiveCourse(null);
+      setPreviewFile(null);
+      setPreviewUrl("");
+      setSearchQuery("");
+      setFileSearchQuery("");
+    },
+    className: "glass-input px-2.5 py-1.5 rounded-xl text-[10px] md:text-[11px] font-semibold bg-dark-900 cursor-pointer focus:border-sky-500 border border-white/10"
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "All Levels & Terms"), /*#__PURE__*/React.createElement("option", {
+    value: "Level-1, Term-1"
+  }, "Level 1, Term 1"), /*#__PURE__*/React.createElement("option", {
+    value: "Level-1, Term-2"
+  }, "Level 1, Term 2"), /*#__PURE__*/React.createElement("option", {
+    value: "Level-2, Term-1"
+  }, "Level 2, Term 1"), /*#__PURE__*/React.createElement("option", {
+    value: "Level-2, Term-2"
+  }, "Level 2, Term 2"), /*#__PURE__*/React.createElement("option", {
+    value: "Level-3, Term-1"
+  }, "Level 3, Term 1"), /*#__PURE__*/React.createElement("option", {
+    value: "Level-3, Term-2"
+  }, "Level 3, Term 2"), /*#__PURE__*/React.createElement("option", {
+    value: "Level-4, Term-1"
+  }, "Level 4, Term 1"), /*#__PURE__*/React.createElement("option", {
+    value: "Level-4, Term-2"
+  }, "Level 4, Term 2"))))), /*#__PURE__*/React.createElement("main", {
+    className: "flex-grow p-6 md:p-8 max-w-7xl mx-auto w-full flex flex-col"
+  }, !activeCourse ? /*#__PURE__*/React.createElement("div", {
+    className: "space-y-8 flex-grow flex flex-col justify-start animate-section-entrance"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col md:flex-row md:items-end justify-between gap-4"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    className: "font-display font-extrabold text-3xl md:text-4xl text-white tracking-tight"
+  }, "Welcome to Your ", /*#__PURE__*/React.createElement("span", {
+    className: "gradient-text text-glow"
+  }, "Study Hub")), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 mt-2 text-sm max-w-xl"
+  }, "Centralized academic hub for Chemical Engineering slides, textbooks, and interactive study notes.")), /*#__PURE__*/React.createElement("div", {
+    className: "relative w-full md:w-80"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Search active courses...",
+    value: searchQuery,
+    onChange: e => setSearchQuery(e.target.value),
+    className: "glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:border-sky-500"
+  }), /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    className: "absolute left-3.5 top-3 w-4 h-4 text-slate-400"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8"
+  }, selectedLevel && selectedTerm && /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-2xl p-6 flex flex-col justify-between min-h-[220px] bg-sky-950/5 relative overflow-hidden group"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "z-10 w-full space-y-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 text-sky-300"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    className: "w-5 h-5 text-accent-sky animate-pulse"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-semibold text-xs uppercase tracking-wider"
+  }, "Create Course Segment")), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleCreateCourse,
+    className: "space-y-2"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    required: true,
+    placeholder: "Course Code (e.g. ChE 403)",
+    value: newCourse.code,
+    onChange: e => setNewCourse({
+      ...newCourse,
+      code: e.target.value
+    }),
+    className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs"
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    required: true,
+    placeholder: "Course Title (e.g. Process Control)",
+    value: newCourse.title,
+    onChange: e => setNewCourse({
+      ...newCourse,
+      title: e.target.value
+    }),
+    className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs"
+  }), /*#__PURE__*/React.createElement("textarea", {
+    placeholder: "Description (optional)",
+    rows: 1,
+    value: newCourse.description,
+    onChange: e => setNewCourse({
+      ...newCourse,
+      description: e.target.value
+    }),
+    className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs resize-none"
+  }), courseError && /*#__PURE__*/React.createElement("p", {
+    className: "text-[10px] text-rose-400 font-medium"
+  }, courseError), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    disabled: isCreatingCourse,
+    className: "w-full py-2 bg-gradient-to-r from-accent-sky to-accent-violet text-white font-display font-semibold text-xs rounded-xl shadow-lg shadow-sky-500/25 transition-transform hover:scale-[1.02] flex items-center justify-center space-x-1"
+  }, /*#__PURE__*/React.createElement("span", null, isCreatingCourse ? "Adding Course..." : "Add Course"), /*#__PURE__*/React.createElement(Icon, {
+    name: "chevronRight",
+    className: "w-3.5 h-3.5"
+  }))))), filteredCourses.map((course, idx) => {
+    // Generates dynamic aesthetic gradient backgrounds by course code
+    const gradients = ["from-accent-sky to-sky-900/30", "from-accent-violet to-violet-900/30", "from-accent-violet to-violet-900/30", "from-accent-blue to-blue-900/30", "from-accent-rose to-rose-900/30"];
+    const grad = gradients[idx % gradients.length];
+    return /*#__PURE__*/React.createElement("div", {
+      key: course.id,
+      onClick: () => setActiveCourse(course),
+      className: "glass-card rounded-2xl p-6 flex flex-col justify-between cursor-pointer min-h-[220px] relative overflow-hidden group"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: `absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${grad} opacity-20 blur-2xl group-hover:opacity-40 transition-opacity`
+    }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between mb-4"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "che-course-badge inline-block px-3 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/10 font-display"
+    }, course.code), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: e => {
+        e.stopPropagation();
+        handleStartEditCourse(course);
+      },
+      className: "che-edit-course-btn p-1.5 rounded-lg bg-white border border-slate-200 transition-all relative z-10",
+      title: "Edit Course Details"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "edit",
+      className: "w-3.5 h-3.5"
+    }))), /*#__PURE__*/React.createElement("h3", {
+      className: "font-display font-bold text-xl text-white group-hover:text-accent-sky transition-colors line-clamp-1"
+    }, course.title), /*#__PURE__*/React.createElement("p", {
+      className: "text-slate-400 text-xs mt-2 line-clamp-3 leading-relaxed"
+    }, course.description)), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between border-t border-white border-opacity-5 pt-4 mt-6"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center space-x-2 text-xs text-slate-400"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "fileText",
+      className: "w-3.5 h-3.5 text-accent-sky"
+    }), /*#__PURE__*/React.createElement("span", null, course.fileCount, " resources")), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center text-xs text-accent-sky font-medium group-hover:translate-x-1 transition-transform"
+    }, /*#__PURE__*/React.createElement("span", null, "Enter Space"), /*#__PURE__*/React.createElement(Icon, {
+      name: "chevronRight",
+      className: "w-3.5 h-3.5 ml-1"
+    }))));
+  }), filteredCourses.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "col-span-full py-16 text-center glass-panel rounded-2xl border-dashed border-2 border-white border-opacity-10"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "layers",
+    className: "w-12 h-12 text-slate-500 mx-auto mb-3"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 font-display"
+  }, "No courses match your active search filter.")))) :
+  /*#__PURE__*/
+  /* DETAILED COURSE SPACE */
+  React.createElement("div", {
+    className: "space-y-6 flex-grow flex flex-col che-course-workspace animate-section-entrance"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white border-opacity-5 pb-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setActiveCourse(null);
+      setSearchQuery("");
+      setFileSearchQuery("");
+    },
+    className: "che-back-btn p-2.5 rounded-xl transition-all hover:scale-105",
+    title: "Back to Hub"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "arrowLeft",
+    className: "w-5 h-5"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-3"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] font-bold px-2 py-0.5 rounded bg-accent-sky/20 text-accent-sky border border-accent-sky/10 uppercase tracking-widest font-display"
+  }, activeCourse.code), /*#__PURE__*/React.createElement("h2", {
+    className: "font-display font-extrabold text-2xl md:text-3xl text-glow text-white"
+  }, activeCourse.title)), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs mt-1 max-w-2xl leading-relaxed"
+  }, activeCourse.description))), /*#__PURE__*/React.createElement("div", {
+    className: "flex bg-dark-950 p-1 rounded-xl border border-white border-opacity-5 flex-wrap gap-1 self-start md:self-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setPrimarySection("books");
+      setPreviewFile(null);
+    },
+    className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'books' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "book",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, "Books")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setPrimarySection("solutions");
+      setPreviewFile(null);
+    },
+    className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solutions' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "edit",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, "Solution Manual")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setPrimarySection("slides");
+      setPreviewFile(null);
+    },
+    className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'slides' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "layers",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, "Slides")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setPrimarySection("videos");
+      setPreviewFile(null);
+    },
+    className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'videos' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "video",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, "Recorded Class")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setPrimarySection("questions");
+      setPreviewFile(null);
+    },
+    className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'questions' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "fileText",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, "Term-Final Question")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setPrimarySection("solved");
+      setPreviewFile(null);
+    },
+    className: `flex items-center space-x-2 px-4 py-2.5 rounded-lg text-xs font-display font-semibold transition-all ${primarySection === 'solved' ? 'bg-gradient-to-tr from-accent-sky to-accent-violet text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, "Term-Final Solved")))), /*#__PURE__*/React.createElement("div", {
+    className: "flex-grow flex flex-col"
+  }, primarySection === 'books' && /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-1 space-y-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-base text-white"
+  }, "Reference Books"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10"
+  }, booksList.length, " volumes")), /*#__PURE__*/React.createElement("form", {
+    onSubmit: e => handleFileUpload(e, bookUploadFile, "book", {
+      setIsUploading: setIsBookUploading,
+      setUploadProgress: setBookUploadProgress,
+      setUploadStatus: setBookUploadStatus,
+      setUploadFile: setBookUploadFile,
+      fileInputRef: bookFileInputRef
+    }),
+    className: "relative group"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    multiple: true,
+    accept: ".pdf,.docx,.doc,.xlsx,.xls",
+    onChange: e => setBookUploadFile(Array.from(e.target.files)),
+    className: "hidden",
+    id: "book-upload-input",
+    ref: bookFileInputRef
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "book-upload-input",
+    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "upload",
+    className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2"
+  }, bookUploadFile && bookUploadFile.length > 0 ? bookUploadFile.length === 1 ? `Selected: ${bookUploadFile[0].name}` : `Selected: ${bookUploadFile.length} files` : "Upload reference textbooks or manuals directly."), /*#__PURE__*/React.createElement("p", {
+    className: "text-[9px] text-slate-500 mt-0.5"
+  }, "Drag & drop or click to browse")), bookUploadFile && bookUploadFile.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setBookUploadFile([]);
+      if (bookFileInputRef.current) bookFileInputRef.current.value = "";
+    },
+    className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    disabled: isBookUploading,
+    className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+  }, /*#__PURE__*/React.createElement("span", null, isBookUploading ? "Uploading..." : "Save to Books"), /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    className: "w-3 h-3"
+  })))), isBookUploading && /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#5C061C] h-full transition-all duration-300",
+    style: {
+      width: `${bookUploadProgress}%`
+    }
+  })), bookUploadStatus.message && /*#__PURE__*/React.createElement("div", {
+    className: `p-2 rounded-lg text-[10px] font-display font-medium ${bookUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`
+  }, bookUploadStatus.message), bookUploadStatus.type === "batch" && /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-black/5 pb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-bold text-xs text-slate-300"
+  }, "Upload Batch Queue"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold"
+  }, bookUploadStatus.queue.filter(q => q.status === "success").length, " / ", bookUploadStatus.queue.length, " completed")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1"
+  }, bookUploadStatus.queue.map((item, idx) => /*#__PURE__*/React.createElement("div", {
+    key: idx,
+    className: "flex items-center justify-between text-xs py-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "truncate max-w-[180px] font-medium text-slate-400"
+  }, item.name), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, item.status === "pending" && /*#__PURE__*/React.createElement("span", {
+    className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
+  }), item.status === "uploading" && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 text-accent-violet"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "loader",
+    className: "w-3.5 h-3.5 animate-spin"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] font-bold"
+  }, item.progress, "%")), item.status === "success" && /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    className: "w-4 h-4 text-emerald-500 font-bold"
+  }), item.status === "error" && /*#__PURE__*/React.createElement("span", {
+    className: "text-[9px] text-rose-500 font-semibold",
+    title: item.error
+  }, "Failed")))))), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Search textbooks...",
+    value: fileSearchQuery,
+    onChange: e => setFileSearchQuery(e.target.value),
+    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+  }), /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[450px] overflow-y-auto pr-1"
+  }, filteredBooks.map(file => {
+    const isPreviewing = previewFile && previewFile.index === file.index;
+    return /*#__PURE__*/React.createElement("div", {
+      key: file.index,
+      onClick: () => setPreviewFile(file),
+      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center space-x-3 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "bookOpen",
+      className: "w-5 h-5"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0 flex flex-col items-start justify-center"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "che-book-title block line-clamp-2 leading-relaxed"
+    }, file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''), /*#__PURE__*/React.createElement("span", {
+      className: "text-[9px] text-slate-500 font-display"
+    }, file.size, " • PDF Textbook"))), /*#__PURE__*/React.createElement("div", {
+      className: "absolute bottom-3 right-3 flex items-center space-x-2",
+      onClick: e => e.stopPropagation()
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDeleteFile(file.index),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
+      title: "Delete Textbook"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "trash",
+      className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
+    })), /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDownloadFile(file.index, file.name),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
+      title: "Download"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "download",
+      className: "w-3.5 h-3.5"
+    }))));
+  }), filteredBooks.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "py-8 text-center text-slate-500 text-xs font-display"
+  }, "No books cataloged inside this folder.")))), /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-2"
+  }, previewFile ? /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "fileText",
+    className: "w-5 h-5 text-accent-sky"
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-sm text-white line-clamp-1"
+  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setPreviewFile(null),
+    className: "che-close-reader-btn"
+  }, "Close Reader")), /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    style: {
+      height: "550px"
+    }
+  }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
+    style: {
+      height: "500px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "bookOpen",
+    className: "w-8 h-8"
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-lg text-white"
+  }, "Distraction-Free Textbook Reader"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs max-w-md leading-relaxed"
+  }, "Select any textbook or reference manual from the left catalog to launch our integrated full-screen PDF workspace.")))), primarySection === 'questions' && /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-1 space-y-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-base text-white"
+  }, "Term-Final Questions"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10"
+  }, questionsList.length, " papers")), /*#__PURE__*/React.createElement("form", {
+    onSubmit: e => handleFileUpload(e, questionUploadFile, "question", {
+      setIsUploading: setIsQuestionUploading,
+      setUploadProgress: setQuestionUploadProgress,
+      setUploadStatus: setQuestionUploadStatus,
+      setUploadFile: setQuestionUploadFile,
+      fileInputRef: questionFileInputRef
+    }),
+    className: "relative group"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    multiple: true,
+    accept: ".pdf,.docx,.doc",
+    onChange: e => setQuestionUploadFile(Array.from(e.target.files)),
+    className: "hidden",
+    id: "question-upload-input",
+    ref: questionFileInputRef
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "question-upload-input",
+    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "upload",
+    className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2"
+  }, questionUploadFile && questionUploadFile.length > 0 ? questionUploadFile.length === 1 ? `Selected: ${questionUploadFile[0].name}` : `Selected: ${questionUploadFile.length} files` : "Upload term-final exam question papers directly."), /*#__PURE__*/React.createElement("p", {
+    className: "text-[9px] text-slate-500 mt-0.5"
+  }, "Drag & drop or click to browse")), questionUploadFile && questionUploadFile.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setQuestionUploadFile([]);
+      if (questionFileInputRef.current) questionFileInputRef.current.value = "";
+    },
+    className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    disabled: isQuestionUploading,
+    className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+  }, /*#__PURE__*/React.createElement("span", null, isQuestionUploading ? "Uploading..." : "Save to Questions"), /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    className: "w-3 h-3"
+  })))), isQuestionUploading && /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#5C061C] h-full transition-all duration-300",
+    style: {
+      width: `${questionUploadProgress}%`
+    }
+  })), questionUploadStatus.message && /*#__PURE__*/React.createElement("div", {
+    className: `p-2 rounded-lg text-[10px] font-display font-medium ${questionUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`
+  }, questionUploadStatus.message), questionUploadStatus.type === "batch" && /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-black/5 pb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-bold text-xs text-slate-300"
+  }, "Upload Batch Queue"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold"
+  }, questionUploadStatus.queue.filter(q => q.status === "success").length, " / ", questionUploadStatus.queue.length, " completed")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1"
+  }, questionUploadStatus.queue.map((item, idx) => /*#__PURE__*/React.createElement("div", {
+    key: idx,
+    className: "flex items-center justify-between text-xs py-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "truncate max-w-[180px] font-medium text-slate-400"
+  }, item.name), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, item.status === "pending" && /*#__PURE__*/React.createElement("span", {
+    className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
+  }), item.status === "uploading" && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 text-accent-violet"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "loader",
+    className: "w-3.5 h-3.5 animate-spin"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] font-bold"
+  }, item.progress, "%")), item.status === "success" && /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    className: "w-4 h-4 text-emerald-500 font-bold"
+  }), item.status === "error" && /*#__PURE__*/React.createElement("span", {
+    className: "text-[9px] text-rose-500 font-semibold",
+    title: item.error
+  }, "Failed")))))), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Search questions...",
+    value: fileSearchQuery,
+    onChange: e => setFileSearchQuery(e.target.value),
+    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+  }), /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[450px] overflow-y-auto pr-1"
+  }, filteredQuestions.map(file => {
+    const isPreviewing = previewFile && previewFile.index === file.index;
+    return /*#__PURE__*/React.createElement("div", {
+      key: file.index,
+      onClick: () => setPreviewFile(file),
+      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center space-x-3 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "fileText",
+      className: "w-5 h-5"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0 flex flex-col items-start justify-center"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "che-book-title block line-clamp-2 leading-relaxed"
+    }, file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''), /*#__PURE__*/React.createElement("span", {
+      className: "text-[9px] text-slate-500 font-display"
+    }, file.size, " • PDF Question Paper"))), /*#__PURE__*/React.createElement("div", {
+      className: "absolute bottom-3 right-3 flex items-center space-x-2",
+      onClick: e => e.stopPropagation()
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDeleteFile(file.index),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
+      title: "Delete Question"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "trash",
+      className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
+    })), /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDownloadFile(file.index, file.name),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
+      title: "Download"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "download",
+      className: "w-3.5 h-3.5"
+    }))));
+  }), filteredQuestions.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "py-8 text-center text-slate-500 text-xs font-display"
+  }, "No exam questions cataloged inside this folder.")))), /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-2"
+  }, previewFile ? /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "fileText",
+    className: "w-5 h-5 text-accent-sky"
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-sm text-white line-clamp-1"
+  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setPreviewFile(null),
+    className: "che-close-reader-btn"
+  }, "Close Reader")), /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    style: {
+      height: "550px"
+    }
+  }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
+    style: {
+      height: "500px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "fileText",
+    className: "w-8 h-8"
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-lg text-white"
+  }, "Term-Final Questions Reader"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs max-w-md leading-relaxed"
+  }, "Select any term-final question paper from the left catalog to launch our integrated full-screen PDF workspace.")))), primarySection === 'solutions' && /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-1 space-y-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-base text-white"
+  }, "Solution Manuals"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10"
+  }, solutionsList.length, " manuals")), /*#__PURE__*/React.createElement("form", {
+    onSubmit: e => handleFileUpload(e, solutionUploadFile, "solution", {
+      setIsUploading: setIsSolutionUploading,
+      setUploadProgress: setSolutionUploadProgress,
+      setUploadStatus: setSolutionUploadStatus,
+      setUploadFile: setSolutionUploadFile,
+      fileInputRef: solutionFileInputRef
+    }),
+    className: "relative group"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    multiple: true,
+    accept: ".pdf,.docx,.doc",
+    onChange: e => setSolutionUploadFile(Array.from(e.target.files)),
+    className: "hidden",
+    id: "solution-upload-input",
+    ref: solutionFileInputRef
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "solution-upload-input",
+    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "upload",
+    className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2"
+  }, solutionUploadFile && solutionUploadFile.length > 0 ? solutionUploadFile.length === 1 ? `Selected: ${solutionUploadFile[0].name}` : `Selected: ${solutionUploadFile.length} files` : "Upload exam solutions or step-by-step guides directly."), /*#__PURE__*/React.createElement("p", {
+    className: "text-[9px] text-slate-500 mt-0.5"
+  }, "Drag & drop or click to browse")), solutionUploadFile && solutionUploadFile.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setSolutionUploadFile([]);
+      if (solutionFileInputRef.current) solutionFileInputRef.current.value = "";
+    },
+    className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    disabled: isSolutionUploading,
+    className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+  }, /*#__PURE__*/React.createElement("span", null, isSolutionUploading ? "Uploading..." : "Save to Solutions"), /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    className: "w-3 h-3"
+  })))), isSolutionUploading && /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#5C061C] h-full transition-all duration-300",
+    style: {
+      width: `${solutionUploadProgress}%`
+    }
+  })), solutionUploadStatus.message && /*#__PURE__*/React.createElement("div", {
+    className: `p-2 rounded-lg text-[10px] font-display font-medium ${solutionUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`
+  }, solutionUploadStatus.message), solutionUploadStatus.type === "batch" && /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-black/5 pb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-bold text-xs text-slate-300"
+  }, "Upload Batch Queue"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold"
+  }, solutionUploadStatus.queue.filter(q => q.status === "success").length, " / ", solutionUploadStatus.queue.length, " completed")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1"
+  }, solutionUploadStatus.queue.map((item, idx) => /*#__PURE__*/React.createElement("div", {
+    key: idx,
+    className: "flex items-center justify-between text-xs py-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "truncate max-w-[180px] font-medium text-slate-400"
+  }, item.name), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, item.status === "pending" && /*#__PURE__*/React.createElement("span", {
+    className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
+  }), item.status === "uploading" && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 text-accent-violet"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "loader",
+    className: "w-3.5 h-3.5 animate-spin"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] font-bold"
+  }, item.progress, "%")), item.status === "success" && /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    className: "w-4 h-4 text-emerald-500 font-bold"
+  }), item.status === "error" && /*#__PURE__*/React.createElement("span", {
+    className: "text-[9px] text-rose-500 font-semibold",
+    title: item.error
+  }, "Failed")))))), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Search solution manuals...",
+    value: fileSearchQuery,
+    onChange: e => setFileSearchQuery(e.target.value),
+    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+  }), /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[450px] overflow-y-auto pr-1"
+  }, filteredSolutions.map(file => {
+    const isPreviewing = previewFile && previewFile.index === file.index;
+    return /*#__PURE__*/React.createElement("div", {
+      key: file.index,
+      onClick: () => setPreviewFile(file),
+      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center space-x-3 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "edit",
+      className: "w-5 h-5"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0 flex flex-col items-start justify-center"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "che-book-title block line-clamp-2 leading-relaxed"
+    }, file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''), /*#__PURE__*/React.createElement("span", {
+      className: "text-[9px] text-slate-500 font-display"
+    }, file.size, " • PDF Exam Solve"))), /*#__PURE__*/React.createElement("div", {
+      className: "absolute bottom-3 right-3 flex items-center space-x-2",
+      onClick: e => e.stopPropagation()
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDeleteFile(file.index),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
+      title: "Delete Solve"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "trash",
+      className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
+    })), /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDownloadFile(file.index, file.name),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
+      title: "Download"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "download",
+      className: "w-3.5 h-3.5"
+    }))));
+  }), filteredSolutions.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "py-8 text-center text-slate-500 text-xs font-display"
+  }, "No exam solutions cataloged inside this folder.")))), /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-2"
+  }, previewFile ? /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "fileText",
+    className: "w-5 h-5 text-accent-sky"
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-sm text-white line-clamp-1"
+  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setPreviewFile(null),
+    className: "che-close-reader-btn"
+  }, "Close Reader")), /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    style: {
+      height: "550px"
+    }
+  }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
+    style: {
+      height: "500px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "edit",
+    className: "w-8 h-8"
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-lg text-white"
+  }, "Solution Manuals Reader"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs max-w-md leading-relaxed"
+  }, "Select any solution manual or guide from the left catalog to launch our integrated full-screen PDF workspace.")))), primarySection === 'solved' && /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-1 space-y-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-base text-white"
+  }, "Term-Final Solved"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10"
+  }, solvedList.length, " solved papers")), /*#__PURE__*/React.createElement("form", {
+    onSubmit: e => handleFileUpload(e, solvedUploadFile, "solved", {
+      setIsUploading: setIsSolvedUploading,
+      setUploadProgress: setSolvedUploadProgress,
+      setUploadStatus: setSolvedUploadStatus,
+      setUploadFile: setSolvedUploadFile,
+      fileInputRef: solvedFileInputRef
+    }),
+    className: "relative group"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    multiple: true,
+    accept: ".pdf,.docx,.doc",
+    onChange: e => setSolvedUploadFile(Array.from(e.target.files)),
+    className: "hidden",
+    id: "solved-upload-input",
+    ref: solvedFileInputRef
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "solved-upload-input",
+    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "upload",
+    className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2"
+  }, solvedUploadFile && solvedUploadFile.length > 0 ? solvedUploadFile.length === 1 ? `Selected: ${solvedUploadFile[0].name}` : `Selected: ${solvedUploadFile.length} files` : "Upload exam solutions or solved answer keys directly."), /*#__PURE__*/React.createElement("p", {
+    className: "text-[9px] text-slate-500 mt-0.5"
+  }, "Drag & drop or click to browse")), solvedUploadFile && solvedUploadFile.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setSolvedUploadFile([]);
+      if (solvedFileInputRef.current) solvedFileInputRef.current.value = "";
+    },
+    className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    disabled: isSolvedUploading,
+    className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+  }, /*#__PURE__*/React.createElement("span", null, isSolvedUploading ? "Uploading..." : "Save to Solved"), /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    className: "w-3 h-3"
+  })))), isSolvedUploading && /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#5C061C] h-full transition-all duration-300",
+    style: {
+      width: `${solvedUploadProgress}%`
+    }
+  })), solvedUploadStatus.message && /*#__PURE__*/React.createElement("div", {
+    className: `p-2 rounded-lg text-[10px] font-display font-medium ${solvedUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`
+  }, solvedUploadStatus.message), solvedUploadStatus.type === "batch" && /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-black/5 pb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-bold text-xs text-slate-300"
+  }, "Upload Batch Queue"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold"
+  }, solvedUploadStatus.queue.filter(q => q.status === "success").length, " / ", solvedUploadStatus.queue.length, " completed")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1"
+  }, solvedUploadStatus.queue.map((item, idx) => /*#__PURE__*/React.createElement("div", {
+    key: idx,
+    className: "flex items-center justify-between text-xs py-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "truncate max-w-[180px] font-medium text-slate-400"
+  }, item.name), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, item.status === "pending" && /*#__PURE__*/React.createElement("span", {
+    className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
+  }), item.status === "uploading" && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 text-accent-violet"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "loader",
+    className: "w-3.5 h-3.5 animate-spin"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] font-bold"
+  }, item.progress, "%")), item.status === "success" && /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    className: "w-4 h-4 text-emerald-500 font-bold"
+  }), item.status === "error" && /*#__PURE__*/React.createElement("span", {
+    className: "text-[9px] text-rose-500 font-semibold",
+    title: item.error
+  }, "Failed")))))), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Search solved answers...",
+    value: fileSearchQuery,
+    onChange: e => setFileSearchQuery(e.target.value),
+    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+  }), /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[450px] overflow-y-auto pr-1"
+  }, filteredSolved.map(file => {
+    const isPreviewing = previewFile && previewFile.index === file.index;
+    return /*#__PURE__*/React.createElement("div", {
+      key: file.index,
+      onClick: () => setPreviewFile(file),
+      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center space-x-3 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "check",
+      className: "w-5 h-5"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0 flex flex-col items-start justify-center"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "che-book-title block line-clamp-2 leading-relaxed"
+    }, file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''), /*#__PURE__*/React.createElement("span", {
+      className: "text-[9px] text-slate-500 font-display"
+    }, file.size, " • PDF Exam Solve"))), /*#__PURE__*/React.createElement("div", {
+      className: "absolute bottom-3 right-3 flex items-center space-x-2",
+      onClick: e => e.stopPropagation()
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDeleteFile(file.index),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
+      title: "Delete Solve"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "trash",
+      className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
+    })), /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDownloadFile(file.index, file.name),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
+      title: "Download"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "download",
+      className: "w-3.5 h-3.5"
+    }))));
+  }), filteredSolved.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "py-8 text-center text-slate-500 text-xs font-display"
+  }, "No solved papers cataloged inside this folder yet.")))), /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-2"
+  }, previewFile && solvedList.some(f => f.index === previewFile.index) ? /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "fileText",
+    className: "w-5 h-5 text-accent-sky"
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-sm text-white line-clamp-1"
+  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setPreviewFile(null),
+    className: "che-close-reader-btn"
+  }, "Close Reader")), /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    style: {
+      height: "550px"
+    }
+  }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
+    style: {
+      height: "500px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    className: "w-8 h-8"
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-lg text-white"
+  }, "Term-Final Solved Reader"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs max-w-md leading-relaxed"
+  }, "Select any term-final solved answer or guide from the left catalog to launch our integrated full-screen PDF workspace.")))), primarySection === 'slides' && /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-1 space-y-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-base text-white"
+  }, "Class Slides & Assets"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10"
+  }, slidesList.length, " files")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3 pb-3 border-b border-white border-opacity-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] font-display font-bold text-sky-400 tracking-wider uppercase"
+  }, "Folders"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: handleCreateFolder,
+    className: "flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2 py-0.5 rounded border border-sky-500/20"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "folderPlus",
+    className: "w-3 h-3"
+  }), /*#__PURE__*/React.createElement("span", null, "Create"))), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap gap-1.5 max-h-[120px] overflow-y-auto pr-1"
+  }, (activeCourse.folders || ["Root"]).map(folder => {
+    const isSelected = currentFolder === folder;
+    return /*#__PURE__*/React.createElement("button", {
+      key: folder,
+      type: "button",
+      onClick: () => {
+        setCurrentFolder(folder);
+        setPreviewFile(null);
+      },
+      className: `flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-display font-semibold transition-all border ${isSelected ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' : 'folder-btn-unselected'}`
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "folder",
+      className: `w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "truncate max-w-[80px]"
+    }, folder), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center space-x-1 ml-1",
+      onClick: e => e.stopPropagation()
+    }, /*#__PURE__*/React.createElement("span", {
+      onClick: e => handleRenameFolder(e, folder),
+      className: "p-0.5 rounded hover:bg-black/10 transition-all text-black",
+      title: `Rename ${folder}`
+    }, /*#__PURE__*/React.createElement("svg", {
+      className: "w-2.5 h-2.5",
+      fill: "none",
+      viewBox: "0 0 24 24",
+      stroke: "currentColor",
+      strokeWidth: 2.5
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+    }))), folder !== "Root" && /*#__PURE__*/React.createElement("span", {
+      onClick: e => handleDeleteFolder(e, folder),
+      className: "p-0.5 rounded hover:bg-black/10 transition-all text-black",
+      title: `Delete ${folder}`
+    }, /*#__PURE__*/React.createElement("svg", {
+      className: "w-2.5 h-2.5",
+      fill: "none",
+      viewBox: "0 0 24 24",
+      stroke: "currentColor",
+      strokeWidth: 2.5
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M6 18L18 6M6 6l12 12"
+    })))));
+  }))), /*#__PURE__*/React.createElement("form", {
+    onSubmit: e => handleFileUpload(e, slideUploadFile, "slide", {
+      setIsUploading: setIsSlideUploading,
+      setUploadProgress: setSlideUploadProgress,
+      setUploadStatus: setSlideUploadStatus,
+      setUploadFile: setSlideUploadFile,
+      fileInputRef: slideFileInputRef
+    }),
+    className: "relative group"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    multiple: true,
+    accept: ".pdf,.docx,.doc,.xlsx,.xls,.pptx,.ppt,.txt,.zip,.rar",
+    onChange: e => setSlideUploadFile(Array.from(e.target.files)),
+    className: "hidden",
+    id: "slide-upload-input",
+    ref: slideFileInputRef
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "slide-upload-input",
+    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "upload",
+    className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2"
+  }, slideUploadFile && slideUploadFile.length > 0 ? slideUploadFile.length === 1 ? `Selected: ${slideUploadFile[0].name}` : `Selected: ${slideUploadFile.length} files` : "Upload lecture slides, notes, or spreadsheets."), /*#__PURE__*/React.createElement("p", {
+    className: "text-[9px] text-slate-500 mt-0.5"
+  }, "Drag & drop or click to browse")), slideUploadFile && slideUploadFile.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setSlideUploadFile([]);
+      if (slideFileInputRef.current) slideFileInputRef.current.value = "";
+    },
+    className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    disabled: isSlideUploading,
+    className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+  }, /*#__PURE__*/React.createElement("span", null, isSlideUploading ? "Uploading..." : "Save to Slides"), /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    className: "w-3 h-3"
+  })))), isSlideUploading && /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#5C061C] h-full transition-all duration-300",
+    style: {
+      width: `${slideUploadProgress}%`
+    }
+  })), slideUploadStatus.message && /*#__PURE__*/React.createElement("div", {
+    className: `p-2 rounded-lg text-[10px] font-display font-medium ${slideUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`
+  }, slideUploadStatus.message), slideUploadStatus.type === "batch" && /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-black/5 pb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-bold text-xs text-slate-300"
+  }, "Upload Batch Queue"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold"
+  }, slideUploadStatus.queue.filter(q => q.status === "success").length, " / ", slideUploadStatus.queue.length, " completed")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1"
+  }, slideUploadStatus.queue.map((item, idx) => /*#__PURE__*/React.createElement("div", {
+    key: idx,
+    className: "flex items-center justify-between text-xs py-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "truncate max-w-[180px] font-medium text-slate-400"
+  }, item.name), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, item.status === "pending" && /*#__PURE__*/React.createElement("span", {
+    className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
+  }), item.status === "uploading" && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 text-accent-violet"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "loader",
+    className: "w-3.5 h-3.5 animate-spin"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] font-bold"
+  }, item.progress, "%")), item.status === "success" && /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    className: "w-4 h-4 text-emerald-500 font-bold"
+  }), item.status === "error" && /*#__PURE__*/React.createElement("span", {
+    className: "text-[9px] text-rose-500 font-semibold",
+    title: item.error
+  }, "Failed")))))), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Search slides...",
+    value: fileSearchQuery,
+    onChange: e => setFileSearchQuery(e.target.value),
+    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+  }), /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[350px] overflow-y-auto pr-1"
+  }, filteredSlides.map(file => {
+    const isPreviewing = previewFile && previewFile.index === file.index;
+    return /*#__PURE__*/React.createElement("div", {
+      key: file.index,
+      onClick: () => setPreviewFile(file),
+      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center space-x-3 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: (file.type || "").toUpperCase().includes('PDF') || (file.name || "").toLowerCase().endsWith('.pdf') ? 'fileText' : 'layers',
+      className: "w-5 h-5"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0 flex flex-col items-start justify-center"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "che-book-title block line-clamp-2 leading-relaxed"
+    }, file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''), /*#__PURE__*/React.createElement("span", {
+      className: "text-[9px] text-slate-500 font-display"
+    }, file.size, " • ", file.type || "Class Slide"))), /*#__PURE__*/React.createElement("div", {
+      className: "absolute bottom-3 right-3 flex items-center space-x-2",
+      onClick: e => e.stopPropagation()
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDeleteFile(file.index),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
+      title: "Delete Asset"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "trash",
+      className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
+    })), /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDownloadFile(file.index, file.name),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
+      title: "Download"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "download",
+      className: "w-3.5 h-3.5"
+    }))));
+  }), filteredSlides.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "py-8 text-center text-slate-500 text-xs font-display"
+  }, "No slide materials cataloged inside this folder yet."))), /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-base text-glow text-white"
+  }, "Study Reference Links"), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleAddLink,
+    className: "space-y-3"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "text-[9px] uppercase font-semibold text-slate-400 tracking-wider font-display block mb-1"
+  }, "Reference Title"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "e.g. Perry's Handbook Chapter 5",
+    value: newLink.title,
+    onChange: e => setNewLink({
+      ...newLink,
+      title: e.target.value
+    }),
+    className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs",
+    required: true
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "text-[9px] uppercase font-semibold text-slate-400 tracking-wider font-display block mb-1"
+  }, "Hyperlink URL"), /*#__PURE__*/React.createElement("input", {
+    type: "url",
+    placeholder: "https://example.com/resource",
+    value: newLink.url,
+    onChange: e => setNewLink({
+      ...newLink,
+      url: e.target.value
+    }),
+    className: "glass-input w-full px-3 py-1.5 rounded-lg text-xs",
+    required: true
+  })), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "w-full py-2 bg-gradient-to-r from-accent-sky to-accent-violet hover:from-sky-500 hover:to-violet-600 text-white font-display font-semibold text-[10px] uppercase tracking-wider rounded-lg transition-all shadow-md shadow-sky-950/20"
+  }, "Add Reference Link")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[220px] overflow-y-auto pr-1"
+  }, (activeCourse.reference_links || []).map((link, idx) => /*#__PURE__*/React.createElement("div", {
+    key: idx,
+    className: "glass-panel p-2.5 rounded-xl flex items-center justify-between gap-3 text-xs border-white border-opacity-5 hover:bg-white/5 transition-colors"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: link.url,
+    target: "_blank",
+    rel: "noopener noreferrer",
+    className: "font-display font-medium text-slate-300 hover:text-accent-sky truncate flex items-center space-x-1.5 max-w-[170px]"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "externalLink",
+    className: "w-3.5 h-3.5 text-accent-sky flex-shrink-0"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "truncate"
+  }, link.title)), /*#__PURE__*/React.createElement("button", {
+    onClick: () => handleDeleteLink(idx),
+    className: "p-1 hover:bg-rose-500/20 text-slate-500 hover:text-rose-400 rounded transition-all flex-shrink-0",
+    title: "Remove Link"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    className: "w-3 h-3"
+  })))), (activeCourse.reference_links || []).length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "py-4 text-center text-slate-500 text-[10px] font-display"
+  }, "No custom reference links added yet.")))), /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-2"
+  }, previewFile && slidesList.some(f => f.index === previewFile.index) ? /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "fileText",
+    className: "w-5 h-5 text-accent-sky"
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-sm text-white line-clamp-1"
+  }, "Preview: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setPreviewFile(null),
+    className: "che-close-reader-btn"
+  }, "Close Preview")), (previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    style: {
+      height: "550px"
+    }
+  }, renderPdfViewerOrPlaceholder(previewFile))) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center",
+    style: {
+      height: "550px"
+    }
+  }, /*#__PURE__*/React.createElement("video", {
+    src: `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`,
+    controls: true,
+    preload: "metadata",
+    playsInline: true,
+    className: "w-full h-full rounded-xl shadow-lg border border-white border-opacity-5"
+  })) : /*#__PURE__*/React.createElement("div", {
+    className: "p-16 text-center bg-dark-900 rounded-2xl space-y-4 border border-white border-opacity-5 flex flex-col items-center justify-center",
+    style: {
+      height: "500px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "layers",
+    className: "w-8 h-8"
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-base text-white"
+  }, "Dynamic Preview Restricted"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs max-w-sm leading-relaxed"
+  }, "Dynamic previewing is only optimized for PDF and video assets. For spreadsheet models (.xlsx), HYSYS setups (.hsc), Matlab scripts (.m), or archives (.zip), download the file directly to open locally."), /*#__PURE__*/React.createElement("button", {
+    onClick: () => handleDownloadFile(previewFile.index, previewFile.name),
+    className: "px-4 py-2 bg-gradient-to-r from-accent-sky to-accent-violet hover:from-sky-500 hover:to-violet-600 text-white font-display font-semibold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-sky-950/20 flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "download",
+    className: "w-4 h-4"
+  }), /*#__PURE__*/React.createElement("span", null, "Download Asset")))) : /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
+    style: {
+      height: "500px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "layers",
+    className: "w-8 h-8"
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-lg text-white"
+  }, "Hub-Class Slides Terminal"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs max-w-md leading-relaxed"
+  }, "Select any slide, lecture note, or asset from the left catalog to launch our integrated interactive workspace.")))), primarySection === 'videos' && /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-start animate-section-entrance"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-1 space-y-6"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-display font-bold text-base text-white"
+  }, "Recorded Class Videos"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold bg-accent-sky/10 px-2 py-0.5 rounded border border-accent-sky/10"
+  }, videosList.length, " recordings")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3 pb-3 border-b border-white border-opacity-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] font-display font-bold text-sky-400 tracking-wider uppercase"
+  }, "Video Folders"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: handleCreateVideoFolder,
+    className: "flex items-center space-x-1 text-[10px] text-sky-300 hover:text-white font-display font-semibold transition-all bg-sky-500/10 hover:bg-sky-500/20 px-2 py-0.5 rounded border border-sky-500/20"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "folderPlus",
+    className: "w-3 h-3"
+  }), /*#__PURE__*/React.createElement("span", null, "Create"))), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap gap-1.5 max-h-[120px] overflow-y-auto pr-1"
+  }, (activeCourse.video_folders || ["Root"]).map(folder => {
+    const isSelected = currentVideoFolder === folder;
+    return /*#__PURE__*/React.createElement("button", {
+      key: folder,
+      type: "button",
+      onClick: () => {
+        setCurrentVideoFolder(folder);
+        setPreviewFile(null);
+      },
+      className: `flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-display font-semibold transition-all border ${isSelected ? 'bg-gradient-to-r from-accent-sky to-accent-violet text-white border-accent-sky border-opacity-40 shadow-md shadow-sky-950/40' : 'folder-btn-unselected'}`
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "folder",
+      className: `w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-sky-400/70'}`
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "truncate max-w-[80px]"
+    }, folder), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center space-x-1 ml-1",
+      onClick: e => e.stopPropagation()
+    }, /*#__PURE__*/React.createElement("span", {
+      onClick: e => handleRenameVideoFolder(e, folder),
+      className: "p-0.5 rounded hover:bg-black/10 transition-all text-black",
+      title: `Rename ${folder}`
+    }, /*#__PURE__*/React.createElement("svg", {
+      className: "w-2.5 h-2.5",
+      fill: "none",
+      viewBox: "0 0 24 24",
+      stroke: "currentColor",
+      strokeWidth: 2.5
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+    }))), folder !== "Root" && /*#__PURE__*/React.createElement("span", {
+      onClick: e => handleDeleteVideoFolder(e, folder),
+      className: "p-0.5 rounded hover:bg-black/10 transition-all text-black",
+      title: `Delete ${folder}`
+    }, /*#__PURE__*/React.createElement("svg", {
+      className: "w-2.5 h-2.5",
+      fill: "none",
+      viewBox: "0 0 24 24",
+      stroke: "currentColor",
+      strokeWidth: 2.5
+    }, /*#__PURE__*/React.createElement("path", {
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      d: "M6 18L18 6M6 6l12 12"
+    })))));
+  }))), /*#__PURE__*/React.createElement("form", {
+    onSubmit: e => handleFileUpload(e, videoUploadFile, "video", {
+      setIsUploading: setIsVideoUploading,
+      setUploadProgress: setVideoUploadProgress,
+      setUploadStatus: setVideoUploadStatus,
+      setUploadFile: setVideoUploadFile,
+      fileInputRef: videoFileInputRef
+    }),
+    className: "relative group"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "file",
+    multiple: true,
+    accept: "video/*",
+    onChange: e => setVideoUploadFile(Array.from(e.target.files)),
+    className: "hidden",
+    id: "video-upload-input",
+    ref: videoFileInputRef
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "video-upload-input",
+    className: "glass-panel border-dashed border-2 border-sky-500/20 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500/50 transition-colors group-hover:bg-sky-950/10 block"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "upload",
+    className: "w-6 h-6 text-accent-sky mb-2 group-hover:scale-110 transition-transform"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "font-display font-semibold text-[10px] text-sky-300 text-center px-2"
+  }, videoUploadFile && videoUploadFile.length > 0 ? videoUploadFile.length === 1 ? `Selected: ${videoUploadFile[0].name}` : `Selected: ${videoUploadFile.length} files` : "Upload recorded lectures, tutorials, or HYSYS demos directly."), /*#__PURE__*/React.createElement("p", {
+    className: "text-[9px] text-slate-500 mt-0.5"
+  }, "Drag & drop or click to browse")), videoUploadFile && videoUploadFile.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 mt-2 justify-end animate-fade-in"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setVideoUploadFile([]);
+      if (videoFileInputRef.current) videoFileInputRef.current.value = "";
+    },
+    className: "px-2 py-1 che-cancel-btn rounded-lg text-[10px] font-display"
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    disabled: isVideoUploading,
+    className: "px-3 py-1 che-submit-btn text-white rounded-lg text-[10px] font-display font-semibold flex items-center space-x-1"
+  }, /*#__PURE__*/React.createElement("span", null, isVideoUploading ? "Uploading..." : "Save to Videos"), /*#__PURE__*/React.createElement(Icon, {
+    name: "plus",
+    className: "w-3 h-3"
+  })))), isVideoUploading && /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-full h-1.5 overflow-hidden animate-pulse"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#5C061C] h-full transition-all duration-300",
+    style: {
+      width: `${videoUploadProgress}%`
+    }
+  })), videoUploadStatus.message && /*#__PURE__*/React.createElement("div", {
+    className: `p-2 rounded-lg text-[10px] font-display font-medium ${videoUploadStatus.type === 'success' ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'}`
+  }, videoUploadStatus.message), videoUploadStatus.type === "batch" && /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-4 rounded-xl space-y-3 mt-4 animate-fade-in text-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-black/5 pb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-display font-bold text-xs text-slate-300"
+  }, "Upload Batch Queue"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-accent-sky font-bold"
+  }, videoUploadStatus.queue.filter(q => q.status === "success").length, " / ", videoUploadStatus.queue.length, " completed")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[150px] overflow-y-auto pr-1"
+  }, videoUploadStatus.queue.map((item, idx) => /*#__PURE__*/React.createElement("div", {
+    key: idx,
+    className: "flex items-center justify-between text-xs py-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "truncate max-w-[180px] font-medium text-slate-400"
+  }, item.name), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, item.status === "pending" && /*#__PURE__*/React.createElement("span", {
+    className: "w-2.5 h-2.5 rounded-full bg-slate-600 animate-pulse"
+  }), item.status === "uploading" && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 text-accent-violet"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "loader",
+    className: "w-3.5 h-3.5 animate-spin"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] font-bold"
+  }, item.progress, "%")), item.status === "success" && /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    className: "w-4 h-4 text-emerald-500 font-bold"
+  }), item.status === "error" && /*#__PURE__*/React.createElement("span", {
+    className: "text-[9px] text-rose-500 font-semibold",
+    title: item.error
+  }, "Failed")))))), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Search videos...",
+    value: videoSearchQuery,
+    onChange: e => setVideoSearchQuery(e.target.value),
+    className: "glass-input w-full pl-9 pr-3 py-2 rounded-lg text-xs"
+  }), /*#__PURE__*/React.createElement(Icon, {
+    name: "search",
+    className: "absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2 max-h-[450px] overflow-y-auto pr-1"
+  }, filteredVideos.map(file => {
+    const isPreviewing = previewFile && previewFile.index === file.index;
+    return /*#__PURE__*/React.createElement("div", {
+      key: file.index,
+      onClick: () => setPreviewFile(file),
+      className: `glass-panel border-opacity-5 p-3.5 pr-24 relative rounded-xl flex items-center justify-between gap-4 transition-all hover:bg-sky-950/5 cursor-pointer ${isPreviewing ? 'border-accent-sky border-opacity-40 bg-sky-950/10' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center space-x-3 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-9 h-9 rounded-lg bg-sky-500/10 flex items-center justify-center text-accent-sky flex-shrink-0"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "video",
+      className: "w-5 h-5"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0 flex flex-col items-start justify-center"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "che-book-title block line-clamp-2 leading-relaxed"
+    }, file.name ? file.name.replace(/_/g, ' ').replace(/-/g, ' ') : ''), /*#__PURE__*/React.createElement("span", {
+      className: "text-[9px] text-slate-500 font-display"
+    }, file.size, " • Recorded Class"))), /*#__PURE__*/React.createElement("div", {
+      className: "absolute bottom-3 right-3 flex items-center space-x-2",
+      onClick: e => e.stopPropagation()
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDeleteFile(file.index),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-rose-50 rounded-lg transition-colors",
+      title: "Delete Video"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "trash",
+      className: "w-3.5 h-3.5 !text-rose-700 hover:!text-rose-900"
+    })), /*#__PURE__*/React.createElement("button", {
+      onClick: () => handleDownloadFile(file.index, file.name),
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
+      title: "Download"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "download",
+      className: "w-3.5 h-3.5"
+    }))));
+  }), filteredVideos.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "py-8 text-center text-slate-500 text-xs font-display"
+  }, "No recorded videos cataloged inside this folder yet.")))), /*#__PURE__*/React.createElement("div", {
+    className: "lg:col-span-2"
+  }, previewFile && videosList.some(f => f.index === previewFile.index) ? /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel p-6 rounded-2xl space-y-4 animate-fade-in border-accent-sky"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-white border-opacity-5 pb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "video",
+    className: "w-5 h-5 text-accent-sky"
+  }), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-sm text-white line-clamp-1"
+  }, "Play Class: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setPreviewFile(null),
+    className: "che-close-reader-btn"
+  }, "Close Preview")), /*#__PURE__*/React.createElement("div", {
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center",
+    style: {
+      height: "550px"
+    }
+  }, /*#__PURE__*/React.createElement("video", {
+    src: `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`,
+    controls: true,
+    preload: "metadata",
+    playsInline: true,
+    className: "w-full h-full rounded-xl shadow-lg border border-white border-opacity-5"
+  }))) : /*#__PURE__*/React.createElement("div", {
+    className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
+    style: {
+      height: "500px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-16 h-16 rounded-2xl bg-sky-500/10 flex items-center justify-center text-accent-sky border border-sky-500/20 mb-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "video",
+    className: "w-8 h-8"
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "font-display font-bold text-lg text-white"
+  }, "Hub-Class Video Terminal"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-xs max-w-md leading-relaxed"
+  }, "Select any recorded class lecture or HYSYS tutorial from the left catalog to launch our high-performance stream player."))))))), /*#__PURE__*/React.createElement("footer", {
+    className: "glass-panel border-t border-white border-opacity-5 py-4 px-6 mt-auto text-center text-slate-500 text-xs flex flex-col md:flex-row items-center justify-between gap-4"
+  }, /*#__PURE__*/React.createElement("p", null, "© ", new Date().getFullYear(), " Chemical Engineering Hub Space. Designed for premium study acceleration."), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap items-center justify-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-1.5"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "credit-developed-by text-[10px] uppercase tracking-wider"
+  }, "Developed by"), /*#__PURE__*/React.createElement("span", {
+    className: "credit-2102072 font-display text-xs"
+  }, "Ibrahim Hisham-2102072")), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] text-slate-400 font-bold"
+  }, "•"), /*#__PURE__*/React.createElement("span", {
+    className: "credit-presented-by text-[10px] uppercase tracking-wider"
+  }, "Presented by DDC"))));
 }
 
 // Render React App
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
-root.render(/*#__PURE__*/_jsxDEV(App, {}, void 0, false));
+root.render(/*#__PURE__*/React.createElement(App, null));
