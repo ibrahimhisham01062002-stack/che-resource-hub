@@ -385,6 +385,9 @@ async def keep_awake():
         except Exception as e:
             print(f"Self-ping failed: {e}")
 
+# In-memory cache for Telegram file paths (valid for 30 minutes)
+telegram_file_path_cache = {}
+
 @app.on_event("startup")
 async def startup_event():
     global http_client
@@ -1214,18 +1217,28 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         # Trigger background caching task
         background_tasks.add_task(cache_telegram_file_to_catbox, course_id, file_index, file_item, "telegram")
             
-        # Fetch file path from Telegram
-        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-        resp = await safe_telegram_request("GET", get_file_url)
-        if resp.status_code != 200:
-            raise HTTPException(status_code=502, detail="Failed to retrieve file details from Telegram Bot API")
-            
-        result = resp.json()
-        if not result.get("ok"):
-            raise HTTPException(status_code=502, detail="Telegram Bot API returned an error")
-            
-        file_path = result["result"]["file_path"]
-        telegram_file_size = result["result"].get("file_size")
+        import time
+        current_time = time.time()
+        file_path = None
+        
+        if file_id in telegram_file_path_cache and current_time - telegram_file_path_cache[file_id]['time'] < 1800:
+            file_path = telegram_file_path_cache[file_id]['path']
+            telegram_file_size = total_size if total_size else file_item.get("bytes")
+        else:
+            # Fetch file path from Telegram
+            get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+            resp = await safe_telegram_request("GET", get_file_url)
+            if resp.status_code != 200:
+                print(f"Failed to retrieve file details: {resp.text}")
+                return Response(status_code=502)
+                
+            result = resp.json()
+            if not result.get("ok"):
+                return Response(status_code=502)
+                
+            file_path = result["result"]["file_path"]
+            telegram_file_size = result["result"].get("file_size")
+            telegram_file_path_cache[file_id] = {'path': file_path, 'time': current_time}
         
         # Determine total size
         total_size = telegram_file_size
@@ -1513,17 +1526,28 @@ async def stream_telegram_chunks_range(
             rel_end = overlap_end - chunk_start
             
             # Fetch file path from Telegram
-            get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
-            resp = await safe_telegram_request("GET", get_file_url)
-            if resp.status_code != 200:
-                print(f"Failed to getFile details for chunk {i}: {resp.text}")
-                return
-            result = resp.json()
-            if not result.get("ok"):
-                print(f"Telegram Bot API error for chunk {i}")
-                return
+            import time
+            current_time = time.time()
+            file_path = None
+            
+            # Use cached path if available and less than 30 minutes old
+            if file_id in telegram_file_path_cache and current_time - telegram_file_path_cache[file_id]['time'] < 1800:
+                file_path = telegram_file_path_cache[file_id]['path']
+            else:
+                get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+                resp = await safe_telegram_request("GET", get_file_url)
+                if resp.status_code != 200:
+                    print(f"Failed to getFile details for chunk {i}: {resp.text}")
+                    return
+                result = resp.json()
+                if not result.get("ok"):
+                    print(f"Telegram Bot API error for chunk {i}")
+                    return
+                    
+                file_path = result["result"]["file_path"]
+                # Cache it
+                telegram_file_path_cache[file_id] = {'path': file_path, 'time': current_time}
                 
-            file_path = result["result"]["file_path"]
             download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
             
             headers = {"Range": f"bytes={rel_start}-{rel_end}"}
