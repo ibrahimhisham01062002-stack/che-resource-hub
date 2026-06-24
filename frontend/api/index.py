@@ -378,8 +378,8 @@ async def startup_event():
     global http_client
     limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
     http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-    # Block and wait for database restoration from Telegram to ensure serverless container is fully initialized
-    await async_sync_database_from_telegram()
+    # Use create_task to prevent blocking serverless cold starts which leads to 504 timeouts
+    asyncio.create_task(async_sync_database_from_telegram())
 
 
 # Directory and path settings for serverless environment
