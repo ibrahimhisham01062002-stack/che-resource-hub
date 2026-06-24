@@ -380,8 +380,9 @@ async def keep_awake():
         await asyncio.sleep(600)  # Wait 10 minutes
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
-                await client.get("https://che-resource-hub-2.onrender.com/api/health")
-                print("Self-ping successful: Server kept awake.")
+                ping_url = os.getenv("RENDER_EXTERNAL_URL", "https://che-resource-hub-2.onrender.com") + "/api/health"
+                await client.get(ping_url)
+                print(f"Self-ping successful: Server kept awake ({ping_url}).")
         except Exception as e:
             print(f"Self-ping failed: {e}")
 
