@@ -1054,31 +1054,7 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
     file_item = files[file_index]
     file_name = file_item["name"]
     
-    # 0. Check for pre-cached redirect/Catbox URL to bypass Render bandwidth limits entirely
-    catbox_url = file_item.get("catbox_url")
-    if catbox_url:
-        return RedirectResponse(url=catbox_url, status_code=302)
-    
-    storage_type = file_item.get("storage_type")
-    gdrive_file_id = file_item.get("gdrive_file_id")
-    file_id = file_item.get("telegram_file_id")
-    file_ids = file_item.get("telegram_file_ids")
-    message_id = file_item.get("telegram_message_id")
-    
-    # Determine disposition: inline for active previewer iframe, attachment for direct download click
-    disposition_type = "inline" if preview else "attachment"
-    
-    # 1. Determine storage type if not explicitly set
-    if not storage_type:
-        if file_ids:
-            storage_type = "telegram_chunks"
-        elif gdrive_file_id:
-            storage_type = "gdrive"
-        elif file_id or message_id is not None:
-            storage_type = "telegram"
-        else:
-            storage_type = "local"
-            
+    # Determine Content-Type
     content_type = "application/octet-stream"
     if file_name.lower().endswith(".pdf"):
         content_type = "application/pdf"
@@ -1099,7 +1075,80 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
     elif file_name.lower().endswith(".mkv"):
         content_type = "video/x-matroska"
         
+    disposition_type = "inline" if preview else "attachment"
     range_header = request.headers.get("range")
+    
+    # 0. Check for pre-cached redirect/Catbox URL
+    catbox_url = file_item.get("catbox_url")
+    if catbox_url:
+        # Instead of RedirectResponse (which gets blocked by regional ISPs), stream the file via our server proxy
+        headers = {
+            "Accept-Ranges": "bytes",
+            "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+            "Content-Type": content_type,
+            "X-Frame-Options": "ALLOWALL",
+            "Content-Security-Policy": "frame-ancestors *"
+        }
+        
+        async def stream_catbox_file(url: str, request_headers: dict):
+            global http_client
+            if http_client is None:
+                limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+            async with http_client.stream("GET", url, headers=request_headers) as r:
+                if r.status_code not in (200, 206):
+                    raise Exception(f"Catbox download returned status {r.status_code}")
+                async for chunk in r.aiter_bytes(chunk_size=1024 * 256): # 256KB chunks
+                    yield chunk
+                    
+        # Check for range request
+        if range_header and range_header.startswith("bytes="):
+            req_headers = {"Range": range_header}
+            global http_client
+            if http_client is None:
+                limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+            try:
+                async with http_client.stream("GET", catbox_url, headers=req_headers) as r:
+                    if r.status_code == 206:
+                        headers["Content-Range"] = r.headers.get("Content-Range", "")
+                        headers["Content-Length"] = r.headers.get("Content-Length", "")
+                        return StreamingResponse(
+                            stream_catbox_file(catbox_url, req_headers),
+                            status_code=206,
+                            media_type=content_type,
+                            headers=headers
+                        )
+            except Exception as e:
+                print(f"Catbox range streaming error: {str(e)}. Falling back to standard streaming.")
+                
+        # Standard streaming
+        raw_bytes = file_item.get("bytes")
+        if raw_bytes:
+            headers["Content-Length"] = str(raw_bytes)
+            
+        return StreamingResponse(
+            stream_catbox_file(catbox_url, {}),
+            media_type=content_type,
+            headers=headers
+        )
+        
+    storage_type = file_item.get("storage_type")
+    gdrive_file_id = file_item.get("gdrive_file_id")
+    file_id = file_item.get("telegram_file_id")
+    file_ids = file_item.get("telegram_file_ids")
+    message_id = file_item.get("telegram_message_id")
+    
+    # 1. Determine storage type if not explicitly set
+    if not storage_type:
+        if file_ids:
+            storage_type = "telegram_chunks"
+        elif gdrive_file_id:
+            storage_type = "gdrive"
+        elif file_id or message_id is not None:
+            storage_type = "telegram"
+        else:
+            storage_type = "local"
         
     # Case A: Telegram Chunks Storage (Multi-part upload)
     if storage_type == "telegram_chunks" or file_ids:

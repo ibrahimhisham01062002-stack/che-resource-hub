@@ -1330,8 +1330,8 @@ function App() {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async function () {
       var file = activeCourse.files[fileIndex];
-      // Bypass fetch and use direct URL if available to prevent UI freezing during large file downloads
-      var url = file && file.catbox_url ? file.catbox_url : "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex);
+      // Bypass fetch and use direct backend URL to prevent UI freezing and avoid ISP Catbox blocks
+      var url = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex);
       window.open(url, "_blank");
     });
   };

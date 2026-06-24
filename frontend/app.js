@@ -919,8 +919,8 @@ function App() {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async () => {
       const file = activeCourse.files[fileIndex];
-      // Bypass fetch and use direct URL if available to prevent UI freezing during large file downloads
-      const url = file && file.catbox_url ? file.catbox_url : `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
+      // Bypass fetch and use direct backend URL to prevent UI freezing and avoid ISP Catbox blocks
+      const url = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
       window.open(url, "_blank");
     });
   };
