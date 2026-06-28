@@ -1738,11 +1738,15 @@ function App() {
               var activeUploads = 0;
               var hasFailed = false;
               var chunkProgress = new Array(totalChunks).fill(0);
+              var uploadedFileIds = new Array(totalChunks).fill(null); // Keep track of Telegram file_id per chunk
+
               var sendCompleteRequest = function sendCompleteRequest() {
                 var completeFormData = new FormData();
                 completeFormData.append("session_id", sessionId);
                 completeFormData.append("filename", file.name);
                 completeFormData.append("total_chunks", totalChunks);
+                completeFormData.append("telegram_file_ids", uploadedFileIds.join(","));
+                completeFormData.append("file_size", file.size);
                 completeFormData.append("category", category);
                 if ((category === "slide" || category === "video") && (currentFolder || currentVideoFolder)) {
                   completeFormData.append("folder", category === "video" ? currentVideoFolder : currentFolder);
@@ -1802,6 +1806,14 @@ function App() {
                   if (hasFailed) return;
                   if (chunkXhr.status >= 200 && chunkXhr.status < 300) {
                     chunkProgress[chunkIdx] = end - start;
+                    try {
+                      var response = JSON.parse(chunkXhr.responseText);
+                      uploadedFileIds[chunkIdx] = response.file_id;
+                    } catch (e) {
+                      hasFailed = true;
+                      markError("Failed to parse chunk upload response");
+                      return;
+                    }
                     activeUploads--;
                     startUpload();
                   } else {

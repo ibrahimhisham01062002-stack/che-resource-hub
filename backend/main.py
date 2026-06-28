@@ -1928,16 +1928,22 @@ async def upload_chunk(
     filename: str = Form(...)
 ):
     try:
-        session_dir = os.path.join(UPLOAD_TEMP_DIR, session_id)
-        os.makedirs(session_dir, exist_ok=True)
+        # Read the chunk data
+        chunk_data = await file_chunk.read()
         
-        chunk_path = os.path.join(session_dir, str(chunk_index))
-        with open(chunk_path, "wb") as f:
-            f.write(await file_chunk.read())
-            
-        return {"status": "success", "message": f"Chunk {chunk_index} of {total_chunks} received"}
+        # Determine part name
+        part_filename = filename if total_chunks == 1 else f"{filename}.part{chunk_index + 1}"
+        
+        # Upload chunk directly to Telegram
+        file_id = await upload_file_to_telegram(chunk_data, part_filename)
+        
+        return {
+            "status": "success", 
+            "message": f"Chunk {chunk_index} uploaded successfully",
+            "file_id": file_id
+        }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save chunk: {str(e)}")
+        raise HTTPException(status_code=502, detail=f"Failed to upload chunk to Telegram: {str(e)}")
 
 @app.post("/api/upload/complete/{course_id}")
 async def upload_complete(
@@ -1945,12 +1951,11 @@ async def upload_complete(
     session_id: str = Form(...),
     filename: str = Form(...),
     total_chunks: int = Form(...),
+    telegram_file_ids: str = Form(...),
+    file_size: int = Form(...),
     category: Optional[str] = Form(None),
     folder: Optional[str] = Form(None)
 ):
-    import gc
-    import shutil
-    
     config = load_courses_config()
     resolved_course_id = find_course_key(course_id, config["courses"])
     if not resolved_course_id:
@@ -1958,47 +1963,10 @@ async def upload_complete(
     course_id = resolved_course_id
     course = config["courses"][course_id]
     
-    session_dir = os.path.join(UPLOAD_TEMP_DIR, session_id)
-    if not os.path.exists(session_dir):
-        raise HTTPException(status_code=400, detail="Upload session not found")
-        
-    merged_filepath = os.path.join(session_dir, "merged_" + filename)
-    
-    try:
-        # Verify all chunks exist
-        for i in range(total_chunks):
-            chunk_path = os.path.join(session_dir, str(i))
-            if not os.path.exists(chunk_path):
-                raise HTTPException(status_code=400, detail=f"Missing chunk {i}")
-                
-        # Merge chunks
-        with open(merged_filepath, "wb") as outfile:
-            for i in range(total_chunks):
-                chunk_path = os.path.join(session_dir, str(i))
-                with open(chunk_path, "rb") as infile:
-                    outfile.write(infile.read())
-                    
-        # Get file size
-        bytes_size = os.path.getsize(merged_filepath)
-        
-        # Catbox caching disabled. Telegram is the primary storage server.
-        catbox_url = None
-        
-        # Upload to Telegram in chunks
-        with open(merged_filepath, "rb") as f:
-            telegram_file_ids = await upload_file_in_chunks_to_telegram(f, filename, bytes_size)
-            
-    except HTTPException as he:
-        raise he
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Merge or upload failed: {str(e)}")
-    finally:
-        # Cleanup session directory
-        try:
-            shutil.rmtree(session_dir)
-        except Exception:
-            pass
-        gc.collect()
+    # Parse file IDs
+    file_ids = [fid.strip() for fid in telegram_file_ids.split(",") if fid.strip()]
+    if len(file_ids) != total_chunks:
+        raise HTTPException(status_code=400, detail="Number of uploaded file chunks does not match total_chunks")
         
     # Construct file catalog item
     if category == "book":
@@ -2016,16 +1984,13 @@ async def upload_complete(
         
     new_file_item = {
         "name": filename,
-        "size": format_size(bytes_size),
-        "bytes": bytes_size,
+        "size": format_size(file_size),
+        "bytes": file_size,
         "type": file_type,
         "storage_type": "telegram_chunks",
-        "telegram_file_ids": telegram_file_ids
+        "telegram_file_ids": file_ids
     }
     
-    if catbox_url:
-        new_file_item["catbox_url"] = catbox_url
-        
     if folder:
         new_file_item["folder"] = folder
         
@@ -2034,12 +1999,13 @@ async def upload_complete(
     course["files"].append(new_file_item)
     
     save_courses_config(config)
+    await async_sync_database_to_telegram()
     
     return {
         "status": "success", 
         "filename": filename, 
         "storage_type": "telegram_chunks",
-        "message": "File uploaded and merged successfully!"
+        "message": "File uploaded and registered successfully!"
     }
 
 # Handle file upload (proxies to Telegram storage)
