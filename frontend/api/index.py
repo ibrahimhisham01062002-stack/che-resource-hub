@@ -374,27 +374,12 @@ app.add_middleware(
     expose_headers=["Accept-Ranges", "Content-Range", "Content-Length", "Content-Disposition"],
 )
 
-async def keep_awake():
-    """Background task to ping the Render public URL every 10 mins to prevent sleep."""
-    import httpx
-    while True:
-        await asyncio.sleep(600)  # Wait 10 minutes
-        try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
-                ping_url = os.getenv("RENDER_EXTERNAL_URL", "https://che-resource-hub-2.onrender.com") + "/api/health"
-                await client.get(ping_url)
-                print(f"Self-ping successful: Server kept awake ({ping_url}).")
-        except Exception as e:
-            print(f"Self-ping failed: {e}")
-
 # In-memory cache for Telegram file paths (valid for 30 minutes)
 telegram_file_path_cache = {}
 
 @app.on_event("startup")
 async def startup_event():
     global http_client
-    # Start the self-ping task to keep Render awake
-    asyncio.create_task(keep_awake())
     
     limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
     http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
@@ -679,23 +664,6 @@ class CourseUpdate(BaseModel):
 @app.head("/api/health")
 def health_check():
     return {"status": "healthy"}
-
-@app.get("/api/cron-ping")
-async def cron_ping():
-    render_health_url = "https://che-resource-hub-2.onrender.com/api/health"
-    try:
-        async with httpx.AsyncClient(timeout=15.0) as client:
-            resp = await client.get(render_health_url)
-            return {
-                "status": "success",
-                "render_status": resp.status_code,
-                "detail": "Render backend pinged successfully to stay awake."
-            }
-    except Exception as e:
-        return {
-            "status": "error",
-            "detail": f"Failed to ping Render: {str(e)}"
-        }
 
 @app.get("/api/courses")
 def get_courses(response: Response):

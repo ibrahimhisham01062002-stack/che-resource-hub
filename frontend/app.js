@@ -158,10 +158,10 @@ const Icon = ({ name, className = "w-5 h-5", ...props }) => {
   );
 };
 
-const RENDER_BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+const LOCAL_BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
   ? "http://127.0.0.1:8000"
-  : ""; // Use Vercel backend directly to bypass Render's 50-second cold starts
-const API_BASE = RENDER_BACKEND_URL;
+  : ""; // Use backend API routes relative to current host in production
+const API_BASE = LOCAL_BACKEND_URL;
 
 function App() {
   const [courses, setCourses] = useState([]);
