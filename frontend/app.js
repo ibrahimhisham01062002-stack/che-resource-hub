@@ -917,11 +917,8 @@ function App() {
   const handleDownloadFile = async (fileIndex, fileName) => {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async () => {
-      const file = activeCourse.files[fileIndex];
-      const catboxUrl = file && file.catbox_url;
-      // Use Catbox URL directly to bypass Render bandwidth (zero cost).
-      // Falls back to Render proxy for files not yet on Catbox.
-      const url = catboxUrl || `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
+      // Route exclusively through backend download endpoint
+      const url = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
       window.open(url, '_blank');
     });
   };

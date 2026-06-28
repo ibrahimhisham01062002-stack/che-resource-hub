@@ -1201,69 +1201,8 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
 
         # For downloads: redirect directly to Catbox (zero Render bandwidth, CORS doesn't apply to navigation)
         # For preview: proxy bytes through backend with CORS headers (PDF.js needs fetch access, Catbox blocks CORS)
-        if catbox_url and not preview:
-            from fastapi.responses import RedirectResponse
-            return RedirectResponse(url=catbox_url, status_code=302)
-        
-        if catbox_url and preview:
-            # Stream Catbox bytes through backend for PDF.js progressive rendering
-            async def stream_catbox_preview(url: str):
-                try:
-                    global http_client
-                    if http_client is None:
-                        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-                        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-                    req_headers = {}
-                    if range_header:
-                        req_headers["Range"] = range_header
-                    async with http_client.stream("GET", url, headers=req_headers) as r:
-                        async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
-                            yield chunk
-                except Exception as e:
-                    print(f"Catbox preview streaming error: {e}")
-            
-            resp_headers = {
-                "Accept-Ranges": "bytes",
-                "Content-Disposition": f'inline; filename="{file_name}"',
-                "Content-Type": content_type,
-                "X-Frame-Options": "ALLOWALL",
-                "Content-Security-Policy": "frame-ancestors *",
-                "Access-Control-Allow-Origin": "*"
-            }
-            
-            # Handle range requests for PDF.js progressive page loading
-            if range_header and range_header.startswith("bytes="):
-                try:
-                    if http_client is None:
-                        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
-                        http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-                    head_resp = await http_client.head(catbox_url)
-                    total_size = int(head_resp.headers.get("content-length", 0))
-                    
-                    range_spec = range_header.replace("bytes=", "")
-                    start_str, end_str = range_spec.split("-")
-                    start = int(start_str) if start_str else 0
-                    end = int(end_str) if end_str else total_size - 1
-                    
-                    resp_headers["Content-Range"] = f"bytes {start}-{end}/{total_size}"
-                    resp_headers["Content-Length"] = str(end - start + 1)
-                    
-                    return StreamingResponse(
-                        stream_catbox_preview(catbox_url),
-                        status_code=206,
-                        media_type=content_type,
-                        headers=resp_headers
-                    )
-                except Exception as e:
-                    print(f"Catbox range request error: {e}")
-            
-            return StreamingResponse(
-                stream_catbox_preview(catbox_url),
-                media_type=content_type,
-                headers=resp_headers
-            )
-            
-        elif file_ids:
+        # Prioritize streaming/proxying from Telegram chunks
+        if file_ids:
             try:
                 headers = {
                     "Accept-Ranges": "bytes",
@@ -1301,6 +1240,124 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                 )
             except Exception as e:
                 print(f"Telegram chunks streaming error: {str(e)}")
+                
+        # Streaming/proxying from Telegram single file/message
+        elif file_id or message_id is not None:
+            try:
+                headers = {
+                    "Accept-Ranges": "bytes",
+                    "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                    "Content-Type": content_type,
+                    "X-Frame-Options": "ALLOWALL",
+                    "Content-Security-Policy": "frame-ancestors *"
+                }
+                raw_bytes = file_item.get("bytes")
+                if range_header and range_header.startswith("bytes=") and raw_bytes:
+                    start = 0
+                    end = None
+                    parts = range_header.replace("bytes=", "").split("-")
+                    if len(parts) == 2:
+                        if parts[0].strip():
+                            start = int(parts[0].strip())
+                        if parts[1].strip():
+                            end = int(parts[1].strip())
+                    if end is None or end >= raw_bytes:
+                        end = raw_bytes - 1
+                    headers["Content-Range"] = f"bytes {start}-{end}/{raw_bytes}"
+                    headers["Content-Length"] = str(end - start + 1)
+                    return StreamingResponse(
+                        stream_telegram_single_file_range(file_id, start, end, message_id),
+                        status_code=206,
+                        media_type=content_type,
+                        headers=headers
+                    )
+                if raw_bytes:
+                    headers["Content-Length"] = str(raw_bytes)
+                return StreamingResponse(
+                    stream_telegram_single_file(file_id, message_id),
+                    media_type=content_type,
+                    headers=headers
+                )
+            except Exception as e:
+                print(f"Telegram single file streaming error: {str(e)}")
+
+        # Fallback to Catbox only if no Telegram file info is available (legacy files)
+        elif catbox_url:
+            if not preview:
+                from fastapi.responses import RedirectResponse
+                return RedirectResponse(url=catbox_url, status_code=302)
+            else:
+                async def stream_catbox_preview(url: str):
+                    try:
+                        global http_client
+                        if http_client is None:
+                            limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                            http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                        req_headers = {}
+                        if range_header:
+                            req_headers["Range"] = range_header
+                        async with http_client.stream("GET", url, headers=req_headers) as r:
+                            async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
+                                yield chunk
+                    except Exception as e:
+                        print(f"Catbox preview streaming error: {e}")
+                
+                resp_headers = {
+                    "Accept-Ranges": "bytes",
+                    "Content-Disposition": f'inline; filename="{file_name}"',
+                    "Content-Type": content_type,
+                    "X-Frame-Options": "ALLOWALL",
+                    "Content-Security-Policy": "frame-ancestors *",
+                    "Access-Control-Allow-Origin": "*"
+                }
+                
+                if range_header and range_header.startswith("bytes="):
+                    try:
+                        if http_client is None:
+                            limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                            http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+                        head_resp = await http_client.head(catbox_url)
+                        total_size = int(head_resp.headers.get("content-length", 0))
+                        range_spec = range_header.replace("bytes=", "")
+                        start_str, end_str = range_spec.split("-")
+                        start = int(start_str) if start_str else 0
+                        end = int(end_str) if end_str else total_size - 1
+                        resp_headers["Content-Range"] = f"bytes {start}-{end}/{total_size}"
+                        resp_headers["Content-Length"] = str(end - start + 1)
+                        return StreamingResponse(
+                            stream_catbox_preview(catbox_url),
+                            status_code=206,
+                            media_type=content_type,
+                            headers=resp_headers
+                        )
+                    except Exception as e:
+                        print(f"Catbox range request error: {e}")
+                
+                return StreamingResponse(
+                    stream_catbox_preview(catbox_url),
+                    media_type=content_type,
+                    headers=resp_headers
+                )
+        
+        # Fallback to Google Drive
+        elif gdrive_file_id:
+            try:
+                headers = {
+                    "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
+                    "Content-Type": content_type,
+                    "X-Frame-Options": "ALLOWALL",
+                    "Content-Security-Policy": "frame-ancestors *"
+                }
+                raw_bytes = file_item.get("bytes")
+                if raw_bytes:
+                    headers["Content-Length"] = str(raw_bytes)
+                return StreamingResponse(
+                    stream_gdrive_file(gdrive_file_id),
+                    media_type=content_type,
+                    headers=headers
+                )
+            except Exception as e:
+                print(f"GDrive streaming error: {str(e)}")
         
     storage_type = file_item.get("storage_type")
     gdrive_file_id = file_item.get("gdrive_file_id")
@@ -1734,6 +1791,86 @@ async def upload_file_in_chunks_to_telegram(file_obj, filename: str, total_bytes
             
     return file_ids
 
+async def stream_telegram_single_file(file_id: str, message_id: Optional[str] = None):
+    try:
+        global http_client
+        if http_client is None:
+            limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+            http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+        if not file_id and message_id is not None:
+            file_id = await get_file_id_from_message_id(int(message_id))
+        if not file_id:
+            print("No Telegram file_id found")
+            return
+        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+        resp = await safe_telegram_request("GET", get_file_url)
+        if resp.status_code != 200:
+            print(f"Telegram getFile details request failed: {resp.text}")
+            return
+        result = resp.json()
+        if not result.get("ok"):
+            print(f"Telegram API response error: {result}")
+            return
+        file_path = result["result"]["file_path"]
+        download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+        async with http_client.stream("GET", download_url) as r:
+            if r.status_code != 200:
+                print(f"Telegram download returned status {r.status_code}")
+                return
+            async for chunk in r.aiter_bytes():
+                yield chunk
+    except Exception as e:
+        print(f"Stream single Telegram exception: {e}")
+
+async def stream_telegram_single_file_range(file_id: str, start: int, end: int, message_id: Optional[str] = None):
+    try:
+        global http_client
+        if http_client is None:
+            limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+            http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
+        if not file_id and message_id is not None:
+            file_id = await get_file_id_from_message_id(int(message_id))
+        if not file_id:
+            print("No Telegram file_id found")
+            return
+        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={file_id}"
+        resp = await safe_telegram_request("GET", get_file_url)
+        if resp.status_code != 200:
+            print(f"Telegram getFile details request failed: {resp.text}")
+            return
+        result = resp.json()
+        if not result.get("ok"):
+            print(f"Telegram API response error: {result}")
+            return
+        file_path = result["result"]["file_path"]
+        download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+        headers = {"Range": f"bytes={start}-{end}"}
+        async with http_client.stream("GET", download_url, headers=headers) as r:
+            if r.status_code not in (200, 206):
+                print(f"Telegram download failed status {r.status_code}")
+                return
+            if r.status_code == 206:
+                async for chunk in r.aiter_bytes():
+                    yield chunk
+            else:
+                # Slicing fallback
+                bytes_to_skip = start
+                bytes_to_send = end - start + 1
+                async for chunk in r.aiter_bytes():
+                    if bytes_to_send <= 0:
+                        break
+                    chunk_len = len(chunk)
+                    if bytes_to_skip >= chunk_len:
+                        bytes_to_skip -= chunk_len
+                        continue
+                    start_idx = bytes_to_skip
+                    bytes_to_skip = 0
+                    send_len = min(chunk_len - start_idx, bytes_to_send)
+                    yield chunk[start_idx:start_idx + send_len]
+                    bytes_to_send -= send_len
+    except Exception as e:
+        print(f"Stream single range Telegram exception: {e}")
+
 async def stream_telegram_chunks(file_ids: List[str]):
     try:
         print(f"Starting stream_telegram_chunks with file_ids: {file_ids}")
@@ -1922,20 +2059,12 @@ async def upload_complete(
         # Get file size
         bytes_size = os.path.getsize(merged_filepath)
         
-        # Upload/Cache to Catbox (to bypass Render bandwidth limits during download/preview redirects)
+        # Catbox caching disabled. Telegram is the primary storage server.
         catbox_url = None
-        try:
-            with open(merged_filepath, "rb") as f:
-                catbox_url = await upload_to_catbox(f, filename)
-            print(f"Successfully cached merged file to Catbox: {catbox_url}")
-        except Exception as ce:
-            print(f"Failed to cache merged file to Catbox (will fallback to direct Telegram streaming): {str(ce)}")
         
-        telegram_file_ids = None
-        if not catbox_url:
-            # Fallback to direct Telegram chunked upload synchronously if Catbox upload fails
-            with open(merged_filepath, "rb") as f:
-                telegram_file_ids = await upload_file_in_chunks_to_telegram(f, filename, bytes_size)
+        # Upload to Telegram in chunks
+        with open(merged_filepath, "rb") as f:
+            telegram_file_ids = await upload_file_in_chunks_to_telegram(f, filename, bytes_size)
             
     except HTTPException as he:
         raise he
