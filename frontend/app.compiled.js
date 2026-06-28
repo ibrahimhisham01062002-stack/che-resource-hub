@@ -1330,7 +1330,7 @@ function App() {
     checkDownloadAuthAndExecute(async function () {
       // Route exclusively through backend download endpoint
       var url = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex);
-      window.open(url, '_blank');
+      window.location.href = url;
     });
   };
 

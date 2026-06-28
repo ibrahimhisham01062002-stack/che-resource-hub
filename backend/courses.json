@@ -1269,12 +1269,7 @@
           "size": "1.82 MB",
           "bytes": 1909242,
           "type": "PDF",
-          "storage_type": "telegram_chunks",
-          "telegram_file_ids": [
-            "BQACAgUAAyEGAATqgTaTAAP-ahvOsU_0cBGvDdx0fuLwohonWLQAAvccAALik-FUXcqyUGIbziI7BA"
-          ],
-          "folder": "Root",
-          "catbox_url": "https://files.catbox.moe/ea066y.pdf"
+          "storage_type": "local"
         }
       ],
       "folders": [

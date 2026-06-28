@@ -919,7 +919,7 @@ function App() {
     checkDownloadAuthAndExecute(async () => {
       // Route exclusively through backend download endpoint
       const url = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
-      window.open(url, '_blank');
+      window.location.href = url;
     });
   };
 
