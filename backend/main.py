@@ -690,7 +690,7 @@ def health_check():
 
 @app.get("/api/courses")
 def get_courses(response: Response):
-    response.headers["Cache-Control"] = "public, max-age=300"
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     config = load_courses_config()
     courses_data = []
     for key, course in config["courses"].items():
