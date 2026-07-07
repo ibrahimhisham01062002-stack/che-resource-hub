@@ -522,6 +522,56 @@ async def async_sync_database_from_telegram():
     except Exception as e:
         print(f"Error during startup database restore from Telegram: {str(e) or repr(e)}")
 
+def sync_database_to_telegram_blocking():
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
+        print("Telegram not configured. Skipping blocking database cloud backup.")
+        return
+        
+    print("Starting blocking database backup to Telegram channel...")
+    if not os.path.exists(COURSES_CONF_PATH):
+        print("courses.json does not exist. Cannot back up.")
+        return
+        
+    with file_lock:
+        with open(COURSES_CONF_PATH, "rb") as f:
+            file_content = f.read()
+            
+    try:
+        # 1. Upload the courses.json as a new document
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument"
+        files = {
+            "document": ("courses.json", file_content)
+        }
+        data = {
+            "chat_id": TELEGRAM_CHANNEL_ID
+        }
+        with httpx.Client(timeout=30.0) as client:
+            resp = client.post(url, data=data, files=files)
+            if resp.status_code != 200:
+                print(f"Database upload to Telegram failed (blocking): {resp.text}")
+                return
+            res = resp.json()
+            if not res.get("ok"):
+                print(f"Telegram returned error on database upload (blocking): {res.get('description')}")
+                return
+                
+            message_id = res["result"]["message_id"]
+            
+            # 2. Pin the new courses.json document message
+            pin_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/pinChatMessage"
+            pin_data = {
+                "chat_id": TELEGRAM_CHANNEL_ID,
+                "message_id": message_id,
+                "disable_notification": True
+            }
+            pin_resp = client.post(pin_url, json=pin_data)
+            if pin_resp.status_code == 200 and pin_resp.json().get("ok"):
+                print(f"Successfully uploaded and pinned new database blocking (message_id: {message_id}) on Telegram channel!")
+            else:
+                print(f"Failed to pin the new database message blocking: {pin_resp.text}")
+    except Exception as e:
+        print(f"Error during blocking database cloud sync: {str(e) or repr(e)}")
+
 def save_courses_config(config, background_tasks: Optional[BackgroundTasks] = None):
     with file_lock:
         with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
@@ -530,12 +580,8 @@ def save_courses_config(config, background_tasks: Optional[BackgroundTasks] = No
     if background_tasks:
         background_tasks.add_task(async_sync_database_to_telegram)
     else:
-        try:
-            loop = asyncio.get_running_loop()
-            if loop.is_running():
-                loop.create_task(async_sync_database_to_telegram())
-        except RuntimeError:
-            pass
+        # Guarantee persistence in serverless environments by executing synchronously
+        sync_database_to_telegram_blocking()
 
 
 def find_course_key(course_id: str, courses: dict) -> Optional[str]:
