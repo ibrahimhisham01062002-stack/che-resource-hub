@@ -36,3 +36,9 @@ Matlab/
 *.pdf
 *.bk0
 *.hsc
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
