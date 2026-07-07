@@ -522,17 +522,20 @@ async def async_sync_database_from_telegram():
     except Exception as e:
         print(f"Error during startup database restore from Telegram: {str(e) or repr(e)}")
 
-def save_courses_config(config):
+def save_courses_config(config, background_tasks: Optional[BackgroundTasks] = None):
     with file_lock:
         with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
             json.dump(config, f, indent=2, ensure_ascii=False)
     # Queue the background cloud backup
-    try:
-        loop = asyncio.get_running_loop()
-        if loop.is_running():
-            loop.create_task(async_sync_database_to_telegram())
-    except RuntimeError:
-        pass
+    if background_tasks:
+        background_tasks.add_task(async_sync_database_to_telegram)
+    else:
+        try:
+            loop = asyncio.get_running_loop()
+            if loop.is_running():
+                loop.create_task(async_sync_database_to_telegram())
+        except RuntimeError:
+            pass
 
 
 def find_course_key(course_id: str, courses: dict) -> Optional[str]:
@@ -1948,6 +1951,7 @@ async def upload_chunk(
 @app.post("/api/upload/complete/{course_id}")
 async def upload_complete(
     course_id: str,
+    background_tasks: BackgroundTasks,
     session_id: str = Form(...),
     filename: str = Form(...),
     total_chunks: int = Form(...),
@@ -1998,8 +2002,7 @@ async def upload_complete(
         course["files"] = []
     course["files"].append(new_file_item)
     
-    save_courses_config(config)
-    await async_sync_database_to_telegram()
+    save_courses_config(config, background_tasks)
     
     return {
         "status": "success", 
@@ -2135,7 +2138,7 @@ async def upload_file(
             new_file_item["folder"] = folder
             
         course["files"].append(new_file_item)
-        save_courses_config(config)
+        save_courses_config(config, background_tasks)
         
         return {
             "status": "success", 
