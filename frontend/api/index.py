@@ -383,8 +383,8 @@ async def startup_event():
     
     limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
     http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-    # Use create_task to prevent blocking serverless cold starts which leads to 504 timeouts
-    asyncio.create_task(async_sync_database_from_telegram())
+    # Await the database restoration to ensure the container has fresh data before serving requests
+    await async_sync_database_from_telegram()
     asyncio.create_task(hourly_sync_loop())
 
 async def hourly_sync_loop():

@@ -379,8 +379,8 @@ async def startup_event():
     global http_client
     limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
     http_client = httpx.AsyncClient(limits=limits, timeout=120.0)
-    # Run the database restoration in the background to avoid blocking server boot-up
-    asyncio.create_task(async_sync_database_from_telegram())
+    # Await the database restoration to ensure the container has fresh data before serving requests
+    await async_sync_database_from_telegram()
 
 
 # Root workspace directory
