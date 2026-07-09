@@ -822,20 +822,9 @@ function App() {
     }
   };
 
-  // Secure authorization wrapper for downloading files/videos
+  // Download authorization — open access (no passcode required)
   var checkDownloadAuthAndExecute = function checkDownloadAuthAndExecute(callback) {
-    var authTime = safeStorage.getItem("che_download_auth_until");
-    var isAuthorized = authTime && Date.now() < parseInt(authTime);
-    if (isAuthorized) {
-      callback();
-    } else {
-      setPendingDownloadCallback(function () {
-        return callback;
-      });
-      setDownloadPasswordInput("");
-      setDownloadAuthError("");
-      setShowDownloadAuthModal(true);
-    }
+    callback();
   };
 
   // Passcode verification for downloads (supports designated and admin passcodes)
