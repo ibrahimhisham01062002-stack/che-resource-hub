@@ -1113,7 +1113,7 @@ async def download_file_to_cache(file_item: dict, cache_path: str, course_id: st
                 pass
         raise e
 
-@app.get("/api/download/{course_id}/{file_index}")
+@app.api_route("/api/download/{course_id}/{file_index}", methods=["GET", "HEAD"])
 async def download_file(course_id: str, file_index: int, request: Request, background_tasks: BackgroundTasks, preview: Optional[bool] = None):
     global http_client
     config = load_courses_config()
@@ -1153,6 +1153,22 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         
     disposition_type = "inline" if preview else "attachment"
     range_header = request.headers.get("range")
+    safe_name = file_name.replace('"', '')
+    raw_bytes = file_item.get("bytes")
+    
+    if request.method == "HEAD":
+        head_headers = {
+            "Accept-Ranges": "bytes",
+            "Content-Disposition": f'{disposition_type}; filename="{safe_name}"',
+            "Content-Type": content_type,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Expose-Headers": "Content-Range, Accept-Ranges, Content-Length, Content-Disposition",
+            "X-Frame-Options": "ALLOWALL",
+            "Content-Security-Policy": "frame-ancestors *"
+        }
+        if raw_bytes:
+            head_headers["Content-Length"] = str(raw_bytes)
+        return Response(status_code=200, headers=head_headers)
     
     catbox_url = file_item.get("catbox_url")
     gdrive_file_id = file_item.get("gdrive_file_id")
@@ -1207,9 +1223,12 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                 resp_headers = {
                     "Content-Disposition": f'attachment; filename="{safe_name}"',
                     "Content-Type": "application/octet-stream",
+                    "Accept-Ranges": "bytes",
                     "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Expose-Headers": "Content-Disposition"
+                    "Access-Control-Expose-Headers": "Content-Disposition, Content-Length, Accept-Ranges"
                 }
+                if raw_bytes:
+                    resp_headers["Content-Length"] = str(raw_bytes)
                 return StreamingResponse(
                     stream_catbox_download(catbox_url),
                     media_type="application/octet-stream",
@@ -1284,7 +1303,9 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                     "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
                     "Content-Type": content_type,
                     "X-Frame-Options": "ALLOWALL",
-                    "Content-Security-Policy": "frame-ancestors *"
+                    "Content-Security-Policy": "frame-ancestors *",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Expose-Headers": "Content-Range, Accept-Ranges, Content-Length, Content-Disposition"
                 }
                 raw_bytes = file_item.get("bytes")
                 if range_header and range_header.startswith("bytes=") and raw_bytes:
@@ -1324,7 +1345,9 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
                     "Content-Disposition": f'{disposition_type}; filename="{file_name}"',
                     "Content-Type": content_type,
                     "X-Frame-Options": "ALLOWALL",
-                    "Content-Security-Policy": "frame-ancestors *"
+                    "Content-Security-Policy": "frame-ancestors *",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Expose-Headers": "Content-Range, Accept-Ranges, Content-Length, Content-Disposition"
                 }
                 raw_bytes = file_item.get("bytes")
                 if range_header and range_header.startswith("bytes=") and raw_bytes:

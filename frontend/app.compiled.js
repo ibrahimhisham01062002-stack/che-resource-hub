@@ -700,9 +700,9 @@ function App() {
     }
     setPreviewLoading(true);
 
-    // Direct Catbox CDN URL or backend proxy
-    var directUrl = previewFile.catbox_url || "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(previewFile.index, "?preview=true");
-    setPreviewUrl(directUrl);
+    // Always route preview through high-speed edge proxy with byte-range and CORS support
+    var proxyUrl = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(previewFile.index, "?preview=true");
+    setPreviewUrl(proxyUrl);
     var safetyTimer = setTimeout(function () {
       setPreviewLoading(false);
     }, 15000);
@@ -1322,76 +1322,32 @@ function App() {
       }
     });
   };
-  var handleDownloadFile = async function handleDownloadFile(fileIndex, fileName) {
+  var handleDownloadFile = function handleDownloadFile(fileIndex, fileName) {
     if (!activeCourse) return;
-    checkDownloadAuthAndExecute(async function () {
+    checkDownloadAuthAndExecute(function () {
       var file = activeCourse.files && activeCourse.files[fileIndex];
       var targetName = fileName || file && file.name || "document.pdf";
-      var catboxUrl = file && file.catbox_url;
       setDownloadingFileIndex(fileIndex);
       setDownloadToast({
-        type: "info",
+        type: "success",
         message: "Downloading ".concat(targetName, "...")
       });
+      setTimeout(function () {
+        return setDownloadingFileIndex(null);
+      }, 1500);
+      setTimeout(function () {
+        return setDownloadToast(null);
+      }, 3500);
 
-      // 1. Direct fetch as blob: forces actual file save to downloads with original filename, avoiding in-browser preview tab
-      if (catboxUrl) {
-        try {
-          var res = await fetch(catboxUrl);
-          if (res.ok) {
-            var blob = await res.blob();
-            var blobUrl = window.URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = blobUrl;
-            a.download = targetName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            setTimeout(function () {
-              return window.URL.revokeObjectURL(blobUrl);
-            }, 10000);
-            setDownloadingFileIndex(null);
-            setDownloadToast({
-              type: "success",
-              message: "Saved: ".concat(targetName)
-            });
-            setTimeout(function () {
-              return setDownloadToast(null);
-            }, 3500);
-            return;
-          }
-        } catch (e) {
-          console.warn("Direct blob download failed, falling back to backend download stream:", e);
-        }
-      }
-
-      // 2. Fallback: Route through backend download endpoint with forced attachment disposition
-      try {
-        var backendUrl = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex, "?preview=false");
-        var _a = document.createElement('a');
-        _a.href = backendUrl;
-        _a.download = targetName;
-        document.body.appendChild(_a);
-        _a.click();
-        document.body.removeChild(_a);
-        setDownloadToast({
-          type: "success",
-          message: "Download started: ".concat(targetName)
-        });
-        setTimeout(function () {
-          return setDownloadToast(null);
-        }, 3500);
-      } catch (e) {
-        setDownloadToast({
-          type: "error",
-          message: "Download failed for ".concat(targetName)
-        });
-        setTimeout(function () {
-          return setDownloadToast(null);
-        }, 3500);
-      } finally {
-        setDownloadingFileIndex(null);
-      }
+      // Trigger instant native browser download directly via backend attachment stream (Content-Disposition: attachment)
+      // Never buffers megabytes client-side, browser streams directly to Downloads folder
+      var downloadUrl = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex, "?preview=false");
+      var a = document.createElement('a');
+      a.href = downloadUrl;
+      a.setAttribute('download', targetName);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     });
   };
 
@@ -1467,7 +1423,7 @@ function App() {
   // Reusable PDF viewer or placeholder renderer
   var renderPdfViewerOrPlaceholder = function renderPdfViewerOrPlaceholder(file) {
     if (!file) return null;
-    var fallbackUrl = activeCourse && file ? "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(file.index, "?preview=true") : null;
+    var fallbackUrl = file.catbox_url || null;
     return React.createElement('div', {
       className: "w-full h-full relative bg-dark-900"
     }, previewLoading && React.createElement('div', {
@@ -1587,8 +1543,8 @@ function App() {
         try {
           var loadingTask = pdfjsLib.getDocument({
             url: pdfUrl,
-            rangeChunkSize: 131072,
-            // 128KB chunks for fast progressive range loading
+            rangeChunkSize: 65536,
+            // 64KB chunks for fast progressive range loading
             disableAutoFetch: true,
             // Only fetch on-demand pages
             disableStream: true,
@@ -1596,7 +1552,12 @@ function App() {
             cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
             cMapPacked: true
           });
-          var pdf = await loadingTask.promise;
+          var timeoutPromise = new Promise(function (_, reject) {
+            return setTimeout(function () {
+              return reject(new Error("Document load timed out"));
+            }, 12000);
+          });
+          var pdf = await Promise.race([loadingTask.promise, timeoutPromise]);
           if (cancelled) return;
           pdfDocRef.current = pdf;
           setTotalPages(pdf.numPages);
@@ -1606,11 +1567,11 @@ function App() {
           if (!cancelled) {
             console.error("PDF.js loading error for:", pdfUrl, err);
             if (!isFallback && fallbackUrl && fallbackUrl !== pdfUrl) {
-              console.log("Retrying PDF preview with backend proxy fallback...");
+              console.log("Retrying PDF preview with fallback URL...");
               await loadPdf(fallbackUrl, true);
               return;
             }
-            setError("Failed to load PDF. The file may be temporarily unavailable.");
+            setError("Unable to preview this document directly. Please use the Download button to view it locally.");
             if (onFirstPageReady) onFirstPageReady();
           }
         }
@@ -1661,8 +1622,34 @@ function App() {
     }, [totalPages]);
     if (error) {
       return React.createElement('div', {
-        className: "w-full h-full flex items-center justify-center text-slate-400 text-sm p-8 text-center"
-      }, error);
+        className: "w-full h-full flex flex-col items-center justify-center text-slate-400 text-sm p-8 text-center space-y-4 bg-[#1e212b]"
+      }, React.createElement('div', {
+        className: "w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-400"
+      }, React.createElement(Icon, {
+        name: "alertTriangle",
+        className: "w-6 h-6"
+      })), React.createElement('p', {
+        className: "text-slate-300 font-medium max-w-sm"
+      }, error), fallbackUrl && React.createElement('a', {
+        href: fallbackUrl,
+        target: "_blank",
+        rel: "noreferrer",
+        className: "px-4 py-2 bg-accent-sky/20 hover:bg-accent-sky/30 text-accent-sky text-xs rounded-lg font-medium transition-all"
+      }, "Open Direct Link in New Tab"));
+    }
+    if (totalPages === 0) {
+      return React.createElement('div', {
+        ref: containerRef,
+        className: "w-full h-full p-4 bg-[#1e212b] flex flex-col items-center justify-center space-y-4"
+      }, React.createElement('div', {
+        className: "w-10 h-10 rounded-full border-4 border-accent-sky/40 border-t-accent-sky animate-spin"
+      }), React.createElement('div', {
+        className: "text-center space-y-1"
+      }, React.createElement('p', {
+        className: "text-sm font-semibold text-slate-200"
+      }, "Streaming document pages..."), React.createElement('p', {
+        className: "text-xs text-slate-400"
+      }, "Loading first page instantly via high-speed edge proxy...")));
     }
 
     // Render lightweight placeholders for all pages (zero canvas allocation upfront)
