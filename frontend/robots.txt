@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://che-resource-hub.pages.dev/sitemap.xml
 Sitemap: https://che-resource-hub.vercel.app/sitemap.xml
