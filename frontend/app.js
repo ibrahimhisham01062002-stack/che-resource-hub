@@ -194,17 +194,19 @@ function App() {
   const [previewFile, setPreviewFile] = useState(null); // {name, path, size, type}
   const [previewUrl, setPreviewUrl] = useState("");
   const [previewLoading, setPreviewLoading] = useState(false);
-   const prevPreviewFileRef = useRef(null);
- 
-   // Reset preview states on file switch
-   useEffect(() => {
-     if (previewFile) {
-       if (prevPreviewFileRef.current && prevPreviewFileRef.current.index === previewFile.index && prevPreviewFileRef.current.name === previewFile.name) {
-         return;
-       }
-     }
-     prevPreviewFileRef.current = previewFile;
-   }, [previewFile]);
+  const [previewMode, setPreviewMode] = useState('quick'); // 'quick' | 'full'
+  const prevPreviewFileRef = useRef(null);
+
+  // Reset preview states on file switch
+  useEffect(() => {
+    if (previewFile) {
+      if (prevPreviewFileRef.current && prevPreviewFileRef.current.index === previewFile.index && prevPreviewFileRef.current.name === previewFile.name) {
+        return;
+      }
+      setPreviewMode('quick');
+    }
+    prevPreviewFileRef.current = previewFile;
+  }, [previewFile]);
   
   // Book upload states
   const [bookUploadFile, setBookUploadFile] = useState([]);
@@ -309,8 +311,9 @@ function App() {
     safeStorage.setItem("che_selected_term", selectedTerm);
   }, [selectedLevel, selectedTerm]);
 
-  // Prioritize direct Catbox CDN URL for instant range loading (<1s) with zero server load.
-  // Fall back to backend proxy if catbox_url is not available.
+  // Dynamic high-speed preview loader
+  // In 'quick' mode (default), requests /api/preview/{course}/{index} to load initial 5 pages (<150 KB) in <1-2s
+  // In 'full' mode, streams all pages dynamically via byte-range proxy
   useEffect(() => {
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
@@ -327,17 +330,18 @@ function App() {
     
     setPreviewLoading(true);
     
-    // Always route preview through high-speed edge proxy with byte-range and CORS support
-    const proxyUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
-    setPreviewUrl(proxyUrl);
+    const targetUrl = previewMode === 'full'
+      ? `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`
+      : `${API_BASE}/api/preview/${activeCourse.id}/${previewFile.index}`;
+    setPreviewUrl(targetUrl);
     
     const safetyTimer = setTimeout(() => {
       setPreviewLoading(false);
-    }, 15000);
+    }, 10000);
     
     return () => clearTimeout(safetyTimer);
     
-  }, [previewFile, activeCourse]);
+  }, [previewFile, activeCourse, previewMode]);
 
   // Trigger MathJax typesetting whenever the preview file changes
   useEffect(() => {
@@ -989,27 +993,114 @@ function App() {
   // PDF AI Summary Card disabled as requested
 
   // Reusable PDF streaming viewer component
-  // Natively streams pages on demand using HTTP byte ranges, displaying page 1 instantly
-  // and loading subsequent pages progressively as the user scrolls or drags the scrollbar
+  // In 'quick' mode (default): loads a lightweight 5-page preview (<150KB) in <1-2s
+  // In 'full' mode: streams all pages dynamically on demand
   const renderPdfViewerOrPlaceholder = (file) => {
     if (!file) return null;
-    const streamUrl = `${API_BASE}/api/download/${activeCourse.id}/${file.index}?preview=true`;
+    const isQuick = previewMode === 'quick';
+    const quickUrl = `${API_BASE}/api/preview/${activeCourse.id}/${file.index}`;
+    const fullUrl = `${API_BASE}/api/download/${activeCourse.id}/${file.index}?preview=true`;
+    const currentSrc = isQuick ? quickUrl : fullUrl;
 
-    return React.createElement('div', { className: "w-full h-full relative bg-[#1e212b] rounded-xl overflow-hidden flex flex-col" },
-      previewLoading && React.createElement('div', { className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-[#1e212b]/95 text-slate-300 backdrop-blur-sm pointer-events-none transition-opacity duration-300" },
-        React.createElement('div', { className: "w-10 h-10 rounded-full border-4 border-accent-sky border-t-transparent animate-spin" }),
-        React.createElement('div', { className: "text-center space-y-1" },
-          React.createElement('p', { className: "text-xs font-bold text-white" }, "Streaming document pages..."),
-          React.createElement('p', { className: "text-[10px] text-slate-400" }, "Pages load progressively as you scroll down.")
-        )
-      ),
-      previewUrl && React.createElement('iframe', {
-        key: streamUrl,
-        src: `${streamUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`,
-        className: "w-full h-full border-0 rounded-xl bg-[#1e212b]",
-        title: file.name || "PDF Document Reader",
-        onLoad: () => setPreviewLoading(false)
-      })
+    return (
+      <div className="w-full h-full relative bg-[#1e212b] rounded-xl overflow-hidden flex flex-col">
+        {/* Top reader mode control strip */}
+        <div className="flex items-center justify-between px-3.5 py-2.5 bg-dark-950/85 border-b border-white/5 text-xs text-slate-300 z-20 backdrop-blur-sm flex-shrink-0">
+          <div className="flex items-center space-x-2 min-w-0">
+            {isQuick ? (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold text-[11px]">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                ⚡ Instant Preview (Pages 1–5)
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-accent-sky font-semibold text-[11px]">
+                <Icon name="bookOpen" className="w-3.5 h-3.5" />
+                📖 Full Document Stream
+              </span>
+            )}
+          </div>
+          <div className="flex items-center space-x-2 flex-shrink-0">
+            {isQuick ? (
+              <button
+                type="button"
+                onClick={() => { setPreviewLoading(true); setPreviewMode('full'); }}
+                className="px-2.5 py-1 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white border border-sky-500/30 text-[11px] font-semibold transition-all flex items-center gap-1 cursor-pointer"
+                title="Load all pages of the complete document"
+              >
+                <span>📖 Load Full Document</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => { setPreviewLoading(true); setPreviewMode('quick'); }}
+                className="px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 hover:text-white border border-emerald-500/30 text-[11px] font-semibold transition-all flex items-center gap-1 cursor-pointer"
+                title="Switch back to fast instant initial pages preview"
+              >
+                <span>⚡ Instant Preview</span>
+              </button>
+            )}
+            <a
+              href={fullUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-[11px] font-semibold transition-all flex items-center gap-1"
+              title="Open full PDF in separate browser tab"
+            >
+              <span>↗ Pop out</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Spinner overlay */}
+        {previewLoading && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-[#1e212b]/95 text-slate-300 backdrop-blur-sm pointer-events-none transition-opacity duration-300 mt-10">
+            <div className="w-9 h-9 rounded-full border-3 border-accent-sky border-t-transparent animate-spin" />
+            <div className="text-center space-y-1">
+              <p className="text-xs font-bold text-white">
+                {isQuick ? "Opening instant preview..." : "Connecting full document stream..."}
+              </p>
+              <p className="text-[10px] text-slate-400">
+                {isQuick ? "Sub-second initial pages load" : "Large documents stream pages dynamically"}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* PDF iframe */}
+        {previewUrl && (
+          <iframe
+            key={`${currentSrc}-${previewMode}`}
+            src={`${currentSrc}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}
+            className="w-full flex-grow border-0 bg-[#1e212b]"
+            title={file.name || "PDF Document Reader"}
+            onLoad={() => setPreviewLoading(false)}
+          />
+        )}
+
+        {/* Bottom quick-mode notice strip */}
+        {isQuick && (
+          <div className="px-3.5 py-1.5 bg-dark-950/90 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-400 flex-shrink-0">
+            <span>Viewing fast preview of initial pages.</span>
+            <div className="flex items-center space-x-3">
+              <button
+                type="button"
+                onClick={() => { setPreviewLoading(true); setPreviewMode('full'); }}
+                className="text-accent-sky hover:underline font-semibold cursor-pointer"
+              >
+                Load All Pages
+              </button>
+              <span className="text-slate-600">•</span>
+              <button
+                type="button"
+                onClick={() => handleDownloadFile(file.index, file.name)}
+                className="text-accent-sky hover:underline font-semibold cursor-pointer"
+              >
+                Download to Device
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     );
   };
   // Handle file uploads recursively for multiple files sequentially

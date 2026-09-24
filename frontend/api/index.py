@@ -1787,6 +1787,174 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         )
 
 
+@app.get("/api/preview/{course_id}/{file_index}")
+async def get_file_preview(
+    course_id: str,
+    file_index: int,
+    request: Request
+):
+    """
+    High-performance instant preview endpoint.
+    Extracts and caches the first 5 pages of any PDF document into a lightweight (~100-200 KB) PDF.
+    This allows the browser reader to open instantly in < 1-2 seconds without waiting for 10MB-50MB downloads.
+    """
+    config = load_courses_config()
+    courses = config.get("courses", {})
+    resolved_course_id = find_course_key(course_id, courses)
+    if not resolved_course_id:
+        raise HTTPException(status_code=404, detail="Course not found")
+    course_id = resolved_course_id
+    course = courses[course_id]
+        
+    files = course.get("files", [])
+    if file_index < 0 or file_index >= len(files):
+        raise HTTPException(status_code=404, detail="File index out of range")
+        
+    file_item = files[file_index]
+    file_name = file_item.get("name", "document.pdf")
+    safe_name = file_name.replace('"', '')
+    
+    # Non-PDF files (e.g. videos) fall back directly to the download/stream route
+    if not file_name.lower().endswith(".pdf"):
+        return RedirectResponse(url=f"/api/download/{course_id}/{file_index}?preview=true", status_code=307)
+        
+    preview_cache_name = f"che_preview_p5_{get_cache_filename(file_item)}"
+    preview_cache_path = os.path.join(DISK_CACHE_DIR, preview_cache_name)
+    
+    # 1. Return immediately from disk cache if already extracted
+    if os.path.exists(preview_cache_path) and os.path.getsize(preview_cache_path) > 300:
+        return FileResponse(
+            preview_cache_path,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f'inline; filename="preview_{safe_name}"',
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Expose-Headers": "X-Total-Pages, X-Preview-Pages, Content-Disposition"
+            }
+        )
+        
+    # 2. Fetch original file bytes to extract the first 5 pages
+    file_bytes = None
+    
+    # Check if full file is in local disk cache
+    full_cache_name = get_cache_filename(file_item)
+    full_cache_path = os.path.join(DISK_CACHE_DIR, full_cache_name)
+    if os.path.exists(full_cache_path):
+        try:
+            with open(full_cache_path, "rb") as f:
+                file_bytes = f.read()
+        except Exception:
+            pass
+
+    file_ids = file_item.get("telegram_file_ids")
+    file_id = file_item.get("telegram_file_id")
+    message_id = file_item.get("telegram_message_id")
+    
+    global http_client
+    if http_client is None:
+        limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+        http_client = httpx.AsyncClient(limits=limits, timeout=60.0)
+        
+    if not file_bytes:
+        try:
+            target_ids = file_ids if file_ids else ([file_id] if file_id else [])
+            if not target_ids and message_id is not None:
+                resolved_id = await get_file_id_from_message_id(int(message_id))
+                if resolved_id:
+                    target_ids = [resolved_id]
+                    
+            if target_ids:
+                chunk_buffers = []
+                for fid in target_ids:
+                    current_time = time.time()
+                    file_path = None
+                    if fid in telegram_file_path_cache and current_time - telegram_file_path_cache[fid]['time'] < 1800:
+                        file_path = telegram_file_path_cache[fid]['path']
+                    else:
+                        get_file_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getFile?file_id={fid}"
+                        resp = await safe_telegram_request("GET", get_file_url)
+                        if resp.status_code == 200 and resp.json().get("ok"):
+                            file_path = resp.json()["result"]["file_path"]
+                            telegram_file_path_cache[fid] = {'path': file_path, 'time': current_time}
+                            
+                    if file_path:
+                        download_url = f"https://api.telegram.org/file/bot{TELEGRAM_BOT_TOKEN}/{file_path}"
+                        resp = await http_client.get(download_url)
+                        if resp.status_code == 200:
+                            chunk_buffers.append(resp.content)
+                            
+                if chunk_buffers:
+                    file_bytes = b"".join(chunk_buffers)
+                    try:
+                        os.makedirs(os.path.dirname(full_cache_path), exist_ok=True)
+                        with open(full_cache_path, "wb") as f:
+                            f.write(file_bytes)
+                    except Exception:
+                        pass
+        except Exception as e:
+            print(f"Error downloading file for preview: {e}")
+
+    # Fallback to Catbox or GDrive if Telegram failed
+    if not file_bytes and file_item.get("catbox_url"):
+        try:
+            resp = await http_client.get(file_item["catbox_url"], headers={"User-Agent": "Mozilla/5.0"})
+            if resp.status_code == 200:
+                file_bytes = resp.content
+                try:
+                    os.makedirs(os.path.dirname(full_cache_path), exist_ok=True)
+                    with open(full_cache_path, "wb") as f:
+                        f.write(file_bytes)
+                except Exception:
+                    pass
+        except Exception as e:
+            print(f"Error fetching from Catbox for preview: {e}")
+
+    if file_bytes:
+        try:
+            import io
+            from pypdf import PdfReader, PdfWriter
+            
+            reader = PdfReader(io.BytesIO(file_bytes))
+            total_pages = len(reader.pages)
+            preview_count = min(5, total_pages)
+            
+            writer = PdfWriter()
+            for i in range(preview_count):
+                writer.add_page(reader.pages[i])
+                
+            out_buf = io.BytesIO()
+            writer.write(out_buf)
+            preview_data = out_buf.getvalue()
+            
+            try:
+                os.makedirs(os.path.dirname(preview_cache_path), exist_ok=True)
+                with open(preview_cache_path, "wb") as f:
+                    f.write(preview_data)
+            except Exception as e:
+                print(f"Failed to write preview cache: {e}")
+                
+            return Response(
+                content=preview_data,
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": f'inline; filename="preview_{safe_name}"',
+                    "X-Total-Pages": str(total_pages),
+                    "X-Preview-Pages": str(preview_count),
+                    "X-Frame-Options": "ALLOWALL",
+                    "Content-Security-Policy": "frame-ancestors *",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Expose-Headers": "X-Total-Pages, X-Preview-Pages, Content-Disposition"
+                }
+            )
+        except Exception as err:
+            print(f"pypdf extraction failed, falling back: {err}")
+            
+    # Final fallback: redirect to standard download/preview endpoint
+    return RedirectResponse(url=f"/api/download/{course_id}/{file_index}?preview=true", status_code=307)
+
+
 async def upload_file_to_telegram(file_bytes: bytes, filename: str) -> str:
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
         raise HTTPException(status_code=500, detail="Telegram bot token or channel ID not configured in environment")
