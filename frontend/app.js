@@ -307,8 +307,8 @@ function App() {
     safeStorage.setItem("che_selected_term", selectedTerm);
   }, [selectedLevel, selectedTerm]);
 
-  // Load PDF directly — always use backend URL for preview (Catbox blocks CORS from browser fetch)
-  // PDF.js needs fetch access to the URL; Catbox doesn't send Access-Control-Allow-Origin headers
+  // Prioritize direct Catbox CDN URL for instant range loading (<1s) with zero server load.
+  // Fall back to backend proxy if catbox_url is not available.
   useEffect(() => {
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
@@ -325,8 +325,8 @@ function App() {
     
     setPreviewLoading(true);
     
-    // Backend proxy URL — supports CORS and streams bytes to PDF.js for progressive rendering
-    const directUrl = `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
+    // Direct Catbox CDN URL or backend proxy
+    const directUrl = previewFile.catbox_url || `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}?preview=true`;
     setPreviewUrl(directUrl);
     
     const safetyTimer = setTimeout(() => {
@@ -908,8 +908,8 @@ function App() {
   const handleDownloadFile = async (fileIndex, fileName) => {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async () => {
-      // Route exclusively through backend download endpoint
-      const url = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
+      const file = activeCourse.files && activeCourse.files[fileIndex];
+      const url = (file && file.catbox_url) ? file.catbox_url : `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
       window.location.href = url;
     });
   };
@@ -975,6 +975,7 @@ function App() {
   // Reusable PDF viewer or placeholder renderer
   const renderPdfViewerOrPlaceholder = (file) => {
     if (!file) return null;
+    const fallbackUrl = (activeCourse && file) ? `${API_BASE}/api/download/${activeCourse.id}/${file.index}?preview=true` : null;
 
     return React.createElement('div', { className: "w-full h-full relative bg-dark-900" },
       previewLoading && React.createElement('div', { className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400" },
@@ -984,13 +985,13 @@ function App() {
           React.createElement('p', { className: "text-[10px] text-slate-500" }, "First pages will appear shortly.")
         )
       ),
-      previewUrl && React.createElement(PdfJsViewer, { url: previewUrl, onFirstPageReady: () => setPreviewLoading(false) })
+      previewUrl && React.createElement(PdfJsViewer, { url: previewUrl, fallbackUrl: fallbackUrl, onFirstPageReady: () => setPreviewLoading(false) })
     );
   };
 
   // PDF.js Progressive Viewer Component — renders pages lazily as user scrolls
   // Only fetches bytes needed for visible pages (Catbox supports HTTP Range requests)
-  const PdfJsViewer = ({ url, onFirstPageReady }) => {
+  const PdfJsViewer = ({ url, fallbackUrl, onFirstPageReady }) => {
     const containerRef = useRef(null);
     const pdfDocRef = useRef(null);
     const renderedPagesRef = useRef(new Set());
@@ -1008,12 +1009,12 @@ function App() {
       renderedPagesRef.current = new Set();
       renderingRef.current = new Set();
 
-      const loadPdf = async () => {
+      const loadPdf = async (pdfUrl, isFallback = false) => {
         try {
           // PDF.js will use range requests automatically when the server supports Accept-Ranges
           // This means only the bytes for the requested pages are downloaded, not the whole file
           const loadingTask = pdfjsLib.getDocument({
-            url: url,
+            url: pdfUrl,
             rangeChunkSize: 65536, // 64KB chunks for progressive loading
             disableAutoFetch: true, // Don't prefetch the entire PDF — only fetch on demand
             disableStream: false, // Allow streaming
@@ -1034,11 +1035,18 @@ function App() {
           }
         } catch (err) {
           if (!cancelled) {
-            console.error("PDF.js loading error:", err);
+            console.error("PDF.js loading error for:", pdfUrl, err);
+            if (!isFallback && fallbackUrl && fallbackUrl !== pdfUrl) {
+              console.log("Retrying PDF preview with backend proxy fallback...");
+              await loadPdf(fallbackUrl, true);
+              return;
+            }
             setError("Failed to load PDF. The file may be temporarily unavailable.");
           }
         }
       };
+
+      loadPdf(url);
 
       const renderPage = async (pdf, pageNum) => {
         if (renderedPagesRef.current.has(pageNum) || renderingRef.current.has(pageNum)) return;
@@ -3569,7 +3577,7 @@ function App() {
                         ) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? (
                           <div className="w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center" style={{ height: "550px" }}>
                             <video 
-                              src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
+                              src={previewFile.catbox_url || `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
                               controls 
                               preload="metadata"
                               playsInline
@@ -3862,7 +3870,7 @@ function App() {
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center" style={{ height: "550px" }}>
                           <video 
-                            src={`${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
+                            src={previewFile.catbox_url || `${API_BASE}/api/download/${activeCourse.id}/${previewFile.index}`} 
                             controls 
                             preload="metadata"
                             playsInline

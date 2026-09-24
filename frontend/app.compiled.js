@@ -676,8 +676,8 @@ function App() {
     safeStorage.setItem("che_selected_term", selectedTerm);
   }, [selectedLevel, selectedTerm]);
 
-  // Load PDF directly — always use backend URL for preview (Catbox blocks CORS from browser fetch)
-  // PDF.js needs fetch access to the URL; Catbox doesn't send Access-Control-Allow-Origin headers
+  // Prioritize direct Catbox CDN URL for instant range loading (<1s) with zero server load.
+  // Fall back to backend proxy if catbox_url is not available.
   useEffect(function () {
     if (!previewFile || !activeCourse) {
       setPreviewUrl("");
@@ -692,8 +692,8 @@ function App() {
     }
     setPreviewLoading(true);
 
-    // Backend proxy URL — supports CORS and streams bytes to PDF.js for progressive rendering
-    var directUrl = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(previewFile.index, "?preview=true");
+    // Direct Catbox CDN URL or backend proxy
+    var directUrl = previewFile.catbox_url || "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(previewFile.index, "?preview=true");
     setPreviewUrl(directUrl);
     var safetyTimer = setTimeout(function () {
       setPreviewLoading(false);
@@ -1317,8 +1317,8 @@ function App() {
   var handleDownloadFile = async function handleDownloadFile(fileIndex, fileName) {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async function () {
-      // Route exclusively through backend download endpoint
-      var url = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex);
+      var file = activeCourse.files && activeCourse.files[fileIndex];
+      var url = file && file.catbox_url ? file.catbox_url : "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex);
       window.location.href = url;
     });
   };
@@ -1395,6 +1395,7 @@ function App() {
   // Reusable PDF viewer or placeholder renderer
   var renderPdfViewerOrPlaceholder = function renderPdfViewerOrPlaceholder(file) {
     if (!file) return null;
+    var fallbackUrl = activeCourse && file ? "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(file.index, "?preview=true") : null;
     return React.createElement('div', {
       className: "w-full h-full relative bg-dark-900"
     }, previewLoading && React.createElement('div', {
@@ -1409,6 +1410,7 @@ function App() {
       className: "text-[10px] text-slate-500"
     }, "First pages will appear shortly."))), previewUrl && React.createElement(PdfJsViewer, {
       url: previewUrl,
+      fallbackUrl: fallbackUrl,
       onFirstPageReady: function onFirstPageReady() {
         return setPreviewLoading(false);
       }
@@ -1420,6 +1422,7 @@ function App() {
   var PdfJsViewer = function PdfJsViewer(_ref2) {
     var _React2;
     var url = _ref2.url,
+      fallbackUrl = _ref2.fallbackUrl,
       onFirstPageReady = _ref2.onFirstPageReady;
     var containerRef = useRef(null);
     var pdfDocRef = useRef(null);
@@ -1441,12 +1444,13 @@ function App() {
       var cancelled = false;
       renderedPagesRef.current = new Set();
       renderingRef.current = new Set();
-      var loadPdf = async function loadPdf() {
+      var loadPdf = async function loadPdf(pdfUrl) {
+        var isFallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
         try {
           // PDF.js will use range requests automatically when the server supports Accept-Ranges
           // This means only the bytes for the requested pages are downloaded, not the whole file
           var loadingTask = pdfjsLib.getDocument({
-            url: url,
+            url: pdfUrl,
             rangeChunkSize: 65536,
             // 64KB chunks for progressive loading
             disableAutoFetch: true,
@@ -1468,11 +1472,17 @@ function App() {
           }
         } catch (err) {
           if (!cancelled) {
-            console.error("PDF.js loading error:", err);
+            console.error("PDF.js loading error for:", pdfUrl, err);
+            if (!isFallback && fallbackUrl && fallbackUrl !== pdfUrl) {
+              console.log("Retrying PDF preview with backend proxy fallback...");
+              await loadPdf(fallbackUrl, true);
+              return;
+            }
             setError("Failed to load PDF. The file may be temporarily unavailable.");
           }
         }
       };
+      loadPdf(url);
       var renderPage = async function renderPage(pdf, pageNum) {
         if (renderedPagesRef.current.has(pageNum) || renderingRef.current.has(pageNum)) return;
         renderingRef.current.add(pageNum);
@@ -3983,7 +3993,7 @@ function App() {
       height: "550px"
     }
   }, /*#__PURE__*/React.createElement("video", {
-    src: "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(previewFile.index),
+    src: previewFile.catbox_url || "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(previewFile.index),
     controls: true,
     preload: "metadata",
     playsInline: true,
@@ -4284,7 +4294,7 @@ function App() {
       height: "550px"
     }
   }, /*#__PURE__*/React.createElement("video", {
-    src: "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(previewFile.index),
+    src: previewFile.catbox_url || "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(previewFile.index),
     controls: true,
     preload: "metadata",
     playsInline: true,
