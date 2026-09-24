@@ -651,6 +651,14 @@ function App() {
     _useState116 = _slicedToArray(_useState115, 2),
     pendingDownloadCallback = _useState116[0],
     setPendingDownloadCallback = _useState116[1];
+  var _useState117 = useState(null),
+    _useState118 = _slicedToArray(_useState117, 2),
+    downloadingFileIndex = _useState118[0],
+    setDownloadingFileIndex = _useState118[1];
+  var _useState119 = useState(null),
+    _useState120 = _slicedToArray(_useState119, 2),
+    downloadToast = _useState120[0],
+    setDownloadToast = _useState120[1];
 
   // Fetch all courses on mount
   var fetchCourses = async function fetchCourses() {
@@ -1318,8 +1326,72 @@ function App() {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async function () {
       var file = activeCourse.files && activeCourse.files[fileIndex];
-      var url = file && file.catbox_url ? file.catbox_url : "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex);
-      window.location.href = url;
+      var targetName = fileName || file && file.name || "document.pdf";
+      var catboxUrl = file && file.catbox_url;
+      setDownloadingFileIndex(fileIndex);
+      setDownloadToast({
+        type: "info",
+        message: "Downloading ".concat(targetName, "...")
+      });
+
+      // 1. Direct fetch as blob: forces actual file save to downloads with original filename, avoiding in-browser preview tab
+      if (catboxUrl) {
+        try {
+          var res = await fetch(catboxUrl);
+          if (res.ok) {
+            var blob = await res.blob();
+            var blobUrl = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = targetName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function () {
+              return window.URL.revokeObjectURL(blobUrl);
+            }, 10000);
+            setDownloadingFileIndex(null);
+            setDownloadToast({
+              type: "success",
+              message: "Saved: ".concat(targetName)
+            });
+            setTimeout(function () {
+              return setDownloadToast(null);
+            }, 3500);
+            return;
+          }
+        } catch (e) {
+          console.warn("Direct blob download failed, falling back to backend download stream:", e);
+        }
+      }
+
+      // 2. Fallback: Route through backend download endpoint with forced attachment disposition
+      try {
+        var backendUrl = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(fileIndex, "?preview=false");
+        var _a = document.createElement('a');
+        _a.href = backendUrl;
+        _a.download = targetName;
+        document.body.appendChild(_a);
+        _a.click();
+        document.body.removeChild(_a);
+        setDownloadToast({
+          type: "success",
+          message: "Download started: ".concat(targetName)
+        });
+        setTimeout(function () {
+          return setDownloadToast(null);
+        }, 3500);
+      } catch (e) {
+        setDownloadToast({
+          type: "error",
+          message: "Download failed for ".concat(targetName)
+        });
+        setTimeout(function () {
+          return setDownloadToast(null);
+        }, 3500);
+      } finally {
+        setDownloadingFileIndex(null);
+      }
     });
   };
 
@@ -1399,16 +1471,16 @@ function App() {
     return React.createElement('div', {
       className: "w-full h-full relative bg-dark-900"
     }, previewLoading && React.createElement('div', {
-      className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400"
+      className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900/90 text-slate-400 backdrop-blur-sm"
     }, React.createElement('div', {
       className: "w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"
     }), React.createElement('div', {
       className: "text-center space-y-1"
     }, React.createElement('p', {
       className: "text-xs font-bold text-slate-300"
-    }, "Loading PDF pages progressively..."), React.createElement('p', {
+    }, "Opening document..."), React.createElement('p', {
       className: "text-[10px] text-slate-500"
-    }, "First pages will appear shortly."))), previewUrl && React.createElement(PdfJsViewer, {
+    }, "Preparing fast preview..."))), previewUrl && React.createElement(PdfJsViewer, {
       url: previewUrl,
       fallbackUrl: fallbackUrl,
       onFirstPageReady: function onFirstPageReady() {
@@ -1428,48 +1500,108 @@ function App() {
     var pdfDocRef = useRef(null);
     var renderedPagesRef = useRef(new Set());
     var renderingRef = useRef(new Set());
-    var _useState117 = useState(0),
-      _useState118 = _slicedToArray(_useState117, 2),
-      totalPages = _useState118[0],
-      setTotalPages = _useState118[1];
-    var _useState119 = useState(null),
-      _useState120 = _slicedToArray(_useState119, 2),
-      error = _useState120[0],
-      setError = _useState120[1];
+    var _useState121 = useState(0),
+      _useState122 = _slicedToArray(_useState121, 2),
+      totalPages = _useState122[0],
+      setTotalPages = _useState122[1];
+    var _useState123 = useState(null),
+      _useState124 = _slicedToArray(_useState123, 2),
+      error = _useState124[0],
+      setError = _useState124[1];
+    var renderPage = async function renderPage(pdf, pageNum) {
+      var retries = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 6;
+      if (!pdf || renderedPagesRef.current.has(pageNum) || renderingRef.current.has(pageNum)) return;
+      renderingRef.current.add(pageNum);
+      try {
+        var _container = containerRef.current;
+        if (!_container) {
+          renderingRef.current.delete(pageNum);
+          return;
+        }
+        var wrapper = _container.querySelector("[data-page=\"".concat(pageNum, "\"]"));
+        if (!wrapper) {
+          renderingRef.current.delete(pageNum);
+          if (retries > 0) {
+            setTimeout(function () {
+              return renderPage(pdf, pageNum, retries - 1);
+            }, 40);
+          }
+          return;
+        }
+        var page = await pdf.getPage(pageNum);
+        var canvas = wrapper.querySelector('canvas');
+        if (!canvas) {
+          canvas = document.createElement('canvas');
+          canvas.id = "pdf-page-".concat(pageNum);
+          canvas.className = 'shadow-2xl rounded-lg max-w-full bg-white transition-opacity duration-300';
+          wrapper.appendChild(canvas);
+        }
+        var containerWidth = Math.max(_container.clientWidth - 48, 280);
+        var viewport = page.getViewport({
+          scale: 1
+        });
+        var baseScale = Math.min(containerWidth / viewport.width, 1.8);
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        var scaledViewport = page.getViewport({
+          scale: baseScale
+        });
+        canvas.width = Math.floor(scaledViewport.width * dpr);
+        canvas.height = Math.floor(scaledViewport.height * dpr);
+        canvas.style.width = Math.floor(scaledViewport.width) + 'px';
+        canvas.style.height = Math.floor(scaledViewport.height) + 'px';
+        var ctx = canvas.getContext('2d');
+        var transform = dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null;
+        await page.render({
+          canvasContext: ctx,
+          viewport: scaledViewport,
+          transform: transform
+        }).promise;
+        renderedPagesRef.current.add(pageNum);
+        renderingRef.current.delete(pageNum);
+        wrapper.style.minHeight = 'auto';
+        wrapper.style.backgroundColor = 'transparent';
+        wrapper.style.borderColor = 'transparent';
+        var placeholder = wrapper.querySelector('.page-placeholder');
+        if (placeholder) placeholder.style.display = 'none';
+        if (pageNum === 1 && onFirstPageReady) {
+          onFirstPageReady();
+        }
+      } catch (err) {
+        renderingRef.current.delete(pageNum);
+        console.error("Failed to render page ".concat(pageNum, ":"), err);
+      }
+    };
     useEffect(function () {
-      if (!url || !window.pdfjsLib) {
+      if (!url) return;
+      if (!window.pdfjsLib) {
         setError("PDF viewer library not loaded. Try refreshing the page.");
         return;
       }
       var cancelled = false;
       renderedPagesRef.current = new Set();
       renderingRef.current = new Set();
+      setTotalPages(0);
+      setError(null);
       var loadPdf = async function loadPdf(pdfUrl) {
         var isFallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
         try {
-          // PDF.js will use range requests automatically when the server supports Accept-Ranges
-          // This means only the bytes for the requested pages are downloaded, not the whole file
           var loadingTask = pdfjsLib.getDocument({
             url: pdfUrl,
-            rangeChunkSize: 65536,
-            // 64KB chunks for progressive loading
+            rangeChunkSize: 131072,
+            // 128KB chunks for fast progressive range loading
             disableAutoFetch: true,
-            // Don't prefetch the entire PDF — only fetch on demand
-            disableStream: false // Allow streaming
+            // Only fetch on-demand pages
+            disableStream: true,
+            // Don't stream entire file in background
+            cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
+            cMapPacked: true
           });
-
           var pdf = await loadingTask.promise;
           if (cancelled) return;
           pdfDocRef.current = pdf;
           setTotalPages(pdf.numPages);
-
-          // Render first 3 pages immediately for instant preview
-          var initialPages = Math.min(3, pdf.numPages);
-          for (var i = 1; i <= initialPages; i++) {
-            if (cancelled) return;
-            await renderPage(pdf, i);
-            if (i === 1 && onFirstPageReady) onFirstPageReady();
-          }
+          // Dismiss the loading overlay immediately when PDF metadata is ready!
+          if (onFirstPageReady) onFirstPageReady();
         } catch (err) {
           if (!cancelled) {
             console.error("PDF.js loading error for:", pdfUrl, err);
@@ -1479,54 +1611,11 @@ function App() {
               return;
             }
             setError("Failed to load PDF. The file may be temporarily unavailable.");
+            if (onFirstPageReady) onFirstPageReady();
           }
         }
       };
       loadPdf(url);
-      var renderPage = async function renderPage(pdf, pageNum) {
-        if (renderedPagesRef.current.has(pageNum) || renderingRef.current.has(pageNum)) return;
-        renderingRef.current.add(pageNum);
-        try {
-          var page = await pdf.getPage(pageNum);
-          if (cancelled) return;
-          var _container = containerRef.current;
-          if (!_container) return;
-          var canvasId = "pdf-page-".concat(pageNum);
-          var canvas = _container.querySelector("#".concat(canvasId));
-          if (!canvas) return;
-          var containerWidth = _container.clientWidth - 32; // 16px padding each side
-          var viewport = page.getViewport({
-            scale: 1
-          });
-          var scale = containerWidth / viewport.width;
-          var scaledViewport = page.getViewport({
-            scale: scale
-          });
-          canvas.width = scaledViewport.width;
-          canvas.height = scaledViewport.height;
-          canvas.style.width = scaledViewport.width + 'px';
-          canvas.style.height = scaledViewport.height + 'px';
-          var ctx = canvas.getContext('2d');
-          await page.render({
-            canvasContext: ctx,
-            viewport: scaledViewport
-          }).promise;
-          renderedPagesRef.current.add(pageNum);
-          renderingRef.current.delete(pageNum);
-
-          // Remove placeholder styling
-          var wrapper = canvas.parentElement;
-          if (wrapper) {
-            wrapper.style.minHeight = 'auto';
-            var placeholder = wrapper.querySelector('.page-placeholder');
-            if (placeholder) placeholder.style.display = 'none';
-          }
-        } catch (err) {
-          renderingRef.current.delete(pageNum);
-          console.error("Failed to render page ".concat(pageNum, ":"), err);
-        }
-      };
-      loadPdf();
       return function () {
         cancelled = true;
         if (pdfDocRef.current) {
@@ -1534,62 +1623,34 @@ function App() {
           pdfDocRef.current = null;
         }
       };
-    }, [url]);
+    }, [url, fallbackUrl]);
 
-    // Set up IntersectionObserver for lazy loading remaining pages
+    // Render pages once DOM placeholders are mounted (when totalPages > 0)
     useEffect(function () {
-      if (totalPages === 0 || !containerRef.current) return;
+      if (totalPages === 0 || !containerRef.current || !pdfDocRef.current) return;
+      var pdf = pdfDocRef.current;
+      containerRef.current.scrollTop = 0;
+
+      // Render page 1 immediately
+      renderPage(pdf, 1);
+      if (totalPages >= 2) {
+        setTimeout(function () {
+          return renderPage(pdf, 2);
+        }, 120);
+      }
       var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             var pageNum = parseInt(entry.target.dataset.page);
             if (pdfDocRef.current && !renderedPagesRef.current.has(pageNum) && !renderingRef.current.has(pageNum)) {
-              var renderPage = async function renderPage() {
-                renderingRef.current.add(pageNum);
-                try {
-                  var page = await pdfDocRef.current.getPage(pageNum);
-                  var _container2 = containerRef.current;
-                  if (!_container2) return;
-                  var canvas = _container2.querySelector("#pdf-page-".concat(pageNum));
-                  if (!canvas) return;
-                  var containerWidth = _container2.clientWidth - 32;
-                  var viewport = page.getViewport({
-                    scale: 1
-                  });
-                  var scale = containerWidth / viewport.width;
-                  var scaledViewport = page.getViewport({
-                    scale: scale
-                  });
-                  canvas.width = scaledViewport.width;
-                  canvas.height = scaledViewport.height;
-                  canvas.style.width = scaledViewport.width + 'px';
-                  canvas.style.height = scaledViewport.height + 'px';
-                  var ctx = canvas.getContext('2d');
-                  await page.render({
-                    canvasContext: ctx,
-                    viewport: scaledViewport
-                  }).promise;
-                  renderedPagesRef.current.add(pageNum);
-                  renderingRef.current.delete(pageNum);
-                  var wrapper = canvas.parentElement;
-                  if (wrapper) {
-                    wrapper.style.minHeight = 'auto';
-                    var placeholder = wrapper.querySelector('.page-placeholder');
-                    if (placeholder) placeholder.style.display = 'none';
-                  }
-                } catch (err) {
-                  renderingRef.current.delete(pageNum);
-                }
-              };
-              renderPage();
+              renderPage(pdfDocRef.current, pageNum);
             }
           }
         });
       }, {
         root: containerRef.current,
-        rootMargin: '200px'
-      }); // Pre-load pages 200px before they're visible
-
+        rootMargin: '400px'
+      });
       var wrappers = containerRef.current.querySelectorAll('[data-page]');
       wrappers.forEach(function (el) {
         return observer.observe(el);
@@ -1604,35 +1665,33 @@ function App() {
       }, error);
     }
 
-    // Render canvas placeholders for all pages
+    // Render lightweight placeholders for all pages (zero canvas allocation upfront)
     var pageElements = [];
     for (var i = 1; i <= totalPages; i++) {
       pageElements.push(React.createElement('div', {
         key: i,
         'data-page': i,
-        className: "relative mb-4 flex flex-col items-center",
+        className: "relative mb-6 flex flex-col items-center justify-center bg-dark-800/40 border border-white/5 rounded-xl transition-all",
         style: {
-          minHeight: i > 3 ? '800px' : 'auto'
+          minHeight: i === 1 ? '450px' : '750px',
+          width: '100%',
+          maxWidth: '850px'
         }
-      }, React.createElement('canvas', {
-        id: "pdf-page-".concat(i),
-        className: "shadow-lg rounded",
-        style: {
-          maxWidth: '100%'
-        }
-      }), i > 3 && React.createElement('div', {
-        className: "page-placeholder absolute inset-0 flex items-center justify-center text-slate-500 text-xs"
-      }, "Loading page ".concat(i, "..."))));
+      }, React.createElement('div', {
+        className: "page-placeholder py-8 flex flex-col items-center space-y-2 text-slate-500 text-xs"
+      }, React.createElement('div', {
+        className: "w-5 h-5 rounded-full border-2 border-accent-sky/40 border-t-transparent animate-spin"
+      }), React.createElement('span', null, "Loading page ".concat(i, " of ").concat(totalPages, "...")))));
     }
     return (_React2 = React).createElement.apply(_React2, ['div', {
       ref: containerRef,
-      className: "w-full h-full overflow-y-auto p-4 bg-[#2a2a2a]",
+      className: "w-full h-full overflow-y-auto p-4 bg-[#1e212b] flex flex-col items-center",
       style: {
         scrollBehavior: 'smooth'
       }
     }, totalPages > 0 && React.createElement('div', {
-      className: "text-center text-slate-400 text-xs mb-3 font-semibold"
-    }, "".concat(totalPages, " pages \u2022 Scroll to load more"))].concat(pageElements));
+      className: "text-center text-slate-400 text-xs mb-4 font-semibold px-4 py-1.5 rounded-full bg-dark-900/80 border border-white/5 sticky top-2 z-10 backdrop-blur-md"
+    }, "".concat(totalPages, " pages \u2022 Scroll to read smoothly"))].concat(pageElements));
   };
   // Handle file uploads recursively for multiple files sequentially
   var handleFileUpload = async function handleFileUpload(e, filesInput, category, setters) {
@@ -3006,9 +3065,12 @@ function App() {
       onClick: function onClick() {
         return handleDownloadFile(file.index, file.name);
       },
-      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-      title: "Download"
-    }, /*#__PURE__*/React.createElement(Icon, {
+      disabled: downloadingFileIndex === file.index,
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ".concat(downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'),
+      title: downloadingFileIndex === file.index ? "Downloading directly..." : "Download"
+    }, downloadingFileIndex === file.index ? /*#__PURE__*/React.createElement("div", {
+      className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+    }) : /*#__PURE__*/React.createElement(Icon, {
       name: "download",
       className: "w-3.5 h-3.5"
     }))));
@@ -3027,12 +3089,26 @@ function App() {
     className: "w-5 h-5 text-accent-sky"
   }), /*#__PURE__*/React.createElement("h4", {
     className: "font-display font-bold text-sm text-white line-clamp-1"
-  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return handleDownloadFile(previewFile.index, previewFile.name);
+    },
+    disabled: downloadingFileIndex === previewFile.index,
+    className: "px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm",
+    title: "Download this document directly to your device"
+  }, downloadingFileIndex === previewFile.index ? /*#__PURE__*/React.createElement("div", {
+    className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+  }) : /*#__PURE__*/React.createElement(Icon, {
+    name: "download",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, downloadingFileIndex === previewFile.index ? "Downloading..." : "Download")), /*#__PURE__*/React.createElement("button", {
     onClick: function onClick() {
       return setPreviewFile(null);
     },
     className: "che-close-reader-btn"
-  }, "Close Reader")), /*#__PURE__*/React.createElement("div", {
+  }, "Close Reader"))), /*#__PURE__*/React.createElement("div", {
     className: "w-full bg-dark-900 rounded-xl overflow-hidden",
     style: {
       height: "550px"
@@ -3209,9 +3285,12 @@ function App() {
       onClick: function onClick() {
         return handleDownloadFile(file.index, file.name);
       },
-      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-      title: "Download"
-    }, /*#__PURE__*/React.createElement(Icon, {
+      disabled: downloadingFileIndex === file.index,
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ".concat(downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'),
+      title: downloadingFileIndex === file.index ? "Downloading directly..." : "Download"
+    }, downloadingFileIndex === file.index ? /*#__PURE__*/React.createElement("div", {
+      className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+    }) : /*#__PURE__*/React.createElement(Icon, {
       name: "download",
       className: "w-3.5 h-3.5"
     }))));
@@ -3230,12 +3309,26 @@ function App() {
     className: "w-5 h-5 text-accent-sky"
   }), /*#__PURE__*/React.createElement("h4", {
     className: "font-display font-bold text-sm text-white line-clamp-1"
-  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return handleDownloadFile(previewFile.index, previewFile.name);
+    },
+    disabled: downloadingFileIndex === previewFile.index,
+    className: "px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm",
+    title: "Download this document directly to your device"
+  }, downloadingFileIndex === previewFile.index ? /*#__PURE__*/React.createElement("div", {
+    className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+  }) : /*#__PURE__*/React.createElement(Icon, {
+    name: "download",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, downloadingFileIndex === previewFile.index ? "Downloading..." : "Download")), /*#__PURE__*/React.createElement("button", {
     onClick: function onClick() {
       return setPreviewFile(null);
     },
     className: "che-close-reader-btn"
-  }, "Close Reader")), /*#__PURE__*/React.createElement("div", {
+  }, "Close Reader"))), /*#__PURE__*/React.createElement("div", {
     className: "w-full bg-dark-900 rounded-xl overflow-hidden",
     style: {
       height: "550px"
@@ -3412,9 +3505,12 @@ function App() {
       onClick: function onClick() {
         return handleDownloadFile(file.index, file.name);
       },
-      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-      title: "Download"
-    }, /*#__PURE__*/React.createElement(Icon, {
+      disabled: downloadingFileIndex === file.index,
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ".concat(downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'),
+      title: downloadingFileIndex === file.index ? "Downloading directly..." : "Download"
+    }, downloadingFileIndex === file.index ? /*#__PURE__*/React.createElement("div", {
+      className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+    }) : /*#__PURE__*/React.createElement(Icon, {
       name: "download",
       className: "w-3.5 h-3.5"
     }))));
@@ -3433,12 +3529,26 @@ function App() {
     className: "w-5 h-5 text-accent-sky"
   }), /*#__PURE__*/React.createElement("h4", {
     className: "font-display font-bold text-sm text-white line-clamp-1"
-  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return handleDownloadFile(previewFile.index, previewFile.name);
+    },
+    disabled: downloadingFileIndex === previewFile.index,
+    className: "px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm",
+    title: "Download this document directly to your device"
+  }, downloadingFileIndex === previewFile.index ? /*#__PURE__*/React.createElement("div", {
+    className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+  }) : /*#__PURE__*/React.createElement(Icon, {
+    name: "download",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, downloadingFileIndex === previewFile.index ? "Downloading..." : "Download")), /*#__PURE__*/React.createElement("button", {
     onClick: function onClick() {
       return setPreviewFile(null);
     },
     className: "che-close-reader-btn"
-  }, "Close Reader")), /*#__PURE__*/React.createElement("div", {
+  }, "Close Reader"))), /*#__PURE__*/React.createElement("div", {
     className: "w-full bg-dark-900 rounded-xl overflow-hidden",
     style: {
       height: "550px"
@@ -3615,9 +3725,12 @@ function App() {
       onClick: function onClick() {
         return handleDownloadFile(file.index, file.name);
       },
-      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-      title: "Download"
-    }, /*#__PURE__*/React.createElement(Icon, {
+      disabled: downloadingFileIndex === file.index,
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ".concat(downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'),
+      title: downloadingFileIndex === file.index ? "Downloading directly..." : "Download"
+    }, downloadingFileIndex === file.index ? /*#__PURE__*/React.createElement("div", {
+      className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+    }) : /*#__PURE__*/React.createElement(Icon, {
       name: "download",
       className: "w-3.5 h-3.5"
     }))));
@@ -3638,12 +3751,26 @@ function App() {
     className: "w-5 h-5 text-accent-sky"
   }), /*#__PURE__*/React.createElement("h4", {
     className: "font-display font-bold text-sm text-white line-clamp-1"
-  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+  }, "Reading: ", previewFile.name)), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return handleDownloadFile(previewFile.index, previewFile.name);
+    },
+    disabled: downloadingFileIndex === previewFile.index,
+    className: "px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm",
+    title: "Download this document directly to your device"
+  }, downloadingFileIndex === previewFile.index ? /*#__PURE__*/React.createElement("div", {
+    className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+  }) : /*#__PURE__*/React.createElement(Icon, {
+    name: "download",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, downloadingFileIndex === previewFile.index ? "Downloading..." : "Download")), /*#__PURE__*/React.createElement("button", {
     onClick: function onClick() {
       return setPreviewFile(null);
     },
     className: "che-close-reader-btn"
-  }, "Close Reader")), /*#__PURE__*/React.createElement("div", {
+  }, "Close Reader"))), /*#__PURE__*/React.createElement("div", {
     className: "w-full bg-dark-900 rounded-xl overflow-hidden",
     style: {
       height: "550px"
@@ -3888,9 +4015,12 @@ function App() {
       onClick: function onClick() {
         return handleDownloadFile(file.index, file.name);
       },
-      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-      title: "Download"
-    }, /*#__PURE__*/React.createElement(Icon, {
+      disabled: downloadingFileIndex === file.index,
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ".concat(downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'),
+      title: downloadingFileIndex === file.index ? "Downloading directly..." : "Download"
+    }, downloadingFileIndex === file.index ? /*#__PURE__*/React.createElement("div", {
+      className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+    }) : /*#__PURE__*/React.createElement(Icon, {
       name: "download",
       className: "w-3.5 h-3.5"
     }))));
@@ -3977,12 +4107,26 @@ function App() {
     className: "w-5 h-5 text-accent-sky"
   }), /*#__PURE__*/React.createElement("h4", {
     className: "font-display font-bold text-sm text-white line-clamp-1"
-  }, "Preview: ", previewFile.name)), /*#__PURE__*/React.createElement("button", {
+  }, "Preview: ", previewFile.name)), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return handleDownloadFile(previewFile.index, previewFile.name);
+    },
+    disabled: downloadingFileIndex === previewFile.index,
+    className: "px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm",
+    title: "Download this document directly to your device"
+  }, downloadingFileIndex === previewFile.index ? /*#__PURE__*/React.createElement("div", {
+    className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+  }) : /*#__PURE__*/React.createElement(Icon, {
+    name: "download",
+    className: "w-3.5 h-3.5"
+  }), /*#__PURE__*/React.createElement("span", null, downloadingFileIndex === previewFile.index ? "Downloading..." : "Download")), /*#__PURE__*/React.createElement("button", {
     onClick: function onClick() {
       return setPreviewFile(null);
     },
     className: "che-close-reader-btn"
-  }, "Close Preview")), (previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, "Close Preview"))), (previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "w-full bg-dark-900 rounded-xl overflow-hidden",
     style: {
       height: "550px"
@@ -4260,9 +4404,12 @@ function App() {
       onClick: function onClick() {
         return handleDownloadFile(file.index, file.name);
       },
-      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white",
-      title: "Download"
-    }, /*#__PURE__*/React.createElement(Icon, {
+      disabled: downloadingFileIndex === file.index,
+      className: "p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ".concat(downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'),
+      title: downloadingFileIndex === file.index ? "Downloading directly..." : "Download"
+    }, downloadingFileIndex === file.index ? /*#__PURE__*/React.createElement("div", {
+      className: "w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+    }) : /*#__PURE__*/React.createElement(Icon, {
       name: "download",
       className: "w-3.5 h-3.5"
     }))));
@@ -4327,7 +4474,21 @@ function App() {
     className: "text-[10px] text-slate-400 font-bold"
   }, "\u2022"), /*#__PURE__*/React.createElement("span", {
     className: "credit-presented-by text-[10px] uppercase tracking-wider"
-  }, "Presented by DDC"))));
+  }, "Presented by DDC"))), downloadToast && /*#__PURE__*/React.createElement("div", {
+    className: "fixed bottom-6 right-6 z-50 flex items-center space-x-3 px-4 py-3 rounded-xl shadow-2xl border border-sky-500/30 bg-[#161924]/95 text-white backdrop-blur-md animate-fade-in pointer-events-none"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-5 h-5 flex items-center justify-center text-accent-sky"
+  }, downloadToast.type === 'info' ? /*#__PURE__*/React.createElement("div", {
+    className: "w-4 h-4 rounded-full border-2 border-accent-sky border-t-transparent animate-spin"
+  }) : downloadToast.type === 'error' ? /*#__PURE__*/React.createElement(Icon, {
+    name: "trash",
+    className: "w-4 h-4 text-rose-400"
+  }) : /*#__PURE__*/React.createElement(Icon, {
+    name: "check",
+    className: "w-4 h-4 text-emerald-400"
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-display font-medium text-slate-200"
+  }, downloadToast.message)));
 }
 
 // Render React App

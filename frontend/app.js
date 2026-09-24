@@ -281,6 +281,8 @@ function App() {
   const [downloadPasswordInput, setDownloadPasswordInput] = useState("");
   const [downloadAuthError, setDownloadAuthError] = useState("");
   const [pendingDownloadCallback, setPendingDownloadCallback] = useState(null);
+  const [downloadingFileIndex, setDownloadingFileIndex] = useState(null);
+  const [downloadToast, setDownloadToast] = useState(null);
 
   // Fetch all courses on mount
   const fetchCourses = async () => {
@@ -909,8 +911,53 @@ function App() {
     if (!activeCourse) return;
     checkDownloadAuthAndExecute(async () => {
       const file = activeCourse.files && activeCourse.files[fileIndex];
-      const url = (file && file.catbox_url) ? file.catbox_url : `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}`;
-      window.location.href = url;
+      const targetName = fileName || (file && file.name) || "document.pdf";
+      const catboxUrl = file && file.catbox_url;
+
+      setDownloadingFileIndex(fileIndex);
+      setDownloadToast({ type: "info", message: `Downloading ${targetName}...` });
+
+      // 1. Direct fetch as blob: forces actual file save to downloads with original filename, avoiding in-browser preview tab
+      if (catboxUrl) {
+        try {
+          const res = await fetch(catboxUrl);
+          if (res.ok) {
+            const blob = await res.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = targetName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
+            setDownloadingFileIndex(null);
+            setDownloadToast({ type: "success", message: `Saved: ${targetName}` });
+            setTimeout(() => setDownloadToast(null), 3500);
+            return;
+          }
+        } catch (e) {
+          console.warn("Direct blob download failed, falling back to backend download stream:", e);
+        }
+      }
+
+      // 2. Fallback: Route through backend download endpoint with forced attachment disposition
+      try {
+        const backendUrl = `${API_BASE}/api/download/${activeCourse.id}/${fileIndex}?preview=false`;
+        const a = document.createElement('a');
+        a.href = backendUrl;
+        a.download = targetName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setDownloadToast({ type: "success", message: `Download started: ${targetName}` });
+        setTimeout(() => setDownloadToast(null), 3500);
+      } catch (e) {
+        setDownloadToast({ type: "error", message: `Download failed for ${targetName}` });
+        setTimeout(() => setDownloadToast(null), 3500);
+      } finally {
+        setDownloadingFileIndex(null);
+      }
     });
   };
 
@@ -978,11 +1025,11 @@ function App() {
     const fallbackUrl = (activeCourse && file) ? `${API_BASE}/api/download/${activeCourse.id}/${file.index}?preview=true` : null;
 
     return React.createElement('div', { className: "w-full h-full relative bg-dark-900" },
-      previewLoading && React.createElement('div', { className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900 text-slate-400" },
+      previewLoading && React.createElement('div', { className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900/90 text-slate-400 backdrop-blur-sm" },
         React.createElement('div', { className: "w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin" }),
         React.createElement('div', { className: "text-center space-y-1" },
-          React.createElement('p', { className: "text-xs font-bold text-slate-300" }, "Loading PDF pages progressively..."),
-          React.createElement('p', { className: "text-[10px] text-slate-500" }, "First pages will appear shortly.")
+          React.createElement('p', { className: "text-xs font-bold text-slate-300" }, "Opening document..."),
+          React.createElement('p', { className: "text-[10px] text-slate-500" }, "Preparing fast preview...")
         )
       ),
       previewUrl && React.createElement(PdfJsViewer, { url: previewUrl, fallbackUrl: fallbackUrl, onFirstPageReady: () => setPreviewLoading(false) })
@@ -999,8 +1046,77 @@ function App() {
     const [totalPages, setTotalPages] = useState(0);
     const [error, setError] = useState(null);
 
+    const renderPage = async (pdf, pageNum, retries = 6) => {
+      if (!pdf || renderedPagesRef.current.has(pageNum) || renderingRef.current.has(pageNum)) return;
+      renderingRef.current.add(pageNum);
+
+      try {
+        const container = containerRef.current;
+        if (!container) {
+          renderingRef.current.delete(pageNum);
+          return;
+        }
+
+        const wrapper = container.querySelector(`[data-page="${pageNum}"]`);
+        if (!wrapper) {
+          renderingRef.current.delete(pageNum);
+          if (retries > 0) {
+            setTimeout(() => renderPage(pdf, pageNum, retries - 1), 40);
+          }
+          return;
+        }
+
+        const page = await pdf.getPage(pageNum);
+
+        let canvas = wrapper.querySelector('canvas');
+        if (!canvas) {
+          canvas = document.createElement('canvas');
+          canvas.id = `pdf-page-${pageNum}`;
+          canvas.className = 'shadow-2xl rounded-lg max-w-full bg-white transition-opacity duration-300';
+          wrapper.appendChild(canvas);
+        }
+
+        const containerWidth = Math.max(container.clientWidth - 48, 280);
+        const viewport = page.getViewport({ scale: 1 });
+        const baseScale = Math.min(containerWidth / viewport.width, 1.8);
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const scaledViewport = page.getViewport({ scale: baseScale });
+
+        canvas.width = Math.floor(scaledViewport.width * dpr);
+        canvas.height = Math.floor(scaledViewport.height * dpr);
+        canvas.style.width = Math.floor(scaledViewport.width) + 'px';
+        canvas.style.height = Math.floor(scaledViewport.height) + 'px';
+
+        const ctx = canvas.getContext('2d');
+        const transform = dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null;
+
+        await page.render({
+          canvasContext: ctx,
+          viewport: scaledViewport,
+          transform: transform
+        }).promise;
+
+        renderedPagesRef.current.add(pageNum);
+        renderingRef.current.delete(pageNum);
+
+        wrapper.style.minHeight = 'auto';
+        wrapper.style.backgroundColor = 'transparent';
+        wrapper.style.borderColor = 'transparent';
+        const placeholder = wrapper.querySelector('.page-placeholder');
+        if (placeholder) placeholder.style.display = 'none';
+
+        if (pageNum === 1 && onFirstPageReady) {
+          onFirstPageReady();
+        }
+      } catch (err) {
+        renderingRef.current.delete(pageNum);
+        console.error(`Failed to render page ${pageNum}:`, err);
+      }
+    };
+
     useEffect(() => {
-      if (!url || !window.pdfjsLib) {
+      if (!url) return;
+      if (!window.pdfjsLib) {
         setError("PDF viewer library not loaded. Try refreshing the page.");
         return;
       }
@@ -1008,16 +1124,18 @@ function App() {
       let cancelled = false;
       renderedPagesRef.current = new Set();
       renderingRef.current = new Set();
+      setTotalPages(0);
+      setError(null);
 
       const loadPdf = async (pdfUrl, isFallback = false) => {
         try {
-          // PDF.js will use range requests automatically when the server supports Accept-Ranges
-          // This means only the bytes for the requested pages are downloaded, not the whole file
           const loadingTask = pdfjsLib.getDocument({
             url: pdfUrl,
-            rangeChunkSize: 65536, // 64KB chunks for progressive loading
-            disableAutoFetch: true, // Don't prefetch the entire PDF — only fetch on demand
-            disableStream: false, // Allow streaming
+            rangeChunkSize: 131072, // 128KB chunks for fast progressive range loading
+            disableAutoFetch: true, // Only fetch on-demand pages
+            disableStream: true, // Don't stream entire file in background
+            cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
+            cMapPacked: true,
           });
 
           const pdf = await loadingTask.promise;
@@ -1025,14 +1143,8 @@ function App() {
 
           pdfDocRef.current = pdf;
           setTotalPages(pdf.numPages);
-
-          // Render first 3 pages immediately for instant preview
-          const initialPages = Math.min(3, pdf.numPages);
-          for (let i = 1; i <= initialPages; i++) {
-            if (cancelled) return;
-            await renderPage(pdf, i);
-            if (i === 1 && onFirstPageReady) onFirstPageReady();
-          }
+          // Dismiss the loading overlay immediately when PDF metadata is ready!
+          if (onFirstPageReady) onFirstPageReady();
         } catch (err) {
           if (!cancelled) {
             console.error("PDF.js loading error for:", pdfUrl, err);
@@ -1042,57 +1154,12 @@ function App() {
               return;
             }
             setError("Failed to load PDF. The file may be temporarily unavailable.");
+            if (onFirstPageReady) onFirstPageReady();
           }
         }
       };
 
       loadPdf(url);
-
-      const renderPage = async (pdf, pageNum) => {
-        if (renderedPagesRef.current.has(pageNum) || renderingRef.current.has(pageNum)) return;
-        renderingRef.current.add(pageNum);
-
-        try {
-          const page = await pdf.getPage(pageNum);
-          if (cancelled) return;
-
-          const container = containerRef.current;
-          if (!container) return;
-
-          const canvasId = `pdf-page-${pageNum}`;
-          let canvas = container.querySelector(`#${canvasId}`);
-          if (!canvas) return;
-
-          const containerWidth = container.clientWidth - 32; // 16px padding each side
-          const viewport = page.getViewport({ scale: 1 });
-          const scale = containerWidth / viewport.width;
-          const scaledViewport = page.getViewport({ scale });
-
-          canvas.width = scaledViewport.width;
-          canvas.height = scaledViewport.height;
-          canvas.style.width = scaledViewport.width + 'px';
-          canvas.style.height = scaledViewport.height + 'px';
-
-          const ctx = canvas.getContext('2d');
-          await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
-
-          renderedPagesRef.current.add(pageNum);
-          renderingRef.current.delete(pageNum);
-
-          // Remove placeholder styling
-          const wrapper = canvas.parentElement;
-          if (wrapper) {
-            wrapper.style.minHeight = 'auto';
-            const placeholder = wrapper.querySelector('.page-placeholder');
-            if (placeholder) placeholder.style.display = 'none';
-          }
-        } catch (err) {
-          renderingRef.current.delete(pageNum);
-          console.error(`Failed to render page ${pageNum}:`, err);
-        }
-      };
-
-      loadPdf();
 
       return () => {
         cancelled = true;
@@ -1101,58 +1168,31 @@ function App() {
           pdfDocRef.current = null;
         }
       };
-    }, [url]);
+    }, [url, fallbackUrl]);
 
-    // Set up IntersectionObserver for lazy loading remaining pages
+    // Render pages once DOM placeholders are mounted (when totalPages > 0)
     useEffect(() => {
-      if (totalPages === 0 || !containerRef.current) return;
+      if (totalPages === 0 || !containerRef.current || !pdfDocRef.current) return;
+
+      const pdf = pdfDocRef.current;
+      containerRef.current.scrollTop = 0;
+      
+      // Render page 1 immediately
+      renderPage(pdf, 1);
+      if (totalPages >= 2) {
+        setTimeout(() => renderPage(pdf, 2), 120);
+      }
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const pageNum = parseInt(entry.target.dataset.page);
             if (pdfDocRef.current && !renderedPagesRef.current.has(pageNum) && !renderingRef.current.has(pageNum)) {
-              const renderPage = async () => {
-                renderingRef.current.add(pageNum);
-                try {
-                  const page = await pdfDocRef.current.getPage(pageNum);
-                  const container = containerRef.current;
-                  if (!container) return;
-
-                  const canvas = container.querySelector(`#pdf-page-${pageNum}`);
-                  if (!canvas) return;
-
-                  const containerWidth = container.clientWidth - 32;
-                  const viewport = page.getViewport({ scale: 1 });
-                  const scale = containerWidth / viewport.width;
-                  const scaledViewport = page.getViewport({ scale });
-
-                  canvas.width = scaledViewport.width;
-                  canvas.height = scaledViewport.height;
-                  canvas.style.width = scaledViewport.width + 'px';
-                  canvas.style.height = scaledViewport.height + 'px';
-
-                  const ctx = canvas.getContext('2d');
-                  await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
-
-                  renderedPagesRef.current.add(pageNum);
-                  renderingRef.current.delete(pageNum);
-
-                  const wrapper = canvas.parentElement;
-                  if (wrapper) {
-                    wrapper.style.minHeight = 'auto';
-                    const placeholder = wrapper.querySelector('.page-placeholder');
-                    if (placeholder) placeholder.style.display = 'none';
-                  }
-                } catch (err) {
-                  renderingRef.current.delete(pageNum);
-                }
-              };
-              renderPage();
+              renderPage(pdfDocRef.current, pageNum);
             }
           }
         });
-      }, { root: containerRef.current, rootMargin: '200px' }); // Pre-load pages 200px before they're visible
+      }, { root: containerRef.current, rootMargin: '400px' });
 
       const wrappers = containerRef.current.querySelectorAll('[data-page]');
       wrappers.forEach(el => observer.observe(el));
@@ -1164,35 +1204,33 @@ function App() {
       return React.createElement('div', { className: "w-full h-full flex items-center justify-center text-slate-400 text-sm p-8 text-center" }, error);
     }
 
-    // Render canvas placeholders for all pages
+    // Render lightweight placeholders for all pages (zero canvas allocation upfront)
     const pageElements = [];
     for (let i = 1; i <= totalPages; i++) {
       pageElements.push(
         React.createElement('div', {
           key: i,
           'data-page': i,
-          className: "relative mb-4 flex flex-col items-center",
-          style: { minHeight: i > 3 ? '800px' : 'auto' }
+          className: "relative mb-6 flex flex-col items-center justify-center bg-dark-800/40 border border-white/5 rounded-xl transition-all",
+          style: { minHeight: i === 1 ? '450px' : '750px', width: '100%', maxWidth: '850px' }
         },
-          React.createElement('canvas', {
-            id: `pdf-page-${i}`,
-            className: "shadow-lg rounded",
-            style: { maxWidth: '100%' }
-          }),
-          i > 3 && React.createElement('div', {
-            className: "page-placeholder absolute inset-0 flex items-center justify-center text-slate-500 text-xs"
-          }, `Loading page ${i}...`)
+          React.createElement('div', {
+            className: "page-placeholder py-8 flex flex-col items-center space-y-2 text-slate-500 text-xs"
+          },
+            React.createElement('div', { className: "w-5 h-5 rounded-full border-2 border-accent-sky/40 border-t-transparent animate-spin" }),
+            React.createElement('span', null, `Loading page ${i} of ${totalPages}...`)
+          )
         )
       );
     }
 
     return React.createElement('div', {
       ref: containerRef,
-      className: "w-full h-full overflow-y-auto p-4 bg-[#2a2a2a]",
+      className: "w-full h-full overflow-y-auto p-4 bg-[#1e212b] flex flex-col items-center",
       style: { scrollBehavior: 'smooth' }
     },
-      totalPages > 0 && React.createElement('div', { className: "text-center text-slate-400 text-xs mb-3 font-semibold" },
-        `${totalPages} pages • Scroll to load more`
+      totalPages > 0 && React.createElement('div', { className: "text-center text-slate-400 text-xs mb-4 font-semibold px-4 py-1.5 rounded-full bg-dark-900/80 border border-white/5 sticky top-2 z-10 backdrop-blur-md" },
+        `${totalPages} pages • Scroll to read smoothly`
       ),
       ...pageElements
     );
@@ -2550,10 +2588,15 @@ function App() {
                                 </button>
                                 <button 
                                   onClick={() => handleDownloadFile(file.index, file.name)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
-                                  title="Download"
+                                  disabled={downloadingFileIndex === file.index}
+                                  className={`p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ${downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'}`}
+                                  title={downloadingFileIndex === file.index ? "Downloading directly..." : "Download"}
                                 >
-                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                  {downloadingFileIndex === file.index ? (
+                                    <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                                  ) : (
+                                    <Icon name="download" className="w-3.5 h-3.5" />
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -2580,12 +2623,27 @@ function App() {
                               Reading: {previewFile.name}
                             </h4>
                           </div>
-                          <button 
-                            onClick={() => setPreviewFile(null)}
-                            className="che-close-reader-btn"
-                          >
-                            Close Reader
-                          </button>
+                          <div className="flex items-center space-x-2">
+                            <button 
+                              onClick={() => handleDownloadFile(previewFile.index, previewFile.name)}
+                              disabled={downloadingFileIndex === previewFile.index}
+                              className="px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+                              title="Download this document directly to your device"
+                            >
+                              {downloadingFileIndex === previewFile.index ? (
+                                <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                              ) : (
+                                <Icon name="download" className="w-3.5 h-3.5" />
+                              )}
+                              <span>{downloadingFileIndex === previewFile.index ? "Downloading..." : "Download"}</span>
+                            </button>
+                            <button 
+                              onClick={() => setPreviewFile(null)}
+                              className="che-close-reader-btn"
+                            >
+                              Close Reader
+                            </button>
+                          </div>
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
@@ -2762,10 +2820,15 @@ function App() {
                                 </button>
                                 <button 
                                   onClick={() => handleDownloadFile(file.index, file.name)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
-                                  title="Download"
+                                  disabled={downloadingFileIndex === file.index}
+                                  className={`p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ${downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'}`}
+                                  title={downloadingFileIndex === file.index ? "Downloading directly..." : "Download"}
                                 >
-                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                  {downloadingFileIndex === file.index ? (
+                                    <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                                  ) : (
+                                    <Icon name="download" className="w-3.5 h-3.5" />
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -2792,12 +2855,27 @@ function App() {
                               Reading: {previewFile.name}
                             </h4>
                           </div>
-                          <button 
-                            onClick={() => setPreviewFile(null)}
-                            className="che-close-reader-btn"
-                          >
-                            Close Reader
-                          </button>
+                          <div className="flex items-center space-x-2">
+                            <button 
+                              onClick={() => handleDownloadFile(previewFile.index, previewFile.name)}
+                              disabled={downloadingFileIndex === previewFile.index}
+                              className="px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+                              title="Download this document directly to your device"
+                            >
+                              {downloadingFileIndex === previewFile.index ? (
+                                <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                              ) : (
+                                <Icon name="download" className="w-3.5 h-3.5" />
+                              )}
+                              <span>{downloadingFileIndex === previewFile.index ? "Downloading..." : "Download"}</span>
+                            </button>
+                            <button 
+                              onClick={() => setPreviewFile(null)}
+                              className="che-close-reader-btn"
+                            >
+                              Close Reader
+                            </button>
+                          </div>
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
@@ -2974,10 +3052,15 @@ function App() {
                                 </button>
                                 <button 
                                   onClick={() => handleDownloadFile(file.index, file.name)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
-                                  title="Download"
+                                  disabled={downloadingFileIndex === file.index}
+                                  className={`p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ${downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'}`}
+                                  title={downloadingFileIndex === file.index ? "Downloading directly..." : "Download"}
                                 >
-                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                  {downloadingFileIndex === file.index ? (
+                                    <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                                  ) : (
+                                    <Icon name="download" className="w-3.5 h-3.5" />
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -3004,12 +3087,27 @@ function App() {
                               Reading: {previewFile.name}
                             </h4>
                           </div>
-                          <button 
-                            onClick={() => setPreviewFile(null)}
-                            className="che-close-reader-btn"
-                          >
-                            Close Reader
-                          </button>
+                          <div className="flex items-center space-x-2">
+                            <button 
+                              onClick={() => handleDownloadFile(previewFile.index, previewFile.name)}
+                              disabled={downloadingFileIndex === previewFile.index}
+                              className="px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+                              title="Download this document directly to your device"
+                            >
+                              {downloadingFileIndex === previewFile.index ? (
+                                <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                              ) : (
+                                <Icon name="download" className="w-3.5 h-3.5" />
+                              )}
+                              <span>{downloadingFileIndex === previewFile.index ? "Downloading..." : "Download"}</span>
+                            </button>
+                            <button 
+                              onClick={() => setPreviewFile(null)}
+                              className="che-close-reader-btn"
+                            >
+                              Close Reader
+                            </button>
+                          </div>
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
@@ -3186,10 +3284,15 @@ function App() {
                                 </button>
                                 <button 
                                   onClick={() => handleDownloadFile(file.index, file.name)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
-                                  title="Download"
+                                  disabled={downloadingFileIndex === file.index}
+                                  className={`p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ${downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'}`}
+                                  title={downloadingFileIndex === file.index ? "Downloading directly..." : "Download"}
                                 >
-                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                  {downloadingFileIndex === file.index ? (
+                                    <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                                  ) : (
+                                    <Icon name="download" className="w-3.5 h-3.5" />
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -3216,12 +3319,27 @@ function App() {
                               Reading: {previewFile.name}
                             </h4>
                           </div>
-                          <button 
-                            onClick={() => setPreviewFile(null)}
-                            className="che-close-reader-btn"
-                          >
-                            Close Reader
-                          </button>
+                          <div className="flex items-center space-x-2">
+                            <button 
+                              onClick={() => handleDownloadFile(previewFile.index, previewFile.name)}
+                              disabled={downloadingFileIndex === previewFile.index}
+                              className="px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+                              title="Download this document directly to your device"
+                            >
+                              {downloadingFileIndex === previewFile.index ? (
+                                <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                              ) : (
+                                <Icon name="download" className="w-3.5 h-3.5" />
+                              )}
+                              <span>{downloadingFileIndex === previewFile.index ? "Downloading..." : "Download"}</span>
+                            </button>
+                            <button 
+                              onClick={() => setPreviewFile(null)}
+                              className="che-close-reader-btn"
+                            >
+                              Close Reader
+                            </button>
+                          </div>
                         </div>
 
                         <div className="w-full bg-dark-900 rounded-xl overflow-hidden" style={{ height: "550px" }}>
@@ -3458,10 +3576,15 @@ function App() {
                                 </button>
                                 <button 
                                   onClick={() => handleDownloadFile(file.index, file.name)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
-                                  title="Download"
+                                  disabled={downloadingFileIndex === file.index}
+                                  className={`p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ${downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'}`}
+                                  title={downloadingFileIndex === file.index ? "Downloading directly..." : "Download"}
                                 >
-                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                  {downloadingFileIndex === file.index ? (
+                                    <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                                  ) : (
+                                    <Icon name="download" className="w-3.5 h-3.5" />
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -3560,12 +3683,27 @@ function App() {
                               Preview: {previewFile.name}
                             </h4>
                           </div>
-                          <button 
-                            onClick={() => setPreviewFile(null)}
-                            className="che-close-reader-btn"
-                          >
-                            Close Preview
-                          </button>
+                          <div className="flex items-center space-x-2">
+                            <button 
+                              onClick={() => handleDownloadFile(previewFile.index, previewFile.name)}
+                              disabled={downloadingFileIndex === previewFile.index}
+                              className="px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-accent-sky hover:text-white rounded-lg border border-sky-500/30 flex items-center space-x-1.5 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+                              title="Download this document directly to your device"
+                            >
+                              {downloadingFileIndex === previewFile.index ? (
+                                <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                              ) : (
+                                <Icon name="download" className="w-3.5 h-3.5" />
+                              )}
+                              <span>{downloadingFileIndex === previewFile.index ? "Downloading..." : "Download"}</span>
+                            </button>
+                            <button 
+                              onClick={() => setPreviewFile(null)}
+                              className="che-close-reader-btn"
+                            >
+                              Close Preview
+                            </button>
+                          </div>
                         </div>
 
                         {(previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? (
@@ -3830,10 +3968,15 @@ function App() {
                                 </button>
                                 <button 
                                   onClick={() => handleDownloadFile(file.index, file.name)}
-                                  className="p-1.5 bg-dark-900 border border-white border-opacity-5 hover:bg-sky-600 rounded-lg text-slate-400 hover:text-white"
-                                  title="Download"
+                                  disabled={downloadingFileIndex === file.index}
+                                  className={`p-1.5 bg-dark-900 border border-white border-opacity-5 rounded-lg transition-all ${downloadingFileIndex === file.index ? 'text-accent-sky' : 'hover:bg-sky-600 text-slate-400 hover:text-white'}`}
+                                  title={downloadingFileIndex === file.index ? "Downloading directly..." : "Download"}
                                 >
-                                  <Icon name="download" className="w-3.5 h-3.5" />
+                                  {downloadingFileIndex === file.index ? (
+                                    <div className="w-3.5 h-3.5 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+                                  ) : (
+                                    <Icon name="download" className="w-3.5 h-3.5" />
+                                  )}
                                 </button>
                               </div>
                             </div>
@@ -3917,6 +4060,22 @@ function App() {
           </span>
         </div>
       </footer>
+
+      {/* Floating Direct Download Toast Notification */}
+      {downloadToast && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center space-x-3 px-4 py-3 rounded-xl shadow-2xl border border-sky-500/30 bg-[#161924]/95 text-white backdrop-blur-md animate-fade-in pointer-events-none">
+          <div className="w-5 h-5 flex items-center justify-center text-accent-sky">
+            {downloadToast.type === 'info' ? (
+              <div className="w-4 h-4 rounded-full border-2 border-accent-sky border-t-transparent animate-spin" />
+            ) : downloadToast.type === 'error' ? (
+              <Icon name="trash" className="w-4 h-4 text-rose-400" />
+            ) : (
+              <Icon name="check" className="w-4 h-4 text-emerald-400" />
+            )}
+          </div>
+          <span className="text-xs font-display font-medium text-slate-200">{downloadToast.message}</span>
+        </div>
+      )}
     </div>
   );
 }

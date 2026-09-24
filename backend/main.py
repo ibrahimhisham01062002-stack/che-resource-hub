@@ -1190,8 +1190,31 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         # 1. Prioritize Catbox CDN (Fastest, native HTTP Range support, zero server load)
         if catbox_url:
             if not preview:
-                from fastapi.responses import RedirectResponse
-                return RedirectResponse(url=catbox_url, status_code=302)
+                BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+                async def stream_catbox_download(url: str):
+                    try:
+                        global http_client
+                        if http_client is None:
+                            limits = httpx.Limits(max_keepalive_connections=50, max_connections=100, keepalive_expiry=30.0)
+                            http_client = httpx.AsyncClient(limits=limits, timeout=120.0, headers={"User-Agent": BROWSER_UA})
+                        async with http_client.stream("GET", url, headers={"User-Agent": BROWSER_UA}) as r:
+                            async for chunk in r.aiter_bytes(chunk_size=1024 * 256):
+                                yield chunk
+                    except Exception as e:
+                        print(f"Catbox download streaming error: {e}")
+                
+                safe_name = file_name.replace('"', '')
+                resp_headers = {
+                    "Content-Disposition": f'attachment; filename="{safe_name}"',
+                    "Content-Type": "application/octet-stream",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Expose-Headers": "Content-Disposition"
+                }
+                return StreamingResponse(
+                    stream_catbox_download(catbox_url),
+                    media_type="application/octet-stream",
+                    headers=resp_headers
+                )
             else:
                 BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
                 async def stream_catbox_preview(url: str):
