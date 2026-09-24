@@ -1787,7 +1787,7 @@ async def download_file(course_id: str, file_index: int, request: Request, backg
         )
 
 
-@app.get("/api/preview/{course_id}/{file_index}")
+@app.api_route("/api/preview/{course_id}/{file_index}", methods=["GET", "HEAD"])
 async def get_file_preview(
     course_id: str,
     file_index: int,
@@ -1813,6 +1813,18 @@ async def get_file_preview(
     file_item = files[file_index]
     file_name = file_item.get("name", "document.pdf")
     safe_name = file_name.replace('"', '')
+    
+    if request.method == "HEAD":
+        return Response(
+            status_code=200,
+            headers={
+                "Content-Type": "application/pdf" if file_name.lower().endswith(".pdf") else "application/octet-stream",
+                "Content-Disposition": f'inline; filename="preview_{safe_name}"',
+                "Access-Control-Allow-Origin": "*",
+                "X-Frame-Options": "ALLOWALL",
+                "Content-Security-Policy": "frame-ancestors *"
+            }
+        )
     
     # Non-PDF files (e.g. videos) fall back directly to the download/stream route
     if not file_name.lower().endswith(".pdf"):
