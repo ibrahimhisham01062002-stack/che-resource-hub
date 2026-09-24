@@ -1420,265 +1420,33 @@ function App() {
 
   // PDF AI Summary Card disabled as requested
 
-  // Reusable PDF viewer or placeholder renderer
+  // Reusable PDF streaming viewer component
+  // Natively streams pages on demand using HTTP byte ranges, displaying page 1 instantly
+  // and loading subsequent pages progressively as the user scrolls or drags the scrollbar
   var renderPdfViewerOrPlaceholder = function renderPdfViewerOrPlaceholder(file) {
     if (!file) return null;
-    var fallbackUrl = file.catbox_url || null;
+    var streamUrl = "".concat(API_BASE, "/api/download/").concat(activeCourse.id, "/").concat(file.index, "?preview=true");
     return React.createElement('div', {
-      className: "w-full h-full relative bg-dark-900"
+      className: "w-full h-full relative bg-[#1e212b] rounded-xl overflow-hidden flex flex-col"
     }, previewLoading && React.createElement('div', {
-      className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-dark-900/90 text-slate-400 backdrop-blur-sm"
+      className: "absolute inset-0 z-10 flex flex-col items-center justify-center space-y-4 bg-[#1e212b]/95 text-slate-300 backdrop-blur-sm pointer-events-none transition-opacity duration-300"
     }, React.createElement('div', {
-      className: "w-10 h-10 rounded-full border-4 border-[#5C061C] border-t-transparent animate-spin"
+      className: "w-10 h-10 rounded-full border-4 border-accent-sky border-t-transparent animate-spin"
     }), React.createElement('div', {
       className: "text-center space-y-1"
     }, React.createElement('p', {
-      className: "text-xs font-bold text-slate-300"
-    }, "Opening document..."), React.createElement('p', {
-      className: "text-[10px] text-slate-500"
-    }, "Preparing fast preview..."))), previewUrl && React.createElement(PdfJsViewer, {
-      url: previewUrl,
-      fallbackUrl: fallbackUrl,
-      onFirstPageReady: function onFirstPageReady() {
+      className: "text-xs font-bold text-white"
+    }, "Streaming document pages..."), React.createElement('p', {
+      className: "text-[10px] text-slate-400"
+    }, "Pages load progressively as you scroll down."))), previewUrl && React.createElement('iframe', {
+      key: streamUrl,
+      src: "".concat(streamUrl, "#toolbar=1&navpanes=0&scrollbar=1&view=FitH"),
+      className: "w-full h-full border-0 rounded-xl bg-[#1e212b]",
+      title: file.name || "PDF Document Reader",
+      onLoad: function onLoad() {
         return setPreviewLoading(false);
       }
     }));
-  };
-
-  // PDF.js Progressive Viewer Component — renders pages lazily as user scrolls
-  // Only fetches bytes needed for visible pages (Catbox supports HTTP Range requests)
-  var PdfJsViewer = function PdfJsViewer(_ref2) {
-    var _React2;
-    var url = _ref2.url,
-      fallbackUrl = _ref2.fallbackUrl,
-      onFirstPageReady = _ref2.onFirstPageReady;
-    var containerRef = useRef(null);
-    var pdfDocRef = useRef(null);
-    var renderedPagesRef = useRef(new Set());
-    var renderingRef = useRef(new Set());
-    var _useState121 = useState(0),
-      _useState122 = _slicedToArray(_useState121, 2),
-      totalPages = _useState122[0],
-      setTotalPages = _useState122[1];
-    var _useState123 = useState(null),
-      _useState124 = _slicedToArray(_useState123, 2),
-      error = _useState124[0],
-      setError = _useState124[1];
-    var renderPage = async function renderPage(pdf, pageNum) {
-      var retries = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 6;
-      if (!pdf || renderedPagesRef.current.has(pageNum) || renderingRef.current.has(pageNum)) return;
-      renderingRef.current.add(pageNum);
-      try {
-        var _container = containerRef.current;
-        if (!_container) {
-          renderingRef.current.delete(pageNum);
-          return;
-        }
-        var wrapper = _container.querySelector("[data-page=\"".concat(pageNum, "\"]"));
-        if (!wrapper) {
-          renderingRef.current.delete(pageNum);
-          if (retries > 0) {
-            setTimeout(function () {
-              return renderPage(pdf, pageNum, retries - 1);
-            }, 40);
-          }
-          return;
-        }
-        var page = await pdf.getPage(pageNum);
-        var canvas = wrapper.querySelector('canvas');
-        if (!canvas) {
-          canvas = document.createElement('canvas');
-          canvas.id = "pdf-page-".concat(pageNum);
-          canvas.className = 'shadow-2xl rounded-lg max-w-full bg-white transition-opacity duration-300';
-          wrapper.appendChild(canvas);
-        }
-        var containerWidth = Math.max(_container.clientWidth - 48, 280);
-        var viewport = page.getViewport({
-          scale: 1
-        });
-        var baseScale = Math.min(containerWidth / viewport.width, 1.8);
-        var dpr = Math.min(window.devicePixelRatio || 1, 2);
-        var scaledViewport = page.getViewport({
-          scale: baseScale
-        });
-        canvas.width = Math.floor(scaledViewport.width * dpr);
-        canvas.height = Math.floor(scaledViewport.height * dpr);
-        canvas.style.width = Math.floor(scaledViewport.width) + 'px';
-        canvas.style.height = Math.floor(scaledViewport.height) + 'px';
-        var ctx = canvas.getContext('2d');
-        var transform = dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null;
-        await page.render({
-          canvasContext: ctx,
-          viewport: scaledViewport,
-          transform: transform
-        }).promise;
-        renderedPagesRef.current.add(pageNum);
-        renderingRef.current.delete(pageNum);
-        wrapper.style.minHeight = 'auto';
-        wrapper.style.backgroundColor = 'transparent';
-        wrapper.style.borderColor = 'transparent';
-        var placeholder = wrapper.querySelector('.page-placeholder');
-        if (placeholder) placeholder.style.display = 'none';
-        if (pageNum === 1 && onFirstPageReady) {
-          onFirstPageReady();
-        }
-      } catch (err) {
-        renderingRef.current.delete(pageNum);
-        console.error("Failed to render page ".concat(pageNum, ":"), err);
-      }
-    };
-    useEffect(function () {
-      if (!url) return;
-      if (!window.pdfjsLib) {
-        setError("PDF viewer library not loaded. Try refreshing the page.");
-        return;
-      }
-      var cancelled = false;
-      renderedPagesRef.current = new Set();
-      renderingRef.current = new Set();
-      setTotalPages(0);
-      setError(null);
-      var loadPdf = async function loadPdf(pdfUrl) {
-        var isFallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-        try {
-          var loadingTask = pdfjsLib.getDocument({
-            url: pdfUrl,
-            rangeChunkSize: 65536,
-            // 64KB chunks for fast progressive range loading
-            disableAutoFetch: true,
-            // Only fetch on-demand pages
-            disableStream: true,
-            // Don't stream entire file in background
-            cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
-            cMapPacked: true
-          });
-          var timeoutPromise = new Promise(function (_, reject) {
-            return setTimeout(function () {
-              return reject(new Error("Document load timed out"));
-            }, 12000);
-          });
-          var pdf = await Promise.race([loadingTask.promise, timeoutPromise]);
-          if (cancelled) return;
-          pdfDocRef.current = pdf;
-          setTotalPages(pdf.numPages);
-          // Dismiss the loading overlay immediately when PDF metadata is ready!
-          if (onFirstPageReady) onFirstPageReady();
-        } catch (err) {
-          if (!cancelled) {
-            console.error("PDF.js loading error for:", pdfUrl, err);
-            if (!isFallback && fallbackUrl && fallbackUrl !== pdfUrl) {
-              console.log("Retrying PDF preview with fallback URL...");
-              await loadPdf(fallbackUrl, true);
-              return;
-            }
-            setError("Unable to preview this document directly. Please use the Download button to view it locally.");
-            if (onFirstPageReady) onFirstPageReady();
-          }
-        }
-      };
-      loadPdf(url);
-      return function () {
-        cancelled = true;
-        if (pdfDocRef.current) {
-          pdfDocRef.current.destroy();
-          pdfDocRef.current = null;
-        }
-      };
-    }, [url, fallbackUrl]);
-
-    // Render pages once DOM placeholders are mounted (when totalPages > 0)
-    useEffect(function () {
-      if (totalPages === 0 || !containerRef.current || !pdfDocRef.current) return;
-      var pdf = pdfDocRef.current;
-      containerRef.current.scrollTop = 0;
-
-      // Render page 1 immediately
-      renderPage(pdf, 1);
-      if (totalPages >= 2) {
-        setTimeout(function () {
-          return renderPage(pdf, 2);
-        }, 120);
-      }
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            var pageNum = parseInt(entry.target.dataset.page);
-            if (pdfDocRef.current && !renderedPagesRef.current.has(pageNum) && !renderingRef.current.has(pageNum)) {
-              renderPage(pdfDocRef.current, pageNum);
-            }
-          }
-        });
-      }, {
-        root: containerRef.current,
-        rootMargin: '400px'
-      });
-      var wrappers = containerRef.current.querySelectorAll('[data-page]');
-      wrappers.forEach(function (el) {
-        return observer.observe(el);
-      });
-      return function () {
-        return observer.disconnect();
-      };
-    }, [totalPages]);
-    if (error) {
-      return React.createElement('div', {
-        className: "w-full h-full flex flex-col items-center justify-center text-slate-400 text-sm p-8 text-center space-y-4 bg-[#1e212b]"
-      }, React.createElement('div', {
-        className: "w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-400"
-      }, React.createElement(Icon, {
-        name: "alertTriangle",
-        className: "w-6 h-6"
-      })), React.createElement('p', {
-        className: "text-slate-300 font-medium max-w-sm"
-      }, error), fallbackUrl && React.createElement('a', {
-        href: fallbackUrl,
-        target: "_blank",
-        rel: "noreferrer",
-        className: "px-4 py-2 bg-accent-sky/20 hover:bg-accent-sky/30 text-accent-sky text-xs rounded-lg font-medium transition-all"
-      }, "Open Direct Link in New Tab"));
-    }
-    if (totalPages === 0) {
-      return React.createElement('div', {
-        ref: containerRef,
-        className: "w-full h-full p-4 bg-[#1e212b] flex flex-col items-center justify-center space-y-4"
-      }, React.createElement('div', {
-        className: "w-10 h-10 rounded-full border-4 border-accent-sky/40 border-t-accent-sky animate-spin"
-      }), React.createElement('div', {
-        className: "text-center space-y-1"
-      }, React.createElement('p', {
-        className: "text-sm font-semibold text-slate-200"
-      }, "Streaming document pages..."), React.createElement('p', {
-        className: "text-xs text-slate-400"
-      }, "Loading first page instantly via high-speed edge proxy...")));
-    }
-
-    // Render lightweight placeholders for all pages (zero canvas allocation upfront)
-    var pageElements = [];
-    for (var i = 1; i <= totalPages; i++) {
-      pageElements.push(React.createElement('div', {
-        key: i,
-        'data-page': i,
-        className: "relative mb-6 flex flex-col items-center justify-center bg-dark-800/40 border border-white/5 rounded-xl transition-all",
-        style: {
-          minHeight: i === 1 ? '450px' : '750px',
-          width: '100%',
-          maxWidth: '850px'
-        }
-      }, React.createElement('div', {
-        className: "page-placeholder py-8 flex flex-col items-center space-y-2 text-slate-500 text-xs"
-      }, React.createElement('div', {
-        className: "w-5 h-5 rounded-full border-2 border-accent-sky/40 border-t-transparent animate-spin"
-      }), React.createElement('span', null, "Loading page ".concat(i, " of ").concat(totalPages, "...")))));
-    }
-    return (_React2 = React).createElement.apply(_React2, ['div', {
-      ref: containerRef,
-      className: "w-full h-full overflow-y-auto p-4 bg-[#1e212b] flex flex-col items-center",
-      style: {
-        scrollBehavior: 'smooth'
-      }
-    }, totalPages > 0 && React.createElement('div', {
-      className: "text-center text-slate-400 text-xs mb-4 font-semibold px-4 py-1.5 rounded-full bg-dark-900/80 border border-white/5 sticky top-2 z-10 backdrop-blur-md"
-    }, "".concat(totalPages, " pages \u2022 Scroll to read smoothly"))].concat(pageElements));
   };
   // Handle file uploads recursively for multiple files sequentially
   var handleFileUpload = async function handleFileUpload(e, filesInput, category, setters) {
@@ -3096,9 +2864,9 @@ function App() {
     },
     className: "che-close-reader-btn"
   }, "Close Reader"))), /*#__PURE__*/React.createElement("div", {
-    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden shadow-2xl border border-white/5",
     style: {
-      height: "550px"
+      height: "650px"
     }
   }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
     className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
@@ -3316,9 +3084,9 @@ function App() {
     },
     className: "che-close-reader-btn"
   }, "Close Reader"))), /*#__PURE__*/React.createElement("div", {
-    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden shadow-2xl border border-white/5",
     style: {
-      height: "550px"
+      height: "650px"
     }
   }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
     className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
@@ -3536,9 +3304,9 @@ function App() {
     },
     className: "che-close-reader-btn"
   }, "Close Reader"))), /*#__PURE__*/React.createElement("div", {
-    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden shadow-2xl border border-white/5",
     style: {
-      height: "550px"
+      height: "650px"
     }
   }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
     className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
@@ -3758,9 +3526,9 @@ function App() {
     },
     className: "che-close-reader-btn"
   }, "Close Reader"))), /*#__PURE__*/React.createElement("div", {
-    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden shadow-2xl border border-white/5",
     style: {
-      height: "550px"
+      height: "650px"
     }
   }, renderPdfViewerOrPlaceholder(previewFile))) : /*#__PURE__*/React.createElement("div", {
     className: "glass-panel rounded-2xl p-16 text-center border-dashed border-2 border-white border-opacity-10 flex flex-col items-center justify-center space-y-3",
@@ -4114,9 +3882,9 @@ function App() {
     },
     className: "che-close-reader-btn"
   }, "Close Preview"))), (previewFile.type || "").toUpperCase().includes('PDF') || (previewFile.name || "").toLowerCase().endsWith('.pdf') ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "w-full bg-dark-900 rounded-xl overflow-hidden",
+    className: "w-full bg-dark-900 rounded-xl overflow-hidden shadow-2xl border border-white/5",
     style: {
-      height: "550px"
+      height: "650px"
     }
   }, renderPdfViewerOrPlaceholder(previewFile))) : (previewFile.type || "").toUpperCase().includes('VIDEO') || (previewFile.type || "").toUpperCase().includes('RECORDED CLASS') || (previewFile.name || "").toLowerCase().endsWith('.mp4') || (previewFile.name || "").toLowerCase().endsWith('.webm') || (previewFile.name || "").toLowerCase().endsWith('.ogg') || (previewFile.name || "").toLowerCase().endsWith('.mov') || (previewFile.name || "").toLowerCase().endsWith('.mkv') ? /*#__PURE__*/React.createElement("div", {
     className: "w-full bg-dark-900 rounded-xl overflow-hidden flex items-center justify-center",
