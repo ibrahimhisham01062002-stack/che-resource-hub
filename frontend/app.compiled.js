@@ -829,7 +829,7 @@ function App() {
   // Passcode verification
   var handleVerifyPassword = function handleVerifyPassword(e) {
     e.preventDefault();
-    if (authPasswordInput.trim() === "che@ddc") {
+    if (authPasswordInput.trim() === "che@OAB") {
       var expiry = Date.now() + 12 * 60 * 60 * 1000; // 12 hours session
       safeStorage.setItem("che_auth_until", expiry.toString());
       setIsAuthorizedState(true);
@@ -853,7 +853,7 @@ function App() {
   var handleVerifyDownloadPassword = function handleVerifyDownloadPassword(e) {
     if (e) e.preventDefault();
     var inputPass = downloadPasswordInput.trim();
-    if (inputPass === "che@obe" || inputPass === "che@ddc") {
+    if (inputPass === "che@obe" || inputPass === "che@OAB") {
       var expiry = Date.now() + 6 * 60 * 60 * 1000; // Exactly 6 hours session
       safeStorage.setItem("che_download_auth_until", expiry.toString());
       setShowDownloadAuthModal(false);

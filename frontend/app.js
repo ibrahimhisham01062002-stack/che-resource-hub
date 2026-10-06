@@ -452,7 +452,7 @@ function App() {
   // Passcode verification
   const handleVerifyPassword = (e) => {
     e.preventDefault();
-    if (authPasswordInput.trim() === "che@ddc") {
+    if (authPasswordInput.trim() === "che@OAB") {
       const expiry = Date.now() + 12 * 60 * 60 * 1000; // 12 hours session
       safeStorage.setItem("che_auth_until", expiry.toString());
       setIsAuthorizedState(true);
@@ -477,7 +477,7 @@ function App() {
   const handleVerifyDownloadPassword = (e) => {
     if (e) e.preventDefault();
     const inputPass = downloadPasswordInput.trim();
-    if (inputPass === "che@obe" || inputPass === "che@ddc") {
+    if (inputPass === "che@obe" || inputPass === "che@OAB") {
       const expiry = Date.now() + 6 * 60 * 60 * 1000; // Exactly 6 hours session
       safeStorage.setItem("che_download_auth_until", expiry.toString());
       setShowDownloadAuthModal(false);
