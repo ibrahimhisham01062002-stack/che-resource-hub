@@ -577,11 +577,9 @@ def save_courses_config(config, background_tasks: Optional[BackgroundTasks] = No
         with open(COURSES_CONF_PATH, "w", encoding="utf-8") as f:
             json.dump(config, f, indent=2, ensure_ascii=False)
     # Queue the background cloud backup
-    if background_tasks:
-        background_tasks.add_task(async_sync_database_to_telegram)
-    else:
-        # Guarantee persistence in serverless environments by executing synchronously
-        sync_database_to_telegram_blocking()
+    # Guarantee atomic persistence in serverless environments (e.g. Vercel) by executing synchronously.
+    # Background tasks get frozen or terminated when HTTP response is returned, causing database state loss.
+    sync_database_to_telegram_blocking()
 
 
 def find_course_key(course_id: str, courses: dict) -> Optional[str]:

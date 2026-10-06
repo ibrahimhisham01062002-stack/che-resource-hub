@@ -397,6 +397,16 @@ function App() {
       setCurrentFolder(firstFolder);
       const firstVideoFolder = (activeCourse.video_folders && activeCourse.video_folders.length > 0) ? activeCourse.video_folders[0] : "Root";
       setCurrentVideoFolder(firstVideoFolder);
+    } else {
+      // If course is the same (e.g. after upload refresh), ensure currentFolder is still valid
+      const validFolders = (activeCourse.folders && activeCourse.folders.length > 0) ? activeCourse.folders : ["Root"];
+      if (!validFolders.includes(currentFolder)) {
+        setCurrentFolder(validFolders[0]);
+      }
+      const validVideoFolders = (activeCourse.video_folders && activeCourse.video_folders.length > 0) ? activeCourse.video_folders : ["Root"];
+      if (!validVideoFolders.includes(currentVideoFolder)) {
+        setCurrentVideoFolder(validVideoFolders[0]);
+      }
     }
     
     // Load reference links
@@ -1141,7 +1151,7 @@ function App() {
 
         try {
           await new Promise((resolve) => {
-            const isLargeFile = file.size > 4 * 1024 * 1024; // 4 MB threshold
+            const isLargeFile = file.size > 2.5 * 1024 * 1024; // 2.5 MB threshold to guarantee Vercel 4.5MB payload limit is never exceeded
             
             const updateProgress = (loaded, total) => {
               const percentage = Math.round((loaded / total) * 90);
@@ -1227,6 +1237,7 @@ function App() {
                 completeXhr.send(completeFormData);
               };
               
+              const chunkRetries = {};
               const uploadChunk = (chunkIdx) => {
                 const start = chunkIdx * chunkSize;
                 const end = Math.min(start + chunkSize, file.size);
@@ -1273,6 +1284,15 @@ function App() {
                     activeUploads--;
                     startUpload();
                   } else {
+                    if ((chunkRetries[chunkIdx] || 0) < 2) {
+                      chunkRetries[chunkIdx] = (chunkRetries[chunkIdx] || 0) + 1;
+                      activeUploads--;
+                      setTimeout(() => {
+                        activeUploads++;
+                        uploadChunk(chunkIdx);
+                      }, 1500);
+                      return;
+                    }
                     hasFailed = true;
                     let err = `Chunk ${chunkIdx + 1} upload failed`;
                     try {
@@ -1284,6 +1304,15 @@ function App() {
                 });
                 
                 chunkXhr.addEventListener("error", () => {
+                  if ((chunkRetries[chunkIdx] || 0) < 2) {
+                    chunkRetries[chunkIdx] = (chunkRetries[chunkIdx] || 0) + 1;
+                    activeUploads--;
+                    setTimeout(() => {
+                      activeUploads++;
+                      uploadChunk(chunkIdx);
+                    }, 1500);
+                    return;
+                  }
                   hasFailed = true;
                   markError(`Network error on chunk ${chunkIdx + 1}`);
                 });
@@ -1300,7 +1329,7 @@ function App() {
                   }
                   return;
                 }
-                while (activeUploads < 3 && nextChunkIndex < totalChunks && !hasFailed) {
+                while (activeUploads < 1 && nextChunkIndex < totalChunks && !hasFailed) {
                   const chunkIdx = nextChunkIndex++;
                   activeUploads++;
                   uploadChunk(chunkIdx);
@@ -1689,9 +1718,11 @@ function App() {
     return slidesList.filter(f => {
       const matchesSearch = f.name.toLowerCase().includes(fileSearchQuery.toLowerCase()) ||
                             f.type.toLowerCase().includes(fileSearchQuery.toLowerCase());
-      const defaultFolder = (activeCourse && activeCourse.folders && activeCourse.folders.length > 0) ? activeCourse.folders[0] : "Root";
+      const validFolders = (activeCourse && activeCourse.folders && activeCourse.folders.length > 0) ? activeCourse.folders : ["Root"];
+      const defaultFolder = validFolders[0];
       const fileFolder = f.folder || defaultFolder;
-      return matchesSearch && fileFolder === currentFolder;
+      const isFolderMatch = fileFolder === currentFolder || (currentFolder === defaultFolder && !validFolders.includes(f.folder));
+      return matchesSearch && isFolderMatch;
     });
   }, [slidesList, fileSearchQuery, currentFolder, activeCourse]);
 
@@ -1700,9 +1731,11 @@ function App() {
     return videosList.filter(f => {
       const matchesSearch = f.name.toLowerCase().includes(videoSearchQuery.toLowerCase()) ||
                             f.type.toLowerCase().includes(videoSearchQuery.toLowerCase());
-      const defaultVideoFolder = (activeCourse && activeCourse.video_folders && activeCourse.video_folders.length > 0) ? activeCourse.video_folders[0] : "Root";
+      const validFolders = (activeCourse && activeCourse.video_folders && activeCourse.video_folders.length > 0) ? activeCourse.video_folders : ["Root"];
+      const defaultVideoFolder = validFolders[0];
       const fileFolder = f.folder || defaultVideoFolder;
-      return matchesSearch && fileFolder === currentVideoFolder;
+      const isFolderMatch = fileFolder === currentVideoFolder || (currentVideoFolder === defaultVideoFolder && !validFolders.includes(f.folder));
+      return matchesSearch && isFolderMatch;
     });
   }, [videosList, videoSearchQuery, currentVideoFolder, activeCourse]);
 

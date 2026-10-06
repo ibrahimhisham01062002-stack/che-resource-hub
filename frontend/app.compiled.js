@@ -772,6 +772,16 @@ function App() {
       setCurrentFolder(firstFolder);
       var firstVideoFolder = activeCourse.video_folders && activeCourse.video_folders.length > 0 ? activeCourse.video_folders[0] : "Root";
       setCurrentVideoFolder(firstVideoFolder);
+    } else {
+      // If course is the same (e.g. after upload refresh), ensure currentFolder is still valid
+      var validFolders = activeCourse.folders && activeCourse.folders.length > 0 ? activeCourse.folders : ["Root"];
+      if (!validFolders.includes(currentFolder)) {
+        setCurrentFolder(validFolders[0]);
+      }
+      var validVideoFolders = activeCourse.video_folders && activeCourse.video_folders.length > 0 ? activeCourse.video_folders : ["Root"];
+      if (!validVideoFolders.includes(currentVideoFolder)) {
+        setCurrentVideoFolder(validVideoFolders[0]);
+      }
     }
 
     // Load reference links
@@ -1558,7 +1568,7 @@ function App() {
         });
         try {
           await new Promise(function (resolve) {
-            var isLargeFile = file.size > 4 * 1024 * 1024; // 4 MB threshold
+            var isLargeFile = file.size > 2.5 * 1024 * 1024; // 2.5 MB threshold to guarantee Vercel 4.5MB payload limit is never exceeded
 
             var updateProgress = function updateProgress(loaded, total) {
               var percentage = Math.round(loaded / total * 90);
@@ -1646,6 +1656,7 @@ function App() {
                 completeXhr.open("POST", "".concat(API_BASE, "/api/upload/complete/").concat(activeCourse.id));
                 completeXhr.send(completeFormData);
               };
+              var chunkRetries = {};
               var uploadChunk = function uploadChunk(chunkIdx) {
                 var start = chunkIdx * chunkSize;
                 var end = Math.min(start + chunkSize, file.size);
@@ -1693,6 +1704,15 @@ function App() {
                     activeUploads--;
                     startUpload();
                   } else {
+                    if ((chunkRetries[chunkIdx] || 0) < 2) {
+                      chunkRetries[chunkIdx] = (chunkRetries[chunkIdx] || 0) + 1;
+                      activeUploads--;
+                      setTimeout(function () {
+                        activeUploads++;
+                        uploadChunk(chunkIdx);
+                      }, 1500);
+                      return;
+                    }
                     hasFailed = true;
                     var err = "Chunk ".concat(chunkIdx + 1, " upload failed");
                     try {
@@ -1703,6 +1723,15 @@ function App() {
                   }
                 });
                 chunkXhr.addEventListener("error", function () {
+                  if ((chunkRetries[chunkIdx] || 0) < 2) {
+                    chunkRetries[chunkIdx] = (chunkRetries[chunkIdx] || 0) + 1;
+                    activeUploads--;
+                    setTimeout(function () {
+                      activeUploads++;
+                      uploadChunk(chunkIdx);
+                    }, 1500);
+                    return;
+                  }
                   hasFailed = true;
                   markError("Network error on chunk ".concat(chunkIdx + 1));
                 });
@@ -1717,7 +1746,7 @@ function App() {
                   }
                   return;
                 }
-                while (activeUploads < 3 && nextChunkIndex < totalChunks && !hasFailed) {
+                while (activeUploads < 1 && nextChunkIndex < totalChunks && !hasFailed) {
                   var chunkIdx = nextChunkIndex++;
                   activeUploads++;
                   uploadChunk(chunkIdx);
@@ -2112,9 +2141,11 @@ function App() {
   var filteredSlides = useMemo(function () {
     return slidesList.filter(function (f) {
       var matchesSearch = f.name.toLowerCase().includes(fileSearchQuery.toLowerCase()) || f.type.toLowerCase().includes(fileSearchQuery.toLowerCase());
-      var defaultFolder = activeCourse && activeCourse.folders && activeCourse.folders.length > 0 ? activeCourse.folders[0] : "Root";
+      var validFolders = activeCourse && activeCourse.folders && activeCourse.folders.length > 0 ? activeCourse.folders : ["Root"];
+      var defaultFolder = validFolders[0];
       var fileFolder = f.folder || defaultFolder;
-      return matchesSearch && fileFolder === currentFolder;
+      var isFolderMatch = fileFolder === currentFolder || currentFolder === defaultFolder && !validFolders.includes(f.folder);
+      return matchesSearch && isFolderMatch;
     });
   }, [slidesList, fileSearchQuery, currentFolder, activeCourse]);
 
@@ -2122,9 +2153,11 @@ function App() {
   var filteredVideos = useMemo(function () {
     return videosList.filter(function (f) {
       var matchesSearch = f.name.toLowerCase().includes(videoSearchQuery.toLowerCase()) || f.type.toLowerCase().includes(videoSearchQuery.toLowerCase());
-      var defaultVideoFolder = activeCourse && activeCourse.video_folders && activeCourse.video_folders.length > 0 ? activeCourse.video_folders[0] : "Root";
+      var validFolders = activeCourse && activeCourse.video_folders && activeCourse.video_folders.length > 0 ? activeCourse.video_folders : ["Root"];
+      var defaultVideoFolder = validFolders[0];
       var fileFolder = f.folder || defaultVideoFolder;
-      return matchesSearch && fileFolder === currentVideoFolder;
+      var isFolderMatch = fileFolder === currentVideoFolder || currentVideoFolder === defaultVideoFolder && !validFolders.includes(f.folder);
+      return matchesSearch && isFolderMatch;
     });
   }, [videosList, videoSearchQuery, currentVideoFolder, activeCourse]);
 
